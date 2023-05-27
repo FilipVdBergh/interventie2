@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+
+{% block page_title %}
+    Applicatie info
+{% endblock %}
+
+{% block instrumenten %}   
+    <div class="instrument"><a href="{{ url_for('export.index') }}">Alle exportfuncties</a></div>
+{% endblock %}
+
+
+{% block body %}
+<h1>Informatie over de app</h1>
+    <table>
+        <tr>
+            <th>Kenmerk</th>
+            <th>Toelichting</th>
+            <th>Waarde</th>
+        </tr>
+        <tr>
+            <td>Applicatieversie</td>
+            <td></td>
+            <td>{{ config['APP_VERSION'] }}</td>
+        </tr>
+        <tr>
+            <td>Bestandsindelingsversie</td>
+            <td>De applicatie kan alleen bestanden (instrumenten, tools) importeren met dezelfde bestandindelingsversie.</td>
+            <td>{{ config['FILETYPE_VERSION'] }}</td>
+        </tr>
+    </table>
+
+
+    <h1>Instellingen van de container</h1>
+    <table>
+        <tr>
+            <th>Omgevingsvariabele</th>
+            <th>Waarde</th>
+        </tr>
+        {% for item in config %}
+            <tr>
+                <td>{{ item }}</td>
+                <td>{{ config[item] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

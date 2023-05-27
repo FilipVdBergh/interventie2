@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <span class="step">Werksessies</span>
+{% endblock %}
+
+{% block page_title %}
+    Werksessies
+{% endblock %}
+
+{% block instrumenten %}   
+    {% include 'link_new_session.html' %}   
+{% endblock %} 
+
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Werksessie</th>
+            <th>Beschrijving</th>
+        </tr>
+        {% for session in sessions | selectattr('parent', 'none') %}
+            {% if current_user in session.allowed_users or current_user.role.see_all_sessions %}
+                <tr>
+                    <td><a href="{{url_for('main.show_session', session_id=session.id)}}">{{ session.name }}</a></td>
+                    <td>{{ session.description | escape | markdown | truncate(500) }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+{% endblock %}

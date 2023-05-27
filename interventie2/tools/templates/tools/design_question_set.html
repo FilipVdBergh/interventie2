@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('tools.index') }}" class="step">Tool ontwerpen</a>
+    <span class="step">{{ question_set.name }}</span>
+{% endblock %}
+
+{% block page_title %}
+    {{ question_set.name }}
+{% endblock %}
+
+{% block instrumenten %}   
+    {% include 'link_taglist.html' %}
+{% endblock %} 
+
+{% block body %}
+    <h1>Beschrijving</h1>
+        <p>{{ question_set.description | escape | markdown }}</p>
+        <br>
+        <div>
+            Eigenaar: <span class="user"><a href="{{ url_for('admin.user', id=question_set.owner.id) }}">{{ question_set.owner.name }}</a></span>
+        </div>
+        <div>
+            Kenmerken: 
+            <span class="property">{{ question_set.default_process.name }}</span>
+            {% if question_set.default_instruments_visible %}<span class="property">Instrumenten zichtbaar</span>{% endif %}
+            {% if question_set.default_tags_visible %}<span class="property">Tags zichtbaar</span>{% endif %}
+            {% if question_set.default_allow_weights %}<span class="property">Vraaggewicht standaard toestaan</span>{% endif %}
+        </div>
+
+    <h1>Vragen</h1>
+        <table>
+            <tr>
+                <th>Vraag</th>
+                <th>Omschrijving</th>
+                <th>Kenmerken</th>
+                <th>Acties</th>
+            </tr>
+            {% for question in question_set.questions | sort(attribute='order') %}
+                <tr>
+                    <td>
+                        {% if not loop.first %}
+                            <a href="{{ url_for('tools.question_move', question_set_id=question_set.id, question_id=question.id, dir=1) }}">	
+                                &#8679;
+                            </a>
+                        {% endif %}
+                        {% if not loop.last %}
+                            <a href="{{ url_for('tools.question_move', question_set_id=question_set.id, question_id=question.id, dir=0) }}">	
+                                &#8681;
+                            </a>
+                        {% endif %}
+                        <a href="{{ url_for('tools.edit_question', question_id=question.id) }}">{{ question.name }}</a>
+                    </td>
+                    <td>{{ question.description | escape | markdown }}</td>
+                    <td>
+                        {% if question.is_category %}
+                            <span class="property">Alleen label</span>
+                        {% else %}
+                            {% if question.allow_motivation %}
+                            <span class="property">Open vraag</span>
+                            {% endif %}
+                            {% if question.allow_choice %}
+                                {% if question.allow_multiselect %}
+                                    <span class="property">Meerkeuze: meerdere opties</span>
+                                {% else %}
+                                    <span class="property">Meerkeuze: één optie</span>
+                                {% endif %}
+                                <span class="property">{{ question.options | length }} optie(s)</span>
+                                {% if question.allow_weight %}
+                                    <span class="property">Weging per vraag</span>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if not question.is_category %}<a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}"><button>Antwoordopties</button></a>{% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <form method="POST">
+                    {{ form.csrf_token }}    
+                    <td colspan="4">{{ form.name }}
+                    {{ form.submit }}</td>
+                </form>
+            </tr>
+        </table>
+
+    <h1>Instrumentenfilters</h1>
+        <table>
+            <tr>
+                <th>Filter</th>
+                <th>Tags</th>
+                <th>Acties</th>
+            </tr>
+            <tr>
+                <td>Sta alleen instrumenten toe met de volgende tags</td>
+                <td>
+                    {% for tag in question_set.mandatory_tags %}
+                        <a href="{{ url_for('tools.remove_tag_from_question_set', question_set_id=question_set.id, taglist='mandatory', tag_id=tag.id) }}" 
+                        class="{% if tag in question_set.forbidden_tags %}warning {% endif %}tag">
+                            {{ tag.name }} &#10006;
+                        </a>
+                    {% endfor %}
+                </td>
+                <td>
+                    <form method="POST">
+                        {{ add_mandatory_tag_form.csrf_token }}
+                        {{ add_mandatory_tag_form.tag }}
+                        <input type="submit" name="mandatory" value="Toevoegen">
+                    </form>
+                </td>
+                
+            </tr>
+            <tr>
+                <td>Sluit alle instrumenten uit met de volgende tags</td>
+                <td>
+                    {% for tag in question_set.forbidden_tags %}
+                        <a href="{{ url_for('tools.remove_tag_from_question_set', question_set_id=question_set.id, taglist='forbidden', tag_id=tag.id) }}" 
+                        class="{% if tag in question_set.mandatory_tags %}warning {% endif %}tag">
+                            {{ tag.name }} &#10006;
+                        </a>
+                    {% endfor %}
+                </td>
+                <td>
+                    <form method="POST">
+                        {{ add_forbidden_tag_form.csrf_token }}
+                        {{ add_forbidden_tag_form.tag }}
+                        <input type="submit" name="forbidden" value="Toevoegen">
+                    </form>
+                </td>
+            </tr>
+        </table>
+        {% for tag in question_set.forbidden_tags %}
+            {% if tag in question_set.mandatory_tags %}
+                <div class="warning">Conflict: 
+                Deze tool selecteert alleen instrumenten met de tag <span class="tag">{{ tag.name }}</span>,
+                maar sluit ook alle instrumenten  met deze tag uit. Daardoor zal deze tool nooit
+                instrumenten selecteren.</div>
+            {% endif %}
+        {% endfor %}
+
+    <h1>Acties</h1>
+        <ul>
+        <li><a href="{{ url_for('tools.edit_question_set', question_set_id=question_set.id) }}">Tool aanpassen of verwijderen</a></li>
+        <li><a href="{{ url_for('export.question_set_to_json', question_set_id=question_set.id) }}">Tool exporteren naar JSON</a></li>
+        </ul>
+{% endblock %}

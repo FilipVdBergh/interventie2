@@ -1,0 +1,5 @@
+{% if current_user.is_authenticated %}
+    {% if current_user.role.edit_users %}
+        <a href="{{ url_for('admin.index') }}" class="nav">Gebruikers</a> 
+    {% endif %}
+{% endif %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('catalog.index') }}" class="step">Instrumenten</a>
+    <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}" class="step">{{ instrument.name }}</a>
+    <a href="{{ url_for('catalog.instrument_tags', id=instrument.id) }}" class="step">Tags toewijzen aan instrument</a>
+    <span class="step">Tagtoewijzing aanpassen</span>
+{% endblock %}
+
+{% block page_title %}
+    Tagtoewijzing aanpassen
+{% endblock %}
+
+{% block body %}
+    <h1>{{ tag_assignment.instrument.name }}</h1>
+
+    <table>
+        <tr>
+            <th>Tag</th>
+            <th>Factor</th>
+            <th>Gewicht</th>
+            <th colspan="2">Acties</th>
+        </tr>
+        <tr>
+            <form method="POST">
+                {{ form.csrf_token }}
+                <td>
+                    <span class="tag 
+                            {% if tag_assignment.multiplier >= 1 %}plus{% endif %}
+                            {% if tag_assignment.multiplier < 1 %}min{% endif %}">
+                    {{ tag_assignment.tag.name }}
+                </span>
+                </td>
+                <td>{{ form.multiplier }}</td>
+                <td>{{ form.weight }}</td>
+                <td colspan="2">{{ form.submit }}</td>
+            </form>
+        </tr>
+    </table>
+{% endblock %}

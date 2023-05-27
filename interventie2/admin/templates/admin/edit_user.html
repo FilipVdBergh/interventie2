@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('admin.index') }}" class="step">Gebruikers</a> 
+    <a href="{{ url_for('admin.user', id=user.id) }}" class="step">{{ user.name }}</a>
+    <span class="step">Aanpassen</span>
+{% endblock %}
+
+
+{% block page_title %}
+    Gebruiker wijzigen
+{% endblock %}
+
+{% block body %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        <table>
+            <tr>
+                <td>{{ form.name.label }}</td>
+                <td>{{ form.name }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.role.label }}</td>
+                {% if current_user.role.edit_users %}
+                    <td>{{ form.role }}</td>
+                {% else %}
+                    <td> {{ form.role(readonly=true) }}</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>{{ form.email.label }}</td>
+                <td>{{ form.email }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.description.label }}
+                    {{ macro.markdown_help() }}
+                </td>
+                <td>{{ form.description }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.link.label }}</td>
+                <td>{{ form.link }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.submit }}</td>
+                <td style="text-align: right;">
+                    {{ macro.confirm_redirect( "Gebruiker verwijderen", user.name+" verwijderen?", url_for('admin.delete_user', user_id=user.id) ) }}
+                </td>
+            </tr>
+        </table>
+        
+    </form>
+{% endblock %}

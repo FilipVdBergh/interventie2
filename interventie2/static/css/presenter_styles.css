@@ -1,0 +1,226 @@
+html,body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0px;
+    margin: 0px;
+}
+
+a {
+    text-decoration: inherit; 
+}
+
+a:hover {
+    text-decoration: inherit;
+  }
+
+p {
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+}
+
+h1 {
+    padding-top: 10px;
+    font-size: x-large;
+}
+
+h2 {
+    font-size: large;
+
+}
+
+.divsteps {   
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 25px;
+    padding-left: 25px;
+    text-decoration: none;
+}
+
+.step {
+    font-size: smaller;
+    padding-right: 25px;
+    font-size: smaller;
+    text-transform: uppercase;
+}
+
+.divmain {
+    margin-top: 25px;
+    margin-bottom: 50px;
+    display:grid;
+    grid-template-columns: 250px  auto;
+}
+
+.divinstrumenten {  
+    display:block;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.divworkarea { 
+    max-width: 800px;
+    margin-left: 25px;
+}
+
+.page_title {
+    font-size:xx-large;
+    font-weight: lighter;
+    padding-right: 25px;
+    padding-left: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.instrument {
+    display: block;
+    color: black;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-decoration: none;
+    font-size: small;
+}
+
+.instrument_introduction {
+    font-weight: bold;
+}
+
+.instrument:hover {
+    background-color: #DDDDDD;
+}
+
+.question {
+    font-style: italic;
+    font-weight: bold;
+    font-size: large;
+}
+
+.answer_summary {
+
+}
+
+.question_description {
+    
+}
+
+.option {
+
+}
+
+.collapsible_content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.collapsible {
+    cursor: pointer;
+    display: inline;
+    border-top: white;
+    border-left: none;
+    border-right: none;
+    border-bottom: white;;
+    text-align: left;
+    outline: none;
+    width:100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.active, .collapsible:hover {
+    background-color: #65c7ff;
+    color: white;
+  }
+
+.collapsible:before {
+    content: "🡢"; 
+    
+    float: left;
+    margin-right: 5px;
+  }
+
+  .active:before {
+    content: "🡣"; 
+    
+  }
+
+.tooltip {
+    position: relative;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    background-color: #65c7ff;
+    color: white;
+    text-align: left;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -50px;
+  }
+  
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 16%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #65c7ff transparent transparent transparent;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+  .tag {   
+    font-weight: bold;
+    font-size: smaller;
+    color: grey;
+    padding-left: 10px;
+    padding-right: 10px;
+    border:1px solid lightgrey;
+    white-space:nowrap;
+}
+
+.warning {
+    color: red;
+}
+
+.plus {
+    font-weight: bold;
+    color:darkblue;
+}
+
+.plus::before {
+    content: '+';
+}
+
+.min {
+    font-weight: bold;
+    color:red;
+}
+
+.min::before {
+    content: '-';
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    color: black;
+    border-bottom: solid 1px #44546A;
+    text-align: left;
+}
+
+td {
+    text-align: left;
+    border-bottom: solid 1px #EEEEEE;
+    vertical-align: top;
+    padding-left : 5pt;
+    padding-right: 5pt;
+}

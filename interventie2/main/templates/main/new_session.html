@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('main.index') }}" class="step">Werksessies</a>
+    <span class="step"> Nieuwe werksessie</span>
+{% endblock %}
+
+{% block page_title %}
+    Nieuwe werksessie
+{% endblock %}
+
+{% block body %}
+
+<form method="POST">
+    {{ form.csrf_token }}
+    <table>
+        <tr>
+            <td>{{ form.name.label }}</td>
+            <td>{{ form.name }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.link_to_page.label }}</td>
+            <td>{{ form.link_to_page }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.question_set.label }}</td>
+            <td>{{ form.question_set }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.date.label }}</td>
+            <td>{{ form.date }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.participants.label }}</td>
+            <td>{{ form.participants }}</td>
+        </tr>
+        <tr>
+            <td>Eigenaar</td>
+            <td>{{ current_user.name }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.submit }}</td>
+            <td></td>
+        </tr>
+
+    </table>
+</form>
+
+
+{% endblock %}

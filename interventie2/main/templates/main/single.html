@@ -1,0 +1,67 @@
+{% extends 'presenter_mode.html' %}
+
+{% block currentcase %}
+    {{ session.name }}
+{% endblock %}
+
+{% block steps %}
+    {% include 'main/path_process.html' %}
+{% endblock %}
+
+{% block instrumenten %}   
+    {% include 'main/scored_instruments.html' %}
+{% endblock %} 
+
+{% block page_title %}
+    {{ session.name }}
+{% endblock %}
+
+{% block body %}
+    <div>{{ session.description }}</div>
+    <div>{{ session.effect }}</div>
+
+    <form method="POST">
+        {% if question.is_category %}
+            <h1 class="question_category">{{ question.name }}</h1>
+            <div class="question_description">{{ question.description | escape | markdown }}</div>
+            <br><input type="submit" value="Doorgaan">
+        {% else %}
+            <h1 class="question_category">{{ session.question_set.questions | selectattr('is_category', 'true') | selectattr('order', 'lt', question.order) | sort(attribute='order', reverse=true) | map(attribute='name') | first  }}</h1>
+            <h2 class="question">{{ question.name }}</h2>
+            <div class="question_description">{{ question.description | escape | markdown }}</div>
+            {% if question.allow_weight %}
+                <div style="float: right">
+                    {% set weight_options=[0.0, 0.5, 1.0, 2.0] %}
+                    Factor: 
+                    {% for weight in weight_options %}
+                        <input 
+                            type="radio" 
+                            name="weight" 
+                            value="{{ weight }}" 
+                            {% if answer.weight == weight %}checked{% endif %}>
+                            {{ weight }}
+                    {% endfor %}
+                    
+                </div>
+            {% endif %}
+            {% for option in question.options %}
+                <div class="option">
+                    {% if question.allow_multiselect %}
+                        <input type="checkbox" name="option" value="{{ option.id }}" {% if session.is_option_selected(option) %}checked{% endif %}>
+                    {% else %}
+                        <input type="radio" name="option" value="{{ option.id }}" {% if session.is_option_selected(option) %}checked{% endif %}>
+                    {% endif %}
+                    {{ option.name }}
+                </div>
+            {% endfor %}
+            
+            {% if not question.allow_multiselect %}<a style="font-size: smaller;" onclick="return uncheck_radio('option:{{ question.id }}' );">&#10060; Keuze wissen</a>{% endif %}
+
+            {% if question.allow_motivation %}
+                <br><textarea name="motivation" rows="5" cols="100">{{ session.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
+            {% endif %}
+            <br><br><input type="submit" value="Opslaan">
+        {% endif %}    
+    </form>
+
+{% endblock %}

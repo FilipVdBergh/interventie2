@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('admin.index') }}" class="step">Gebruikers</a> 
+    <span class="step">{{ user.name }} {% if user == current_user %}(mijn account){% endif %}</span>
+{% endblock %}
+
+{% block page_title %}
+    {{ user.name }}
+{% endblock %}
+
+{% block instrumenten %}   
+{% endblock %}
+
+{% block body %}
+    <h1>Beschrijving</h1>
+    {{ user.description | escape | markdown }}
+    <h1>Kenmerken</h1>
+    <table>
+        <tr>
+            <td>Id</td>
+            <td>{{ user.id }}</td>
+        </tr>
+        <tr>
+            <td>Aangemaakt</td>
+            <td>{{ user.date_created }}</td>
+        </tr>
+        <tr>
+            <td>Laatst gezien</td>
+            <td>{{ user.last_seen }}</td>
+        </tr>
+        <tr>
+            <td>Rol</td>
+            <td><a href="{{ url_for('admin.roles') }}">{{ user.role.name }}</a> ({{ user.role_id }})</td>
+        </tr>
+        <tr>
+            <td>E-mail</td>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <td>Link</td>
+            <td>{{ user.link }}</td>
+        </tr>
+        <tr>
+            <td>Inloggen toegestaan</td>
+            <td>{{ user.active }}</td>
+        </tr>
+    </table>
+
+    {% if user.owned_instruments | length > 0 %}
+        <h1>Beheerde instrumenten</h1>
+        <table>
+            <tr>
+                <th>Instrument</th>
+                <th>Openstaande opmerkingen</th>
+            </tr>
+            {% for instrument in user.owned_instruments | sort(attribute='name') %}
+                <tr>
+                    <td><a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }}</a></td>
+                    <td>
+                        {% for remark in instrument.remarks %}
+                            {% if remark.active %}
+                                <a href="{{ url_for('catalog.show_remark', remark_id=remark.id) }}">{{ remark.remark | escape | truncate(50) | markdown }} ({{ remark.sender.name }}, {{ remark.date_modified }})</a><br>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>  
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if user.edit_allowed() %}
+        <h1>Acties</h1>
+        <ul>
+            <li><a href="{{ url_for('main.logout') }}">Uitloggen</a></li>
+            <li><a href="{{ url_for('admin.edit_user', user_id=user.id) }}">Gebruiker aanpassen of verwijderen</a></li>
+            <li><a href="{{ url_for('admin.change_password', user_id=user.id) }}">Wachtwoord veranderen</a></li>
+        </ul>
+    {% endif %}
+{% endblock %}

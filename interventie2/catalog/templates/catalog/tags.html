@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <span class="step">Tags</span>
+{% endblock %}
+
+{% block page_title %}
+    Tags
+{% endblock %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Naam</th>
+            <th colspan="2">Acties</th>
+        </tr>
+        {% for tag in tags %}
+            <tr>
+                <td><a href="{{ url_for('catalog.edit_tag', tag_id=tag.id) }}"><span class="tag">{{ tag.name }}</span></a></td>
+                <td><a href="{{ url_for('catalog.delete_tag', tag_id=tag.id) }}"><button>Verwijderen</button></a></td>
+            </tr>
+        {% endfor %}
+        {% if edit_catalog_allowed %}
+            <form method="POST">
+                {{ form.csrf_token }}
+                <tr>
+                    <td>{{ form.name }}</td>
+                    <td colspan="2">{{ form.submit }}</td>
+                </tr>
+            </form>
+        {% endif %}
+    </table>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('tools.index') }}" class="step">Tool ontwerpen</a>
+    <a href="{{url_for('tools.design_question_set', question_set_id=question.question_set.id)}}" class="step">{{ question.question_set.name }}</a>
+    <span class="step">Antwoordopties {{ question.name }}</span>
+{% endblock %}
+
+{% block page_title %}
+    Antwoordopties aanpassen
+{% endblock %}
+
+
+{% block instrumenten %}   
+    {% include 'link_taglist.html' %}
+{% endblock %} 
+
+{% block body %}
+    <h1>{{ question.name }}</h1>
+    {{ question.description | escape | markdown }}
+    <br>
+    <table>
+        <tr>
+            <th>Antwoordoptie</th>
+            <th>Tags</th>
+            <th>Acties</th>
+        </tr>
+        {% for option in question.options | sort(attribute='order') %}
+            <tr>
+                <td>
+                    {% if not loop.first %}
+                        <a href="{{ url_for('tools.option_move', option_id=option.id, dir=1) }}">	
+                            &#8679;
+                        </a>
+                    {% endif %}
+                    {% if not loop.last %}
+                        <a href="{{ url_for('tools.option_move', option_id=option.id, dir=0) }}">	
+                            &#8681;
+                        </a>
+                    {% endif %}
+                    <a href="{{ url_for('tools.edit_option', option_id=option.id) }}">{{ option.name }}</a>
+                </td>
+                <td>
+                    <a href="{{ url_for('tools.edit_tag_assignment', option_id=option.id) }}">
+                        <button>Aanpassen</button>
+                    </a>
+                    {% for tag in option.tags %}
+                        <span class="tag plus">{{ tag.name }}</span>
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{{ url_for('tools.delete_option', option_id=option.id) }}">
+                        <button>Optie verwijderen</button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <form method="POST">
+                {{ form.csrf_token }}    
+                <td colspan="3">
+                    {{ form.name }}
+                    {{ form.submit }}
+                </td>
+            </form>
+        </tr>
+    </table>
+{% endblock %}

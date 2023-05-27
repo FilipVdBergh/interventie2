@@ -1,0 +1,5 @@
+{% if config['ALLOW_CATALOG_VIEW'] or current_user.is_authenticated %}    
+    <span style="float: right">
+        <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}"" class="nav">&#9993; Contact</a>
+    </span>
+{% endif %}

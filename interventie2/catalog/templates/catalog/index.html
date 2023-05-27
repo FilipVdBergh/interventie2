@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <span class="step">Instrumenten</span>
+{% endblock %}
+
+{% block page_title %}
+    Instrumenten
+{% endblock %}
+
+{% block instrumenten %}   
+    {% if edit_catalog_allowed %}
+        <div class="instrument"><a href="{{ url_for('catalog.add_instrument') }}">+ Nieuw instrument maken</a></div>
+        <div class="instrument"><a href="{{ url_for('catalog.import_instrument') }}">Instrument importeren</a></div>
+        <div class="instrument"><a href="{{ url_for('export.catalog') }}">Exporteer catalogus naar Word</a></div>
+        <div class="instrument"><a href="{{ url_for('catalog.tags') }}">Taglijst aanpassen</a></div>   
+    {% endif %}
+{% endblock %} 
+
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Instrument</th>
+            <th>Beschrijving</th>
+        </tr>
+        {% for instrument in instruments %}
+            <tr>
+                <td><a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }}</a></td>
+                <td>{{ instrument.introduction | escape | markdown }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

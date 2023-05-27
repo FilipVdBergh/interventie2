@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block currentcase %}
+    {{ session.name }}
+{% endblock %}
+
+{% block steps %}
+{% endblock %}
+
+{% block instrumenten %}   
+{% endblock %} 
+
+{% block page_title %}
+    Nieuwe sessie afleiden van bestaande sessie
+{% endblock %}
+
+{% block body %}
+    <h1>{{ session.name }}</h1>
+    <div>{{ session.effect }}</div>
+    <br>
+    <form method="POST">
+        Beschrijving van de afgeleide sessie: 
+        <textarea name="child_description" rows="5" cols="100">{{ session.child_description }}</textarea>
+        <br><br>
+        <table>
+            <tr>
+                <th>Vraag</th>
+                <th>Antwoord overnemen uit oorspronkelijke sessie</th>
+            </tr>
+            {% for question in session.question_set.questions | sort(attribute='order') %}
+                <tr>
+                    {% if question.is_category %}
+                        <td colspan="2"><h2 class="question_category">{{ question.name }}</h2></td>
+                    {% elif not question.is_category %}
+                        <td>
+                            {{ question.name }}
+                            <div class="question_description">{{ question.description }}</div>
+                            {% for option in question.options %}
+                                    [{{ option.name }}]
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <input type="checkbox" name="inherit" value="{{ question.id }}" checked>
+                        </td>
+                    {% endif %}
+                </tr>
+                
+            {% endfor %}
+            <tr>
+                <td colspan="2">
+                    <button>Maak afgeleide sessie</button>
+                </td>
+            </tr>
+        </table>
+        
+    </form>
+{% endblock %}

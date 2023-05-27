@@ -1,0 +1,33 @@
+{%  extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('admin.index') }}" class="step">Gebruikers</a> 
+    <span class="step">Rollen en rechten</span>
+{% endblock %}
+
+{% block page_title %}
+    Rollen en rechten
+{% endblock %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Rol</th>
+            <th>Mag alle sessies zien</th>
+            <th>Mag de catalogus aanpassen</th>
+            <th>Mag tools aanpassen</th>
+            <th>Mag gebruikers aanpassen</th>
+            <th>Mag app info zien</th>
+        </tr>
+        {% for role in roles %}
+            <tr>
+                <td>{{ role.name }} (id:{{ role.id }})</td>
+                <td>{% if role.see_all_sessions %}&#9989;{% else %}&#10060;{% endif %}</td>
+                <td>{% if role.edit_catalog %}&#9989;{% else %}&#10060;{% endif %}</td>
+                <td>{% if role.edit_questionnaire %}&#9989;{% else %}&#10060;{% endif %}</td>
+                <td>{% if role.edit_users %}&#9989;{% else %}&#10060;{% endif %}</td>
+                <td>{% if role.see_app_info %}&#9989;{% else %}&#10060;{% endif %}</td>
+           </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

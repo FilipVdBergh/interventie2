@@ -1,0 +1,64 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Veranderprogramma onderneming",
+  "introduction": "Langdurig inzetten op gedragsverandering bij een onderneming zodat achterliggende oorzaken van reeks incidenten worden geadresseerd. ",
+  "description": "- Wanneer een onderneming tekortschiet en duidelijk achterblijft bij soortgelijke ondernemingen.\r\n- Wanneer de onderneming een dermate belangrijke functie vervult in de markt \r\n- Wanneer de AFM blijvende interne druk wil cre\u00ebren.\r\n- Het omvat een programma van activiteiten die met de onderneming is overeengekomen met als doel dat de onderneming in control geraakt of een betere compliance cultuur weet te realiseren.\r\n- Met de ondernemingen worden afspraken gemaakt over de veranderingen die de AFM verwacht. De AFM monitort de voortgang.",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- Dit is voor de AFM en de onderneming dus een arbeidsintensief instrument dat spaarzaam moet worden ingezet om een complex, structureel probleem te adresseren.\r\n- Dit instrument sluit de inzet van andere instrumenten, zoals opleggen van een boete, niet uit. \r\n- Dit instrument is niet geschikt voor ondernemingen die niet mee willen werken.\r\n\r\nDe kracht van Veranderprogramma onderneming hangt af van:\r\n\r\n- Commitment van de AFM om langdurig betrokken te blijven bij de veranderingen die de onderneming doorvoert\r\n- De bereidheid van de AFM om andere instrumenten in te zetten indien de onderneming geen progressie boekt.",
+  "examples": "- Dit is een instrument dat wordt ingezet door Accounttoezicht (AT). Voorbeelden te vinden in afgeschermde Fides-mappen. Neem vooral contact met AT op voor meer informatie.",
+  "links": "",
+  "tags": [
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "onvolwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "afwachtend",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ongewenst gedrag",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "overtreding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet willen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet kunnen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "beperkte toezichtcapaciteit",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "momentum",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "patroon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

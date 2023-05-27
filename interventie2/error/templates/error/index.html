@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+{% endblock %}
+
+{% block page_title %}
+    Er is een fout opgetreden
+{% endblock %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+    <div>
+        {{ message }}
+    </div>
+    <br>
+    {% if error | length %}
+        <h1 class="collapsible">Technische informatie</h1>
+        <div class="collapsible_content">
+            {{ error }}
+        </div>
+    {% endif %}
+    <button onclick="window.history.back();">Terug</button>
+{% endblock %}

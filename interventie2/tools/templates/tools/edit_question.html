@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('tools.index') }}" class="step">Tool ontwerpen</a>
+    <a href="{{url_for('tools.design_question_set', question_set_id=question.question_set.id)}}" class="step">{{ question.question_set.name }}</a>
+    <span class="step">Instellingen vraag {{ question.name }}</span>
+{% endblock %}
+
+{% block page_title %}
+    {{ question.name }}
+{% endblock %}
+
+{% block body %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        <table>
+            <tr>
+                <td>{{ form.name.label }}</td>
+                <td>{{ form.name }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.description.label }}
+                    {{ macro.markdown_help() }}
+                </td>
+                <td>{{ form.description }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>{{ form.allow_motivation }} {{ form.allow_motivation.label }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>{{ form.allow_choice }} {{ form.allow_choice.label }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>{{ form.allow_multiselect }} {{ form.allow_multiselect.label }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>{{ form.allow_weight }} {{ form.allow_weight.label }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.submit }}
+                </td>
+                <td style="text-align: right;">
+                    <a href="{{ url_for('tools.delete_question', question_id=question.id) }}">Vraag verwijderen</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}

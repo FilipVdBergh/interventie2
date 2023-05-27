@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <span class="step">Gebruikers</span>
+{% endblock %}
+
+
+{% block page_title %}
+    Gebruikers
+{% endblock %}
+
+{% block instrumenten %}   
+    {% if current_user.role.edit_users %}
+        <div class="instrument"><a href="{{ url_for('admin.register') }}">+ Nieuwe gebruiker maken</a></div>
+        <div class="instrument"><a href="{{ url_for('admin.roles') }}">Bekijk rollen</a></div>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Naam</th>
+            <th>Rol</th>
+            <th>Beschrijving</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td><a href="{{ url_for('admin.user', id=user.id) }}">{{ user.name }}</a></td>
+                <td>{{ user.role.name }}</td>
+                <td>{{ user.description | escape | truncate(100) | markdown }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

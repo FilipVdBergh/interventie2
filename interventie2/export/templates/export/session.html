@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block currentcase %}
+    {{ session.name }}
+{% endblock %}
+
+{% block steps %}
+    <a href="{{ url_for('main.index') }}" class="step">Werksessies</a>
+    <a href="{{ url_for('main.show_session', session_id=session.id) }}" class="step">{{ session.name }}</a>
+    <span class="step">Exporteren</span>
+{% endblock %}
+
+{% block page_title %}
+{{ session.name }}
+{% endblock %}
+
+{% block body %}
+    <h1>Werksessie exporteren</h1>
+    <form method="POST">
+        {{ form.csrf_token }}
+        <table>
+            <tr>
+                <td>{{ form.remarks.label }}</td>
+                <td>{{ form.remarks }}</td>
+            </tr>
+            <tr>
+                <td rowspan="5">Opties</td>
+                <td>{{ form.export_descriptions }}{{ form.export_descriptions.label }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.export_calculations }}{{ form.export_calculations.label }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.export_all_instruments }}{{ form.export_all_instruments.label }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.export_tags }}{{ form.export_tags.label }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.export_technical_info }}{{ form.export_technical_info.label }}</td>
+            </tr>
+            <tr>
+                <td colspan="2">{{ form.submit }}</td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}

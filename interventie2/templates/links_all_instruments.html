@@ -1,0 +1,3 @@
+{% for instrument in instruments %}
+    <div class="instrument"><a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }}</a></div>
+{% endfor %}

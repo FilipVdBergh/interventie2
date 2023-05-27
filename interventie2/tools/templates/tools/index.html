@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <span class="step">Tool ontwerpen</span>
+{% endblock %}
+
+{% block page_title %}
+    Tool ontwerpen
+{% endblock %}
+
+{% block instrumenten %}
+    {% if current_user.role.edit_questionnaire %}
+        <div class="instrument"><a href="{{ url_for('tools.edit_question_set') }}">+ Nieuwe tool maken</a></div>
+        <div class="instrument"><a href="{{ url_for('tools.import_question_set') }}">Tool importeren</a></div>
+        <div class="instrument"><a href="{{ url_for('catalog.tags') }}">Taglijst aanpassen</a></div>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Tools</th>
+            <th>Beschrijving</th>
+        </tr>
+        {% for question_set in question_sets %}
+            <tr>
+                <td><a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}">{{ question_set.name }}</a></td>
+                <td>{{ question_set.description | escape | markdown }}</td>
+            </tr>   
+        {% endfor %}
+    </table>
+{% endblock %}

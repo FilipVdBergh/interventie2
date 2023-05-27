@@ -1,0 +1,39 @@
+{% macro confirm_redirect(link_name, message, address) %}
+    <a href="#" onclick="
+        var message = &quot; {{ message }} &quot; ;
+        var address = &quot; {{ address }} &quot; ;
+        var result = confirm(message);
+        if (result == true) { window.location.href = address } ; 
+        return false;
+        ">
+        {{ link_name }}
+    </a>
+{%- endmacro %}
+
+
+{% macro markdown_help() %}
+    <a href="{{ url_for('main.markdown_help') }}" 
+        target="_blank" 
+        style="font-size: smaller;">
+        (markdown hulp)
+    </a>
+{%- endmacro %}
+
+
+{% macro render_field(field) %}
+    <tr>
+        <td>
+            {{ field.label }}
+        </td>
+        <td>
+            {{ field(**kwargs)|safe }}
+            {% if field.errors %}
+                <ul class=errors>
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </td>
+    </tr>
+{% endmacro %}

@@ -1,0 +1,64 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Individueel rapport",
+  "introduction": "Terugkoppelen van onderzoeksbevindingen naar een individuele onderneming. ",
+  "description": "- Wanneer onderzoeksresultaten duiden op schadelijk gedrag door een onderneming.\r\n- Wanneer je verbeterpunten kenbaar wilt maken aan een onderneming.",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- Individuele rapporten als onderdeel van breder thematisch toezicht kost meer tijd dan alleen een generieke rapportage, maar is ook meer toegespitst op de situatie van de onderneming en daarmee naar verwachting meer relevant en effectief. \r\n- Bij lichtere bevindingen kan ook een minder arbeidsintensief instrument overwogen worden, zoals een brief of een gesprek.\r\n\r\nDe kracht van Individueel rapport hangt af van: \r\n\r\n- De acceptatie van directies van het Waarom (waarom AFM dit heeft onderzocht)\r\n- De mate waarin een Directie zich aangesproken voelt; \r\n- Het aantal en de scherpte van de boodschappen (meer is niet beter); en \r\n- Hun beeld over de professionaliteit (geloofwaardigheid) van de AFM.  ",
+  "examples": "- Verschillende onderzoeken van KAV. Ze worden op generiek niveau gepubliceerd, maar ook op individueel niveau gemaakt en teruggekoppeld naar de zes OOB-accountantsorganisaties. ",
+  "links": "",
+  "tags": [
+    {
+      "name": "afwachtend",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "momentum",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "overtreding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "onvolwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet kunnen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "aangrijpingspunt",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "incident",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ongewenst gedrag",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

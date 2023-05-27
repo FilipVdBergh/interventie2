@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('catalog.index') }}" class="step">Instrumenten</a>
+    <span class="step">{{ instrument.name }}</span>
+{% endblock %}
+
+{% block page_title %}
+    {{ instrument.name }}
+{% endblock %}
+
+
+{% block instrumenten %}   
+    {% include 'links_all_instruments.html' %}
+{% endblock %} 
+
+
+
+{% block body %}
+    <div class="instrument_introduction">{{ instrument.introduction | escape | markdown }}</div>
+    {% if instrument.referenced_elsewhere %}
+        <a href="http://{{ instrument.reference_link }}"><button>Link naar de beschrijving van dit instrument</button></a>
+        <br>
+    {% else %}
+        <h1>Beschrijving</h1>
+            <div class="instrument_body">{{ instrument.description | escape | markdown }}</div>
+        <h1>Overwegingen bij gebruik</h1>
+            <div class="instrument_body">{{ instrument.considerations | escape | markdown }}</div>
+        <h1>Voorbeelden</h1>
+            <div class="instrument_body">{{ instrument.examples | escape | markdown }}</div>
+        <h1>Links</h1>
+            <div class="instrument_body">{{ instrument.links | escape | markdown }}</div>
+    {% endif %}
+    <h1>Tags</h1>
+    {% for tag_assignment in instrument.tags %}
+        <a href="{{ url_for('catalog.edit_tag_assignment_to_instrument', instrument_id=instrument.id, tag_assignment_id=tag_assignment.id) }}">
+            <span class="tag 
+                        {% if tag_assignment.multiplier >= 1 %}plus{% endif %}
+                        {% if tag_assignment.multiplier < 1 %}min{% endif %}">
+                {{ tag_assignment.tag.name }}
+            </span>
+        </a>
+    {% endfor %}
+    <br>
+    <h1>Eigenaar</h1>
+        <span class="user"><a href="{{ url_for('admin.user', id=instrument.owner.id) }}">{{ instrument.owner.name }}</a></span>
+
+    <h1>Opmerkingen</h1>
+        <table>
+            <tr>
+                <th>Afzender</th>
+                <th>Datum</th>
+                <th>Opmerking</th>
+                <th>Acties</th>
+            </tr>
+            {% for remark in instrument.remarks %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('admin.user', id=remark.sender.id) }}" class="{% if not remark.active %}inactive{% endif %}">
+                            {{ remark.sender.name }}
+                        </a>
+                    </td>
+                    <td>
+                        <span class="{% if not remark.active %}inactive{% endif %}">{{ remark.date_created }}</span>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('catalog.show_remark', remark_id=remark.id) }}" class="{% if not remark.active %}inactive{% endif %}">
+                            {{ remark.remark | escape | truncate(100) | markdown }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if remark.edit_allowed() %}
+                            <a href="{{ url_for('catalog.edit_remark', instrument_id=instrument.id, remark_id=remark.id) }}">
+                                <button>Aanpassen</button>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="3"></td>
+                <td>
+                    <a href="{{ url_for('catalog.add_remark', instrument_id=instrument.id) }}"><button>Opmerking toevoegen</button></a>
+                </td>
+            </tr>
+        </table>
+
+    {% if edit_catalog_allowed %}
+    <h1>Acties</h1>
+        <ul>
+            <li><a href="{{ url_for('catalog.edit_instrument', id=instrument.id) }}">Instrument aanpassen of verwijderen</a></li>
+            <li><a href="{{ url_for('catalog.instrument_tags', id=instrument.id) }}">Tags toewijzen</a></li>
+            <li><a href="{{ url_for('export.instrument', instrument_id=instrument.id) }}">Exporteren naar Word</a></li>
+            <li><a href="{{ url_for('export.instrument_to_json', instrument_id=instrument.id) }}">Exporteren naar JSON</a></li>
+        </ul>
+    {% endif %}
+
+{% endblock %}

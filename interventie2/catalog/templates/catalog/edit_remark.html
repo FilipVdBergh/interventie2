@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('catalog.index') }}" class="step">Instrumenten</a>
+        <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}" class="step">{{ instrument.name }}</a>
+    {% if remark is not none %}
+        <a href="{{ url_for('catalog.show_remark', remark_id=remark.id) }}" class="step">Opmerking</a>
+        <span class="step">Aanpassen</span>
+    {% else %}
+        <span class="step">Opmerking toevoegen</span>
+    {% endif %}
+{% endblock %}
+
+{% block page_title %}
+    Opmerking toevoegen of wijzigen
+{% endblock %}
+
+{% block body %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        <table>
+            <tr>
+                <td>
+                    {{ form.remark.label }}
+                    {{ macro.markdown_help() }}
+                </td>
+                <td>{{ form.remark }}</td>
+            </tr>
+            <!-- <tr>
+                <td>{{ form.closed.label }}</td>
+                <td>{{ form.closed }}</td>
+            </tr> -->
+            <tr>
+                {% if not new_remark %}
+                    <td>Afzender</td>
+                    <td>
+                        <span class="user">
+                            <a href="{{ url_for('admin.user', id=remark.sender.id) }}">
+                                {{ remark.sender.name }}
+                            </a>
+                        </span>
+                    </td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>{{ form.submit }}</td>
+                <td style="text-align: right;">
+                    {% if remark is not none %}
+                        {{ macro.confirm_redirect( "Opmerking verwijderen", "Opmerking verwijderen?", url_for('catalog.delete_remark', instrument_id=instrument.id, remark_id=remark.id) ) }}
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}

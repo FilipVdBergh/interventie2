@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('catalog.index') }}" class="step">Instrumenten</a>
+    <a href="{{ url_for('catalog.show_instrument', id=remark.instrument.id) }}" class="step">{{ remark.instrument.name }}</a>
+    <span class="step">Opmerking</span>
+{% endblock %}
+
+{% block page_title %}
+    Opmerking bij {{ remark.instrument.name }} van {{ remark.sender.name }}
+{% endblock %}
+
+{% block body %}
+    <span class="user">
+        <a href="{{ url_for('admin.user', id=remark.sender.id) }}">
+            {{ remark.sender.name }}
+        </a>
+    </span> heeft op {{ remark.date_created }} de volgende opmerking geplaatst:
+    {{ remark.remark | escape | markdown }}
+            
+    {% if remark.edit_allowed() %}
+        <br><a href="{{ url_for('catalog.edit_remark', instrument_id=remark.instrument.id, remark_id=remark.id) }}"><button>Aanpassen</button></a>        
+    {% endif %}
+
+
+
+    
+{% endblock %}

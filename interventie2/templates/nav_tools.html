@@ -1,0 +1,5 @@
+{% if current_user.is_authenticated %}
+    {% if current_user.role.edit_questionnaire %}
+        <a href="{{ url_for('tools.index') }}" class="nav">&#9881; Tools</a> 
+    {% endif %}
+{% endif %}

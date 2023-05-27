@@ -1,0 +1,84 @@
+{% extends 'presenter_mode.html' %}
+
+{% block currentcase %}
+    {{ session.name }}
+{% endblock %}
+
+{% block steps %}
+    {% include 'main/path_process.html' %}
+{% endblock %}
+
+{% block instrumenten %}   
+    {% include 'main/scored_instruments.html' %}
+{% endblock %} 
+
+{% block page_title %}
+    {{ session.name }}
+{% endblock %}
+
+{% block body %}
+    <div>{{ session.description | escape | markdown }}</div>
+    <div>{{ session.effect | escape | markdown }}</div>
+
+    <form method="POST">
+        {% for question in session.question_set.questions | sort(attribute='order') %}
+            {% if question.is_category %}
+                <h1 class="question_category">{{ question.name }}</h1>
+                <div class="question_description">{{ question.description | escape | markdown }}</div>
+                <br>
+            
+            {% elif not question.is_category %}         
+                <button type="button" class="collapsible">
+                        <div class="question">{{ question.name }}</div>
+                        <div class="answer_summary">
+                            {% for selection in session.answers | selectattr('question', '==', question) | map(attribute='selection') %}
+                                {% for selected in selection %}
+                                    [{{ selected.option.name }}]
+                                {% endfor %}
+                            {% endfor %}
+                            {{ session.answers | selectattr('question', '==', question) | map(attribute='motivation') | first | truncate(75) }}
+                            {% if question.allow_weight %}
+                                (x{{ session.answers | selectattr('question', '==', question) | map(attribute='weight') | first }})
+                            {% endif %}
+                        </div>
+                </button>
+
+                <div class="collapsible_content">             
+                    {% if question.allow_weight %}
+                        <span style="float: right">
+                            {% set weight_options=[0.0, 0.5, 1.0, 2.0] %}
+                            Factor: 
+                            {% for weight in weight_options %}
+                                <input type="radio" name="weight:{{ question.id }}" value="{{ weight }}" 
+                                    {% if session.answers | selectattr('question', '==', question) | map(attribute='weight') | first == weight %}checked{% endif %}>
+                                    {{ weight }}
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                    
+                    <div class="question_description">{{ question.description | escape | markdown}}</div>
+                
+                    {% for option in question.options %}
+                        <div class="option">
+                            {% if question.allow_multiselect %}
+                                <input type="checkbox" name="option:{{ option.id }}" value="{{ option.id }}" {% if session.is_option_selected(option) %}checked{% endif %}>
+                            {% else %} 
+                                <input type="radio" name="option:{{ question.id }}" value="{{ option.id }}" {% if session.is_option_selected(option) %}checked{% endif %}>
+                            {% endif %}
+                            {{ option.name }}
+                        </div>
+                    {% endfor %}
+
+                    {% if not question.allow_multiselect %}<a style="font-size: smaller;" onclick="return uncheck_radio('option:{{ question.id }}' );">&#10060; Keuze wissen</a>{% endif %}
+                    
+                    {% if question.allow_motivation %}
+                        <br>
+                        <textarea name="motivation:{{ question.id }}" rows="5" cols="100">{{ session.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
+                    {% endif %}
+                    <input type="submit" value="Opslaan">
+                </div>
+            {% endif %}
+        {% endfor %}
+    </form>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Onderzoek door onderneming zelf",
+  "introduction": "Onderneming zelf een onderzoek laten uitvoeren naar de onderliggende oorzaken (grondoorzaken) van een of meerdere incidenten of tekortkomingen en op basis daarvan een verbeterplan laten opstellen.",
+  "description": "- Wanneer wij de onderneming willen activeren te leren en zelf verbeteracties te formuleren, oftewel \u2018de bal\u2019 bij de onderneming willen leggen. \r\n- Wanneer eerdere van onze acties niet het beoogde effect hebben gesorteerd en er zaken niet goed blijven lopen. \r\n- Wanneer we een holistische reflectieve houding van de onderneming verlangen en concreet willen monitoren wat de onderneming in de toekomst onderneemt om te verbeteren.",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- Een onderzoek door de onderneming zelf is minder tijdsintensief dan een onderzoek ter plaatse of het zelf uitvoeren van een onderzoek. Het ondersteunt de eigen verantwoordelijkheid van de onderneming en stelt de toezichthouder in staat te volgen hoe de grondoorzaken analyse en het verbeterplan worden aangepakt door de onderneming (qua inhoud, proces en relatie met ons als toezichthouder). De onderneming kan desgewenst een extern bureau inhuren ter ondersteuning. \r\n\r\nDe kracht van het Onderzoek door de onderneming zelf hangt af van: \r\n\r\n- De onderkenning bij de onderneming van de ernst van de situatie, het belang van gedegen onderzoek daarnaar, en het nemen van verantwoordelijkheid op hoog niveau. \r\n- Van tevoren afgesproken momenten met de onderneming om het proces te monitoren en eventueel bij te sturen (bijv. bij afstemming onderzoeksplan, hypothesen, eerste bevindingen en aandachtspunten voor verbetering).",
+  "examples": "- De AFM heeft RIAM in 2021 opgelegd een grondoorzaken analyse uit te voeren en verbeterplan op te stellen. Dit na meerdere tekortkomingen en een gevoel niet verder te komen/door te dringen bij de onderneming (ga voor meer informatie langs bij de HE/AM/EC-G&amp;C). ",
+  "links": "",
+  "tags": [
+    {
+      "name": "aangrijpingspunt",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "beperkte toezichtcapaciteit",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "incident",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet kunnen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ongewenst gedrag",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "overtreding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "volwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "proactief",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

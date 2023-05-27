@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+{% endblock %}
+
+{% block page_title %}
+    Exporteren
+{% endblock %}
+
+{% block instrumenten %}   
+ 
+{% endblock %} 
+
+
+{% block body %}
+    <h1>Instrumenten</h1>
+    <table>
+        {% for instrument in instruments %}
+            <tr>
+                <td><a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }}</a></td>
+                <td width="15%"><a href="{{ url_for('export.instrument_to_json', instrument_id=instrument.id) }}">JSON</a></td>
+                <td width="15%"><a href="{{ url_for('export.instrument', instrument_id=instrument.id) }}">Word</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <h1>Tools</h1>
+    <table>
+        {% for question_set in question_sets %}
+            <tr>
+                <td><a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}">{{ question_set.name }}</a></td>
+                <td width="15%"><a href="{{ url_for('export.question_set_to_json', question_set_id=question_set.id) }}">JSON</a></td>
+                <td width="15%"></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <h1>Sessies</h1>
+    <table>
+        {% for session in sessions %}
+            <tr>
+                <td><a href="{{ url_for('main.show_session', session_id=session.id) }}">{{ session.name }}</a></td>
+                <td width="15%"></td>
+                <td width="15%"><a href="{{ url_for('export.session', session_id=session.id) }}">Word</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

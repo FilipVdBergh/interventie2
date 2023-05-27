@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="URF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
+        <title>Markdown hulp</title>
+    </head>
+    <body>
+
+
+        <div class="divtoolbar">
+            <div class="divlogo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}", height="75px">
+            </div>
+            <div class="page_title">
+                Opmaken van tekstvelden met Markdown
+            </div>
+            <div class="divsteps">
+
+            </div>
+        </div>
+
+        <div class="divmain">
+            <div class="divinstrumenten">
+                {% block instrumenten %}   
+                {% endblock %} 
+            </div>
+
+            <div class="divworkarea">
+                <form method="POST">
+                    {{ form.csrf_token }}
+                    <table>
+                        <tr>
+                            <td>{{ form.playground }}</td>
+                            <td>{{ playground_text | escape | markdown }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.submit }}</td>
+                            <td style="text-align: right;"><a href="{{ url_for('main.markdown_help') }}">Reset</a></td>
+                        </tr>
+                        <tr>
+                            
+                        </tr>
+            
+                    </table>
+                </form>
+            </div>
+        </div>
+        <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
+        <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/confirm_redirect.js')}}"></script>
+    </body>
+</html>
+
+

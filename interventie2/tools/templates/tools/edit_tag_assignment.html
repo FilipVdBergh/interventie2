@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('tools.index') }}" class="step">Tool ontwerpen</a>    
+    <a href="{{ url_for('tools.design_question_set', question_set_id=option.question.question_set.id)}}" class="step">{{ option.question.question_set.name }}</a>
+    <a href="{{ url_for('tools.edit_question_options', question_id=option.question.id) }}" class="step">Antwoordopties {{ option.question.name }}</a>
+    <span class="step">Tagtoewijzing {{ option.name }}</span>
+{% endblock %}
+
+{% block page_title %}
+    Tagtoewijzing aanpassen
+{% endblock %}
+
+{% block instrumenten %}   
+    {% include 'link_taglist.html' %}
+{% endblock %} 
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Tag</th>
+            <th>Status</th>
+        </tr>
+        
+        {% for tag in tags %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('tools.toggle_tag', option_id=option.id, tag_id=tag.id) }}" class="tag 
+                    {% if tag in option.tags %}
+                        plus
+                    {% endif %}">{{ tag.name }}</a>
+                </td>
+                <td>
+                    <a href="{{ url_for('tools.toggle_tag', option_id=option.id, tag_id=tag.id) }}" class="property">
+                        {% if tag in option.tags %}
+                            Actief
+                        {% else %}
+                            Inactief
+                        {% endif %}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        
+    </table>
+{% endblock %}

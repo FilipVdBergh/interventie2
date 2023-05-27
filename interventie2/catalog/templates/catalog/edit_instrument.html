@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('catalog.index') }}" class="step">Instrumenten</a>
+    {% if instrument is not none %}
+        <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}" class="step">{{ instrument.name }}</a>
+        <span class="step">Instrument aanpassen</span>
+    {% else %}
+        <span class="step">Instrument toevoegen</span>
+    {% endif %}
+{% endblock %}
+
+{% block page_title %}
+    {% if instrument is none %}
+        Instrument toevoegen
+    {% else %}
+        Instrument aanpassen
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        <table>
+            <tr>
+                <td>{{ form.name.label }}</td>
+                <td>{{ form.name }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.introduction.label }}
+                    {{ macro.markdown_help() }}
+                </td>
+                <td>{{ form.introduction }}</td>
+            </tr>
+                <td>{{ form.referenced_elsewhere.label }}</td>
+                <td>{{ form.referenced_elsewhere }}</td>
+            <tr>
+                <td>{{ form.reference_link.label }}</td>
+                <td>{{ form.reference_link }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.description.label }}
+                    {{ macro.markdown_help() }}
+                </td>
+                <td>{{ form.description }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.considerations.label }}
+                    {{ macro.markdown_help() }}
+                </td>
+                <td>{{ form.considerations }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.examples.label }}
+                    {{ macro.markdown_help() }}
+                </td>
+                <td>{{ form.examples }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.links.label }}
+                    {{ macro.markdown_help() }}
+                </td>
+                <td>{{ form.links }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.owner.label }}</td>
+                <td>{{ form.owner }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.submit }}</td>
+                <td style="text-align: right;">
+                    {% if instrument is not none %}
+                        {{ macro.confirm_redirect( "Instrument verwijderen", instrument.name+" verwijderen?", url_for('catalog.delete_instrument', id=instrument.id) ) }}
+                    {% endif %}
+                </td>
+            </tr>
+
+        </table>
+    </form>
+{% endblock %}

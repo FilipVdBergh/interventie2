@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('main.index') }}" class="step">Werksessies</a>
+    <a href="{{ url_for('main.show_session', session_id=session.id) }}" class="step">{{ session.name }}</a>
+    <span class="step">Toegang beheren</span>
+{% endblock %}
+
+{% block instrumenten %}   
+{% endblock %} 
+
+
+{% block page_title %}
+    Toegang tot {{ session.name }} beheren
+{% endblock %}
+
+{% block body %}
+    <h1>Sessie delen met een link</h1>
+    Om toegangsrechten tot deze sessie te krijgen klikt de nieuwe gebruiker op de link. De link is zeven dagen geldig. <br>
+    <input type="text" value="{{ url_for('main.share_link', session_id=session.id, invitation_string=invitation_string, _external=True) }}" id="link" size="80">
+    <button onclick="copy_to_clipboard('link')">Kopieer link</button>
+    <ul>
+        <li>
+            <a href="{{ url_for('main.reset_secret_key', session_id=session.id) }}">Trek alle openstaande uitnodigingen in.</a>
+        </li>
+    </ul>
+    {% if current_user.role.edit_users %}
+        <h1>Gebruikers die de sessie mogen zien</h1>
+        <table>
+            <tr>
+                <th>Gebruiker</th>
+                <th>Acties</th>
+            </tr>
+            {% for user in session.allowed_users %}
+                <tr>
+                    <td>
+                        <span class="user"><a href="{{ url_for('admin.user', id=user.id) }}">{{ user.name }}</a></span>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('main.stop_share', session_id=session.id, user_id=user.id) }}"><button>Verwijderen</button></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            <form method="POST">{{ form.csrf_token }}
+                <tr>
+                    <td>{{ form.user(size=10) }}</td>
+                    <td>{{ form.submit }}</td>
+                </tr>
+            </form>
+        </table>
+        <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/copy_to_clipboard.js')}}"></script>
+    {% endif %}
+{% endblock %}

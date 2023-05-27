@@ -1,0 +1,32 @@
+{% extends 'presenter_mode.html' %}
+
+{% block currentcase %}
+    {{ session.name }}
+{% endblock %}
+
+{% block steps %}
+    {% include 'main/path_process.html' %}
+{% endblock %}
+
+{% block page_title %}
+    {{ session.name }}
+{% endblock %}
+
+{% block body %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        <h1>Beschrijving</h1>
+        Geef een korte beschrijving van de casus. 
+        <br>
+        <br>{{ form.description }}
+
+        <h1>Beoogd effect</h1>
+        Stel bij de start van de werksessie met alle deelnemers vast wat het doel is dat je met je interventie wilt bereiken 
+        en bij welke doelgroep. Welk gedrag is onwenselijk en moet gestopt of verminderd worden? Of: welk gedrag moet gestart 
+        of voortgezet worden?
+        <br>
+        <br>{{ form.effect }}
+
+        <br>{{ form.submit }}            
+    </form>
+{% endblock %}

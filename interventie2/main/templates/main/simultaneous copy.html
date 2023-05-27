@@ -1,0 +1,86 @@
+{% extends 'presenter_mode.html' %}
+
+{% block currentcase %}
+    {{ session.name }}
+{% endblock %}
+
+{% block steps %}
+    {% include 'main/path_process.html' %}
+{% endblock %}
+
+{% block instrumenten %}   
+    {% include 'main/scored_instruments.html' %}
+{% endblock %} 
+
+{% block page_title %}
+    {{ session.question_set.name }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ session.name }}</h1>
+    <div>{{ session.effect }}</div>
+
+    <form method="POST">
+        {% for question_with_answers in questionnaire | sort(attribute='order') %}
+            {% if question_with_answers.is_category %}
+                <h1 class="question_category">{{ question_with_answers.name }}</h1>
+                <div class="question_description">{{ question_with_answers.description }}</div>
+            {% elif not question_with_answers.is_category %}         
+                <!-- <div class="collapsible question">{{ question_with_answers.name }}</div> -->
+                <button type="button" class="collapsible question">
+                    <div>
+                        {{ question_with_answers.name }}
+                        {% if question_with_answers.motivation != "" %}
+                            *
+                        {% endif %}
+                        {% for option in question_with_answers.options_with_selection %}
+                            {% if option.selected %}
+                                [{{ option.option.name }}]
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </button>
+                <div class="collapsible_content">             
+                    {% if question_with_answers.allow_weight %}
+                        <span style="float: right">
+                            {% set weight_options=[0.0, 0.5, 1.0, 2.0] %}
+                            Factor: 
+                            {% for weight in weight_options %}
+                                <input 
+                                    type="radio" 
+                                    name="weight:{{ question_with_answers.id }}" 
+                                    value="{{ weight }}" 
+                                    {% if question_with_answers.weight == weight %}checked{% endif %}>
+                                    {{ weight }}
+                            {% endfor %}
+                            
+                        </span>
+                    {% endif %}
+                    
+                    
+                    <div class="question_description">{{ question_with_answers.description }}</div>
+                    {% for option in question_with_answers.options_with_selection %}
+                        <div class="option">
+                            {% if question_with_answers.allow_multiselect %} <!-- Checkboxes all belong to their own group -->
+                                <input type="checkbox" name="option:{{ option.option.id }}" value="{{ option.option.id }}" {% if option.selected %}checked{% endif %}>
+                            {% else %} <!-- Radiobuttons all belong to the question group -->
+                                <input type="radio" name="option:{{ question_with_answers.id }}" value="{{ option.option.id }}" {% if option.selected %}checked{% endif %}>
+                            {% endif %}
+                            {{ option.option.name }}
+                        </div>
+                    {% endfor %}
+                    {% if not question_with_answers.allow_multiselect %}
+                        <a style="font-size: smaller;" onclick="return uncheck_radio('option:{{ question_with_answers.id }}' );">&#10060; Keuze wissen</a>
+                    {% endif %}
+                    <br>
+                    {% if question_with_answers.allow_motivation %}
+                        <br><textarea name="motivation:{{ question_with_answers.id }}" rows="5" cols="100">{{ question_with_answers.motivation }}</textarea>
+                    {% endif %}
+                    <input type="submit" value="Opslaan">
+                </div>
+            {% endif %}
+        {% endfor %}
+    </form>
+    <br>
+    <button><a href="{{ url_for('main.conclusion', session_id=session.id) }}">Doorgaan</a></button>
+{% endblock %}

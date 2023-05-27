@@ -1,0 +1,239 @@
+html,body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0px;
+    margin: 0px;
+}
+
+a {
+    color: green;
+    text-decoration: inherit; 
+}
+
+p {
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+}
+
+h1 {
+    padding-top: 10px;
+    font-size: x-large;
+    font-weight: lighter;
+    color: #42B2E2
+}
+
+h2 {
+    font-size: large;
+    font-weight: lighter;
+}
+
+h3 {
+    font-style: italic;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    color: black;
+    border-bottom: solid 1px #44546A;
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: normal;
+    color: #59738E;
+    font-size: x-small;
+}
+
+td {
+    text-align: left;
+    padding-right: 10px;
+    border-bottom: solid 1px #EEEEEE;
+    vertical-align: top;
+}
+
+.disabled {
+    color: #CCCCCC;
+}
+
+.enabled {
+    color: black;
+}
+
+.property {
+    font-size: smaller;
+    color:black;
+    padding-left: 10px;
+    padding-right: 10px;
+    border:1px solid lightgrey;
+    white-space:nowrap;
+}
+
+.tag {   
+    font-weight: bold;
+    font-size: smaller;
+    color: grey;
+    padding-left: 10px;
+    padding-right: 10px;
+    border:1px solid lightgrey;
+    white-space:nowrap;
+}
+
+.warning {
+    color: red;
+}
+
+.plus {
+    font-weight: bold;
+    color:darkblue;
+}
+
+.plus::before {
+    content: '+';
+}
+
+.min {
+    font-weight: bold;
+    color:red;
+}
+
+.min::before {
+    content: '-';
+}
+
+.divnav {
+    display: block;
+    color: #d7d7d7;
+    background-color: #091e31;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+    font-size: x-small;
+}
+
+.nav {
+    padding-right: 20px;
+    padding-left: 20px;
+    color: #dbdbdb
+}
+
+.nav:hover {
+    background-color: #59738E;
+    color: #FFFFFF;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.divtoolbar {
+    background-color: #F7FAFC;
+    display: grid;
+    grid-template-columns: min-content auto;
+    grid-template-rows: max-content max-content;
+}
+
+.tool {       
+    font-size: smaller;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-decoration-line: none;
+}
+
+.divlogo {
+    grid-row: 1 / 3;
+    padding: 15px;
+    padding-left: 50px;
+}
+
+.page_title {
+    padding-top: 30px;;
+    font-size:xx-large;
+    font-weight: lighter;
+}
+
+.divsteps {   
+    padding-right: 25px;
+    padding-bottom: 15px;
+    color: #111111;
+    text-decoration: none;
+}
+
+.step {
+    font-size: smaller;
+    padding-right: 25px;
+}
+
+.step:after {
+    content: " ▸"; 
+}
+
+.divcurrentstep {
+    font-size:xx-large;
+    font-weight: lighter;
+}
+
+.divmain {
+    margin-top: 25px;
+    margin-bottom: 50px;
+    display:grid;
+    grid-template-columns: 250px  auto;
+}
+
+.divinstrumenten {  
+    display:block;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.divworkarea { 
+    max-width: 800px;
+    margin-left: 25px;
+}
+
+.instrument {
+    display: block;
+    color: black;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-decoration: none;
+    font-size: small;
+}
+
+.instrument:hover {
+    background-color: #F7FAFC;
+}
+
+.instrument_introduction {
+    font-weight: bold;
+}
+
+.question {
+    font-style: italic;
+    font-size: large;
+}
+
+.collapsible_content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.collapsible {
+    cursor: pointer;
+    display: inline;
+    border: none;
+    text-align: left;
+    outline: none;
+    width:100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.collapsible:before {
+    content: "🡢"; 
+    float: left;
+    margin-right: 5px;
+}
+
+.active:before {
+    content: "🡣"; 
+}
