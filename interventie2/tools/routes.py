@@ -85,10 +85,10 @@ def import_question_set():
             question_set_json = json.load(f)
 
             # Check if the filetype and version match
-            if not(question_json['filetype'] == 'question_set'):
+            if not(question_set_json['filetype'] == 'question_set'):
                 return render_template('error/index.html', title='Verkeerde bestandstype', message=f"Het bestand beschrijft geen tool (filetype: {question_json['filetype']}). Importeren is niet mogelijk.")
                 
-            if not(question_json['filetype_version'] == current_app.config['FILETYPE_VERSION']):
+            if not(question_set_json['filetype_version'] == current_app.config['FILETYPE_VERSION']):
                 return render_template('error/index.html', title='Verkeerde indelingsversie', message=f"Het bestand heeft indelingsversie {question_json['filetype_version']}, en de applicatie verwacht indelingsversie {current_app.config['FILETYPE_VERSION']}. Importeren is niet mogelijk.")
 
             # Rename instrument in case of a duplicate instrument name in the database:
