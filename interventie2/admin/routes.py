@@ -27,8 +27,8 @@ def initialize():
 
         print('Populating permissions table...')
         root = Role(name='root',             see_app_info=True, see_all_sessions=True,  edit_catalog=True,  edit_questionnaire=True,  edit_users=True, demo=False)
-        admin = Role(name='admin',           see_app_info=True, see_all_sessions=True,  edit_catalog=True,  edit_questionnaire=True,  edit_users=True, demo=False)
-        maintainer = Role(name='maintainer', see_app_info=False, see_all_sessions=True,  edit_catalog=True,  edit_questionnaire=False, edit_users=False, demo=False)
+        admin = Role(name='admin',           see_app_info=False, see_all_sessions=True,  edit_catalog=True,  edit_questionnaire=True,  edit_users=True, demo=False)
+        maintainer = Role(name='maintainer', see_app_info=False, see_all_sessions=True,  edit_catalog=True,  edit_questionnaire=True, edit_users=False, demo=False)
         user = Role(name='user',             see_app_info=False, see_all_sessions=False, edit_catalog=False, edit_questionnaire=False, edit_users=False, demo=False)
         demo = Role(name='demo',             see_app_info=False, see_all_sessions=False, edit_catalog=False, edit_questionnaire=False, edit_users=False, demo=True)
         for new_role in [root, admin, maintainer, user, demo]:

@@ -364,7 +364,7 @@ def conclusion(session_id):
 	if form.validate_on_submit():
 		session.conclusion = form.conclusion.data
 		db.session.commit()
-		return redirect(url_for('export.index', session_id=session.id))
+		return redirect(url_for('export.session', session_id=session.id))
 	elif request.method == "GET":
 		form.conclusion.data = session.conclusion
 	return render_template('/main/conclusion.html', session=session, form=form, advisor=advisor)
