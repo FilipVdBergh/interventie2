@@ -15,14 +15,28 @@ catalog = Blueprint('catalog', __name__,
 
 
 @catalog.route('/')
-def index():
+@catalog.route('/filter/<int:tag_id>')
+def index(tag_id=None):
     # Login is niet nodig om de catalogus in te zien, maar om te wijzigen natuurlijk wel.
     if current_user.is_authenticated:
         edit_catalog_allowed = current_user.role.edit_catalog
     else:
         edit_catalog_allowed = False
-    list_of_instruments = Instrument.query.order_by(Instrument.name)
-    return render_template('catalog/index.html', edit_catalog_allowed=edit_catalog_allowed, instruments=list_of_instruments)
+
+    if tag_id is not None:
+        """ Warning! Some pretty ugly code ahead! I'm sure tghis can also be done in a one-liner... """
+        tag = Tag.query.get(tag_id)
+        list_of_instruments = []
+        for instrument in Instrument.query.order_by(Instrument.name):
+            for instrument_tag_assignment in instrument.tags:
+                if instrument_tag_assignment.tag == tag:
+                    list_of_instruments.append(instrument)    
+    else:
+        list_of_instruments = Instrument.query.order_by(Instrument.name)
+    return render_template('catalog/index.html', 
+                           edit_catalog_allowed=edit_catalog_allowed, 
+                           instruments=list_of_instruments,
+                           tags = Tag.query.order_by(Tag.name))
 
 
 @catalog.route('/instrument/<int:id>')

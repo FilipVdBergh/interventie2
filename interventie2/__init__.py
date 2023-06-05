@@ -7,8 +7,9 @@ from flaskext.markdown import Markdown
 
 app = Flask(__name__)
 
-# BaseConfig, DevelopmentConfig, TestingConfig
+# Load configuration
 app.config.from_object(config.DevelopmentConfig)
+app.config.from_envvar('CONFIG_FILE', silent=True)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

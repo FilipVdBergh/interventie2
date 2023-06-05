@@ -143,7 +143,7 @@ td {
 }
 
 .page_title {
-    padding-top: 30px;;
+    padding-top: 30px;
     font-size:xx-large;
     font-weight: lighter;
 }
@@ -173,7 +173,7 @@ td {
     margin-top: 25px;
     margin-bottom: 50px;
     display:grid;
-    grid-template-columns: 250px  auto;
+    grid-template-columns: 20%  auto;
 }
 
 .divinstrumenten {  

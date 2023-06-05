@@ -1,6 +1,11 @@
 {% if session.show_instruments %}
     {% for (instrument, score) in advisor.get_sorted_instruments() %}
-        {% if score >= (advisor.get_highest_score() - session.mark_top_instruments) %}
+        {% if score == 0 %}
+            <div class="instrument tooltip">
+                <a class="prio_low" href="{{ url_for('main.show_instrument', instrument_id=instrument.id, session_id=session.id) }}">{{ instrument.name }}</a>
+                <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
+            </div>
+        {% elif score >= (advisor.get_highest_score() - session.mark_top_instruments) %}
             <div class="instrument tooltip">
                 <a class="prio_high" href="{{ url_for('main.show_instrument', instrument_id=instrument.id, session_id=session.id) }}">{{ instrument.name }}</a>
                 <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>

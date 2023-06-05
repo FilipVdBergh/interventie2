@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block page_title %}
+
     Instrumenten
 {% endblock %}
 
@@ -13,12 +14,13 @@
         <div class="instrument"><a href="{{ url_for('catalog.add_instrument') }}">+ Nieuw instrument maken</a></div>
         <div class="instrument"><a href="{{ url_for('catalog.import_instrument') }}">Instrument importeren</a></div>
         <div class="instrument"><a href="{{ url_for('export.catalog') }}">Exporteer catalogus naar Word</a></div>
-        <div class="instrument"><a href="{{ url_for('catalog.tags') }}">Taglijst aanpassen</a></div>   
+        <div class="instrument"><a href="{{ url_for('catalog.tags') }}">Taglijst aanpassen</a></div>  
     {% endif %}
 {% endblock %} 
 
 
 {% block body %}
+
     <table>
         <tr>
             <th>Instrument</th>
@@ -31,4 +33,20 @@
             </tr>
         {% endfor %}
     </table>
+    <br>
+
+
+    <p class="instrument collapsible">Tag filter</p>
+    <div class="collapsible_content">
+        <a href="{{ url_for('catalog.index') }}" class="tag">
+            wis filter
+        </a>
+        {% for tag in tags %}
+                <a href="{{ url_for('catalog.index', tag_id = tag.id) }}" class="tag">
+                    {{ tag.name }}
+                </a>
+        {% endfor %}
+    </div>
+
+
 {% endblock %}

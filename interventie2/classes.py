@@ -123,6 +123,18 @@ class Advisor:
                     for option_tag in option.tags:
                         self.add_to_active_tags(option_tag, self.session.get_weight(question))
 
+    def is_instrument_in_scope(self, instrument):
+        """ Instruments are not in scope if they contain a forbidden tag (for this tool),
+        or if they do not contain a mandatory tag (for this tool). """
+        for forbidden_tag in self.forbidden_tags: # None of the tags may be in the forbidden list.
+             if len([tag.tag for tag in instrument.tags if tag.tag == forbidden_tag]) > 0:
+                return False
+        for mandatory_tag in self.mandatory_tags: # At least one of the mandatory tags should be present.
+            if len([tag.tag for tag in instrument.tags if tag.tag == mandatory_tag]) == 0:
+                return False
+        return True
+                 
+
     def calculate_score(self, instrument):
         # First apply the question set tag constraints:
         score = 0
@@ -186,7 +198,9 @@ class Advisor:
         self.update_active_tags()      
         self.scored_instruments = []
         for instrument in self.all_instruments:
-            self.scored_instruments.append([instrument, self.calculate_score(instrument)])
+            print(instrument.name, self.is_instrument_in_scope(instrument))
+            if self.is_instrument_in_scope(instrument):
+                self.scored_instruments.append([instrument, self.calculate_score(instrument)])
 
 
     def debug_info(self):

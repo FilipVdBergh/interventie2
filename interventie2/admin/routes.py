@@ -106,7 +106,7 @@ def change_password(user_id):
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        return redirect(url_for('admin.user', id = current_user.id))
+        return redirect(url_for('admin.user', id = user.id))
     return render_template('admin/change_password.html', form=form, user=user)       
 
 
