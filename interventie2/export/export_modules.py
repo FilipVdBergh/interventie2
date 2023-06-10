@@ -9,40 +9,40 @@ def add_remarks(document, remarks):
     document.add_paragraph(remarks)
 
 
-def add_session_info(document, session):
+def add_worksession_info(document, worksession):
     section = document.sections[0]
     footer = section.footer.paragraphs[0]
-    footer.text = f'Verslag {session.name} op {session.date}.'
+    footer.text = f'Verslag {worksession.name} op {worksession.date}.'
 
     document.add_heading('Informatie over de casus', level=1)
 
     document.add_heading('Beschrijving', level=2)
-    document.add_paragraph(session.description)
+    document.add_paragraph(worksession.description)
     document.add_heading('Beoogd effect', level=2)
-    document.add_paragraph(session.effect)
+    document.add_paragraph(worksession.effect)
     document.add_heading('Definitieve overwegingen', level=2)
-    document.add_paragraph(session.conclusion)
+    document.add_paragraph(worksession.conclusion)
 
-    if session.link_to_page is not None:
+    if worksession.link_to_page is not None:
         document.add_heading('Link naar project', level=2)
-        document.add_paragraph(session.link_to_page)
+        document.add_paragraph(worksession.link_to_page)
 
     document.add_heading('Informatie over de sessie', level=1)
 
     document.add_heading('Datum', level=2)
-    document.add_paragraph(session.date)
+    document.add_paragraph(worksession.date)
     document.add_heading('Deelnemers', level=2)
-    document.add_paragraph(session.participants)
+    document.add_paragraph(worksession.participants)
 
 
-def add_session_process(document, session):
+def add_worksession_process(document, worksession):
     document.add_heading('Werkwijze', level=2)
-    document.add_paragraph(f'De gebruikte tool was {session.question_set.name}. De tool werd gebruikt met het volgende proces: {session.process.name}.')
+    document.add_paragraph(f'De gebruikte tool was {worksession.question_set.name}. De tool werd gebruikt met het volgende proces: {worksession.process.name}.')
 
 
-def add_answers(document, session):
-    document.add_heading(f'Antwoorden op {session.question_set.name}', level=1)
-    for question in sorted(session.question_set.questions, key=lambda order: getattr(order, 'order')):
+def add_answers(document, worksession):
+    document.add_heading(f'Antwoorden op {worksession.question_set.name}', level=1)
+    for question in sorted(worksession.question_set.questions, key=lambda order: getattr(order, 'order')):
         if question.is_category:
             document.add_heading(question.name, level=2)
             if question.description != "":
@@ -52,9 +52,9 @@ def add_answers(document, session):
             if question.description != "":
                 document.add_paragraph(question.description)
             for option in question.options:
-                if session.is_option_selected(option):
+                if worksession.is_option_selected(option):
                     document.add_paragraph(option.name, style='Optie')
-            for answer in session.answers:
+            for answer in worksession.answers:
                 if answer.question == question:
                     document.add_paragraph(answer.motivation)
 

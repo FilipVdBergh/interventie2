@@ -1,6 +1,0 @@
-<!-- Based on access control -->
-{% for session in sessions | selectattr('parent', 'none') %}
-    {% if current_user in session.allowed_users or current_user.role.see_all_sessions %}
-        <div class="instrument"><a href="{{ url_for('main.show_session', session_id=session.id) }}">{{ session.name }}</a></div>
-    {% endif %}
-{% endfor %}

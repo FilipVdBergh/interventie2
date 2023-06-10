@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block instrumenten %}   
-    {% include 'link_new_session.html' %}   
+    {% include 'link_new_worksession.html' %}   
 {% endblock %} 
 
 
@@ -19,11 +19,11 @@
             <th>Werksessie</th>
             <th>Beschrijving</th>
         </tr>
-        {% for session in sessions | selectattr('parent', 'none') %}
-            {% if current_user in session.allowed_users or current_user.role.see_all_sessions %}
+        {% for worksession in worksessions | selectattr('parent', 'none') %}
+            {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
                 <tr>
-                    <td><a href="{{url_for('main.show_session', session_id=session.id)}}">{{ session.name }}</a></td>
-                    <td>{{ session.description | escape | markdown | truncate(500) }}</td>
+                    <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
+                    <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
                 </tr>
             {% endif %}
         {% endfor %}

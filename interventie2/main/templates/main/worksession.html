@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('main.index') }}" class="step">Werksessies</a>
+    <span class="step">{{ worksession.name }}</span>
+{% endblock %}
+
+{% block instrumenten %}   
+    {% include 'link_new_worksession.html' %}   
+{% endblock %} 
+
+
+{% block page_title %}
+    {% if worksession.parent is not none %}Afgeleide sessie: {% endif %}{{ worksession.name }}
+{% endblock %}
+
+{% block body %}
+    {% if worksession.parent is not none %}
+        <div><a href="{{ url_for('main.show_worksession', worksession_id=worksession.parent.id) }}">&#9204; Ga naar oorspronkelijke sessie</a></div>
+        <br>
+    {% endif %}
+    <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>Start de werksessie</button></a>
+    <h1>Beschrijving</h1>
+    {{ worksession.description | escape | markdown }}
+    {% if worksession.parent is not none %}
+        <h2>Beschrijving afgeleide sessie</h2>
+        {{ worksession.child_description }}
+    {% endif %}
+    <h1>Sessiedatum</h1>
+    {{ worksession.date | escape | markdown }}
+    <h1>Deelnemers</h1>
+    {{ worksession.participants | escape | markdown }}
+    <h1>Beoogd effect</h1>
+    {{ worksession.effect | escape | markdown }}
+    <h1>Conclusie</h1>
+    {{ worksession.conclusion | escape | markdown }}
+    {% if worksession.link_to_page is not none %}
+        <h1>Link naar projectfolder</h1>
+        {{ worksession.link_to_page | escape | markdown }}
+    {% endif %}
+    {% if worksession.children | length %}
+        <h1>Afgeleide sessies</h1>
+        <table>
+            <tr>
+                <th>Link</th>
+                <th>Beschrijving</th>
+            </tr>
+            {% for child_worksession in worksession.children %}    
+                <tr>
+                    <td><a href="{{ url_for('main.show_worksession', worksession_id=child_worksession.id) }}">Afgeleide sessie {{ loop.index }}</a></td>
+                    <td>{{ child_worksession.child_description }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <br>
+    <h1 class="collapsible">Kenmerken van de sessie</h1>
+    <div class="collapsible_content">
+        <table>
+            <tr>
+                <td>Keuzetool</td>
+                <td>{{ worksession.question_set.name }}</td>
+            </tr>
+            <tr>
+                <td>Keuzeproces</td>
+                <td>{{ worksession.process.name }}</td>
+            </tr>
+            <tr>
+                <td>
+                    Maker
+                </td>
+                <td>
+                    <a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Vragen</td>
+                <td>{{ worksession.question_set.questions | length }}</td>
+            </tr>
+            <tr>
+                <td>Laatste wijziging</td>
+                <td>{{ worksession.date_modified }}</td>
+            </tr>
+            <tr>
+                <td>Instellingen</td>
+                <td>
+                    {% if worksession.show_instruments %}<span class="property">Instrumenten weergeven</span>{% endif %}
+                    {% if worksession.show_tags %}<span class="property">Tags weergeven</span>{% endif %}
+                    {% if worksession.archived %}<span class="property">Gearchiveerd</span>{% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <h1>Acties</h1>
+    <ul>
+        <li><a href="{{ url_for('main.worksession_summary', worksession_id=worksession.id) }}">Samenvatting</a></li>
+        <li><a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}">Sessie aanpassen of verwijderen</a></li>
+        <li><a href="{{ url_for('main.share_worksession', worksession_id=worksession.id) }}">Toegang tot de sessie beheren</a></li>
+        <li><a href="{{ url_for('export.worksession', worksession_id=worksession.id) }}">Sessie exporteren naar Word</a></li>
+    </ul>
+{% endblock %}

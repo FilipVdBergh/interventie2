@@ -72,7 +72,7 @@ def edit_instrument(id):
         instrument.links = form.links.data
         instrument.owner_id = form.owner.data
         instrument.date_modified = func.now()
-        db.session.commit()
+        db.worksession.commit()
         return redirect(url_for('catalog.show_instrument', id=instrument.id))
     elif request.method == 'GET':
         form.name.data = instrument.name
@@ -109,8 +109,8 @@ def add_instrument():
                     examples = form.examples.data,
                     links = form.links.data,
                     owner = current_user)
-        db.session.add(instrument)
-        db.session.commit()
+        db.worksession.add(instrument)
+        db.worksession.commit()
         return redirect(url_for('catalog.show_instrument', id=instrument.id))
     
     return render_template('catalog/edit_instrument.html', form=form, edit_catalog_allowed=current_user.role.edit_catalog, instrument=None)
@@ -162,7 +162,7 @@ def import_instrument():
                 links = instrument_json['links'],
                 owner = current_user
             )
-            db.session.add(instrument)
+            db.worksession.add(instrument)
 
             # Then create the tags...
             if request.form.get('create_tags'):
@@ -184,7 +184,7 @@ def import_instrument():
                                                                     weight = new_tag['weight'],
                                                                     multiplier = new_tag['multiplier'])
                         
-                        db.session.add(instrument_tag_assignment)
+                        db.worksession.add(instrument_tag_assignment)
             
             # Add remark about importing this instrument
             import_remark = f'Instrument geïmporteerd uit bestand: {uploaded_file.filename}. '
@@ -194,9 +194,9 @@ def import_instrument():
                     remark = import_remark,
                     sender = current_user,
                     active = True)
-            db.session.add(remark)
+            db.worksession.add(remark)
 
-            db.session.commit()
+            db.worksession.commit()
             return redirect(url_for('catalog.show_instrument', id=instrument.id))
     return render_template('catalog/import_instrument.html')
 
@@ -209,8 +209,8 @@ def delete_instrument(id):
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een instrument te verwijderen.')
 
     instrument = Instrument.query.get(id)
-    db.session.delete(instrument)
-    db.session.commit()
+    db.worksession.delete(instrument)
+    db.worksession.commit()
     return redirect(url_for('catalog.index'))
 
 
@@ -229,8 +229,8 @@ def add_remark(instrument_id):
                     remark = form.remark.data,
                     sender = current_user,
                     active = not form.closed.data)
-        db.session.add(remark)
-        db.session.commit()
+        db.worksession.add(remark)
+        db.worksession.commit()
         return redirect(url_for('catalog.show_instrument', id=instrument_id))
 
     return render_template('catalog/edit_remark.html', form=form, new_remark=True, instrument=Instrument.query.get(instrument_id), remark=None)
@@ -249,7 +249,7 @@ def edit_remark(instrument_id, remark_id):
         remark.remark = form.remark.data
         remark.active = not form.closed.data
         remark.date_modified = func.now()
-        db.session.commit()
+        db.worksession.commit()
         return redirect(url_for('catalog.show_instrument', id=instrument_id))
     elif request.method == 'GET':
         form.remark.data = remark.remark
@@ -264,8 +264,8 @@ def delete_remark(instrument_id, remark_id):
     remark = Remark.query.get(remark_id)
     if not remark.edit_allowed():
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze opmerking te verwijderen.')
-    db.session.delete(remark)
-    db.session.commit()
+    db.worksession.delete(remark)
+    db.worksession.commit()
     return redirect(url_for('catalog.show_instrument', id = instrument_id))
     
 
@@ -279,8 +279,8 @@ def tags():
     tags = Tag.query.order_by(Tag.name)
     if form.validate_on_submit():
         tag = Tag(name = form.name.data)
-        db.session.add(tag)
-        db.session.commit()
+        db.worksession.add(tag)
+        db.worksession.commit()
         return redirect(url_for('catalog.tags'))
     elif request.method == 'GET':
         pass
@@ -296,7 +296,7 @@ def edit_tag(tag_id):
     tag = Tag.query.get(tag_id)
     if form.validate_on_submit():
         tag.name = form.name.data
-        db.session.commit()
+        db.worksession.commit()
         return redirect(url_for('catalog.tags'))
     elif request.method == 'GET':
         form.name.data = tag.name
@@ -309,8 +309,8 @@ def delete_tag(tag_id):
     if not current_user.role.edit_questionnaire: 
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
     tag = Tag.query.get(tag_id)
-    db.session.delete(tag)
-    db.session.commit()
+    db.worksession.delete(tag)
+    db.worksession.commit()
     return redirect(url_for('catalog.tags'))
 
 
@@ -337,8 +337,8 @@ def instrument_tags(id):
                                                                 tag = tag,
                                                                 weight = form.weight.data,
                                                                 multiplier = form.type.data)
-            db.session.add(instrument_tag_assignment)
-            db.session.commit()
+            db.worksession.add(instrument_tag_assignment)
+            db.worksession.commit()
     elif request.method == 'GET':
         form.weight.data = 1
     return render_template('catalog/instrument_tags.html', form=form, instrument=instrument, tag_assignments=tag_assignments, tags=tags)
@@ -350,8 +350,8 @@ def remove_tag_from_instrument(instrument_id, tag_assignment_id):
     if not current_user.role.edit_catalog:
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
     tag_assignment = InstrumentTagAssignment.query.get(tag_assignment_id)
-    db.session.delete(tag_assignment)
-    db.session.commit()
+    db.worksession.delete(tag_assignment)
+    db.worksession.commit()
     return redirect(url_for('catalog.instrument_tags', id=instrument_id))
 
 
@@ -373,7 +373,7 @@ def edit_tag_assignment_to_instrument(instrument_id, tag_assignment_id):
     if form.validate_on_submit():
         tag_assignment.weight = form.weight.data
         tag_assignment.multiplier = form.multiplier.data
-        db.session.commit()
+        db.worksession.commit()
         return redirect(url_for('catalog.instrument_tags', id=instrument_id))
     elif request.method == 'POST':
         print(form.errors)

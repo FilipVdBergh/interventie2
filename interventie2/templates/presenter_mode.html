@@ -8,40 +8,40 @@
         <style>
             body {
                 background-size: 100vw 100vh; 
-                background-image: linear-gradient( {{ session.presenter_mode_background_color1 }}, {{ session.presenter_mode_background_color2 }} );
-                color: {{ session.presenter_mode_text_color }};
+                background-image: linear-gradient( {{ worksession.presenter_mode_background_color1 }}, {{ worksession.presenter_mode_background_color2 }} );
+                color: {{ worksession.presenter_mode_text_color }};
             }
             h1 {
-                color: {{ session.presenter_mode_text_color_heading }};
+                color: {{ worksession.presenter_mode_text_color_heading }};
             }
             h2 {
-                color: {{ session.presenter_mode_text_color_heading }};
+                color: {{ worksession.presenter_mode_text_color_heading }};
             }
             .divsteps {
-                color: {{ session.presenter_mode_text_color_nav }};
-                background-color: {{ session.presenter_mode_color_nav }};
+                color: {{ worksession.presenter_mode_text_color_nav }};
+                background-color: {{ worksession.presenter_mode_color_nav }};
             }
             .step {
-                color: {{ session.presenter_mode_text_color_nav }};
+                color: {{ worksession.presenter_mode_text_color_nav }};
             }
             .page_title {
-                background-color: {{ session.presenter_mode_color_title }};
-                color: {{ session.presenter_mode_text_color_title }};
+                background-color: {{ worksession.presenter_mode_color_title }};
+                color: {{ worksession.presenter_mode_text_color_title }};
             }
             .collapsible {
-                background-color: {{ session.presenter_mode_color_coll }};
-                color: {{ session.presenter_mode_text_color_coll }};
+                background-color: {{ worksession.presenter_mode_color_coll }};
+                color: {{ worksession.presenter_mode_text_color_coll }};
             }
             .active, .collapsible:hover {
-                background-color: {{ session.presenter_mode_color_highlight }};
-                color: {{ session.presenter_mode_text_color_highlight }};
+                background-color: {{ worksession.presenter_mode_color_highlight }};
+                color: {{ worksession.presenter_mode_text_color_highlight }};
             }
             .prio_high {
                 font-weight: bold;
-                color: {{ session.presenter_mode_text_color_heading }};
+                color: {{ worksession.presenter_mode_text_color_heading }};
             }
             .prio_medium {
-                color: {{ session.presenter_mode_text_color_heading }};
+                color: {{ worksession.presenter_mode_text_color_heading }};
             }
               .prio_low {
                 color: grey;
@@ -62,7 +62,7 @@
             {% endblock %}
         </div>
 
-        <div class="divmain" id="main" style="transform: scale( {{ session.presenter_mode_zoom }} ); transform-origin: 0 0;">
+        <div class="divmain" id="main" style="transform: scale( {{ worksession.presenter_mode_zoom }} ); transform-origin: 0 0;">
             <div class="divinstrumenten">
                 {% block instrumenten %}   
                 {% endblock %}
@@ -78,24 +78,24 @@
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/uncheck_radio.js')}}"></script>
         <script>
-            var zoom_level = {{ session.presenter_mode_zoom }};
+            var zoom_level = {{ worksession.presenter_mode_zoom }};
             function update_scale() {
                 var divmain = document.getElementById('main');
                 divmain.style.transform = "scale(" + zoom_level + ")";
             }
             function zoom_in() {
                 zoom_level += 0.05;
-                fetch( "{{ url_for('main.zoom', session_id=session.id, change=3) }}" );
+                fetch( "{{ url_for('main.zoom', worksession_id=worksession.id, change=3) }}" );
                 update_scale();
             }
             function zoom_out() {
                 zoom_level -= 0.05
-                fetch( "{{ url_for('main.zoom', session_id=session.id, change=2) }}" );
+                fetch( "{{ url_for('main.zoom', worksession_id=worksession.id, change=2) }}" );
                 update_scale();
             }
             function zoom_reset() {
                 zoom_level = 1.00
-                fetch( "{{ url_for('main.zoom', session_id=session.id, change=1) }}" );
+                fetch( "{{ url_for('main.zoom', worksession_id=worksession.id, change=1) }}" );
                 update_scale()
             }
             

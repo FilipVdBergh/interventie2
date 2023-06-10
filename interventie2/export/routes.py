@@ -1,14 +1,14 @@
 import os
 from flask import current_app, Blueprint, render_template, redirect, url_for, send_file, request
 from flask_login import login_user, logout_user, current_user, login_required
-from interventie2.models import User, Session, QuestionSet, Instrument, Option, Answer, Selection, Question, Process
+from interventie2.models import User, Worksession, QuestionSet, Instrument, Option, Answer, Selection, Question, Process
 from interventie2.models import db, generate_secret_key
-from interventie2.forms import ExportSessionForm
+from interventie2.forms import ExportWorksessionForm
 from interventie2.classes import Advisor
 from docx import Document
 from docx.shared import Cm
 import simplejson as json
-from interventie2.export.export_modules import add_title, add_session_info, add_remarks, add_session_process, add_suggestions_table, add_answers, add_instrument, add_calculation
+from interventie2.export.export_modules import add_title, add_worksession_info, add_remarks, add_worksession_process, add_suggestions_table, add_answers, add_instrument, add_calculation
 from interventie2.classes import Advisor
 
 
@@ -24,37 +24,37 @@ export = Blueprint('export', __name__,
 def index():
     instruments = Instrument.query.order_by(Instrument.name)
     question_sets = QuestionSet.query.order_by(QuestionSet.name)
-    sessions = Session.query.order_by(Session.name)
-    return render_template('export/index.html', instruments=instruments, question_sets=question_sets, sessions=sessions)
+    worksessions = Worksession.query.order_by(Worksession.name)
+    return render_template('export/index.html', instruments=instruments, question_sets=question_sets, worksessions=worksessions)
 
 # These functions export things to Word. These functions call separate export modules from another file.
 # This is in general unelegantly programmed. The called functions append requested things to a document file.
 # The document file is an empty Word file with required styles. This file is copied and sent to the user.
 # This is just a terrible way to do this, and I apologize.
 
-@export.route('/session/<int:session_id>', methods=['GET', 'POST'])
+@export.route('/worksession/<int:worksession_id>', methods=['GET', 'POST'])
 @login_required
-def session(session_id):
-    session = Session.query.get(session_id)
-    form = ExportSessionForm()
-    advisor = Advisor(session=session, instruments=Instrument.query.all())
+def worksession(worksession_id):
+    worksession = Worksession.query.get(worksession_id)
+    form = ExportWorksessionForm()
+    advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 
     print(current_app.static_folder)
     if form.validate_on_submit():
         result = Document(os.path.join(current_app.static_folder, 'export', 'Template.docx'))
         output_file = os.path.join(current_app.static_folder, 'export', 'Temp.docx')
 
-        add_title(result, session.name)
+        add_title(result, worksession.name)
         result.add_page_break()
 
-        add_session_info(result, session)
+        add_worksession_info(result, worksession)
         if form.export_technical_info.data:
-            add_session_process(result, session)
+            add_worksession_process(result, worksession)
         if len(form.remarks.data) > 0:
             add_remarks(result, form.remarks.data)
         result.add_page_break()
 
-        add_answers(result, session)
+        add_answers(result, worksession)
         result.add_page_break()
 
         add_suggestions_table(result, advisor.get_sorted_instruments())
@@ -62,18 +62,18 @@ def session(session_id):
 
         result.add_heading("Selectie catalogus", level=1)
         for instrument, score in advisor.get_sorted_instruments():
-            if form.export_all_instruments.data or (score > advisor.get_highest_score() - session.mark_top_instruments):
+            if form.export_all_instruments.data or (score > advisor.get_highest_score() - worksession.mark_top_instruments):
                 add_instrument(result, instrument)
                 if form.export_calculations.data:
                     add_calculation(result, advisor.explain_score(instrument))
 
         result.save(output_file)
-        return send_file(output_file, as_attachment=True, download_name=f'{session.name}.docx')
+        return send_file(output_file, as_attachment=True, download_name=f'{worksession.name}.docx')
 
     elif request.method == 'GET':
-        form.export_tags.data = session.show_tags
-        form.export_all_instruments.data = session.show_rest_instruments
-    return render_template('export/session.html', session=session, form=form)
+        form.export_tags.data = worksession.show_tags
+        form.export_all_instruments.data = worksession.show_rest_instruments
+    return render_template('export/worksession.html', worksession=worksession, form=form)
 
 
 @export.route('/instrument/<int:instrument_id>')

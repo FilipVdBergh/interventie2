@@ -22,7 +22,7 @@
         {% for role in roles %}
             <tr>
                 <td>{{ role.name }} (id:{{ role.id }})</td>
-                <td>{% if role.see_all_sessions %}&#9989;{% else %}&#10060;{% endif %}</td>
+                <td>{% if role.see_all_worksessions %}&#9989;{% else %}&#10060;{% endif %}</td>
                 <td>{% if role.edit_catalog %}&#9989;{% else %}&#10060;{% endif %}</td>
                 <td>{% if role.edit_questionnaire %}&#9989;{% else %}&#10060;{% endif %}</td>
                 <td>{% if role.edit_users %}&#9989;{% else %}&#10060;{% endif %}</td>
