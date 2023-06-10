@@ -54,8 +54,8 @@ def edit_question_set(question_set_id=None):
         question_set.default_tags_visible = form.default_tags_visible.data
         question_set.default_allow_weights = form.default_allow_weights.data
         if question_set_id is None: # Nieuwe tool
-            db.worksession.add(question_set)
-        db.worksession.commit()
+            db.session.add(question_set)
+        db.session.commit()
         return redirect(url_for('tools.design_question_set', question_set_id=question_set.id))
     elif request.method == 'GET' and question_set_id is not None:
         form.name.data = question_set.name
@@ -117,14 +117,14 @@ def import_question_set():
                     tag = Tag.query.filter_by(name=forbidden_tag['name']).first()
                     if tag is None: #Tag needs to be created first
                         tag = Tag(name = forbidden_tag['name'])
-                        db.worksession.add(tag)
+                        db.session.add(tag)
                         newly_created_tags.append(tag.name)
                     question_set.forbidden_tags.append( tag )
                 for mandatory_tag in question_set_json['mandatory_tags']:
                     tag = Tag.query.filter_by(name=mandatory_tag['name']).first()
                     if tag is None: #Tag needs to be created first
                         tag = Tag(name = mandatory_tag['name'])
-                        db.worksession.add(tag)
+                        db.session.add(tag)
                         newly_created_tags.append(tag.name)
                     question_set.mandatory_tags.append(tag)
 
@@ -144,14 +144,14 @@ def import_question_set():
                         tag = Tag.query.filter_by(name=tag_json).first()
                         if tag is None: #Tag needs to be created first
                             tag = Tag(name = tag_json)
-                            db.worksession.add(tag)
+                            db.session.add(tag)
                             newly_created_tags.append(tag.name)
                         option.tags.append(tag)
                     question.options.append(option)
                 question_set.questions.append(question)
 
-            db.worksession.add(question_set)
-            db.worksession.commit()
+            db.session.add(question_set)
+            db.session.commit()
             return redirect(url_for('tools.design_question_set', question_set_id=question_set.id))
     return render_template('tools/import_question_set.html')
 
@@ -174,24 +174,24 @@ def design_question_set(question_set_id):
     if form.validate_on_submit():
         # Add question
         question = Question(name = form.name.data, question_set=question_set, allow_weight=question_set.default_allow_weights)
-        db.worksession.add(question)
+        db.session.add(question)
         for new_order, current_question in enumerate(Question.query.order_by(Question.question_set_id).order_by(Question.order)):
             current_question.order = new_order * 2 
-        db.worksession.commit()
+        db.session.commit()
         return redirect(url_for('tools.design_question_set', question_set_id=question_set_id))
     # if add_mandatory_tag_form.validate_on_submit():
     if "mandatory" in request.form:  
         # Add mandatory tag
         tag = Tag.query.get(add_mandatory_tag_form.tag.data)
         question_set.mandatory_tags.append(tag)
-        db.worksession.commit()
+        db.session.commit()
         return redirect(url_for('tools.design_question_set', question_set_id=question_set_id))
     # if add_forbidden_tag_form.validate_on_submit():
     if "forbidden" in request.form:
         # Add forbidden tag
         tag = Tag.query.get(add_forbidden_tag_form.tag.data)
         question_set.forbidden_tags.append(tag)
-        db.worksession.commit()
+        db.session.commit()
         return redirect(url_for('tools.design_question_set', question_set_id=question_set_id))       
     return render_template('tools/design_question_set.html', question_set=question_set, form=form,add_mandatory_tag_form=add_mandatory_tag_form, add_forbidden_tag_form=add_forbidden_tag_form)
 
@@ -200,8 +200,8 @@ def design_question_set(question_set_id):
 @login_required
 def delete_question_set(question_set_id):
     question_set = QuestionSet.query.get(question_set_id)
-    db.worksession.delete(question_set)
-    db.worksession.commit()
+    db.session.delete(question_set)
+    db.session.commit()
     return redirect(url_for('tools.index'))
 
 
@@ -218,7 +218,7 @@ def remove_tag_from_question_set(question_set_id, taglist, tag_id):
     if taglist == 'forbidden':
 
         question_set.forbidden_tags.remove(tag)
-    db.worksession.commit()
+    db.session.commit()
     return redirect(url_for('tools.design_question_set', question_set_id=question_set_id))    
 
 
@@ -237,7 +237,7 @@ def edit_question(question_id):
         question.allow_choice = form.allow_choice.data
         question.allow_multiselect = form.allow_multiselect.data
         question.allow_weight = form.allow_weight.data
-        db.worksession.commit()
+        db.session.commit()
         return redirect(url_for('tools.design_question_set', question_set_id=question.question_set.id))
     elif request.method == 'GET':
         form.name.data = question.name
@@ -271,7 +271,7 @@ def question_move(question_set_id, question_id, dir):
                 current_question.order = ( new_order * 2 ) - 3 # Move it before the previous question
             if dir == 0: # Move the question up in the order
                 current_question.order = ( new_order * 2 ) + 3
-    db.worksession.commit()
+    db.session.commit()
     return redirect(url_for('tools.design_question_set', question_set_id=question.question_set.id))
 
 
@@ -288,8 +288,8 @@ def edit_question_options(question_id):
         for new_order, current_option in enumerate(Option.query.order_by(Option.question_id).order_by(Option.order)):
         # See the move question function for an explanation on this procedure.
             current_option.order = new_order * 2 
-        db.worksession.add(option)
-        db.worksession.commit()
+        db.session.add(option)
+        db.session.commit()
         return redirect(url_for('tools.edit_question_options', question_id=question_id))
     elif request.method == 'GET':
         pass
@@ -303,8 +303,8 @@ def delete_question(question_id):
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een tool te ontwerpen.')
     question = Question.query.get(question_id)
     question_set = QuestionSet.query.get(question.question_set.id)
-    db.worksession.delete(question)
-    db.worksession.commit()
+    db.session.delete(question)
+    db.session.commit()
     return redirect(url_for('tools.design_question_set', question_set_id=question_set.id))
 
 @tools.route('/edit_option/<int:option_id>', methods=['GET', 'POST'])
@@ -318,7 +318,7 @@ def edit_option(option_id):
 
     if form.validate_on_submit():
         option.name = form.name.data
-        db.worksession.commit()
+        db.session.commit()
         return redirect(url_for('tools.edit_question_options', question_id=option.question_id))
     elif request.method == 'GET':
         form.name.data = option.name
@@ -341,7 +341,7 @@ def option_move(option_id, dir):
                 current_option.order = ( new_order * 2 ) - 3 # Move it before the previous question
             if dir == 0: # Move the question up in the order
                 current_option.order = ( new_order * 2 ) + 3
-    db.worksession.commit()
+    db.session.commit()
     return redirect(url_for('tools.edit_question_options', question_id=option.question.id))
 
 
@@ -349,8 +349,8 @@ def option_move(option_id, dir):
 @login_required
 def delete_option(option_id):
     option = Option.query.get(option_id)
-    db.worksession.delete(option)
-    db.worksession.commit()
+    db.session.delete(option)
+    db.session.commit()
     return redirect(url_for('tools.edit_question_options', question_id=option.question_id))
 
 @tools.route('/edit_option/<int:option_id>/edit_tags', methods=['GET', 'POST'])
@@ -369,5 +369,5 @@ def toggle_tag(option_id, tag_id):
         option.tags.remove(tag)
     else:
         option.tags.append(tag)
-    db.worksession.commit()
+    db.session.commit()
     return redirect(url_for('tools.edit_tag_assignment', option_id=option.id))

@@ -45,8 +45,8 @@ def login():
 @login_required
 def logout():
 	current_user.last_seen = func.now()
-	db.worksession.add(current_user) 
-	db.worksession.commit()
+	db.session.add(current_user) 
+	db.session.commit()
 	logout_user()
 	return redirect(url_for('main.index'))
 
@@ -99,8 +99,8 @@ def new_worksession():
 		worksession.presenter_mode_background_color2 = '#F7F7F7'
 		worksession.allowed_users.append(current_user)
 		worksession.archived = False
-		db.worksession.add(worksession)
-		db.worksession.commit()
+		db.session.add(worksession)
+		db.session.commit()
 		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 	elif request.method == 'GET':
 		pass
@@ -143,8 +143,8 @@ def clone_worksession(worksession_id):
 		worksession.parent = Worksession.query.get(worksession_id)
 		worksession.child_description = request.form.getlist('child_description')
 		
-		db.worksession.add(worksession)
-		db.worksession.commit()
+		db.session.add(worksession)
+		db.session.commit()
 		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 	elif request.method == "GET":
 		pass
@@ -194,8 +194,8 @@ def edit_worksession(worksession_id):
 		worksession.presenter_mode_background_color1 = form.presenter_mode_background_color1.data
 		worksession.presenter_mode_background_color2 = form.presenter_mode_background_color2.data
 		worksession.archived = form.archived.data
-		db.worksession.add(worksession)
-		db.worksession.commit()
+		db.session.add(worksession)
+		db.session.commit()
 		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 	elif request.method == 'GET':
 		form.name.data = worksession.name
@@ -233,8 +233,8 @@ def delete_worksession(worksession_id):
 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-	db.worksession.delete(worksession)
-	db.worksession.commit()
+	db.session.delete(worksession)
+	db.session.commit()
 	return redirect(url_for('main.index'))
 
 @main.route('/worksession/<int:worksession_id>/simultaneous', methods=['GET', 'POST'])
@@ -250,8 +250,8 @@ def process_simultaneous(worksession_id):
 		for answer in Answer.query.filter_by(worksession=worksession):
 			# Delete all answers to replace them below.
 			for selection in answer.selection:
-				db.worksession.delete(selection)
-			db.worksession.delete(answer)
+				db.session.delete(selection)
+			db.session.delete(answer)
 
 		motivations = {}
 		selected_options = []
@@ -275,8 +275,8 @@ def process_simultaneous(worksession_id):
 					if option.id in selected_options: 
 						# De vraag zit in de huidige question set en moet aangevinkt worden.
 						new_answer.selection.append(Selection(option=option))
-				db.worksession.add(new_answer)
-		db.worksession.commit()
+				db.session.add(new_answer)
+		db.session.commit()
 		return redirect(url_for('main.process_simultaneous', worksession_id=worksession.id))
 	elif request.method == "GET":
 		pass
@@ -304,16 +304,16 @@ def process_single(worksession_id, question_id=None):
 			if answer is not None:
 				# Delete all answers to replace them below.
 				for selection in answer.selection:
-					db.worksession.delete(selection)
-				db.worksession.delete(answer)
+					db.session.delete(selection)
+				db.session.delete(answer)
 
 			new_answer = Answer(worksession=worksession, question=question, motivation=request.form.get('motivation'), weight=request.form.get('weight'))
 			for option in question.options:
 				if str(option.id) in request.form.getlist('option'):
 					# De vraag zit in de huidige question set en moet aangevinkt worden.
 					new_answer.selection.append(Selection(option=option))
-			db.worksession.add(new_answer)
-			db.worksession.commit()
+			db.session.add(new_answer)
+			db.session.commit()
 		# Return the next question in the set.
 		next_question = Question.query.filter_by(question_set=worksession.question_set).filter(Question.order > Question.query.get(question.id).order).order_by(Question.order).first()
 		if next_question is None:
@@ -337,7 +337,7 @@ def case(worksession_id):
 	if form.validate_on_submit():
 		worksession.description = form.description.data
 		worksession.effect = form.effect.data
-		db.worksession.commit()
+		db.session.commit()
 		
 		# Redirect tot the first question in the set
 		if worksession.process_id == 1:
@@ -363,7 +363,7 @@ def conclusion(worksession_id):
 
 	if form.validate_on_submit():
 		worksession.conclusion = form.conclusion.data
-		db.worksession.commit()
+		db.session.commit()
 		return redirect(url_for('export.worksession', worksession_id=worksession.id))
 	elif request.method == "GET":
 		form.conclusion.data = worksession.conclusion
@@ -406,7 +406,7 @@ def zoom(worksession_id, change):
 		worksession.presenter_mode_zoom -= Decimal(0.05)
 	elif change == 3:
 		worksession.presenter_mode_zoom += Decimal(0.05)
-	db.worksession.commit()
+	db.session.commit()
 	return 'Zoom changed'
 
 
@@ -429,7 +429,7 @@ def share_worksession(worksession_id):
 	if form.validate_on_submit():
 		for user_id in form.user.data:
 			worksession.allowed_users.append(User.query.get(user_id))
-		db.worksession.commit()
+		db.session.commit()
 	elif request.method == "GET":
 		pass
 	return render_template('main/share_worksession.html', worksession=worksession, form=form, invitation_string=invitation_string)
@@ -444,7 +444,7 @@ def reset_secret_key(worksession_id):
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
 	worksession.secret_key = generate_secret_key()
-	db.worksession.commit()
+	db.session.commit()
 	return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 
 
@@ -461,7 +461,7 @@ def share_link(worksession_id, invitation_string):
 		to_be_hashed = f'{date_to_check}{worksession.secret_key}'
 		if hashlib.sha1(to_be_hashed.encode('utf-8')).hexdigest() == invitation_string:
 			worksession.allowed_users.append(current_user)
-			db.worksession.commit()
+			db.session.commit()
 			return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 	return 'Uitnodiging ongeldig.'
 
@@ -475,7 +475,7 @@ def stop_share(worksession_id, user_id):
 
 	user = User.query.get(user_id)
 	worksession.allowed_users.remove(user)
-	db.worksession.commit()
+	db.session.commit()
 	return redirect(url_for('main.share_worksession', worksession_id=worksession.id))
 
 
