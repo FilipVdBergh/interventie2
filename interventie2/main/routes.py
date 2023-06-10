@@ -2,8 +2,8 @@ from datetime import date, timedelta
 from flask import Blueprint, render_template, redirect, url_for, send_file, request
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, current_user, login_required
-from interventie2.forms import LoginForm, NewSessionForm, EditSessionForm, EditCaseForm, EditConclusionForm, MarkdownPlaygroundForm, EditSessionAccessForm
-from interventie2.models import User, Session, QuestionSet, Instrument, Option, Answer, Selection, Question, Process
+from interventie2.forms import LoginForm, NewWorksessionForm, EditWorksessionForm, EditCaseForm, EditConclusionForm, MarkdownPlaygroundForm, EditWorksessionAccessForm
+from interventie2.models import User, Worksession, QuestionSet, Instrument, Option, Answer, Selection, Question, Process
 from interventie2.models import db, generate_secret_key
 from interventie2.classes import Advisor
 from sqlalchemy.sql import func
@@ -22,8 +22,8 @@ main = Blueprint('main', __name__,
 @main.route('/')
 @login_required
 def index():
-	sessions = Session.query.order_by(Session.name)
-	return render_template('main/index.html', sessions=sessions)
+	worksessions = Worksession.query.order_by(Worksession.name)
+	return render_template('main/index.html', worksessions=worksessions)
 
 
 @main.route('/login', methods=['GET', 'POST'])
@@ -45,8 +45,8 @@ def login():
 @login_required
 def logout():
 	current_user.last_seen = func.now()
-	db.session.add(current_user) 
-	db.session.commit()
+	db.worksession.add(current_user) 
+	db.worksession.commit()
 	logout_user()
 	return redirect(url_for('main.index'))
 
@@ -67,191 +67,191 @@ def markdown_help():
 	return render_template('main/markdown_help.html', form=form, playground_text=playground_text)
 
 
-@main.route('/new_session', methods=['GET', 'POST'])
+@main.route('/new_worksession', methods=['GET', 'POST'])
 @login_required
-def new_session():
-	form = NewSessionForm()
+def new_worksession():
+	form = NewWorksessionForm()
 	form.question_set.choices = [(question_set.id, question_set.name) for question_set in QuestionSet.query.order_by(QuestionSet.name)]
 
 	if form.validate_on_submit():
-		session = Session()
-		session.name = form.name.data
-		session.link_to_page = form.link_to_page.data
-		session.date = form.date.data
-		session.participants = form.participants.data
-		session.question_set_id = form.question_set.data
-		session.creator = current_user
-		session.show_instruments = QuestionSet.query.get(session.question_set_id).default_instruments_visible
-		session.show_tags =  QuestionSet.query.get(session.question_set_id).default_instruments_visible
-		session.process_id = QuestionSet.query.get(session.question_set_id).default_process_id
-		session.presenter_mode_zoom = 1.25
-		session.presenter_mode_color_title = '#FFFFFF'
-		session.presenter_mode_text_color_title ='#000061'
-		session.presenter_mode_color_nav = '#091e31'
-		session.presenter_mode_text_color_nav ='#d7d7d7'
-		session.presenter_mode_text_color_heading = '#000061'
-		session.presenter_mode_text_color = '#000000'
-		session.presenter_mode_color_coll = '#EEEEEE'
-		session.presenter_mode_text_color_coll ='#000000'
-		session.presenter_mode_color_highlight = '#65C7FF'
-		session.presenter_mode_text_color_highlight ='#000000'
-		session.presenter_mode_background_color1 = '#FFFFFF'
-		session.presenter_mode_background_color2 = '#F7F7F7'
-		session.allowed_users.append(current_user)
-		session.archived = False
-		db.session.add(session)
-		db.session.commit()
-		return redirect(url_for('main.show_session', session_id=session.id))
+		worksession = Worksession()
+		worksession.name = form.name.data
+		worksession.link_to_page = form.link_to_page.data
+		worksession.date = form.date.data
+		worksession.participants = form.participants.data
+		worksession.question_set_id = form.question_set.data
+		worksession.creator = current_user
+		worksession.show_instruments = QuestionSet.query.get(worksession.question_set_id).default_instruments_visible
+		worksession.show_tags =  QuestionSet.query.get(worksession.question_set_id).default_instruments_visible
+		worksession.process_id = QuestionSet.query.get(worksession.question_set_id).default_process_id
+		worksession.presenter_mode_zoom = 1.25
+		worksession.presenter_mode_color_title = '#FFFFFF'
+		worksession.presenter_mode_text_color_title ='#000061'
+		worksession.presenter_mode_color_nav = '#091e31'
+		worksession.presenter_mode_text_color_nav ='#d7d7d7'
+		worksession.presenter_mode_text_color_heading = '#000061'
+		worksession.presenter_mode_text_color = '#000000'
+		worksession.presenter_mode_color_coll = '#EEEEEE'
+		worksession.presenter_mode_text_color_coll ='#000000'
+		worksession.presenter_mode_color_highlight = '#65C7FF'
+		worksession.presenter_mode_text_color_highlight ='#000000'
+		worksession.presenter_mode_background_color1 = '#FFFFFF'
+		worksession.presenter_mode_background_color2 = '#F7F7F7'
+		worksession.allowed_users.append(current_user)
+		worksession.archived = False
+		db.worksession.add(worksession)
+		db.worksession.commit()
+		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 	elif request.method == 'GET':
 		pass
-	return render_template('main/new_session.html', form=form)
+	return render_template('main/new_worksession.html', form=form)
 
 
-@main.route('/clone_session/<int:session_id>', methods=['GET', 'POST'])
+@main.route('/clone_worksession/<int:worksession_id>', methods=['GET', 'POST'])
 @login_required
-def clone_session(session_id):
-	parent_session = Session.query.get(session_id)
+def clone_worksession(worksession_id):
+	parent_worksession = Worksession.query.get(worksession_id)
 
 	if request.method == "POST":
-		session = Session()
-		session.name = parent_session.name
-		session.participants = parent_session.participants
-		session.date = parent_session.date
-		session.description = parent_session.description
-		session.effect = parent_session.effect
-		session.conclusion == parent_session.conclusion
-		session.question_set_id = parent_session.question_set_id
-		session.creator = current_user
-		session.show_instruments = parent_session.show_instruments
-		session.show_tags =parent_session.show_tags
-		session.process_id = parent_session.process_id
-		session.presenter_mode_zoom = parent_session.presenter_mode_zoom
-		session.presenter_mode_color_title = parent_session.presenter_mode_color_title
-		session.presenter_mode_text_color_title = parent_session.presenter_mode_text_color_title
-		session.presenter_mode_color_nav = parent_session.presenter_mode_color_nav
-		session.presenter_mode_text_color_nav = parent_session.presenter_mode_text_color_nav
-		session.presenter_mode_text_color_heading = parent_session.presenter_mode_text_color_heading 
-		session.presenter_mode_text_color = parent_session.presenter_mode_text_color
-		session.presenter_mode_color_coll = parent_session.presenter_mode_color_coll
-		session.presenter_mode_text_color_coll = parent_session.presenter_mode_text_color_coll
-		session.presenter_mode_color_highlight = parent_session.presenter_mode_color_highlight
-		session.presenter_mode_text_color_highlight =parent_session.presenter_mode_text_color_highlight
-		session.presenter_mode_background_color1 = parent_session.presenter_mode_background_color1
-		session.presenter_mode_background_color2 = parent_session.presenter_mode_background_color2
-		session.allowed_users.append(parent_session.creator)
-		session.archived = False
-		session.parent = Session.query.get(session_id)
-		session.child_description = request.form.getlist('child_description')
+		worksession = Worksession()
+		worksession.name = parent_worksession.name
+		worksession.participants = parent_worksession.participants
+		worksession.date = parent_worksession.date
+		worksession.description = parent_worksession.description
+		worksession.effect = parent_worksession.effect
+		worksession.conclusion == parent_worksession.conclusion
+		worksession.question_set_id = parent_worksession.question_set_id
+		worksession.creator = current_user
+		worksession.show_instruments = parent_worksession.show_instruments
+		worksession.show_tags =parent_worksession.show_tags
+		worksession.process_id = parent_worksession.process_id
+		worksession.presenter_mode_zoom = parent_worksession.presenter_mode_zoom
+		worksession.presenter_mode_color_title = parent_worksession.presenter_mode_color_title
+		worksession.presenter_mode_text_color_title = parent_worksession.presenter_mode_text_color_title
+		worksession.presenter_mode_color_nav = parent_worksession.presenter_mode_color_nav
+		worksession.presenter_mode_text_color_nav = parent_worksession.presenter_mode_text_color_nav
+		worksession.presenter_mode_text_color_heading = parent_worksession.presenter_mode_text_color_heading 
+		worksession.presenter_mode_text_color = parent_worksession.presenter_mode_text_color
+		worksession.presenter_mode_color_coll = parent_worksession.presenter_mode_color_coll
+		worksession.presenter_mode_text_color_coll = parent_worksession.presenter_mode_text_color_coll
+		worksession.presenter_mode_color_highlight = parent_worksession.presenter_mode_color_highlight
+		worksession.presenter_mode_text_color_highlight =parent_worksession.presenter_mode_text_color_highlight
+		worksession.presenter_mode_background_color1 = parent_worksession.presenter_mode_background_color1
+		worksession.presenter_mode_background_color2 = parent_worksession.presenter_mode_background_color2
+		worksession.allowed_users.append(parent_worksession.creator)
+		worksession.archived = False
+		worksession.parent = Worksession.query.get(worksession_id)
+		worksession.child_description = request.form.getlist('child_description')
 		
-		db.session.add(session)
-		db.session.commit()
-		return redirect(url_for('main.show_session', session_id=session.id))
+		db.worksession.add(worksession)
+		db.worksession.commit()
+		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 	elif request.method == "GET":
 		pass
-	return render_template('main/clone_session.html', session=parent_session)
+	return render_template('main/clone_worksession.html', worksession=parent_worksession)
 
 
-@main.route('/session/<int:session_id>')
+@main.route('/worksession/<int:worksession_id>')
 @login_required
-def show_session(session_id):
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users:
+def show_worksession(worksession_id):
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
-	return render_template('main/session.html', session=Session.query.get(session_id), sessions=Session.query.order_by(Session.name))
+	return render_template('main/worksession.html', worksession=Worksession.query.get(worksession_id), worksessions=Worksession.query.order_by(Worksession.name))
 
 
-@main.route('/session/<int:session_id>/edit', methods=['GET', 'POST'])
+@main.route('/worksession/<int:worksession_id>/edit', methods=['GET', 'POST'])
 @login_required
-def edit_session(session_id):
-	session = Session.query.get(session_id)
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users:
+def edit_worksession(worksession_id):
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-	form = EditSessionForm()
+	form = EditWorksessionForm()
 	form.choice_process.choices = [(process.id, process.name) for process in Process.query.order_by(Process.id)]
 
 	if form.validate_on_submit():
-		session.name = form.name.data
-		session.link_to_page = form.link_to_page.data
-		session.participants = form.participants.data
-		session.date = form.date.data
-		session.process_id = form.choice_process.data
-		session.description = form.description.data
-		session.show_instruments = form.show_instruments.data
-		session.mark_top_instruments = form.mark_top_instruments.data
-		session.show_rest_instruments = form.show_rest_instruments.data
-		session.show_tags = form.show_tags.data
-		session.presenter_mode_zoom = form.presenter_mode_zoom.data
-		session.presenter_mode_color_title = form.presenter_mode_color_title.data
-		session.presenter_mode_text_color_title = form.presenter_mode_text_color_title.data
-		session.presenter_mode_color_nav = form.presenter_mode_color_nav.data
-		session.presenter_mode_text_color_nav = form.presenter_mode_text_color_nav.data
-		session.presenter_mode_color_coll = form.presenter_mode_color_coll.data
-		session.presenter_mode_text_color_coll = form.presenter_mode_text_color_coll.data
-		session.presenter_mode_color_highlight = form.presenter_mode_color_highlight.data
-		session.presenter_mode_text_color_highlight = form.presenter_mode_text_color_highlight.data
-		session.presenter_mode_text_color_heading = form.presenter_mode_text_color_heading.data
-		session.presenter_mode_text_color = form.presenter_mode_text_color.data
-		session.presenter_mode_background_color1 = form.presenter_mode_background_color1.data
-		session.presenter_mode_background_color2 = form.presenter_mode_background_color2.data
-		session.archived = form.archived.data
-		db.session.add(session)
-		db.session.commit()
-		return redirect(url_for('main.show_session', session_id=session.id))
+		worksession.name = form.name.data
+		worksession.link_to_page = form.link_to_page.data
+		worksession.participants = form.participants.data
+		worksession.date = form.date.data
+		worksession.process_id = form.choice_process.data
+		worksession.description = form.description.data
+		worksession.show_instruments = form.show_instruments.data
+		worksession.mark_top_instruments = form.mark_top_instruments.data
+		worksession.show_rest_instruments = form.show_rest_instruments.data
+		worksession.show_tags = form.show_tags.data
+		worksession.presenter_mode_zoom = form.presenter_mode_zoom.data
+		worksession.presenter_mode_color_title = form.presenter_mode_color_title.data
+		worksession.presenter_mode_text_color_title = form.presenter_mode_text_color_title.data
+		worksession.presenter_mode_color_nav = form.presenter_mode_color_nav.data
+		worksession.presenter_mode_text_color_nav = form.presenter_mode_text_color_nav.data
+		worksession.presenter_mode_color_coll = form.presenter_mode_color_coll.data
+		worksession.presenter_mode_text_color_coll = form.presenter_mode_text_color_coll.data
+		worksession.presenter_mode_color_highlight = form.presenter_mode_color_highlight.data
+		worksession.presenter_mode_text_color_highlight = form.presenter_mode_text_color_highlight.data
+		worksession.presenter_mode_text_color_heading = form.presenter_mode_text_color_heading.data
+		worksession.presenter_mode_text_color = form.presenter_mode_text_color.data
+		worksession.presenter_mode_background_color1 = form.presenter_mode_background_color1.data
+		worksession.presenter_mode_background_color2 = form.presenter_mode_background_color2.data
+		worksession.archived = form.archived.data
+		db.worksession.add(worksession)
+		db.worksession.commit()
+		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 	elif request.method == 'GET':
-		form.name.data = session.name
-		form.link_to_page.data = session.link_to_page
-		form.participants.data = session.participants
-		form.date.data = session.date
-		form.choice_process.data = session.process_id
-		form.description.data = session.description
-		form.show_instruments.data = session.show_instruments
-		form.mark_top_instruments.data = session.mark_top_instruments 
-		form.show_rest_instruments.data = session.show_rest_instruments
-		form.show_tags.data = session.show_tags 
-		form.presenter_mode_zoom.data = session.presenter_mode_zoom 
-		form.presenter_mode_color_title.data = session.presenter_mode_color_title
-		form.presenter_mode_text_color_title.data = session.presenter_mode_text_color_title
-		form.presenter_mode_color_nav.data = session.presenter_mode_color_nav
-		form.presenter_mode_text_color_nav.data = session.presenter_mode_text_color_nav
-		form.presenter_mode_color_coll.data = session.presenter_mode_color_coll
-		form.presenter_mode_text_color_coll.data = session.presenter_mode_text_color_coll
-		form.presenter_mode_color_highlight.data = session.presenter_mode_color_highlight
-		form.presenter_mode_text_color_highlight.data = session.presenter_mode_text_color_highlight
-		form.presenter_mode_text_color_heading.data = session.presenter_mode_text_color_heading
-		form.presenter_mode_text_color.data = session.presenter_mode_text_color
-		form.presenter_mode_background_color1.data = session.presenter_mode_background_color1 
-		form.presenter_mode_background_color2.data = session.presenter_mode_background_color2 
-		form.archived.data = session.archived
+		form.name.data = worksession.name
+		form.link_to_page.data = worksession.link_to_page
+		form.participants.data = worksession.participants
+		form.date.data = worksession.date
+		form.choice_process.data = worksession.process_id
+		form.description.data = worksession.description
+		form.show_instruments.data = worksession.show_instruments
+		form.mark_top_instruments.data = worksession.mark_top_instruments 
+		form.show_rest_instruments.data = worksession.show_rest_instruments
+		form.show_tags.data = worksession.show_tags 
+		form.presenter_mode_zoom.data = worksession.presenter_mode_zoom 
+		form.presenter_mode_color_title.data = worksession.presenter_mode_color_title
+		form.presenter_mode_text_color_title.data = worksession.presenter_mode_text_color_title
+		form.presenter_mode_color_nav.data = worksession.presenter_mode_color_nav
+		form.presenter_mode_text_color_nav.data = worksession.presenter_mode_text_color_nav
+		form.presenter_mode_color_coll.data = worksession.presenter_mode_color_coll
+		form.presenter_mode_text_color_coll.data = worksession.presenter_mode_text_color_coll
+		form.presenter_mode_color_highlight.data = worksession.presenter_mode_color_highlight
+		form.presenter_mode_text_color_highlight.data = worksession.presenter_mode_text_color_highlight
+		form.presenter_mode_text_color_heading.data = worksession.presenter_mode_text_color_heading
+		form.presenter_mode_text_color.data = worksession.presenter_mode_text_color
+		form.presenter_mode_background_color1.data = worksession.presenter_mode_background_color1 
+		form.presenter_mode_background_color2.data = worksession.presenter_mode_background_color2 
+		form.archived.data = worksession.archived
 		
-	return render_template('main/edit_session.html', session=session, form=form)
+	return render_template('main/edit_worksession.html', worksession=worksession, form=form)
 
 
-@main.route('/session/<int:session_id>/delete')
+@main.route('/worksession/<int:worksession_id>/delete')
 @login_required
-def delete_session(session_id):
-	session = Session.query.get(session_id)
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users: 
+def delete_worksession(worksession_id):
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-	db.session.delete(session)
-	db.session.commit()
+	db.worksession.delete(worksession)
+	db.worksession.commit()
 	return redirect(url_for('main.index'))
 
-@main.route('/session/<int:session_id>/simultaneous', methods=['GET', 'POST'])
+@main.route('/worksession/<int:worksession_id>/simultaneous', methods=['GET', 'POST'])
 @login_required
-def process_simultaneous(session_id):
-	session = Session.query.get(session_id)
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users: 
+def process_simultaneous(worksession_id):
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-	advisor = Advisor(session=session, instruments=Instrument.query.all())
+	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 	
 	if request.method == "POST":
-		for answer in Answer.query.filter_by(session=session):
+		for answer in Answer.query.filter_by(worksession=worksession):
 			# Delete all answers to replace them below.
 			for selection in answer.selection:
-				db.session.delete(selection)
-			db.session.delete(answer)
+				db.worksession.delete(selection)
+			db.worksession.delete(answer)
 
 		motivations = {}
 		selected_options = []
@@ -267,227 +267,227 @@ def process_simultaneous(session_id):
 				_, question_id = item.split(':', 1)
 				weights[int(question_id)] = value
 
-		for question in session.question_set.questions:
+		for question in worksession.question_set.questions:
 		# Alleen de vragen in de huidige question set
 			if not question.is_category:
-				new_answer = Answer(session=session, question=question, motivation=motivations.get(question.id), weight=weights.get(question.id))
+				new_answer = Answer(worksession=worksession, question=question, motivation=motivations.get(question.id), weight=weights.get(question.id))
 				for option in question.options:
 					if option.id in selected_options: 
 						# De vraag zit in de huidige question set en moet aangevinkt worden.
 						new_answer.selection.append(Selection(option=option))
-				db.session.add(new_answer)
-		db.session.commit()
-		return redirect(url_for('main.process_simultaneous', session_id=session.id))
+				db.worksession.add(new_answer)
+		db.worksession.commit()
+		return redirect(url_for('main.process_simultaneous', worksession_id=worksession.id))
 	elif request.method == "GET":
 		pass
-	return render_template('main/simultaneous.html', session=session, advisor=advisor)
+	return render_template('main/simultaneous.html', worksession=worksession, advisor=advisor)
 
-@main.route('/session/<int:session_id>/single', methods=['GET', 'POST'])
-@main.route('/session/<int:session_id>/single/<int:question_id>', methods=['GET', 'POST'])
+@main.route('/worksession/<int:worksession_id>/single', methods=['GET', 'POST'])
+@main.route('/worksession/<int:worksession_id>/single/<int:question_id>', methods=['GET', 'POST'])
 @login_required
-def process_single(session_id, question_id=None):
-	session = Session.query.get(session_id)
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users:
+def process_single(worksession_id, question_id=None):
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-	advisor = Advisor(session=session, instruments=Instrument.query.all())
+	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 	if question_id is None:
 		# Without a question number, find the first question in order.
-		question = Question.query.filter_by(question_set=session.question_set).order_by(Question.order).first()
+		question = Question.query.filter_by(question_set=worksession.question_set).order_by(Question.order).first()
 	else:	
 		question = Question.query.get(question_id)
 
-	answer = Answer.query.filter_by(session=session, question=question).first()
+	answer = Answer.query.filter_by(worksession=worksession, question=question).first()
 	
 	if request.method == "POST":
 		if not question.is_category:
 			if answer is not None:
 				# Delete all answers to replace them below.
 				for selection in answer.selection:
-					db.session.delete(selection)
-				db.session.delete(answer)
+					db.worksession.delete(selection)
+				db.worksession.delete(answer)
 
-			new_answer = Answer(session=session, question=question, motivation=request.form.get('motivation'), weight=request.form.get('weight'))
+			new_answer = Answer(worksession=worksession, question=question, motivation=request.form.get('motivation'), weight=request.form.get('weight'))
 			for option in question.options:
 				if str(option.id) in request.form.getlist('option'):
 					# De vraag zit in de huidige question set en moet aangevinkt worden.
 					new_answer.selection.append(Selection(option=option))
-			db.session.add(new_answer)
-			db.session.commit()
+			db.worksession.add(new_answer)
+			db.worksession.commit()
 		# Return the next question in the set.
-		next_question = Question.query.filter_by(question_set=session.question_set).filter(Question.order > Question.query.get(question.id).order).order_by(Question.order).first()
+		next_question = Question.query.filter_by(question_set=worksession.question_set).filter(Question.order > Question.query.get(question.id).order).order_by(Question.order).first()
 		if next_question is None:
-			return redirect(url_for('main.conclusion', session_id=session.id))
+			return redirect(url_for('main.conclusion', worksession_id=worksession.id))
 		else:
-			return redirect(url_for('main.process_single', session_id=session.id, question_id=next_question.id))
+			return redirect(url_for('main.process_single', worksession_id=worksession.id, question_id=next_question.id))
 	elif request.method == "GET":
 		pass
-	return render_template('main/single.html', session=session, question=question, answer=answer, advisor=advisor)
+	return render_template('main/single.html', worksession=worksession, question=question, answer=answer, advisor=advisor)
 
 
-@main.route('/session/<int:session_id>/case', methods=['GET', 'POST'])
+@main.route('/worksession/<int:worksession_id>/case', methods=['GET', 'POST'])
 @login_required
-def case(session_id):
-	session = Session.query.get(session_id)
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users:
+def case(worksession_id):
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
 	form = EditCaseForm()
 
 	if form.validate_on_submit():
-		session.description = form.description.data
-		session.effect = form.effect.data
-		db.session.commit()
+		worksession.description = form.description.data
+		worksession.effect = form.effect.data
+		db.worksession.commit()
 		
 		# Redirect tot the first question in the set
-		if session.process_id == 1:
-			return redirect(url_for('main.process_simultaneous', session_id=session.id))
-		elif session.process_id == 2:
-			return redirect(url_for('main.process_single', session_id=session.id))
+		if worksession.process_id == 1:
+			return redirect(url_for('main.process_simultaneous', worksession_id=worksession.id))
+		elif worksession.process_id == 2:
+			return redirect(url_for('main.process_single', worksession_id=worksession.id))
 	elif request.method == "GET":
-		form.description.data = session.description 
-		form.effect.data = session.effect
-	return render_template('/main/case.html', session=session, form=form)
+		form.description.data = worksession.description 
+		form.effect.data = worksession.effect
+	return render_template('/main/case.html', worksession=worksession, form=form)
 
 
-@main.route('/session/<int:session_id>/conclusion', methods=['GET', 'POST'])
+@main.route('/worksession/<int:worksession_id>/conclusion', methods=['GET', 'POST'])
 @login_required
-def conclusion(session_id):
-	session = Session.query.get(session_id)
-	advisor = Advisor(session=session, instruments=Instrument.query.all())
+def conclusion(worksession_id):
+	worksession = Worksession.query.get(worksession_id)
+	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 	
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users:
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
 	form = EditConclusionForm()
 
 	if form.validate_on_submit():
-		session.conclusion = form.conclusion.data
-		db.session.commit()
-		return redirect(url_for('export.session', session_id=session.id))
+		worksession.conclusion = form.conclusion.data
+		db.worksession.commit()
+		return redirect(url_for('export.worksession', worksession_id=worksession.id))
 	elif request.method == "GET":
-		form.conclusion.data = session.conclusion
-	return render_template('/main/conclusion.html', session=session, form=form, advisor=advisor)
+		form.conclusion.data = worksession.conclusion
+	return render_template('/main/conclusion.html', worksession=worksession, form=form, advisor=advisor)
 
 
-@main.route('/session/<int:session_id>/summary', methods=['GET', 'POST'])
+@main.route('/worksession/<int:worksession_id>/summary', methods=['GET', 'POST'])
 @login_required
-def session_summary(session_id):
-	session = Session.query.get(session_id)
-	advisor = Advisor(session=session, instruments=Instrument.query.all())
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users:
+def worksession_summary(worksession_id):
+	worksession = Worksession.query.get(worksession_id)
+	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-	return render_template('/main/summary.html', session=session, advisor=advisor)
+	return render_template('/main/summary.html', worksession=worksession, advisor=advisor)
 
 
-@main.route('/session/<int:session_id>/instrument/<int:instrument_id>')
+@main.route('/worksession/<int:worksession_id>/instrument/<int:instrument_id>')
 @login_required
-def show_instrument(session_id, instrument_id):
-	session = Session.query.get(session_id)
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users: 
+def show_instrument(worksession_id, instrument_id):
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-	advisor = Advisor(session=session, instruments=Instrument.query.all())
+	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 	instrument = Instrument.query.get(instrument_id)
-	return render_template('main/instrument.html', session=session, instrument=instrument, advisor=advisor)
+	return render_template('main/instrument.html', worksession=worksession, instrument=instrument, advisor=advisor)
 
 
-@main.route('/session/<int:session_id>/zoom/<int:change>')
+@main.route('/worksession/<int:worksession_id>/zoom/<int:change>')
 @login_required
-def zoom(session_id, change):
-	session = Session.query.get(session_id)
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users:
+def zoom(worksession_id, change):
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
 	if change == 1:
-		session.presenter_mode_zoom = Decimal(1.00)
+		worksession.presenter_mode_zoom = Decimal(1.00)
 	elif change == 2:
-		session.presenter_mode_zoom -= Decimal(0.05)
+		worksession.presenter_mode_zoom -= Decimal(0.05)
 	elif change == 3:
-		session.presenter_mode_zoom += Decimal(0.05)
-	db.session.commit()
+		worksession.presenter_mode_zoom += Decimal(0.05)
+	db.worksession.commit()
 	return 'Zoom changed'
 
 
-@main.route('/session/<int:session_id>/share', methods=['GET', 'POST'])
+@main.route('/worksession/<int:worksession_id>/share', methods=['GET', 'POST'])
 @login_required
-def share_session(session_id):
-	"""There are two ways of inviting people to a session. The first is by creating an invitation link. Anyone who clicks that link 
-	is granted access to a session. The second way is by directly adding users to a session. This can only be done bu admins, because
+def share_worksession(worksession_id):
+	"""There are two ways of inviting people to a worksession. The first is by creating an invitation link. Anyone who clicks that link 
+	is granted access to a worksession. The second way is by directly adding users to a worksession. This can only be done bu admins, because
 	only admins can see all users."""
-	session = Session.query.get(session_id)
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users: 
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-	to_be_hashed = f'{date.today()}{session.secret_key}'
+	to_be_hashed = f'{date.today()}{worksession.secret_key}'
 	invitation_string = hashlib.sha1(to_be_hashed.encode('utf-8')).hexdigest()
 
-	form = EditSessionAccessForm()
+	form = EditWorksessionAccessForm()
 	form.user.choices = [(user.id, user.name) for user in User.query.order_by(User.name)]
 
 	if form.validate_on_submit():
 		for user_id in form.user.data:
-			session.allowed_users.append(User.query.get(user_id))
-		db.session.commit()
+			worksession.allowed_users.append(User.query.get(user_id))
+		db.worksession.commit()
 	elif request.method == "GET":
 		pass
-	return render_template('main/share_session.html', session=session, form=form, invitation_string=invitation_string)
+	return render_template('main/share_worksession.html', worksession=worksession, form=form, invitation_string=invitation_string)
 
 
-@main.route('/session/<int:session_id>/reset_secret_key')
+@main.route('/worksession/<int:worksession_id>/reset_secret_key')
 @login_required
-def reset_secret_key(session_id):
+def reset_secret_key(worksession_id):
 	"""By resetting teh secret key, all invitations are invalidated."""
-	session = Session.query.get(session_id)
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users: 
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-	session.secret_key = generate_secret_key()
-	db.session.commit()
-	return redirect(url_for('main.show_session', session_id=session.id))
+	worksession.secret_key = generate_secret_key()
+	db.worksession.commit()
+	return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 
 
-@main.route('/session/<int:session_id>/share_link/<string:invitation_string>')
+@main.route('/worksession/<int:worksession_id>/share_link/<string:invitation_string>')
 @login_required
-def share_link(session_id, invitation_string):
-	"""Anyone who clicks the share link with an invitation string is granted access to the session. Invitation strings are hashed
+def share_link(worksession_id, invitation_string):
+	"""Anyone who clicks the share link with an invitation string is granted access to the worksession. Invitation strings are hashed
 	with the current date. This function generates hashes for the past seven days and checks for a match."""
-	session = Session.query.get(session_id)
+	worksession = Worksession.query.get(worksession_id)
 
 	for d in range(7):
 		# Calculate hash for each day in the past week.
 		date_to_check = date.today() - timedelta(days=d)
-		to_be_hashed = f'{date_to_check}{session.secret_key}'
+		to_be_hashed = f'{date_to_check}{worksession.secret_key}'
 		if hashlib.sha1(to_be_hashed.encode('utf-8')).hexdigest() == invitation_string:
-			session.allowed_users.append(current_user)
-			db.session.commit()
-			return redirect(url_for('main.show_session', session_id=session.id))
+			worksession.allowed_users.append(current_user)
+			db.worksession.commit()
+			return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 	return 'Uitnodiging ongeldig.'
 
 
-@main.route('/session/<int:session_id>/stop_share/<int:user_id>')
+@main.route('/worksession/<int:worksession_id>/stop_share/<int:user_id>')
 @login_required
-def stop_share(session_id, user_id):
-	session = Session.query.get(session_id)
-	if not current_user.role.see_all_sessions and current_user not in Session.query.get(session_id).allowed_users: 
+def stop_share(worksession_id, user_id):
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
 	user = User.query.get(user_id)
-	session.allowed_users.remove(user)
-	db.session.commit()
-	return redirect(url_for('main.share_session', session_id=session.id))
+	worksession.allowed_users.remove(user)
+	db.worksession.commit()
+	return redirect(url_for('main.share_worksession', worksession_id=worksession.id))
 
 
-def debug_answers(session_id):
-	session = Session.query.get(session_id)
-	print (f'{session.name}'.upper())
-	for answer in session.answers:
+def debug_answers(worksession_id):
+	worksession = Worksession.query.get(worksession_id)
+	print (f'{worksession.name}'.upper())
+	for answer in worksession.answers:
 		print (f'{answer.question.name}:')
 		for selection in answer.selection:
 			print(f'- Option: {selection.option.name}')
 		print (f'- Motivation: {answer.motivation}')
 	print('All options in question set:')
-	for question in session.question_set.questions:
+	for question in worksession.question_set.questions:
 		for option in question.options:
-			print(f'- {option.name} {session.is_option_selected(option)}')
+			print(f'- {option.name} {worksession.is_option_selected(option)}')

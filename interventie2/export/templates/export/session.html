@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
 {% block currentcase %}
-    {{ session.name }}
+    {{ worksession.name }}
 {% endblock %}
 
 {% block steps %}
     <a href="{{ url_for('main.index') }}" class="step">Werksessies</a>
-    <a href="{{ url_for('main.show_session', session_id=session.id) }}" class="step">{{ session.name }}</a>
+    <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">{{ worksession.name }}</a>
     <span class="step">Exporteren</span>
 {% endblock %}
 
 {% block page_title %}
-{{ session.name }}
+{{ worksession.name }}
 {% endblock %}
 
 {% block body %}

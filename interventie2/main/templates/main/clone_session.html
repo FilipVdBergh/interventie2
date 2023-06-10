@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block currentcase %}
-    {{ session.name }}
+    {{ worksession.name }}
 {% endblock %}
 
 {% block steps %}
@@ -15,19 +15,19 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ session.name }}</h1>
-    <div>{{ session.effect }}</div>
+    <h1>{{ worksession.name }}</h1>
+    <div>{{ worksession.effect }}</div>
     <br>
     <form method="POST">
         Beschrijving van de afgeleide sessie: 
-        <textarea name="child_description" rows="5" cols="100">{{ session.child_description }}</textarea>
+        <textarea name="child_description" rows="5" cols="100">{{ worksession.child_description }}</textarea>
         <br><br>
         <table>
             <tr>
                 <th>Vraag</th>
                 <th>Antwoord overnemen uit oorspronkelijke sessie</th>
             </tr>
-            {% for question in session.question_set.questions | sort(attribute='order') %}
+            {% for question in worksession.question_set.questions | sort(attribute='order') %}
                 <tr>
                     {% if question.is_category %}
                         <td colspan="2"><h2 class="question_category">{{ question.name }}</h2></td>

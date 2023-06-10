@@ -6,7 +6,7 @@ class QuestionWithAnswers:
     together with the answers (the motivation as well as 
     selected options. 
     This object exists because questions exist as parts of 
-    a session, together with answers beloning to that session, 
+    a worksession, together with answers beloning to that worksession, 
     but also as design elements. 
     I think a smarter object model would have solved this
     problem as well. """
@@ -56,8 +56,8 @@ class Advisor:
             self.tag            = tag
             self.weight         = weight
 
-    def __init__(self, session=None, instruments=None):
-        self.session            = session
+    def __init__(self, worksession=None, instruments=None):
+        self.worksession            = worksession
         self.questionnaire      = [] # A list of questions_with_answers
         self.active_tags        = [] # A list of active_tag objects (with weight and multiplier)
         self.forbidden_tags     = []
@@ -65,14 +65,14 @@ class Advisor:
         self.all_instruments    = [] 
         self.scored_instruments = [] # A list of instruments with their score
 
-        self.add_session(session)
+        self.add_worksession(worksession)
         self.add_instrument(instruments)
 
-    def add_session(self, session):
+    def add_worksession(self, worksession):
         
-        self.add_forbidden_tag(session.question_set.forbidden_tags)
-        self.add_mandatory_tag(session.question_set.mandatory_tags)
-        self.add_questionnaire(session)
+        self.add_forbidden_tag(worksession.question_set.forbidden_tags)
+        self.add_mandatory_tag(worksession.question_set.mandatory_tags)
+        self.add_questionnaire(worksession)
 
     def add_instrument(self, instrument):
         if len(instrument) == 1: instrument = [instrument]
@@ -82,9 +82,9 @@ class Advisor:
         if len(question_with_answers) == 1: question_with_answers = [question_with_answers]
         self.questionnaire.extend(question_with_answers)
     
-    def add_questionnaire(self, session):	
-        for question in session.question_set.questions:
-            answer = Answer.query.filter_by(session=session, question=question).first()
+    def add_questionnaire(self, worksession):	
+        for question in worksession.question_set.questions:
+            answer = Answer.query.filter_by(worksession=worksession, question=question).first()
             question_with_answers = QuestionWithAnswers(question, answer)
             self.questionnaire.append(question_with_answers)
 
@@ -117,11 +117,11 @@ class Advisor:
         #             # This option is enabled, we want the associated tags.
         #             for option_tag in option_with_selection.option.tags:
         #                 self.add_to_active_tags(option_tag, question_with_answers.weight)
-        for question in self.session.question_set.questions:
+        for question in self.worksession.question_set.questions:
             for option in question.options:
-                if self.session.is_option_selected(option):
+                if self.worksession.is_option_selected(option):
                     for option_tag in option.tags:
-                        self.add_to_active_tags(option_tag, self.session.get_weight(question))
+                        self.add_to_active_tags(option_tag, self.worksession.get_weight(question))
 
     def is_instrument_in_scope(self, instrument):
         """ Instruments are not in scope if they contain a forbidden tag (for this tool),
@@ -173,7 +173,7 @@ class Advisor:
             if len([tag.tag for tag in instrument.tags if tag.tag == mandatory_tag]) == 0:
                 explanation['mandatory_tags_not_found'] = ( len(self.mandatory_tags) == 0 )
                 multiplier = 0
-        explanation['multiplier_after_session_tags'] = multiplier
+        explanation['multiplier_after_worksession_tags'] = multiplier
         # Then calculate score based on options:
         enriched_tags = []
         for active_tag in self.active_tags:

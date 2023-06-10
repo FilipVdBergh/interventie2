@@ -1,7 +1,7 @@
 {% extends 'presenter_mode.html' %}
 
 {% block currentcase %}
-    {{ session.name }}
+    {{ worksession.name }}
 {% endblock %}
 
 {% block steps %}
@@ -13,12 +13,12 @@
 {% endblock %} 
 
 {% block page_title %}
-    {{ session.name }}
+    {{ worksession.name }}
 {% endblock %}
 
 {% block body %}
-    <div style="padding-bottom: 10px;">{{ session.description | escape | markdown }}</div>
-    <div>{{ session.effect | escape | markdown }}</div>
+    <div style="padding-bottom: 10px;">{{ worksession.description | escape | markdown }}</div>
+    <div>{{ worksession.effect | escape | markdown }}</div>
 
     <form method="POST">
         {% if question.is_category %}
@@ -26,7 +26,7 @@
             <div class="question_description">{{ question.description | escape | markdown }}</div>
             <br><input type="submit" value="Doorgaan">
         {% else %}
-            <h1 class="question_category">{{ session.question_set.questions | selectattr('is_category', 'true') | selectattr('order', 'lt', question.order) | sort(attribute='order', reverse=true) | map(attribute='name') | first  }}</h1>
+            <h1 class="question_category">{{ worksession.question_set.questions | selectattr('is_category', 'true') | selectattr('order', 'lt', question.order) | sort(attribute='order', reverse=true) | map(attribute='name') | first  }}</h1>
             <h2 class="question">{{ question.name }}</h2>
             <div class="question_description">{{ question.description | escape | markdown }}</div>
             {% if question.allow_weight %}
@@ -47,9 +47,9 @@
             {% for option in question.options %}
                 <div class="option">
                     {% if question.allow_multiselect %}
-                        <input type="checkbox" name="option" value="{{ option.id }}" {% if session.is_option_selected(option) %}checked{% endif %}>
+                        <input type="checkbox" name="option" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>
                     {% else %}
-                        <input type="radio" name="option" value="{{ option.id }}" {% if session.is_option_selected(option) %}checked{% endif %}>
+                        <input type="radio" name="option" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>
                     {% endif %}
                     {{ option.name }}
                 </div>
@@ -58,7 +58,7 @@
             {% if not question.allow_multiselect %}<a style="font-size: smaller;" onclick="return uncheck_radio('option:{{ question.id }}' );">&#10060; Keuze wissen</a>{% endif %}
 
             {% if question.allow_motivation %}
-                <br><textarea name="motivation" rows="5" cols="100">{{ session.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
+                <br><textarea name="motivation" rows="5" cols="100">{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
             {% endif %}
             <br><br><input type="submit" value="Opslaan">
         {% endif %}    

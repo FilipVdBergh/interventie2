@@ -20,9 +20,9 @@ def generate_secret_key():
         return ''.join((random.choice('QWERTYUIOPASDFGHJKLZXCVBNM1234567890') for i in range(20)))
 
 
-def clone(obj, session):
-    # remove the object from the session (set its state to detached)
-    session.expunge(obj)
+def clone(obj, worksession):
+    # remove the object from the worksession (set its state to detached)
+    worksession.expunge(obj)
     # make it transient (set its state to transient)
     make_transient(obj)
     # now set all primary keys to None so there are no conflicts later
@@ -35,7 +35,7 @@ class Role(db.Model):
     id             = db.Column(db.Integer, primary_key=True) #1=root 2=admin, 3=maintainer, 4=user, 5=demo
     name           = db.Column(db.String(20), nullable=False, unique=True)
     see_app_info   = db.Column(db.Boolean)
-    see_all_sessions = db.Column(db.Boolean)
+    see_all_worksessions = db.Column(db.Boolean)
     edit_catalog   = db.Column(db.Boolean)
     edit_questionnaire = db.Column(db.Boolean)
     edit_users     = db.Column(db.Boolean)
@@ -59,8 +59,8 @@ class User(db.Model, UserMixin):
     last_seen     = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
     role = relationship('Role')
-    session = relationship('Session', back_populates='creator')
-    allowed_sessions = relationship('Session', secondary='session_access', back_populates='allowed_users')
+    worksession = relationship('Worksession', back_populates='creator')
+    allowed_worksessions = relationship('Worksession', secondary='worksession_access', back_populates='allowed_users')
     owned_instruments = relationship('Instrument', back_populates='owner')
     
     def edit_allowed(self):
@@ -83,12 +83,12 @@ class User(db.Model, UserMixin):
         return f'<User {self.name}>'
 
 
-class Session(db.Model):
-    __tablename__ = 'sessions'
+class Worksession(db.Model):
+    __tablename__ = 'worksessions'
     id            = db.Column(db.Integer, primary_key=True)
     name          = db.Column(db.String(100), nullable=False)
     date_modified = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    parent_id     = db.Column(db.Integer, db.ForeignKey('sessions.id'))
+    parent_id     = db.Column(db.Integer, db.ForeignKey('worksessions.id'))
     child_description = db.Column(db.String(2000), nullable=False, default="")
     participants  = db.Column(db.String(500), nullable=False, default="")
     date          = db.Column(db.String(100))
@@ -119,15 +119,15 @@ class Session(db.Model):
     creator_id    = db.Column(db.Integer, db.ForeignKey('users.id')) #references users.id
     secret_key    = db.Column(db.String(20), nullable=False, default=generate_secret_key())
 
-    parent = relationship('Session', remote_side=[id], backref='children')
-    creator = relationship('User', back_populates='session')
-    allowed_users = relationship('User', secondary='session_access', back_populates='allowed_sessions')
-    answers = relationship('Answer', back_populates='session', cascade='all, delete-orphan')
+    parent = relationship('Worksession', remote_side=[id], backref='children')
+    creator = relationship('User', back_populates='worksession')
+    allowed_users = relationship('User', secondary='worksession_access', back_populates='allowed_worksessions')
+    answers = relationship('Answer', back_populates='worksession', cascade='all, delete-orphan')
     question_set = relationship('QuestionSet')
     process = relationship('Process')    
 
     def is_option_selected(self, option):
-        """Use this functioon to find out if a particular option is checked in this session. 
+        """Use this functioon to find out if a particular option is checked in this worksession. 
         Having this function simplifies the jinja template a lot."""
         for answer in self.answers:
             for selection in answer.selection:
@@ -140,12 +140,12 @@ class Session(db.Model):
                 return answer.weight
 
     def __repr__(self):
-        return f'<Session {self.name}>'
+        return f'<Worksession {self.name}>'
 
 
-SessionAccess = db.Table('session_access',
+WorksessionAccess = db.Table('worksession_access',
                             db.Column('id', db.Integer, primary_key=True),
-                            db.Column('session_id', db.Integer, db.ForeignKey('sessions.id')),
+                            db.Column('worksession_id', db.Integer, db.ForeignKey('worksessions.id')),
                             db.Column('user_id', db.Integer, db.ForeignKey('users.id')))
 
 
@@ -279,7 +279,7 @@ class QuestionSet(db.Model):
     owner = relationship('User')
     default_process = relationship('Process')    
     questions = relationship('Question', cascade='all, delete-orphan')
-    sessions = relationship('Session', back_populates='question_set', cascade='all, delete-orphan')
+    worksessions = relationship('Worksession', back_populates='question_set', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<QuestionSet {self.name}>'
@@ -309,18 +309,18 @@ class Process(db.Model):
 class Answer(db.Model):
     __tablename__ = 'answers'
     id            = db.Column(db.Integer, primary_key=True)
-    session_id    = db.Column(db.Integer, db.ForeignKey('sessions.id'), nullable=False) #references sessions.id
+    worksession_id    = db.Column(db.Integer, db.ForeignKey('worksessions.id'), nullable=False) #references worksessions.id
     question_id   = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False) #references questions.id
     motivation    = db.Column(db.String(2000), nullable=False, default="")
     weight        = db.Column(db.Numeric(2,1), nullable=False, default=1.0)
     inherit_answers = db.Column(db.Boolean, nullable=False, default=False)
 
-    session = relationship('Session')
+    worksession = relationship('Worksession')
     question = relationship('Question')
     selection = relationship('Selection', cascade='all, delete-orphan')
 
     def __repr__(self):
-        return f'<Answer Session {self.session}-Question{self.question}>'
+        return f'<Answer Worksession {self.worksession}-Question{self.question}>'
 
 
 class Selection(db.Model):

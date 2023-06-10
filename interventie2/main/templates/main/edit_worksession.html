@@ -2,12 +2,12 @@
 
 {% block steps %}
     <a href="{{ url_for('main.index') }}" class="step">Werksessies</a>
-    <a href="{{ url_for('main.show_session', session_id=session.id) }}" class="step">{{ session.name }}</a>
+    <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">{{ worksession.name }}</a>
     <span class="step">Aanpassen</span>
 {% endblock %}
 
 {% block page_title %}
-    {{ session.name }}
+    {{ worksession.name }}
 {% endblock %}
 
 {% block body %}
@@ -57,7 +57,7 @@
 
             <tr>
                 <td>Tool</td>
-                <td>{{ session.question_set.name }}</td>
+                <td>{{ worksession.question_set.name }}</td>
             </tr>
             <tr>
                 <td>{{ form.choice_process.label }}</td>
@@ -104,7 +104,7 @@
             <tr>
                 <td>{{ form.submit }}</td>
                 <td style="text-align: right;">
-                    {{ macro.confirm_redirect( "Sessie verwijderen", session.name+" verwijderen?", url_for('main.delete_session', session_id=session.id) ) }}
+                    {{ macro.confirm_redirect( "Sessie verwijderen", worksession.name+" verwijderen?", url_for('main.delete_worksession', worksession_id=worksession.id) ) }}
                 </td>
             </tr>
         </table>

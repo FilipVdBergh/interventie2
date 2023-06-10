@@ -26,13 +26,13 @@ def initialize():
         db.create_all()
 
         print('Populating permissions table...')
-        root = Role(name='root',             see_app_info=True, see_all_sessions=True,  edit_catalog=True,  edit_questionnaire=True,  edit_users=True, demo=False)
-        admin = Role(name='admin',           see_app_info=False, see_all_sessions=True,  edit_catalog=True,  edit_questionnaire=True,  edit_users=True, demo=False)
-        maintainer = Role(name='maintainer', see_app_info=False, see_all_sessions=True,  edit_catalog=True,  edit_questionnaire=True, edit_users=False, demo=False)
-        user = Role(name='user',             see_app_info=False, see_all_sessions=False, edit_catalog=False, edit_questionnaire=False, edit_users=False, demo=False)
-        demo = Role(name='demo',             see_app_info=False, see_all_sessions=False, edit_catalog=False, edit_questionnaire=False, edit_users=False, demo=True)
+        root = Role(name='root',             see_app_info=True, see_all_worksessions=True,  edit_catalog=True,  edit_questionnaire=True,  edit_users=True, demo=False)
+        admin = Role(name='admin',           see_app_info=False, see_all_worksessions=True,  edit_catalog=True,  edit_questionnaire=True,  edit_users=True, demo=False)
+        maintainer = Role(name='maintainer', see_app_info=False, see_all_worksessions=True,  edit_catalog=True,  edit_questionnaire=True, edit_users=False, demo=False)
+        user = Role(name='user',             see_app_info=False, see_all_worksessions=False, edit_catalog=False, edit_questionnaire=False, edit_users=False, demo=False)
+        demo = Role(name='demo',             see_app_info=False, see_all_worksessions=False, edit_catalog=False, edit_questionnaire=False, edit_users=False, demo=True)
         for new_role in [root, admin, maintainer, user, demo]:
-            db.session.add(new_role)
+            db.worksession.add(new_role)
 
         print('Creating root user (root:root). Remember to change the password!')
         root_user = User(name='root', 
@@ -40,15 +40,15 @@ def initialize():
                          role_id=1, 
                          description='Gemaakt bij initialisatie van de database. **Vergeet niet het wachtwoord te veranderen**.',)
         root_user.set_password('root')
-        db.session.add(root_user)
+        db.worksession.add(root_user)
 
         print('Finsihing touches...')
         standard_process = Process(name='Presenteer alle vragen tegelijk')
         wizard_process = Process(name='Presenteer één vraag tegelijk')
         for new_process in [standard_process, wizard_process]:
-            db.session.add(new_process)
+            db.worksession.add(new_process)
 
-        db.session.commit()
+        db.worksession.commit()
         print('Done.')
         print('================================================================')
         return redirect(url_for('main.index'))
@@ -89,8 +89,8 @@ def register():
                     description = form.description.data,
                     link = form.link.data)
         user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
+        db.worksession.add(user)
+        db.worksession.commit()
         return redirect(url_for('admin.index'))
     return render_template('admin/register.html', form=form)
 
@@ -105,7 +105,7 @@ def change_password(user_id):
     form = ChangePasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
-        db.session.commit()
+        db.worksession.commit()
         return redirect(url_for('admin.user', id = user.id))
     return render_template('admin/change_password.html', form=form, user=user)       
 
@@ -126,7 +126,7 @@ def edit_user(user_id):
         user.email = form.email.data
         user.description = form.description.data
         user.link = form.link.data
-        db.session.commit()
+        db.worksession.commit()
         return redirect(url_for('admin.user', id=user.id))
     elif request.method == 'GET':
         form.name.data = user.name
@@ -144,11 +144,11 @@ def delete_user(user_id):
     if not user.edit_allowed(): 
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om gebruiker te verwijderen.')
 
-    db.session.delete(user)
+    db.worksession.delete(user)
     try:
-        db.session.commit()
+        db.worksession.commit()
     except: 
-        db.session.rollback()
+        db.worksession.rollback()
         return render_template('error/index.html', title='Kan gebruiker niet verwijderen', message='Kan de gebruiker niet verwijderen. Zorg ervoor dat alle instrumenten en tools aan een andere gebruiker zijn toegewezen.')        
         
     return redirect(url_for('admin.index'))

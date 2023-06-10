@@ -35,11 +35,11 @@
     </table>
     <h1>Sessies</h1>
     <table>
-        {% for session in sessions %}
+        {% for worksession in worksessions %}
             <tr>
-                <td><a href="{{ url_for('main.show_session', session_id=session.id) }}">{{ session.name }}</a></td>
+                <td><a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}">{{ worksession.name }}</a></td>
                 <td width="15%"></td>
-                <td width="15%"><a href="{{ url_for('export.session', session_id=session.id) }}">Word</a></td>
+                <td width="15%"><a href="{{ url_for('export.worksession', worksession_id=worksession.id) }}">Word</a></td>
             </tr>
         {% endfor %}
     </table>

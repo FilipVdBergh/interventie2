@@ -112,7 +112,7 @@ class AddTagToQuestionSet(FlaskForm):
     #submit             = SubmitField('Toevoegen') # Weggehaald en in HTML opgelost omdat dit formlier twee maal op de pagina staat, en dat gaat mis met validatie.
 
 
-class NewSessionForm(FlaskForm):
+class NewWorksessionForm(FlaskForm):
     name               = StringField('Naam werksessie', validators=[DataRequired(), Length(min=2, max=500)], render_kw={'size': 100})
     participants       = TextAreaField('Deelnemers', validators=[Optional(), Length(max=500)], render_kw={'rows': 5, 'cols': 100})
     date               = StringField('Datum werksessie', validators=[Length(max=100)], render_kw={'size': 100})
@@ -121,7 +121,7 @@ class NewSessionForm(FlaskForm):
     submit             = SubmitField('Werksessie opslaan')
 
 
-class EditSessionForm(FlaskForm):
+class EditWorksessionForm(FlaskForm):
     name               = StringField('Naam werksessie', validators=[DataRequired(), Length(min=2, max=500)], render_kw={'size': 100})
     participants       = TextAreaField('Deelnemers', validators=[Optional(), Length(max=500)], render_kw={'rows': 5, 'cols': 100})
     link_to_page       = StringField('Link naar projectpagina', validators=[Optional(), Length(max=1000)], render_kw={'size': 100})
@@ -165,15 +165,15 @@ class MarkdownPlaygroundForm(FlaskForm):
     submit             = SubmitField('Bekijken')
 
 
-class EditSessionAccessForm(FlaskForm):
+class EditWorksessionAccessForm(FlaskForm):
     user               = SelectMultipleField('Gebruiker', coerce=int)
     submit             = SubmitField('Toevoegen')
 
 
-# class CloneSessionForm(FlaskForm):
+# class CloneWorksessionForm(FlaskForm):
 
 
-class ExportSessionForm(FlaskForm):
+class ExportWorksessionForm(FlaskForm):
     remarks                = TextAreaField('Opmerkingen bij export', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100})
     export_descriptions    = BooleanField('Neem beschrijvingen van instrumenten op in de export', validators=[], default=True)
     export_calculations    = BooleanField('Neem berekeningen van instrumentscores op in de export', validators=[], default=False)

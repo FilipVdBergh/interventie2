@@ -1,7 +1,7 @@
 {% extends 'presenter_mode.html' %}
 
 {% block currentcase %}
-    {{ session.name }}
+    {{ worksession.name }}
 {% endblock %}
 
 {% block steps %}
@@ -9,13 +9,13 @@
 {% endblock %}
 
 {% block page_title %}
-    {{ session.name }}
+    {{ worksession.name }}
 {% endblock %}
 
 {% block body %}
     <h1>Samenvatting casus</h1>
-    <div>{{ session.description | escape | markdown }}</div>
-    <div>{{ session.effect | escape | markdown}}</div>
+    <div>{{ worksession.description | escape | markdown }}</div>
+    <div>{{ worksession.effect | escape | markdown}}</div>
 
    
 
@@ -41,7 +41,7 @@
         </tr>
         {% for (instrument, score) in advisor.get_sorted_instruments() %}
             <tr>
-                <td><a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, session_id=session.id) }}">{{ instrument.name }}</a></td>
+                <td><a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }}</a></td>
                 <td>{{ instrument.introduction | truncate(250) | escape | markdown }}</td>
                 <td>{{ score | round(2) }}</td>
             </tr>
@@ -49,19 +49,19 @@
     </table>
 
     <h1>Antwoorden</h1>
-    {% for question in session.question_set.questions | sort(attribute='order') %}
+    {% for question in worksession.question_set.questions | sort(attribute='order') %}
         {% if question.is_category %}
             <h2 class="question_category">{{ question.name }}</h2>
         {% elif not question.is_category %}          
             {{ question.name }}:
             <ul>
-                {% for selection in session.answers | selectattr('question', '==', question) | map(attribute='selection') %}
+                {% for selection in worksession.answers | selectattr('question', '==', question) | map(attribute='selection') %}
                     {% for selected in selection %}
                         <li>[{{ selected.option.name }}]</li>
                     {% endfor %}
                 {% endfor %}
-                <li>{{ session.answers | selectattr('question', '==', question) | map(attribute='motivation') | first | truncate(75) }}</li>
-                <li>Factor {{ session.answers | selectattr('question', '==', question) | map(attribute='weight') | first }}</li>
+                <li>{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first | truncate(75) }}</li>
+                <li>Factor {{ worksession.answers | selectattr('question', '==', question) | map(attribute='weight') | first }}</li>
             </ul>
         {% endif %}
     {% endfor %}
