@@ -1,6 +1,7 @@
 .git
 __pycache__
 archive
+examples
 instruments_tools
 interventie.tar
 notes.txt
