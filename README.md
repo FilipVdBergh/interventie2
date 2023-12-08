@@ -4,6 +4,7 @@ De Autoriteit Financiële Markten (AFM) heeft een werkwijze ontwikkeld voor de s
 # Installatie met Docker op een Linux server
 ## Get certificate for the server
 *https://www.digitalocean.com/community/tutorials/how-to-use-certbot-standalone-mode-to-retrieve-let-s-encrypt-ssl-certificates-on-ubuntu-16-04*
+
     apt-get install certbot
     ufw allow 80
     certbot certonly --standalone --preferred-challenges http -d YOURDOMAIN
