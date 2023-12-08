@@ -22,9 +22,10 @@ De Autoriteit Financiële Markten (AFM) heeft een werkwijze ontwikkeld voor de s
     docker run --name phpmyadmin -d --network my_network –-link mariadb:db -p 8081:80 phpmyadmin
 
 ## Create database and new user for interventie2 in phpmyadmin
-Database:               interventie2
-Username:               interventie2_user
-Password:               MyPasswordHere
+| Database:            | interventie2
+| Username:            | interventie2_user
+| Password:            | MyPasswordHere
+
 - Make sure the new user has full privileges for the new database.
 - Stop phpmyadmin when you no longer need it:
     docker stop phpmyadmin
