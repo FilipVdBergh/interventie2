@@ -2,7 +2,7 @@
 
 
 {% block steps %}
-    <a href="{{ url_for('tools.index') }}" class="step">Tool ontwerpen</a>
+    <a href="{{ url_for('tools.index') }}" class="step">Selectietool ontwerpen</a>
     {% if question_set.id is not none %}
         <span class="step">{{ question_set.name }}</span>
     {% else %}
@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block page_title %}
-    Tool ontwerpen
+    Selectietool ontwerpen
 {% endblock %}
 
 
@@ -55,7 +55,7 @@
                 <td>{{ form.submit }}</td>
                 <td style="text-align: right;">
                     {% if question_set.id is not none %}
-                        {{ macro.confirm_redirect( "Tool verwijderen", question_set.name+" verwijderen? Let op: alle werksessies gebaseerd op deze tool worden ook verwijderd!",  url_for('tools.delete_question_set', question_set_id=question_set.id) ) }}
+                        {{ macro.confirm_redirect( "Selectietool verwijderen", question_set.name+" verwijderen? Let op: alle werksessies gebaseerd op deze tool worden ook verwijderd!",  url_for('tools.delete_question_set', question_set_id=question_set.id) ) }}
                         
                     {% endif %}
                 </td>

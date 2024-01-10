@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
 {% block steps %}
-    <span class="step">Tool ontwerpen</span>
+    <span class="step">Selectietool ontwerpen</span>
 {% endblock %}
 
 {% block page_title %}
-    Tool ontwerpen
+    Selectietool ontwerpen
 {% endblock %}
 
 {% block instrumenten %}
     {% if current_user.role.edit_questionnaire %}
-        <a href="{{ url_for('tools.edit_question_set') }}"><div class="instrument">+ Nieuwe tool maken</div></a>
-        <a href="{{ url_for('tools.import_question_set') }}"><div class="instrument">Tool importeren</div></a>
+        <a href="{{ url_for('tools.edit_question_set') }}"><div class="instrument">+ Nieuwe selectietool maken</div></a>
+        <a href="{{ url_for('tools.import_question_set') }}"><div class="instrument">Selectietool importeren</div></a>
         <a href="{{ url_for('catalog.tags') }}"><div class="instrument">Taglijst aanpassen</div></a>
     {% endif %}
 {% endblock %}
@@ -19,7 +19,7 @@
 {% block body %}
     <table>
         <tr>
-            <th>Tools</th>
+            <th>Selectietools</th>
             <th>Beschrijving</th>
         </tr>
         {% for question_set in question_sets %}
