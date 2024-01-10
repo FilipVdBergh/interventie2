@@ -11,16 +11,15 @@
 
 {% block instrumenten %}   
     {% if edit_catalog_allowed %}
-        <div class="instrument"><a href="{{ url_for('catalog.add_instrument') }}">+ Nieuw instrument maken</a></div>
-        <div class="instrument"><a href="{{ url_for('catalog.import_instrument') }}">Instrument importeren</a></div>
-        <div class="instrument"><a href="{{ url_for('export.catalog') }}">Exporteer catalogus naar Word</a></div>
-        <div class="instrument"><a href="{{ url_for('catalog.tags') }}">Taglijst aanpassen</a></div>  
+        <a href="{{ url_for('catalog.add_instrument') }}"><div class="instrument">+ Nieuw instrument maken</div></a>
+        <a href="{{ url_for('catalog.import_instrument') }}"><div class="instrument">Instrument importeren</div></a>
+        <a href="{{ url_for('export.catalog') }}"><div class="instrument">Exporteer catalogus naar Word</div></a>
+        <a href="{{ url_for('catalog.tags') }}"><div class="instrument">Taglijst aanpassen</div></a>  
     {% endif %}
 {% endblock %} 
 
 
 {% block body %}
-
     <table>
         <tr>
             <th>Instrument</th>

@@ -1,36 +1,30 @@
 {% extends 'base.html' %}
 
 {% block steps %}
-    <span class="step">Werksessies</span>
-{% endblock %}
+    <a href="{{ url_for('main.index') }}" class="step">Werksessies</a>
+    <span class="step"> Gearchiveerde werksessies</span>
+    {% endblock %}
 
 {% block page_title %}
-    Werksessies
+    Gearchiveerde werksessies
 {% endblock %}
 
 {% block instrumenten %}   
-    {% include 'link_new_worksession.html' %}   
-    {% include 'link_archived_worksessions.html' %}   
 {% endblock %} 
 
 
 {% block body %}
-    <h1>Interventiekeuze</h1>
-    Deze app ondersteunt toezichthouders bij het maken van een interventieplan. Het maken van een interventieplan gebeurt in een werksessie,
-    waarin alle betrokken toezichthouders samen een selectietool doorlopen. Op basis van de antwoorden presenteert de app een lijst van 
-    kansrijke interventies.
-
-    <h1>Lijst van actieve werksessies</h1>
-    In onderstaande lijst staan alle werksessies waar je toegang to hebt.
-    <br>
-    <br>
+    <h1>Archiveren van werksessies</h1>
+    In deze lijst staan alle gearchiveerde werksessies. Selecteer een werksessie, kies 'werksessie aanpassen of verwijderen', en
+    daarna 'verberg deze werksessie in de lijst' om een werksessie te archiveren.
+    <h1>Lijst van gearchiveerde werksessies</h1>
     <table>
         <tr>
             <th>Werksessie</th>
             <th>Beschrijving</th>
         </tr>
         {% for worksession in worksessions | selectattr('parent', 'none') %}
-            {% if worksession.archived == false %}
+            {% if worksession.archived == true %}
                 {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
                     <tr>
                         <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>

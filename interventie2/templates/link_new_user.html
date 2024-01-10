@@ -1,3 +1,3 @@
 {% if current_user.role.edit_users %}
-    <div class="instrument"><a href="{{ url_for('admin.register') }}">+ Nieuwe gebruiker</a></div>
+    <a href="{{ url_for('admin.register') }}"><div class="instrument">+ Nieuwe gebruiker</div></a>
 {% endif %}

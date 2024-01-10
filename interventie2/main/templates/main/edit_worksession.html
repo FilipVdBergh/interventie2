@@ -104,7 +104,7 @@
             <tr>
                 <td>{{ form.submit }}</td>
                 <td style="text-align: right;">
-                    {{ macro.confirm_redirect( "Sessie verwijderen", worksession.name+" verwijderen?", url_for('main.delete_worksession', worksession_id=worksession.id) ) }}
+                    {{ macro.confirm_redirect( "Sessie verwijderen", "Weet je zeker dat je "+worksession.name+" wilt verwijderen?", url_for('main.delete_worksession', worksession_id=worksession.id) ) }}
                 </td>
             </tr>
         </table>

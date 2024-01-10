@@ -25,6 +25,11 @@ def index():
 	worksessions = Worksession.query.order_by(Worksession.name)
 	return render_template('main/index.html', worksessions=worksessions)
 
+@main.route('/archived')
+@login_required
+def archived():
+	worksessions = Worksession.query.order_by(Worksession.name)
+	return render_template('main/archived.html', worksessions=worksessions)
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():

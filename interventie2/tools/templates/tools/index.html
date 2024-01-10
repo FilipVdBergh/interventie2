@@ -10,9 +10,9 @@
 
 {% block instrumenten %}
     {% if current_user.role.edit_questionnaire %}
-        <div class="instrument"><a href="{{ url_for('tools.edit_question_set') }}">+ Nieuwe tool maken</a></div>
-        <div class="instrument"><a href="{{ url_for('tools.import_question_set') }}">Tool importeren</a></div>
-        <div class="instrument"><a href="{{ url_for('catalog.tags') }}">Taglijst aanpassen</a></div>
+        <a href="{{ url_for('tools.edit_question_set') }}"><div class="instrument">+ Nieuwe tool maken</div></a>
+        <a href="{{ url_for('tools.import_question_set') }}"><div class="instrument">Tool importeren</div></a>
+        <a href="{{ url_for('catalog.tags') }}"><div class="instrument">Taglijst aanpassen</div></a>
     {% endif %}
 {% endblock %}
 

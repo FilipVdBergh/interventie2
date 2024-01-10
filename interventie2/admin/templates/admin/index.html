@@ -11,8 +11,8 @@
 
 {% block instrumenten %}   
     {% if current_user.role.edit_users %}
-        <div class="instrument"><a href="{{ url_for('admin.register') }}">+ Nieuwe gebruiker maken</a></div>
-        <div class="instrument"><a href="{{ url_for('admin.roles') }}">Bekijk rollen</a></div>
+        <a href="{{ url_for('admin.register') }}"><div class="instrument">+ Nieuwe gebruiker maken</div></a>
+        <a href="{{ url_for('admin.roles') }}"><div class="instrument">Bekijk rollen</div></a>
     {% endif %}
 {% endblock %}
 

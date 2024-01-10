@@ -95,24 +95,32 @@ h2 {
 }
 
 .answer_summary {
-
+    font-weight: normal;
+    font-size:medium;
+    display: inline;
 }
 
 .question_description {
-    
+    font-style: italic;
+    padding-bottom: 25x;
 }
 
-.option {
-
+.question_category_description {
+    font-style: italic;
+    padding-bottom: 25x;
 }
 
 .collapsible_content {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
+    padding-top: 1px;
+    padding-bottom: 1px;
 }
 
 .collapsible {
+    padding-top: 5px;
+    padding-bottom: 5px;
     cursor: pointer;
     display: inline;
     border-top: white;
@@ -122,8 +130,7 @@ h2 {
     text-align: left;
     outline: none;
     width:100%;
-    padding-top: 5px;
-    padding-bottom: 5px;
+
 }
 
 .active, .collapsible:hover {
@@ -132,8 +139,7 @@ h2 {
   }
 
 .collapsible:before {
-    content: "🡢"; 
-    
+    content: "🡢";     
     float: left;
     margin-right: 5px;
   }

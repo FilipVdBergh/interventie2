@@ -24,22 +24,25 @@
         {% for question in worksession.question_set.questions | sort(attribute='order') %}
             {% if question.is_category %}
                 <h1 class="question_category">{{ question.name }}</h1>
-                <div class="question_description">{{ question.description | escape | markdown }}</div>
-                <br>
+                {% if question.description | length > 0 %}
+                    <div class="question_category_description">{{ question.description | escape | markdown }}</div><br>
+                {% endif %}
+                
             
             {% elif not question.is_category %}         
                 <button type="button" class="collapsible">
-                        <div class="question">{{ question.name }}</div>
-                        <div class="answer_summary">
-                            {% for selection in worksession.answers | selectattr('question', '==', question) | map(attribute='selection') %}
-                                {% for selected in selection %}
-                                    [{{ selected.option.name }}]
+                        <div class="question">{{ question.name }}
+                            <div class="answer_summary">
+                                {% for selection in worksession.answers | selectattr('question', '==', question) | map(attribute='selection') %}
+                                    {% for selected in selection %}
+                                        {{ selected.option.name }}{{ "; " if not loop.last else "" }}
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
-                            {{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first | truncate(75) }}
-                            {% if question.allow_weight %}
-                                (x{{ worksession.answers | selectattr('question', '==', question) | map(attribute='weight') | first }})
-                            {% endif %}
+                                {{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first | truncate(75) }}
+                                {% if question.allow_weight %}
+                                    (x{{ worksession.answers | selectattr('question', '==', question) | map(attribute='weight') | first }})
+                                {% endif %}
+                            </div>
                         </div>
                 </button>
 

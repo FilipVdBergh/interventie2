@@ -18,7 +18,7 @@ h1 {
     padding-top: 10px;
     font-size: x-large;
     font-weight: lighter;
-    color: #42B2E2
+    color: black;
 }
 
 h2 {
@@ -117,7 +117,7 @@ td {
 }
 
 .nav:hover {
-    background-color: #59738E;
+    background-color: #4a5b6c;
     color: #FFFFFF;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -139,11 +139,12 @@ td {
 .divlogo {
     grid-row: 1 / 3;
     padding: 15px;
-    padding-left: 50px;
+    padding-left: 20px;
+    padding-right: 40px;
 }
 
 .page_title {
-    padding-top: 30px;
+    padding-top: 10px;
     font-size:xx-large;
     font-weight: lighter;
 }
@@ -199,7 +200,7 @@ td {
 }
 
 .instrument:hover {
-    background-color: #F7FAFC;
+    background-color: #cacfd2;
 }
 
 .instrument_introduction {
