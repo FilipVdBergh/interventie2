@@ -295,21 +295,18 @@ def process_single(worksession_id, question_id=None):
 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
+	
 	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 	if question_id is None:
 		# Without a question number, find the first question in order.
 		question = Question.query.filter_by(question_set=worksession.question_set).order_by(Question.order).first()
 	else:	
 		question = Question.query.get(question_id)
-
 	answer = Answer.query.filter_by(worksession=worksession, question=question).first()
-	
+
 	if request.method == "POST":
 		if not question.is_category:
 			if answer is not None:
-				# Delete all answers to replace them below.
-				for selection in answer.selection:
-					db.session.delete(selection)
 				db.session.delete(answer)
 
 			new_answer = Answer(worksession=worksession, question=question, motivation=request.form.get('motivation'), weight=request.form.get('weight'))
@@ -319,12 +316,17 @@ def process_single(worksession_id, question_id=None):
 					new_answer.selection.append(Selection(option=option))
 			db.session.add(new_answer)
 			db.session.commit()
-		# Return the next question in the set.
-		next_question = Question.query.filter_by(question_set=worksession.question_set).filter(Question.order > Question.query.get(question.id).order).order_by(Question.order).first()
+
+		next_question = None
+		# Move to the next question. The next question is selected by taking all questiopns in the current set, taking only those with a order number higher than the current one, and sorting by order.
+		for question in Question.query.filter_by(question_set=worksession.question_set).filter(Question.order > Question.query.get(question.id).order).order_by(Question.order): 
+			if not worksession.is_question_hidden(question):
+				next_question = question
+				break
 		if next_question is None:
+			# If no question is found, move on the the conclusion page for this session.
 			return redirect(url_for('main.conclusion', worksession_id=worksession.id))
-		else:
-			return redirect(url_for('main.process_single', worksession_id=worksession.id, question_id=next_question.id))
+		return redirect(url_for('main.process_single', worksession_id=worksession.id, question_id=next_question.id))
 	elif request.method == "GET":
 		pass
 	return render_template('main/single.html', worksession=worksession, question=question, answer=answer, advisor=advisor)

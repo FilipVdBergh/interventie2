@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('tools.index') }}" class="step">Selectietool ontwerpen</a>
+    <a href="{{url_for('tools.design_question_set', question_set_id=question.question_set.id)}}" class="step">{{ question.question_set.name }}</a>
+    <span class="step">Routering</span>
+{% endblock %}
+
+{% block page_title %}
+    Routering
+{% endblock %}
+
+
+{% block instrumenten %}   
+    {% include 'link_taglist.html' %}
+{% endblock %} 
+
+{% block body %}
+    <h1>{{ question.name }}</h1>
+    {{ question.description }}
+    <br><br>
+    <table>
+        <tr>
+            <th>Filer</th>
+            <th>Tags</th>
+            <th>Acties</th>
+            <tr>
+                <form method="POST">
+                    {{ form.csrf_token }}
+                    <td>Toon deze vraag alleen als deze tags actief zijn</td>
+                    <td>
+                        {% if question.required_active_tags | length == 0 %}
+                            Geen
+                        {% endif %}
+                        {% for tag in question.required_active_tags %}
+                            <a href="{{ url_for('tools.remove_tag_from_required_tags', question_id=question.id, tag_id=tag.id) }}" class="tag">
+                                {{ tag.name }} &#10006;
+                            </a>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {{ form.tag }} {{ form.submit }} 
+                    </td>
+                </form>
+            </tr>
+        </table>
+{% endblock %}

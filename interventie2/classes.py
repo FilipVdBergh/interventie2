@@ -10,6 +10,8 @@ class QuestionWithAnswers:
     but also as design elements. 
     I think a smarter object model would have solved this
     problem as well. """
+
+    # TODO: To simplify the app, the Advisor class could be made part of the Worksession object!
     class option_with_selection:
         def __init__(self, option, selected):
             self.option          = option
@@ -95,10 +97,8 @@ class Advisor:
         self.mandatory_tags.extend(mandatory_tag)
 
     def add_to_active_tags(self, new_active_tag, weight):
-        """This function servers to prevent duplicate tags in the active_tags list
-        and to add weights if a duplicate exists.
-        The new_active_tag argument is a Tag object, not an active_tag object!
-        This function is meant to create active_tag objects."""
+        """This function prevents duplicate tags in the active_tags list and adds weights if a duplicate exists.
+        The new_active_tag argument is a Tag object, not an active_tag object! This function is meant to create active_tag objects."""
         match = len([active_tag for active_tag in self.active_tags if active_tag.tag == new_active_tag]) > 0
         if match: # The tag already exists in the active_tags list and must be added to.
             for i, active_tag in enumerate(self.active_tags):
@@ -108,8 +108,7 @@ class Advisor:
             self.active_tags.append(self.active_tag(new_active_tag, weight))
 
     def update_active_tags(self):
-        """Creates a list of all instruments with their scores based on the
-        current active tags, the forbidden tags and the mandatory tags."""
+        """Creates a list of all current active tags, the forbidden tags and the mandatory tags."""
         self.active_tags = []
         # for question_with_answers in self.questionnaire:
         #     for option_with_selection in question_with_answers.options_with_selection:
@@ -198,7 +197,6 @@ class Advisor:
         self.update_active_tags()      
         self.scored_instruments = []
         for instrument in self.all_instruments:
-            print(instrument.name, self.is_instrument_in_scope(instrument))
             if self.is_instrument_in_scope(instrument):
                 self.scored_instruments.append([instrument, self.calculate_score(instrument)])
 

@@ -31,8 +31,8 @@
     <h1>Vragen</h1>
         <table>
             <tr>
+                <th colspan="2"></th>
                 <th>Vraag</th>
-                <th>Omschrijving</th>
                 <th>Kenmerken</th>
                 <th>Acties</th>
             </tr>
@@ -44,14 +44,18 @@
                                 &#8679;
                             </a>
                         {% endif %}
+                    </td>
+                
+                    <td>
                         {% if not loop.last %}
                             <a href="{{ url_for('tools.question_move', question_set_id=question_set.id, question_id=question.id, dir=0) }}">	
                                 &#8681;
                             </a>
                         {% endif %}
+                    </td>
+                    <td>
                         <a href="{{ url_for('tools.edit_question', question_id=question.id) }}">{{ question.name }}</a>
                     </td>
-                    <td>{{ question.description | escape | markdown }}</td>
                     <td>
                         {% if question.is_category %}
                             <span class="property">Alleen label</span>
@@ -61,19 +65,29 @@
                             {% endif %}
                             {% if question.allow_choice %}
                                 {% if question.allow_multiselect %}
-                                    <span class="property">Meerkeuze: meerdere opties</span>
+                                    <span class="property">Meerdere keuzes toestaan</span>
                                 {% else %}
-                                    <span class="property">Meerkeuze: één optie</span>
+                                    <span class="property">Één keuze toestaan</span>
                                 {% endif %}
-                                <span class="property">{{ question.options | length }} optie(s)</span>
+                                <span class="property" title="{% for option in question.options %}{{ option.name }}{% if not loop.last %}&#013;{% endif %}{% endfor %}">{{ question.options | length }} optie(s)</span>
                                 {% if question.allow_weight %}
                                     <span class="property">Weging per vraag</span>
                                 {% endif %}
                             {% endif %}
                         {% endif %}
+                        {% if question.description | length > 0 %}
+                            <span class="property" title="{{ question.description | escape }}">Omschrijving</span>
+                        {% endif %}
+                        {% if question.required_active_tags | length > 0 %}
+                            <span class="property" title="
+                                {% for tag in question.required_active_tags %}{{ tag.name }}{% if not loop.last %}; {% endif %}{% endfor %}">Routering</span>
+                        {% endif %}
                     </td>
                     <td>
-                        {% if not question.is_category %}<a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}"><button>Antwoordopties</button></a>{% endif %}
+                        {% if not question.is_category %}
+                            <a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}"><button>Antwoordopties</button></a>
+                        {% endif %}
+                        <a href="{{ url_for('tools.edit_required_tags', question_id=question.id) }}"><button>Routering</button></a>
                     </td>
                 </tr>
             {% endfor %}
@@ -96,6 +110,9 @@
             <tr>
                 <td>Sta alleen instrumenten toe met de volgende tags</td>
                 <td>
+                    {% if question_set.mandatory_tags | length == 0 %}
+                        Geen
+                    {% endif %}
                     {% for tag in question_set.mandatory_tags %}
                         <a href="{{ url_for('tools.remove_tag_from_question_set', question_set_id=question_set.id, taglist='mandatory', tag_id=tag.id) }}" 
                         class="{% if tag in question_set.forbidden_tags %}warning {% endif %}tag">
@@ -115,6 +132,9 @@
             <tr>
                 <td>Sluit alle instrumenten uit met de volgende tags</td>
                 <td>
+                    {% if question_set.forbidden_tags | length == 0 %}
+                        Geen
+                    {% endif %}
                     {% for tag in question_set.forbidden_tags %}
                         <a href="{{ url_for('tools.remove_tag_from_question_set', question_set_id=question_set.id, taglist='forbidden', tag_id=tag.id) }}" 
                         class="{% if tag in question_set.mandatory_tags %}warning {% endif %}tag">

@@ -10,6 +10,15 @@ admin = Blueprint('admin', __name__,
                   static_url_path='assets')
 
 
+# @admin.route('/initdb')
+# def structure_db():
+#     print('Creating structure...')
+#     db.create_all()
+#     db.session.commit()
+#     print('Done.')
+#     return redirect(url_for('main.index'))
+
+
 @admin.route('/initialize')
 def initialize():
     """Initializes the database. This function creates the necessary roles and a single admin user called root/root.

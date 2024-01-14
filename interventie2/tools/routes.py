@@ -2,8 +2,8 @@ import os
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from interventie2.models import User
-from interventie2.models import db, QuestionSet, Process, User, Role, Question, Option, Tag
-from interventie2.forms import QuestionSetForm, AddQuestionForm, QuestionForm, OptionForm, AddTagToQuestionSet
+from interventie2.models import db, QuestionSet, Process, User, Question, Option, Tag
+from interventie2.forms import QuestionSetForm, AddQuestionForm, QuestionForm, OptionForm, AddTagToQuestionSet, AddRequiredTagToQuestionForm
 from sqlalchemy.sql import func
 import simplejson as json
 
@@ -193,7 +193,7 @@ def design_question_set(question_set_id):
         question_set.forbidden_tags.append(tag)
         db.session.commit()
         return redirect(url_for('tools.design_question_set', question_set_id=question_set_id))       
-    return render_template('tools/design_question_set.html', question_set=question_set, form=form,add_mandatory_tag_form=add_mandatory_tag_form, add_forbidden_tag_form=add_forbidden_tag_form)
+    return render_template('tools/design_question_set.html', question_set=question_set, form=form, add_mandatory_tag_form=add_mandatory_tag_form, add_forbidden_tag_form=add_forbidden_tag_form)
 
 
 @tools.route('/delete_question_set/<int:question_set_id>', methods=['GET', 'POST'])
@@ -212,12 +212,13 @@ def remove_tag_from_question_set(question_set_id, taglist, tag_id):
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een tool te ontwerpen.')
     question_set = QuestionSet.query.get(question_set_id)
     tag = Tag.query.get(tag_id)
+
     if taglist == 'mandatory':
-
         question_set.mandatory_tags.remove(tag)
-    if taglist == 'forbidden':
 
+    if taglist == 'forbidden':
         question_set.forbidden_tags.remove(tag)
+
     db.session.commit()
     return redirect(url_for('tools.design_question_set', question_set_id=question_set_id))    
 
@@ -306,6 +307,38 @@ def delete_question(question_id):
     db.session.delete(question)
     db.session.commit()
     return redirect(url_for('tools.design_question_set', question_set_id=question_set.id))
+
+
+@tools.route('/edit_required_tags/<int:question_id>', methods=['GET', 'POST'])
+@login_required
+def edit_required_tags(question_id):
+    if not current_user.role.edit_questionnaire: 
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een tool te ontwerpen.')
+    question = Question.query.get(question_id)
+    tags = Tag.query.order_by(Tag.name)
+    form = AddRequiredTagToQuestionForm()
+    form.tag.choices = [(tag.id, tag.name) for tag in tags]
+
+    if form.validate_on_submit():
+        tag = Tag.query.get(form.tag.data)
+        question.required_active_tags.append(tag)
+        db.session.commit()
+        return redirect(url_for('tools.edit_required_tags', question_id=question_id))
+    return render_template('tools/edit_required_tags.html', question=question, form=form)
+
+@tools.route('/remove_tag_from_required_tags/<int:question_id>/<int:tag_id>', methods=['GET', 'POST'])
+@login_required
+def remove_tag_from_required_tags(question_id, tag_id):
+    if not current_user.role.edit_questionnaire: 
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een tool te ontwerpen.')
+    
+    question = Question.query.get(question_id)
+    tag = Tag.query.get(tag_id)
+    question.required_active_tags.remove(tag)
+
+    db.session.commit()
+    return redirect(url_for('tools.edit_required_tags', question_id=question_id))
+
 
 @tools.route('/edit_option/<int:option_id>', methods=['GET', 'POST'])
 @login_required

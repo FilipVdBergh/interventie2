@@ -1,36 +1,30 @@
-{% if worksession.show_instruments %}
-    {% for (instrument, score) in advisor.get_sorted_instruments() %}
-        
-        {% if score >= (advisor.get_highest_score() - worksession.mark_top_instruments) %}
+<h1 class="question_category">&nbsp;</h1>
+{% for (instrument, score) in advisor.get_sorted_instruments() %}        
+    {% if score >= (advisor.get_highest_score() - worksession.mark_top_instruments) %}
+        {% if score == 0 %}
+            <div class="instrument tooltip">
+                <a class="prio_low" href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }}</a>
+                <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
+            </div>     
+        {% else %}
             <div class="instrument tooltip">
                 <a class="prio_high" href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }}</a>
                 <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
             </div>
-        {% else %}
-            {% if worksession.show_rest_instruments %}
-                {% if score > 0 %}
-                    <div class="instrument tooltip">
-                        <a class="prio_medium" href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }}</a>
-                        <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
-                    </div>
-                {% else %}
-                    <div class="instrument tooltip">
-                        <a class="prio_low" href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }}</a>
-                        <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
-                    </div>
-                {% endif %}
+        {% endif %}
+    {% else %}
+        {% if worksession.show_rest_instruments %}
+            {% if score == 0 %}
+                <div class="instrument tooltip">
+                    <a class="prio_low" href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }}</a>
+                    <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
+                </div>
+            {% else %}
+                <div class="instrument tooltip">
+                    <a class="prio_medium" href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }}</a>
+                    <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
+                </div>                    
             {% endif %}
         {% endif %}
-    {% endfor %}
-{% endif %}
-
-{% if worksession.show_tags %}
-<br>
-<br>
-    <div>Actieve tags </div>
-    {% for active_tag in advisor.get_active_tags() %}
-        <span class="tag tooltip">{{ active_tag.tag.name }}
-            <div class="tooltiptext">Bijdrage: {{ active_tag.weight }}</div>
-        </span>
-    {% endfor %}
-{% endif %}
+    {% endif %}
+{% endfor %}

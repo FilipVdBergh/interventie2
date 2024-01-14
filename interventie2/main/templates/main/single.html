@@ -1,67 +1,188 @@
-{% extends 'presenter_mode.html' %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="URF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/presenter_styles.css')}}">
+        <style>
+            body {
+                background-size: 100vw 100vh; 
+                background-image: linear-gradient( {{ worksession.presenter_mode_background_color1 }}, {{ worksession.presenter_mode_background_color2 }} );
+                color: {{ worksession.presenter_mode_text_color }};
+            }
+            h1 {
+                color: {{ worksession.presenter_mode_text_color_heading }};
+            }
+            h2 {
+                color: {{ worksession.presenter_mode_text_color_heading }};
+            }
+            .divsteps {
+                color: {{ worksession.presenter_mode_text_color_nav }};
+                background-color: {{ worksession.presenter_mode_color_nav }};
+            }
+            .step {
+                color: {{ worksession.presenter_mode_text_color_nav }};
+            }
+            .page_title {
+                background-color: {{ worksession.presenter_mode_color_title }};
+                color: {{ worksession.presenter_mode_text_color_title }};
+            }
+            .collapsible {
+                background-color: {{ worksession.presenter_mode_color_coll }};
+                color: {{ worksession.presenter_mode_text_color_coll }};
+            }
+            .active, .collapsible:hover {
+                background-color: {{ worksession.presenter_mode_color_highlight }};
+                color: {{ worksession.presenter_mode_text_color_highlight }};
+            }
+            .prio_high {
+                font-weight: bold;
+                color: {{ worksession.presenter_mode_text_color_heading }};
+            }
+            .prio_medium {
+                color: {{ worksession.presenter_mode_text_color_heading }};
+            }
+              .prio_low {
+                color: rgb(199, 199, 199);
+            }
+        </style>
 
-{% block currentcase %}
-    {{ worksession.name }}
-{% endblock %}
+        <title>{{ worksession.name }}</title>
+    </head>
 
-{% block steps %}
-    {% include 'main/path_process.html' %}
-{% endblock %}
+    <body>
+        <div class="divsteps">
+            <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">&#9204;</a>
+            <a href="{{ url_for('main.case', worksession_id=worksession.id) }}" class="step">1. Casus</a>
+            <a href="{{ url_for('main.process_single', worksession_id=worksession.id) }}" class="step">2. {{ worksession.question_set.name }}</a>
+            <a href="{{ url_for('main.conclusion', worksession_id=worksession.id) }}" class="step">3. Conclusie</a>
+            <a href="{{ url_for('export.worksession', worksession_id=worksession.id) }}" class="step">Afsluiten</a>
+            {% include 'presenter_mode_screen_controls.html' %}
+        </div>
 
-{% block instrumenten %}   
-    {% include 'main/scored_instruments.html' %}
-{% endblock %} 
+        <div class="page_title">
+            {{ worksession.name }}
+        </div>
 
-{% block page_title %}
-    {{ worksession.name }}
-{% endblock %}
+        <div class="divmain" id="main" style="transform: scale( {{ worksession.presenter_mode_zoom }} ); transform-origin: 0 0;">
+            <div class="divinstrumenten">
+                {% if worksession.show_instruments %}{% include 'main/scored_instruments.html' %}{% endif %}
+                {% if worksession.show_tags and advisor.get_active_tags() | length > 0 %}{% include 'main/active_tags.html' %}{% endif %}
+                <br>
+                {% include 'presenter_mode_clone.html' %}
+            </div>
 
-{% block body %}
-    <div style="padding-bottom: 10px;">{{ worksession.description | escape | markdown }}</div>
-    <div>{{ worksession.effect | escape | markdown }}</div>
+            <div class="divquestionnaire">
+                <h1 class="question_category">{{ worksession.question_set.name }}</h1>
+                {% for question_for_index in worksession.question_set.questions | sort(attribute='order') %}
+                    {% if not worksession.is_question_hidden(question_for_index) %}
 
-    <form method="POST">
-        {% if question.is_category %}
-            <h1 class="question_category">{{ question.name }}</h1>
-            <div class="question_description">{{ question.description | escape | markdown }}</div>
-            <br><input type="submit" value="Doorgaan">
-        {% else %}
-            <h1 class="question_category">{{ worksession.question_set.questions | selectattr('is_category', 'true') | selectattr('order', 'lt', question.order) | sort(attribute='order', reverse=true) | map(attribute='name') | first  }}</h1>
-            <h2 class="question">{{ question.name }}</h2>
-            <div class="question_description">{{ question.description | escape | markdown }}</div>
-            {% if question.allow_weight %}
-                <div style="float: right">
-                    {% set weight_options=[0.0, 0.5, 1.0, 2.0] %}
-                    Factor: 
-                    {% for weight in weight_options %}
-                        <input 
-                            type="radio" 
-                            name="weight" 
-                            value="{{ weight }}" 
-                            {% if answer.weight == weight %}checked{% endif %}>
-                            {{ weight }}
-                    {% endfor %}
-                    
-                </div>
-            {% endif %}
-            {% for option in question.options %}
-                <div class="option">
-                    {% if question.allow_multiselect %}
-                        <input type="checkbox" name="option" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>
-                    {% else %}
-                        <input type="radio" name="option" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>
+                        <a href ="{{ url_for('main.process_single', worksession_id=worksession.id, question_id=question_for_index.id) }}">
+                            <div class="
+                                question_index 
+                                {% if question_for_index.id == question.id %} current {% endif %}
+                                {% if question_for_index.is_category %} category {% endif %}
+                                {% if worksession.answers | selectattr('question', '==', question_for_index) | list | length > 0 %}
+                                    {% for a in worksession.answers | selectattr('question', '==', question_for_index) %}
+                                        {% if a.selection | length > 0 %} answered {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                ">
+                                {{ question_for_index.name }}
+                                
+                            </div>
+                        </a>
                     {% endif %}
-                    {{ option.name }}
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
             
-            {% if not question.allow_multiselect %}<a style="font-size: smaller;" onclick="return uncheck_radio('option:{{ question.id }}' );">&#10060; Keuze wissen</a>{% endif %}
+            <div class="divworkarea">
+                <div style="padding-bottom: 10px;">{{ worksession.description | escape | markdown }}</div>
+                <div>{{ worksession.effect | escape | markdown }}</div>
+            
+                <form method="POST">
+                    {% if question.is_category %}
+                        <h1 class="question_category">{{ question.name }}</h1>
+                        <div class="question_description">{{ question.description | escape | markdown }}</div>
+                        <br><input type="submit" value="Doorgaan">
+                    {% else %}
+                        <h1 class="question_category">{{ worksession.question_set.questions | selectattr('is_category', 'true') | selectattr('order', 'lt', question.order) | sort(attribute='order', reverse=true) | map(attribute='name') | first  }}</h1>
+                        <h2 class="question">{{ question.name }}</h2>
+                        <div class="question_description">{{ question.description | escape | markdown }}</div>
+                        {% if question.allow_weight %}
+                            <div style="float: right">
+                                {% set weight_options=[0.0, 0.5, 1.0, 2.0] %}
+                                Factor: 
+                                {% for weight in weight_options %}
+                                    <input 
+                                        type="radio" 
+                                        name="weight" 
+                                        value="{{ weight }}" 
+                                        {% if answer.weight == weight %}checked{% endif %}>
+                                        {{ weight }}
+                                {% endfor %}
+                                
+                            </div>
+                        {% endif %}
+                        {% for option in question.options %}
+                            <div class="option">
+                                {% if question.allow_multiselect %}
+                                    <input type="checkbox" name="option" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>
+                                {% else %}
+                                    <input type="radio" name="option" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>
+                                {% endif %}
+                                {{ option.name }}
+                            </div>
+                        {% endfor %}
+                        
+                        {% if not question.allow_multiselect %}<a style="font-size: smaller;" onclick="return uncheck_radio('option' );"><button type="button">&#10060;</button> Keuze wissen</a>{% endif %}
+            
+                        {% if question.allow_motivation %}
+                            <br><textarea name="motivation" rows="5" cols="100">{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
+                        {% endif %}
+                        <br><br><input type="submit" value="Opslaan">
+                    {% endif %}    
+                </form>
+            </div>
+        </div>
+        
 
-            {% if question.allow_motivation %}
-                <br><textarea name="motivation" rows="5" cols="100">{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
-            {% endif %}
-            <br><br><input type="submit" value="Opslaan">
-        {% endif %}    
-    </form>
 
-{% endblock %}
+
+        <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
+        <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/uncheck_radio.js')}}"></script>
+        <script>
+            var zoom_level = {{ worksession.presenter_mode_zoom }};
+            function update_scale() {
+                var divmain = document.getElementById('main');
+                divmain.style.transform = "scale(" + zoom_level + ")";
+            }
+            function zoom_in() {
+                zoom_level += 0.05;
+                fetch( "{{ url_for('main.zoom', worksession_id=worksession.id, change=3) }}" );
+                update_scale();
+            }
+            function zoom_out() {
+                zoom_level -= 0.05
+                fetch( "{{ url_for('main.zoom', worksession_id=worksession.id, change=2) }}" );
+                update_scale();
+            }
+            function zoom_reset() {
+                zoom_level = 1.00
+                fetch( "{{ url_for('main.zoom', worksession_id=worksession.id, change=1) }}" );
+                update_scale()
+            }
+            
+            function full_screen() {
+                var w = document.documentElement;
+                w.requestFullscreen()
+            }
+        </script>
+    </body>
+</html>
+
+
+
+
+

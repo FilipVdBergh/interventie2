@@ -112,6 +112,10 @@ class AddTagToQuestionSet(FlaskForm):
     #submit             = SubmitField('Toevoegen') # Weggehaald en in HTML opgelost omdat dit formlier twee maal op de pagina staat, en dat gaat mis met validatie.
 
 
+class AddRequiredTagToQuestionForm(FlaskForm):
+    tag                = SelectField('Tag', coerce=int)
+    submit             = SubmitField('Toevoegen')
+
 class NewWorksessionForm(FlaskForm):
     name               = StringField('Naam werksessie', validators=[DataRequired(), Length(min=2, max=500)], render_kw={'size': 100})
     participants       = TextAreaField('Deelnemers', validators=[Optional(), Length(max=500)], render_kw={'rows': 5, 'cols': 100})

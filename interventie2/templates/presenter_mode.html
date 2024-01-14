@@ -48,15 +48,23 @@
             }
         </style>
 
-        <title>Interventie 2</title>
+        <title>{{ worksession.name }}</title>
     </head>
 
     <body>
         <div class="divsteps">
-            {% block steps %}
-            {% endblock %}
+            <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">&#9204;</a>
+            <a href="{{ url_for('main.case', worksession_id=worksession.id) }}" class="step">1. Casus</a>
+            {% if worksession.process_id == 1 %}
+                <a href="{{ url_for('main.process_simultaneous', worksession_id=worksession.id) }}" class="step">2. {{ worksession.question_set.name }}</a>
+            {% elif worksession.process_id == 2 %}
+                <a href="{{ url_for('main.process_single', worksession_id=worksession.id) }}" class="step">2. {{ worksession.question_set.name }}</a>
+            {% endif %}
+            <a href="{{ url_for('main.conclusion', worksession_id=worksession.id) }}" class="step">3. Conclusie</a>
+            <a href="{{ url_for('export.worksession', worksession_id=worksession.id) }}" class="step">Afsluiten</a>
             {% include 'presenter_mode_screen_controls.html' %}
         </div>
+
         <div class="page_title">
             {% block page_title %}
             {% endblock %}
@@ -70,11 +78,15 @@
                 {% include 'presenter_mode_clone.html' %}
             </div>
 
+            <div class="divquestionnaire">
+            </div>
+            
             <div class="divworkarea">
                 {% block body %}
                 {% endblock %}
             </div>
         </div>
+
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/uncheck_radio.js')}}"></script>
         <script>

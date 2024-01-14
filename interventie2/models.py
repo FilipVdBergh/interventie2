@@ -124,16 +124,53 @@ class Worksession(db.Model):
     allowed_users = relationship('User', secondary='worksession_access', back_populates='allowed_worksessions')
     answers = relationship('Answer', back_populates='worksession', cascade='all, delete-orphan')
     question_set = relationship('QuestionSet')
-    process = relationship('Process')    
+    process = relationship('Process')
 
     def is_option_selected(self, option):
-        """Use this functioon to find out if a particular option is checked in this worksession. 
-        Having this function simplifies the jinja template a lot."""
+        """Use this function to find out if a particular option is checked in this worksession."""
         for answer in self.answers:
             for selection in answer.selection:
                 if option == selection.option:
                     return True
         return False
+
+    def active_tags(self):
+        """Returns a list of all active tags."""
+        active_tags = []
+        for answer in self.answers:
+            for selection in answer.selection:
+                for tag in selection.option.tags:
+                    active_tags.append(tag)
+        return active_tags
+    
+    def active_tags_alt(self):
+        """The previous function has a problem. If a question that is ordinarily hidden is answered while visible, and later made hidden,
+        the tag is still active. The above function cannot use the is_question_hidden function, because that function requires calling
+        the above function for active tags."""
+        active_tags = []
+        return active_tags
+
+    def is_question_hidden(self, question):
+        """This function determines if a question is hidden based on the current question set and the active tags 
+        (as some questions may require a tag to be active in the worksession)."""
+        if not question in self.question_set.questions:
+            return True # Hidden: question is not a part of the question set of this worksession.
+        
+        if len(question.required_active_tags) == 0:
+            return False # Not hidden: the question has no required active tags so is always shown.
+
+        for tag in question.required_active_tags:
+            if tag in self.active_tags():
+                return False # Not hidden: required tag was found to be active
+            else:
+                return True # Hidden: required tag not found in active tags
+                        
+        return False # I don't know if it ever reaches this part...
+        
+            
+
+
+    
     def get_weight(self, question):
         for answer in self.answers:
             if answer.question == question:
@@ -250,15 +287,21 @@ class Question(db.Model):
     allow_weight  = db.Column(db.Boolean, nullable=False, default=False)
     order         = db.Column(db.Integer, nullable=False, default=100)
 
+    required_active_tags = relationship('Tag', secondary='question_required_tags')
+    options = relationship('Option', cascade='all, delete-orphan')
+    question_set = relationship('QuestionSet', back_populates='questions')
+    
     @hybrid_property
     def is_category(self):
         return (not(self.allow_motivation or self.allow_choice))
-
-    options = relationship('Option', cascade='all, delete-orphan')
-    question_set = relationship('QuestionSet', back_populates='questions')    
-
+       
     def __repr__(self):
         return f'<Question {self.name}>'
+
+QuestionRequiredTagsAssignment = db.Table('question_required_tags',
+                            db.Column('id', db.Integer, primary_key=True),
+                            db.Column('question_id', db.Integer, db.ForeignKey('questions.id')),
+                            db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')))
 
 
 class QuestionSet(db.Model):

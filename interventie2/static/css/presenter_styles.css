@@ -43,10 +43,13 @@ h2 {
 }
 
 .divmain {
-    margin-top: 25px;
     margin-bottom: 50px;
     display:grid;
-    grid-template-columns: 250px  auto;
+    grid-template-columns: min-content max-content auto;
+}
+
+.divquestionnaire {
+    padding-right: 15px;
 }
 
 .divinstrumenten {  
@@ -88,11 +91,48 @@ h2 {
     background-color: #DDDDDD;
 }
 
+.question_index {
+    display: block;
+    color: #AAAAAA;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-decoration: none;
+    font-size: small;
+}
+
+.question_index:hover {
+    color: black;
+    background-color: #DDDDDD;
+}
+
+.current {
+    color: black;
+    background-color: #DDDDDD;
+}
+
+.answered {
+    color: black;
+}
+
+.category {
+    color: black;
+    font-weight: bold;
+}
+
+.anwer_index {
+    font-size: small;
+    display: inline;
+}
+
 .question {
     font-style: italic;
     font-weight: bold;
     font-size: large;
 }
+
+
 
 .answer_summary {
     font-weight: normal;
