@@ -10,20 +10,24 @@ admin = Blueprint('admin', __name__,
                   static_url_path='assets')
 
 
-# @admin.route('/initdb')
-# def structure_db():
-#     print('Creating structure...')
-#     db.create_all()
-#     db.session.commit()
-#     print('Done.')
-#     return redirect(url_for('main.index'))
+@admin.route('/init_db')
+def structure_db():
+    """Initializes the database, but does not erase anything."""
+    if not current_app.config['ALLOW_DB_INIT']:
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Initialisatie van de database is niet toegestaan. ALLOW_DB_INIT is ingesteld als False.')
+    print('Creating structure...')
+    db.create_all()
+    db.session.commit()
+    print('Done.')
+    return redirect(url_for('main.index'))
 
 
 @admin.route('/initialize')
 def initialize():
     """Initializes the database. This function creates the necessary roles and a single admin user called root/root.
     This function should refuse to run if a root user (id=1) already exists."""    
-
+    if not current_app.config['ALLOW_DB_INIT']:
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Initialisatie van de database is niet toegestaan. ALLOW_DB_INIT is ingesteld als False.')
     print('== DATABASE INITIALIZATION ======================================')
     try:
         root_user = User.query.get(1)
@@ -64,7 +68,7 @@ def initialize():
     
     print('Root user exists, operation cancelled.')
     print('================================================================')
-    return('De root user (id=1) bestaat al. Het initaliseren van de database is niet uitgevoerd.')
+    return render_template('error/index.html', title='Onvoldoende rechten', message='Om te voorkomen dat er data verloren gaat is deze bewerking niet toegestaan als de root gebruiker bestaat.')
 
 
 @admin.route('/user/<int:id>')
