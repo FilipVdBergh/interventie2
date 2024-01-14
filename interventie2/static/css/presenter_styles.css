@@ -64,13 +64,25 @@ h2 {
 }
 
 .page_title {
-    font-size:xx-large;
-    font-weight: lighter;
+
     padding-right: 25px;
     padding-left: 25px;
     padding-top: 10px;
     padding-bottom: 10px;
 }
+
+.worksession_title {
+    font-size:xx-large;
+    font-weight: lighter;
+    padding-bottom: 5x;
+}
+
+
+.worksession_description {
+    padding-bottom: 5x;
+}
+
+
 
 .instrument {
     display: block;

@@ -62,7 +62,9 @@
         </div>
 
         <div class="page_title">
-            {{ worksession.name }}
+            <div class="worksession_title">{{ worksession.name }}</div>
+            <div class="worksession_description">{{ worksession.description | escape | markdown }}</div>
+            <div class="worksession_description">{{ worksession.effect | escape | markdown }}</div>
         </div>
 
         <div class="divmain" id="main" style="transform: scale( {{ worksession.presenter_mode_zoom }} ); transform-origin: 0 0;">
@@ -98,8 +100,7 @@
             </div>
             
             <div class="divworkarea">
-                <div style="padding-bottom: 10px;">{{ worksession.description | escape | markdown }}</div>
-                <div>{{ worksession.effect | escape | markdown }}</div>
+                
             
                 <form method="POST">
                     {% if question.is_category %}
