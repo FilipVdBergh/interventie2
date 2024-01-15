@@ -63,7 +63,6 @@
 
         <div class="page_title">
             <div class="worksession_title">{{ worksession.name }}</div>
-            <div class="worksession_description">{{ worksession.description | escape | markdown }}</div>
             <div class="worksession_description">{{ worksession.effect | escape | markdown }}</div>
         </div>
 
@@ -85,9 +84,6 @@
             </div>
             
             <div class="divworkarea">
-                <div style="padding-bottom: 10px;">{{ worksession.description | escape | markdown }}</div>
-                <div>{{ worksession.effect | escape | markdown }}</div>
-
                 <form method="POST">
                     {% for question in worksession.question_set.questions | sort(attribute='order') %}
                         {% if not worksession.is_question_hidden(question) %}
@@ -130,7 +126,7 @@
                                     
                                     <div class="question_description">{{ question.description | escape | markdown}}</div>
                                 
-                                    {% for option in question.options %}
+                                    {% for option in question.options | sort(attribute='order')%}
                                         <div class="option">
                                             {% if question.allow_multiselect %}
                                                 <input type="checkbox" name="option:{{ option.id }}" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>

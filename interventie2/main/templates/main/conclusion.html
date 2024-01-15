@@ -8,10 +8,6 @@
     {% include 'main/path_process.html' %}
 {% endblock %}
 
-{% block page_title %}
-    {{ worksession.name }}
-{% endblock %}
-
 {% block body %}
     <h1>Samenvatting casus</h1>
     <div>{{ worksession.description | escape | markdown }}</div>
