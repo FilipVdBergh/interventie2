@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block instrumenten %}   
+    <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button style="width: 100%;">Start de werksessie</button></a><br><br>
     {% include 'link_new_worksession.html' %}   
 {% endblock %} 
 
@@ -19,7 +20,6 @@
         <div><a href="{{ url_for('main.show_worksession', worksession_id=worksession.parent.id) }}">&#9204; Ga naar oorspronkelijke sessie</a></div>
         <br>
     {% endif %}
-    <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>Start de werksessie</button></a>
     <h1>Beschrijving</h1>
     {{ worksession.description | escape | markdown }}
     {% if worksession.parent is not none %}

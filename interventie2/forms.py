@@ -41,8 +41,8 @@ class EditUserForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    name        = StringField('Naam', validators=[DataRequired()], render_kw={'placeholder': 'Naam', 'size': 100})
-    password    = PasswordField('Wachtwoord', validators=[DataRequired()], render_kw={'placeholder': 'Wachtwoord', 'size': 40})
+    name        = StringField('Naam', validators=[DataRequired()], render_kw={'placeholder': 'Naam', 'size': 60})
+    password    = PasswordField('Wachtwoord', validators=[DataRequired()], render_kw={'placeholder': 'Wachtwoord', 'size': 60})
     submit      = SubmitField('Log in')
 
 
