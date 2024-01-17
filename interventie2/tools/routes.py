@@ -129,6 +129,7 @@ def import_question_set():
                     question_set.mandatory_tags.append(tag)
 
             # Then create the questions...
+            order_counter = 1
             for question_json in question_set_json['questions']:
                 question = Question(
                     name = question_json['name'],
@@ -136,8 +137,10 @@ def import_question_set():
                     allow_motivation = question_json['allow_motivation'],
                     allow_choice = question_json['allow_choice'],
                     allow_multiselect = question_json['allow_multiselect'],
-                    allow_weight = question_json['allow_weight']
+                    allow_weight = question_json['allow_weight'],
+                    order = order_counter
                 )
+                order_counter += 1
                 for option_json in question_json['options']:
                     option = Option( name = option_json['name'])
                     for tag_json in option_json['tags']:

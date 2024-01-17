@@ -126,6 +126,7 @@ class Worksession(db.Model):
     question_set = relationship('QuestionSet')
     process = relationship('Process')
 
+
     def is_option_selected(self, option):
         """Use this function to find out if a particular option is checked in this worksession."""
         for answer in self.answers:
@@ -133,6 +134,7 @@ class Worksession(db.Model):
                 if option == selection.option:
                     return True
         return False
+
 
     def active_tags(self):
         """Returns a list of all active tags."""
@@ -143,12 +145,14 @@ class Worksession(db.Model):
                     active_tags.append(tag)
         return active_tags
     
+
     def active_tags_alt(self):
         """The previous function has a problem. If a question that is ordinarily hidden is answered while visible, and later made hidden,
         the tag is still active. The above function cannot use the is_question_hidden function, because that function requires calling
         the above function for active tags."""
         active_tags = []
         return active_tags
+
 
     def is_question_hidden(self, question):
         """This function determines if a question is hidden based on the current question set and the active tags
@@ -163,12 +167,9 @@ class Worksession(db.Model):
             if tag in self.active_tags():
                 return False # Not hidden: required tag was found to be active
             else:
-                pass # Required tag not found in active tags
+                pass
                        
         return True
-        
-            
-
 
     
     def get_weight(self, question):
