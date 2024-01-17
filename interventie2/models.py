@@ -151,11 +151,11 @@ class Worksession(db.Model):
         return active_tags
 
     def is_question_hidden(self, question):
-        """This function determines if a question is hidden based on the current question set and the active tags 
+        """This function determines if a question is hidden based on the current question set and the active tags
         (as some questions may require a tag to be active in the worksession)."""
         if not question in self.question_set.questions:
             return True # Hidden: question is not a part of the question set of this worksession.
-        
+       
         if len(question.required_active_tags) == 0:
             return False # Not hidden: the question has no required active tags so is always shown.
 
@@ -163,9 +163,9 @@ class Worksession(db.Model):
             if tag in self.active_tags():
                 return False # Not hidden: required tag was found to be active
             else:
-                return True # Hidden: required tag not found in active tags
-                        
-        return False # I don't know if it ever reaches this part...
+                pass # Required tag not found in active tags
+                       
+        return True
         
             
 
