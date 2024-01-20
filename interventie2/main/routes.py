@@ -101,7 +101,7 @@ def new_worksession():
 		worksession.presenter_mode_color_highlight = '#65C7FF'
 		worksession.presenter_mode_text_color_highlight ='#000000'
 		worksession.presenter_mode_background_color1 = '#FFFFFF'
-		worksession.presenter_mode_background_color2 = '#F7F7F7'
+		worksession.presenter_mode_background_color2 = '#FFFFFF'
 		worksession.allowed_users.append(current_user)
 		worksession.archived = False
 		db.session.add(worksession)
