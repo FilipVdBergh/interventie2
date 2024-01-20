@@ -106,6 +106,7 @@ def import_question_set():
                 date_created = func.now(),
                 date_modified = func.now(),
                 description = question_set_json['description'],
+                default_process_id = question_set_json['default_process'],
                 owner = current_user 
             )
             

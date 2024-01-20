@@ -151,6 +151,7 @@ def question_set_to_json(question_set_id):
         "filetype": "question_set",
         "filetype_version": current_app.config["FILETYPE_VERSION"],
         "name": question_set.name,
+        "default_process": question_set.default_process_id,
         "description": question_set.description
     }
     # Forbidden and mandatory tags

@@ -2,7 +2,7 @@
   "filetype": "question_set",
   "filetype_version": "1.0",
   "name": "Handhavingskompas",
-  "default_process": 2,
+  "default_process": 1,
   "description": "Conceptversie van het Handhavingskompas. Gebruik het Handhavingskompas om een passende maatregel te kiezen.",
   "forbidden_tags": [],
   "mandatory_tags": [],
