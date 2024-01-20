@@ -74,13 +74,8 @@
                 {% include 'presenter_mode_clone.html' %}
             </div>
 
-            <div class="divquestionnaire">
-                {% if worksession.process_id == 2 %}
-                    <h1 class="question_category">Vragenlijst</h1>
-                    {% for question in worksession.question_set.questions | sort(attribute='order') %}
-                        <a href ="{{ url_for('main.process_single', worksession_id=worksession.id, question_id=question.id) }}"><div class="question_index">{{ loop.index }}. {{ question.name }}</div></a>
-                    {% endfor %}
-                {% endif %}
+            <div class="divquestionnaire" style="width: 1px;">
+
             </div>
             
             <div class="divworkarea">

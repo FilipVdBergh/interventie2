@@ -98,9 +98,7 @@
                 {% endfor %}
             </div>
             
-            <div class="divworkarea">
-                
-            
+            <div class="divworkarea">            
                 <form method="POST">
                     {% if question.is_category %}
                         <h1 class="question_category">{{ question.name }}</h1>
@@ -111,16 +109,16 @@
                         <h2 class="question">{{ question.name }}</h2>
                         <div class="question_description">{{ question.description | escape | markdown }}</div>
                         {% if question.allow_weight %}
-                            <div style="float: right">
-                                {% set weight_options=[0.0, 0.5, 1.0, 2.0] %}
-                                Factor: 
+                            <div class="factor">
+                                {% set weight_options=[0, 0.5, 1, 2] %}
+                                Gewicht: 
                                 {% for weight in weight_options %}
                                     <input 
                                         type="radio" 
                                         name="weight" 
                                         value="{{ weight }}" 
                                         {% if answer.weight == weight %}checked{% endif %}>
-                                        {{ weight }}
+                                        x{{ weight }}
                                 {% endfor %}
                                 
                             </div>

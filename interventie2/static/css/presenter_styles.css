@@ -2,7 +2,13 @@ html,body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 0px;
     margin: 0px;
+    height: 100%;
 }
+
+body {
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 
 a {
     text-decoration: inherit; 
@@ -44,7 +50,7 @@ h2 {
 .divmain {
     margin-bottom: 50px;
     display:grid;
-    grid-template-columns: min-content max-content auto;
+    grid-template-columns: min-content min-content 50%;
 }
 
 .divquestionnaire {
@@ -141,7 +147,11 @@ h2 {
     font-size: large;
 }
 
-
+.factor {
+    float: right;
+    font-weight: bold;
+    font-size: smaller;
+}
 
 .answer_summary {
     font-weight: normal;
