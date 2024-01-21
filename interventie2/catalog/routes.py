@@ -23,19 +23,21 @@ def index(tag_id=None):
     else:
         edit_catalog_allowed = False
 
-    if tag_id is not None:
-        """ Warning! Some pretty ugly code ahead! I'm sure tghis can also be done in a one-liner... """
-        tag = Tag.query.get(tag_id)
+    filter_tag = Tag.query.get(tag_id)
+    if tag_id is not None:        
         list_of_instruments = []
         for instrument in Instrument.query.order_by(Instrument.name):
             for instrument_tag_assignment in instrument.tags:
-                if instrument_tag_assignment.tag == tag:
+                if instrument_tag_assignment.tag == filter_tag:
                     list_of_instruments.append(instrument)    
     else:
         list_of_instruments = Instrument.query.order_by(Instrument.name)
+
+
     return render_template('catalog/index.html', 
                            edit_catalog_allowed=edit_catalog_allowed, 
                            instruments=list_of_instruments,
+                           filter_tag=filter_tag,
                            tags = Tag.query.order_by(Tag.name))
 
 
