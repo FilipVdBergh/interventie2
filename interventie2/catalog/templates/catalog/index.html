@@ -43,7 +43,7 @@
         {% for instrument in instruments %}
             <tr>
                 <td><a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }}</a></td>
-                <td>{{ instrument.introduction | escape | markdown }}</td>
+                <td>{{ instrument.introduction | escape | truncate(100) | markdown }}</td>
             </tr>
         {% endfor %}
     </table>
