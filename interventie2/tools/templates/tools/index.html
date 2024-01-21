@@ -22,7 +22,7 @@
             <th>Selectietools</th>
             <th>Beschrijving</th>
         </tr>
-        {% for question_set in question_sets %}
+        {% for question_set in question_sets | sort(attribute="name") %}
             <tr>
                 <td><a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}">{{ question_set.name }}</a></td>
                 <td>{{ question_set.description | escape | markdown }}</td>
