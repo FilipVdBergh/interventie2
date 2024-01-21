@@ -15,7 +15,7 @@
 
 
 {% block body %}
-    <h1>Lijst van actieve werksessies</h1>
+    <h1>Eigen werksessies</h1>
     <table>
         <tr>
             <th>Werksessie</th>
@@ -32,4 +32,30 @@
             {% endif %}
         {% endfor %}
     </table>
+
+    <h1>Overige werksessies</h1>
+    <table>
+        <tr>
+            <th>Werksessie</th>
+            <th>Beschrijving</th>
+            <th>Eigenaar</th>
+        </tr>
+        {% for worksession in worksessions | selectattr('parent', 'none') %}
+            {% if worksession.archived == false %}
+                {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
+                    {% if current_user != worksession.creator %}
+                        <tr>
+                            <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
+                            <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
+                            <td>{{ worksession.creator.name }}</td>
+                        </tr>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </table>
+
+
+
+
 {% endblock %}

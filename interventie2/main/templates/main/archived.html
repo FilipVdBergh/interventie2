@@ -16,13 +16,13 @@
 {% block body %}
     <h1>Archiveren van werksessies</h1>
     In deze lijst staan alle gearchiveerde werksessies. Selecteer een werksessie, kies 'werksessie aanpassen of verwijderen', en
-    daarna 'verberg deze werksessie in de lijst' om een werksessie te archiveren.
-    <h1>Lijst van gearchiveerde werksessies</h1>
+    daarna 'archiveer deze werksessie' om een werksessie te archiveren.
+
+    <h1>Eigen gearchiveerde werksessies</h1>
     <table>
         <tr>
             <th>Werksessie</th>
             <th>Beschrijving</th>
-            <th>Datum</th>
         </tr>
         {% for worksession in worksessions | selectattr('parent', 'none') %}
             {% if worksession.archived == true %}
@@ -30,8 +30,29 @@
                     <tr>
                         <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
                         <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
-                        <td>{{ worksession.date }}</td>
                     </tr>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </table>
+
+    <h1>Overige gearchiveerde werksessies</h1>
+    <table>
+        <tr>
+            <th>Werksessie</th>
+            <th>Beschrijving</th>
+            <th>Eigenaar</th>
+        </tr>
+        {% for worksession in worksessions | selectattr('parent', 'none') %}
+            {% if worksession.archived == true %}
+                {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
+                    {% if current_user != worksession.creator %}
+                        <tr>
+                            <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
+                            <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
+                            <td>{{ worksession.creator.name }}</td>
+                        </tr>
+                    {% endif %}
                 {% endif %}
             {% endif %}
         {% endfor %}

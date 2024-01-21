@@ -20,6 +20,7 @@
         <div><a href="{{ url_for('main.show_worksession', worksession_id=worksession.parent.id) }}">&#9204; Ga naar oorspronkelijke sessie</a></div>
         <br>
     {% endif %}
+    {% if worksession.archived %}Deze werksessie is gearchiveerd.{% endif %}
     <h1>Beschrijving</h1>
     {{ worksession.description | escape | markdown }}
     {% if worksession.parent is not none %}
@@ -96,6 +97,7 @@
     <ul>
         <li><a href="{{ url_for('main.worksession_summary', worksession_id=worksession.id) }}">Samenvatting</a></li>
         <li><a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}">Sessie aanpassen of verwijderen</a></li>
+        {% if not worksession.archived %}<li><a href="{{ url_for('main.archive_worksession', worksession_id=worksession.id) }}">Sessie archiveren</a></li>{% endif %}
         <li><a href="{{ url_for('main.share_worksession', worksession_id=worksession.id) }}">Toegang tot de sessie beheren</a></li>
         <li><a href="{{ url_for('export.worksession', worksession_id=worksession.id) }}">Sessie exporteren naar Word</a></li>
     </ul>

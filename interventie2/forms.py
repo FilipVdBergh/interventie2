@@ -149,7 +149,7 @@ class EditWorksessionForm(FlaskForm):
     presenter_mode_text_color           = StringField('Kleur tekst', widget=ColorInput(), default='#000000')    
     presenter_mode_background_color1    = StringField('Achtergrondkleur (boven)', widget=ColorInput(), default='#FFFFFF')
     presenter_mode_background_color2    = StringField('Achtergrondkleur (onder)', widget=ColorInput(), default='#DDDDDD')
-    archived           = BooleanField('Verberg deze werksessie in de lijst', validators=[], default=False)
+    archived           = BooleanField('Archiveer deze werksessie', validators=[], default=False)
     submit             = SubmitField('Werksessie opslaan')
 
 

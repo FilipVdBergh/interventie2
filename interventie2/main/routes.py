@@ -230,6 +230,17 @@ def edit_worksession(worksession_id):
 		
 	return render_template('main/edit_worksession.html', worksession=worksession, form=form)
 
+@main.route('/worksession/<int:worksession_id>/archive')
+@login_required
+def archive_worksession(worksession_id):
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+	
+	worksession.archived = True
+	db.session.add(worksession)
+	db.session.commit()
+	return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 
 @main.route('/worksession/<int:worksession_id>/delete')
 @login_required
