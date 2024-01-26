@@ -23,8 +23,9 @@ def index(tag_id=None):
     else:
         edit_catalog_allowed = False
 
-    filter_tag = Tag.query.get(tag_id)
+    
     if tag_id is not None:        
+        filter_tag = Tag.query.get(tag_id)
         list_of_instruments = []
         for instrument in Instrument.query.order_by(Instrument.name):
             for instrument_tag_assignment in instrument.tags:
@@ -32,6 +33,7 @@ def index(tag_id=None):
                     list_of_instruments.append(instrument)    
     else:
         list_of_instruments = Instrument.query.order_by(Instrument.name)
+        filter_tag=None
 
 
     return render_template('catalog/index.html', 
