@@ -10,7 +10,7 @@
 {% block body %}
     <h1>{{ title }}</h1>
     <div>
-        {{ message }}
+        {{ message | markdown }}
     </div>
     <br>
     {% if error | length %}

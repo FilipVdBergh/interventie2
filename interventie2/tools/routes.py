@@ -2,7 +2,7 @@ import os
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from interventie2.models import User
-from interventie2.models import db, QuestionSet, Process, User, Question, Option, Tag
+from interventie2.models import db, QuestionSet, Process, User, Question, Option, Tag, Worksession
 from interventie2.forms import QuestionSetForm, AddQuestionForm, QuestionForm, OptionForm, AddTagToQuestionSet, AddRequiredTagToQuestionForm
 from sqlalchemy.sql import func
 import simplejson as json
@@ -203,7 +203,11 @@ def design_question_set(question_set_id):
 @tools.route('/delete_question_set/<int:question_set_id>', methods=['GET', 'POST'])
 @login_required
 def delete_question_set(question_set_id):
+    if not current_user.role.edit_questionnaire: 
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een tool te ontwerpen.')
     question_set = QuestionSet.query.get(question_set_id)
+    if len(question_set.worksessions) > 0:
+        return render_template('error/worksessions_present_error.html', worksessions=question_set.worksessions)
     db.session.delete(question_set)
     db.session.commit()
     return redirect(url_for('tools.index'))
