@@ -96,9 +96,8 @@ def add_instrument():
     if not current_user.role.edit_catalog:
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een instrument toe te voegen.')
 
-    form = InstrumentsForm()
+    form = InstrumentsForm(owner=current_user.id)
     form.owner.choices = [(user.id, user.name) for user in User.query.order_by(User.name)]
-    form.owner.data = current_user.id
     if form.validate_on_submit():
         instrument = Instrument(name = form.name.data, 
                     date_created = func.now(),
@@ -110,7 +109,7 @@ def add_instrument():
                     considerations = form.considerations.data,
                     examples = form.examples.data,
                     links = form.links.data,
-                    owner = current_user)
+                    owner_id = form.owner.data)
         db.session.add(instrument)
         db.session.commit()
         return redirect(url_for('catalog.show_instrument', id=instrument.id))
