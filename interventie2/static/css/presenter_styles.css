@@ -33,18 +33,21 @@ h2 {
 }
 
 .divsteps {   
+    display: block;
     padding-top: 10px;
     padding-bottom: 10px;
-    padding-right: 25px;
-    padding-left: 25px;
-    text-decoration: none;
+    text-transform: uppercase;
+    font-size: x-small;
 }
 
 .step {
-    font-size: smaller;
-    padding-right: 25px;
-    font-size: smaller;
-    text-transform: uppercase;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.step:hover {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .divmain {

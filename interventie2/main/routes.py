@@ -89,7 +89,7 @@ def new_worksession():
 		worksession.show_instruments = QuestionSet.query.get(worksession.question_set_id).default_instruments_visible
 		worksession.show_tags =  QuestionSet.query.get(worksession.question_set_id).default_instruments_visible
 		worksession.process_id = QuestionSet.query.get(worksession.question_set_id).default_process_id
-		worksession.presenter_mode_zoom = 1.25
+		worksession.presenter_mode_zoom = 1.00
 		worksession.presenter_mode_color_title = '#FFFFFF'
 		worksession.presenter_mode_text_color_title ='#000061'
 		worksession.presenter_mode_color_nav = '#091e31'
