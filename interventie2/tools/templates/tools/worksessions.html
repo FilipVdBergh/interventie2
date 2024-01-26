@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('tools.index') }}" class="step">Selectietool ontwerpen</a>
+    <a href="{{ url_for('tools.design_question_set', question_set_id=question_set.id) }}" class="step">{{ question_set.name }}</a>
+    <span class="step">Werksessies</span>
+{% endblock %}
+
+{% block page_title %}
+    {{ question_set.name }}
+{% endblock %}
+
+{% block body %}
+    <h1>Deze selectietool wordt gebruikt in {{ question_set.worksessions | length }} werksessie(s)</h1>
+    <br><br>
+    <table>
+        <tr>
+            <th>Werksessie</th>
+            <th>Beschrijving</th>
+            <th>Eigenaar</th>
+            <th>Status</th>
+        </tr>
+        {% for worksession in question_set.worksessions  %}
+            <tr>
+                <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
+                <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
+                <td><a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></td>
+                <td>{% if worksession.archived %}Gearchiveerd{% else %}Actief{% endif %}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

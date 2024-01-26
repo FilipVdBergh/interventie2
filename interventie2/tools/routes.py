@@ -23,6 +23,16 @@ def index():
     return render_template('tools/index.html', question_sets=question_sets)
 
 
+@tools.route('list_worksessions/<int:question_set_id>', methods=['GET', 'POST'])
+@login_required
+def list_worksessions(question_set_id):
+    if not current_user.role.edit_questionnaire: 
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een tool te ontwerpen.')
+    
+    question_set = QuestionSet.query.get(question_set_id)
+    return render_template('tools/worksessions.html', question_set=question_set)
+
+
 @tools.route('/edit_question_set/<int:question_set_id>', methods=['GET', 'POST'])
 @tools.route('/add_question_set', methods=['GET', 'POST'])
 @login_required
@@ -91,7 +101,7 @@ def import_question_set():
             if not(question_set_json['filetype_version'] == current_app.config['FILETYPE_VERSION']):
                 return render_template('error/index.html', title='Verkeerde indelingsversie', message=f"Het bestand heeft indelingsversie {question_json['filetype_version']}, en de applicatie verwacht indelingsversie {current_app.config['FILETYPE_VERSION']}. Importeren is niet mogelijk.")
 
-            # Rename instrument in case of a duplicate instrument name in the database:
+            # Rename tool in case of a duplicate tool name in the database:
             imported_name = question_set_json['name']
             if QuestionSet.query.filter_by(name=imported_name).first():
                 for i in range(100):
@@ -141,6 +151,13 @@ def import_question_set():
                     allow_weight = question_json['allow_weight'],
                     order = order_counter
                 )
+                for required_active_tag in question_json['required_active_tags']:
+                    tag = Tag.query.filter_by(name=required_active_tag['name']).first()
+                    if tag is None: #Tag needs to be created first
+                        tag = Tag(name = required_active_tag['name'])
+                        db.session.add(tag)
+                        newly_created_tags.append(tag.name)
+                    question.required_active_tags.append( tag )
                 order_counter += 1
                 for option_json in question_json['options']:
                     option = Option( name = option_json['name'])

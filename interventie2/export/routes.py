@@ -154,6 +154,7 @@ def question_set_to_json(question_set_id):
         "default_process": question_set.default_process_id,
         "description": question_set.description
     }
+
     # Forbidden and mandatory tags
     forbidden_tags = []
     for tag in question_set.forbidden_tags:
@@ -169,6 +170,7 @@ def question_set_to_json(question_set_id):
         }
         mandatory_tags.append(tag_json)
     question_set_json['mandatory_tags'] = mandatory_tags
+
     # Questions and characteristics
     questions = []
     for question in sorted(question_set.questions, key=lambda order: getattr(order, 'order')):
@@ -180,6 +182,12 @@ def question_set_to_json(question_set_id):
             "allow_multiselect": question.allow_multiselect,
             "allow_weight": question.allow_weight
         }
+        required_active_tags = []
+        for tag in question.required_active_tags:
+            required_active_tags_json = {
+                "name": tag.name,
+            }
+            required_active_tags.append(required_active_tags_json)
         options = []
         for option in sorted(question.options, key=lambda order: getattr(order, 'order')):
             option_json = {
@@ -190,6 +198,7 @@ def question_set_to_json(question_set_id):
                 tags_json.append(tag.name)
             option_json['tags'] = tags_json
             options.append(option_json)
+        question_json['required_active_tags'] = required_active_tags
         question_json['options'] = options
         questions.append(question_json)
     question_set_json['questions'] = questions
