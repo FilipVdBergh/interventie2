@@ -19,6 +19,7 @@
 {% block body %}
     <div class="instrument_introduction">{{ instrument.introduction | escape | markdown }}</div>
     {% if instrument.referenced_elsewhere %}
+        <br>
         <a href="http://{{ instrument.reference_link }}"><button>Link naar de beschrijving van dit instrument</button></a>
         <br>
     {% else %}
