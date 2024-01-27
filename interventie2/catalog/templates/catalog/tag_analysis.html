@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <span class="step">Tags</span>
+{% endblock %}
+
+{% block page_title %}
+    Tags
+{% endblock %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Naam</th>
+            <th>Instrumenten</th>
+            <th>Antwoordopties</th>
+            <th>Routing</th>
+            <th></th>
+        </tr>
+        {% for tag in tags %}
+            <tr>
+                <td><a href="{{ url_for('catalog.edit_tag', tag_id=tag.id) }}"><span class="tag">{{ tag.name }}</span></a></td>
+                <td>
+                    {% for instrument_tag_assignment in instrument_tag_assignments %}
+                         {% if tag == instrument_tag_assignment.tag %}
+                            {{ instrument_tag_assignment.instrument.name }}, 
+                        {% endif %}
+                    {% endfor %}
+
+                </td>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

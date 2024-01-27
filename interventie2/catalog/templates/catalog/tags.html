@@ -9,25 +9,34 @@
 {% endblock %}
 
 {% block body %}
+    {% if edit_catalog_allowed %}
+        <h1>Nieuwe tag toevoegen</h1>
+        <table>
+            <tr>
+                <th>Naam</th>
+                <th colspan="2">Acties</th>
+            </tr>
+                <form method="POST">
+                {{ form.csrf_token }}
+                <tr>
+                    <td>{{ form.name }}</td>
+                    <td>{{ form.submit }}</td>
+                </tr>
+            </form>
+        </table>
+    {% endif %}
+
+    <h1>Tag overzicht</h1>
     <table>
         <tr>
             <th>Naam</th>
-            <th colspan="2">Acties</th>
+            <th>Acties</th>
         </tr>
         {% for tag in tags %}
             <tr>
                 <td><a href="{{ url_for('catalog.edit_tag', tag_id=tag.id) }}"><span class="tag">{{ tag.name }}</span></a></td>
-                <td><a href="{{ url_for('catalog.delete_tag', tag_id=tag.id) }}"><button>Verwijderen</button></a></td>
+                <td>{% if edit_catalog_allowed %}<a href="{{ url_for('catalog.delete_tag', tag_id=tag.id) }}"><button>Verwijderen</button></a>{% endif %}</td>
             </tr>
         {% endfor %}
-        {% if edit_catalog_allowed %}
-            <form method="POST">
-                {{ form.csrf_token }}
-                <tr>
-                    <td>{{ form.name }}</td>
-                    <td colspan="2">{{ form.submit }}</td>
-                </tr>
-            </form>
-        {% endif %}
     </table>
 {% endblock %}
