@@ -2,7 +2,7 @@ import os
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import current_user, login_required
 from interventie2.models import db
-from interventie2.models import User, Instrument, Remark, Tag, InstrumentTagAssignment
+from interventie2.models import User, Instrument, Remark, Tag, InstrumentTagAssignment, QuestionSet
 from interventie2.forms import InstrumentsForm, RemarkForm, TagForm, TagInstrumentAssignmentForm
 from sqlalchemy.sql import func, text
 import simplejson as json
@@ -288,6 +288,20 @@ def tags():
     elif request.method == 'GET':
         pass
     return render_template('catalog/tags.html', edit_catalog_allowed=current_user.role.edit_catalog, tags=tags, form=form)
+
+
+@catalog.route('/tag_analysis')
+@login_required
+def tag_analysis():
+    if not current_user.role.edit_questionnaire:
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
+    
+    
+    return render_template('catalog/tag_analysis.html', 
+                           edit_catalog_allowed=current_user.role.edit_catalog, 
+                           tags=Tag.query.order_by(Tag.name), 
+                           question_sets=QuestionSet.query.order_by(QuestionSet.name),
+                           instrument_tag_assignments=InstrumentTagAssignment.query.order_by(InstrumentTagAssignment.id))
 
 
 @catalog.route('/tag/<int:tag_id>/edit', methods=['GET', 'POST'])
