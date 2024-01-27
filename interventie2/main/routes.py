@@ -42,6 +42,7 @@ def login():
 		if user is None or not user.check_password(form.password.data):
 			return redirect(url_for('main.login'))
 		login_user(user)
+		current_user.last_seen = func.now()
 		return redirect(url_for('main.index'))
 	return render_template('main/login.html', form=form)
 
