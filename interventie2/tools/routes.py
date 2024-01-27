@@ -194,7 +194,8 @@ def design_question_set(question_set_id):
 
     if form.validate_on_submit():
         # Add question
-        question = Question(name = form.name.data, question_set=question_set, allow_weight=question_set.default_allow_weights)
+        order = Question.query.order_by(Question.order.desc()).first().order + 1
+        question = Question(name = form.name.data, question_set=question_set, allow_weight=question_set.default_allow_weights, order=order)
         db.session.add(question)
         for new_order, current_question in enumerate(Question.query.order_by(Question.question_set_id).order_by(Question.order)):
             current_question.order = new_order * 2 
