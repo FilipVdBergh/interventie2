@@ -30,6 +30,7 @@ De Autoriteit Financiële Markten (AFM) heeft een werkwijze ontwikkeld voor de s
 
 - Make sure the new user has full privileges for the new database.
 - Stop phpmyadmin when you no longer need it:
+
     docker stop phpmyadmin
 
 ## Clone interventie2 image from github
@@ -41,11 +42,11 @@ De Autoriteit Financiële Markten (AFM) heeft een werkwijze ontwikkeld voor de s
 ### Environmental variables as arguments
     docker run --name interventie2 -e CONNECTION_STRING=mysql://interventie2_user:MyPasswordHere@mariadb:3306/interventie2 -p 443:443 --network my_network --link mariadb:db --mount type=bind,source=/etc/letsencrypt/live/interventie.sessie.online/fullchain.pem,target=/etc/letsencrypt/certificates/fullchain.pem --mount type=bind,source=/etc/letsencrypt/live/interventie.sessie.online/privkey.pem,target=/etc/letsencrypt/certificates/privkey.pem -d interventie2
 
-### Environmental arguments in file
+### Alternative: Environmental arguments in file
 - -e INTERVENTIE_SETTINGS=./settings.cfg
 - CONNECTION_STRING=mysql://interventie2_user:MyPasswordHere@mariadb:3306/interventie2
 
 ## Initialize database
 <ip-address>/admin/initialize
-- Login:             root:root
+- Login: root:root
 - Change the root password in the app and create a new user.
