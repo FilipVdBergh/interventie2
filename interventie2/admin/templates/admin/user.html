@@ -76,9 +76,9 @@
                 <th>Werksessie</th>
                 <th>Beschrijving</th>
             </tr>
-            {% for worksession in user.worksession | sort(attribute='name') %}
+            {% for worksession in user.worksession | sort(attribute='name') | rejectattr('archived') %}
                 <tr>
-                    <td><a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}">{{ worksession.name }} {% if worksession.archived %}(gearchiveerd){% endif %}</a></td>
+                    <td><a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}">{{ worksession.name }}</a></td>
                     <td>{{ worksession.description }}</td>
                 </tr>  
             {% endfor %}
