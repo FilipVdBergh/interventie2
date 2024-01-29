@@ -28,6 +28,7 @@ from interventie2.admin.routes import admin
 from interventie2.catalog.routes import catalog
 from interventie2.tools.routes import tools
 from interventie2.export.routes import export
+from interventie2.analysis.routes import analysis
 from interventie2.error.routes import error
 from interventie2.models import User
 
@@ -36,4 +37,5 @@ app.register_blueprint(admin, url_prefix='/admin/')
 app.register_blueprint(catalog, url_prefix='/catalog/')
 app.register_blueprint(tools, url_prefix='/tools/')
 app.register_blueprint(export, url_prefix='/export/')
+app.register_blueprint(analysis, url_prefix='/analysis/')
 app.register_blueprint(error, url_prefix='/error/')

@@ -1,0 +1,21 @@
+<h1>{{ worksession.question_set.name }}</h1>
+{% for question_for_index in worksession.question_set.questions | sort(attribute='order') %}
+    {% if not worksession.is_question_hidden(question_for_index) %}
+
+        <a href ="{{ url_for('main.present', worksession_id=worksession.id, question_id=question_for_index.id) }}">
+            <div class="
+                question_index 
+                {% if question_for_index.id == question.id %} current {% endif %}
+                {% if question_for_index.is_category %} category {% endif %}
+                {% if worksession.answers | selectattr('question', '==', question_for_index) | list | length > 0 %}
+                    {% for a in worksession.answers | selectattr('question', '==', question_for_index) %}
+                        {% if a.selection | length > 0 %} answered {% endif %}
+                    {% endfor %}
+                {% endif %}
+                ">
+                {{ question_for_index.name }}
+                
+            </div>
+        </a>
+    {% endif %}
+{% endfor %}

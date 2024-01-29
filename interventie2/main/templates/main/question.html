@@ -1,0 +1,61 @@
+{% if not worksession.is_question_hidden(question) %}
+    {% if question.is_category %}
+        <h1 class="question_category">{{ question.name }}</h1>
+        {% if question.description | length > 0 %}
+            <div class="question_category_description">{{ question.description | escape | markdown }}</div><br>
+        {% endif %}
+        
+    
+    {% elif not question.is_category %}         
+        <button type="button" class="collapsible">
+                <div class="question">{{ question.name }}
+                    <div class="answer_summary">
+                        {% for selection in worksession.answers | selectattr('question', '==', question) | map(attribute='selection') %}
+                            {% for selected in selection %}
+                                {{ selected.option.name }}{{ "; " if not loop.last else "" }}
+                            {% endfor %}
+                        {% endfor %}
+                        {{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first | truncate(75) }}
+                        {% if question.allow_weight %}
+                            (x{{ worksession.answers | selectattr('question', '==', question) | map(attribute='weight') | first }})
+                        {% endif %}
+                    </div>
+                </div>
+        </button>
+
+        <div class="collapsible_content">             
+            {% if question.allow_weight %}
+                <span style="float: right">
+                    {% set weight_options=[0.0, 0.5, 1.0, 2.0] %}
+                    Factor: 
+                    {% for weight in weight_options %}
+                        <input type="radio" name="weight:{{ question.id }}" value="{{ weight }}" 
+                            {% if worksession.answers | selectattr('question', '==', question) | map(attribute='weight') | first == weight %}checked{% endif %}>
+                            {{ weight }}
+                    {% endfor %}
+                </span>
+            {% endif %}
+            
+            <div class="question_description">{{ question.description | escape | markdown}}</div>
+        
+            {% for option in question.options | sort(attribute='order')%}
+                <div class="option">
+                    {% if question.allow_multiselect %}
+                        <input type="checkbox" name="option:{{ option.id }}" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>
+                    {% else %} 
+                        <input type="radio" name="option:{{ question.id }}" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>
+                    {% endif %}
+                    {{ option.name }}
+                </div>
+            {% endfor %}
+
+            {% if not question.allow_multiselect %}<a style="font-size: smaller;" onclick="return uncheck_radio('option:{{ question.id }}' );"><button type="button">&#10060;</button> Keuze wissen</a>{% endif %}
+            
+            {% if question.allow_motivation %}
+                <br>
+                <textarea name="motivation:{{ question.id }}" rows="5" cols="100">{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
+            {% endif %}
+            <input type="submit" value="Opslaan">
+        </div>
+    {% endif %}
+{% endif %}

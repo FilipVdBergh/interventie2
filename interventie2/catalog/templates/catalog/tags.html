@@ -35,7 +35,11 @@
         {% for tag in tags %}
             <tr>
                 <td><a href="{{ url_for('catalog.edit_tag', tag_id=tag.id) }}"><span class="tag">{{ tag.name }}</span></a></td>
-                <td>{% if edit_catalog_allowed %}<a href="{{ url_for('catalog.delete_tag', tag_id=tag.id) }}"><button>Verwijderen</button></a>{% endif %}</td>
+                <td>
+
+                    <a href="{{ url_for('analysis.tag', tag_id=tag.id) }}"><button>Analyse</button></a>
+                </td>
+                
             </tr>
         {% endfor %}
     </table>

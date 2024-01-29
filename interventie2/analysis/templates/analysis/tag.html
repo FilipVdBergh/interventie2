@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <span class="step">Analyse</span>
+    <span class="step">Tags</span>
+    <span class="step">{{ tag.name }}</span>
+{% endblock %}
+
+{% block page_title %}
+    Taganalyse: {{ tag.name }}
+{% endblock %}
+
+{% block body %}
+    <h1>Selectietools: antwoordopties</h1>
+    <table>
+        <tr>
+            <th>Selectietool</th>
+            <th>Vraag</th>
+            <th>Antwoordoptie met tag {{ tag.name }}</th>
+            <th>Acties</th>
+        </tr>
+        
+            {% for question_set in question_sets %}
+                {% for question in question_set.questions %}
+                    {% for option in question.options %}
+                        {% if tag in option.tags %}
+                            <tr>
+                                <td><a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}">{{ question_set.name }}</a></td>
+                                <td><a href="{{ url_for('tools.edit_question', question_id=question.id) }}">{{ question.name  }}</a></td>
+                                <td><a href="{{ url_for('tools.edit_option', option_id=option.id) }}">{{ option.name }}</a></td>
+                                <td><a href="{{ url_for('tools.edit_tag_assignment', option_id=option.id) }}"><button>Tags aanpassen</button></a></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+    </table>
+
+    <h1>Selectietools: routing</h1>
+    <table>
+        <tr>
+            <th>Selectietool</th>
+            <th>Vraag met {{ tag.name }} als voorwaarde</th>
+            <th>Acties</th>
+        </tr>
+        <tr>
+            {% for question_set in question_sets %}
+                {% for question in question_set.questions %}
+                    {% if tag in question.required_active_tags %}
+                        <td><a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}">{{ question_set.name }}</a></td>
+                        <td><a href="{{ url_for('tools.edit_question', question_id=question.id) }}">{{ question.name  }}</a></td>
+                        <td><a href="{{url_for('tools.edit_required_tags', question_id=question.id)}}"><button>Tags aanpassen</button></a></td>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </tr>
+    </table>
+
+    <h1>Instrumenten</h1>
+    <table>
+        <tr>
+            <th>Instrument met tag {{ tag.name }}</th>
+            <th>Beschrijving</th>
+            <th>Acties</th>
+        </tr>
+        {% for instrument_tag_assignment in instrument_tag_assignments %}
+                {% if tag == instrument_tag_assignment.tag %}
+                <tr>
+                    <td><a href="{{ url_for('catalog.show_instrument', id=instrument_tag_assignment.instrument.id) }}">{{ instrument_tag_assignment.instrument.name }}</a></td>
+                    <td>{{ instrument_tag_assignment.instrument.introduction | escape | truncate(200) | markdown }}</td>
+                    <td><a href="{{ url_for('catalog.instrument_tags', id=instrument_tag_assignment.instrument.id) }}"><button>Tags aanpassen</button></a></td>
+                </tr>
+                
+            {% endif %}
+        {% endfor %}
+    </table>
+    
+
+{% endblock %}

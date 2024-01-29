@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <title>{{ config['APP_NAME'] }}</title>
     </head>
     <body>
@@ -15,6 +16,7 @@
             {% include 'nav_worksessions.html'%}
             {% include 'nav_catalog.html'%}
             {% include 'nav_tools.html' %}
+            {% include 'nav_analysis.html' %}
             {% include 'nav_admin.html' %}
             {% include 'nav_self.html' %}
             {% include 'nav_contact.html' %}
