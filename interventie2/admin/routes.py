@@ -83,6 +83,8 @@ def user(id=None):
 @admin.route('/users')
 @login_required
 def index():
+    if not current_user.role.edit_users: 
+        return redirect(url_for('main.index'))
     list_of_users = User.query.order_by(User.id)
     return render_template('admin/index.html', users=list_of_users)
 
