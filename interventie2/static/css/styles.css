@@ -237,3 +237,28 @@ td {
 .active:before {
     content: "🡣"; 
 }
+
+.search {
+    margin-bottom: 30px;
+}
+
+.results_summary {
+    font-size: small;
+    padding-top: 2px;
+    padding-bottom: 25px;
+}
+
+.search_result {
+    font-weight: bold;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.search_result_type {
+    text-transform: uppercase;
+    font-size: small;
+}
+
+.search_result_context {
+
+}

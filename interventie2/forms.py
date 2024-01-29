@@ -186,3 +186,6 @@ class ExportWorksessionForm(FlaskForm):
     export_technical_info  = BooleanField('Neem technische info van de app op in de export', validators=[], default=False)
     submit                 = SubmitField('Exporteren')
 
+class SearchForm(FlaskForm):
+    search_text        = StringField('Zoektekst', validators=[DataRequired(), Length(min=3, max=100)], render_kw={'size': 40})
+    submit             = SubmitField('Zoeken')

@@ -2,8 +2,8 @@ import os
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import current_user, login_required
 from interventie2.models import db
-from interventie2.models import User, Instrument, Remark, Tag, InstrumentTagAssignment, QuestionSet
-from interventie2.forms import InstrumentsForm, RemarkForm, TagForm, TagInstrumentAssignmentForm
+from interventie2.models import User, Instrument, Remark, Tag, InstrumentTagAssignment, QuestionSet, Question, Answer, Option, Worksession
+from interventie2.forms import SearchForm
 from sqlalchemy.sql import func, text
 import simplejson as json
 
@@ -14,10 +14,58 @@ analysis = Blueprint('analysis', __name__,
 
 
 
-@analysis.route('/')
+@analysis.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    return render_template('analysis/index.html')
+    form = SearchForm()
+
+    if form.validate_on_submit():
+        search_text = form.search_text.data.lower()
+        found_tags = []
+        for tag in Tag.query.order_by(Tag.name):
+            if search_text in tag.name.lower():
+                found_tags.append(tag)
+        found_instruments = []
+        for instrument in Instrument.query.order_by(Instrument.name):
+            if search_text in instrument.name.lower() or search_text in instrument.description.lower() or search_text in instrument.considerations.lower() or search_text in instrument.examples.lower():
+                found_instruments.append(instrument)
+        found_question_sets = []
+        for question_set in QuestionSet.query.order_by(QuestionSet.name):
+            if search_text in question_set.name.lower() or search_text in question_set.description.lower():
+                found_question_sets.append(question_set)
+        found_questions = []
+        for question in Question.query.order_by(Question.name):
+            if search_text in question.name.lower():
+                found_questions.append(question)
+        found_options = []
+        for option in Option.query.order_by(Option.name):
+            if search_text in option.name.lower():
+                found_options.append(option)
+        found_worksessions = []
+        for worksession in Worksession.query.order_by(Worksession.name):
+            if search_text in worksession.name.lower() or search_text in worksession.description.lower() or search_text in worksession.effect.lower() or search_text in worksession.conclusion.lower() or search_text in worksession.participants.lower():
+                found_worksessions.append(worksession)
+        found_answers = []
+        for answer in Answer.query.order_by(Answer.motivation):
+            if search_text in answer.motivation.lower():
+                found_answers.append(answer)
+        found_users = []
+        for user in User.query.order_by(User.name):
+            if search_text in user.name.lower() or search_text in user.description.lower():
+                found_users.append(user)
+
+        return render_template('analysis/results.html', 
+                                form=form,
+                                search_text=search_text,
+                                found_tags=found_tags,
+                                found_instruments=found_instruments,
+                                found_question_sets=found_question_sets,
+                                found_questions=found_questions,
+                                found_options=found_options,
+                                found_worksessions=found_worksessions,
+                                found_answers=found_answers,
+                                found_users=found_users)
+    return render_template('analysis/index.html', form=form)
 
 
 @analysis.route('/tag/<int:tag_id>')

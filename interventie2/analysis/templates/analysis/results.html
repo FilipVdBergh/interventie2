@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('analysis.index') }}" class="step">Analyse</a>
+    <span class="step">Zoekresultaten</span>
+{% endblock %}
+
+{% block page_title %}
+    Zoekresultaten '{{ search_text }}'
+{% endblock %}
+
+{% block instrumenten %}   
+{% endblock %} 
+
+
+{% block body %}
+
+    <form method="POST">
+        {{ form.csrf_token }}    
+        {{ form.search_text }}{{ form.submit }}
+    </form>
+    <br>
+
+    <h1>Zoekresultaten</h1>
+    <div class="results_summary">
+        {% if found_worksessions | length > 0 %}
+            <a href="#Worksessions">Werksessies {{ found_worksessions | length}}; 
+        {% endif %}
+        {% if found_answers | length > 0 %}
+            <a href="#Answers">Antwoorden {{ found_answers | length}}; 
+        {% endif %}
+        {% if found_instruments | length > 0 %}
+            <a href="#Instruments">Instrumenten {{ found_instruments | length}}; 
+        {% endif %}
+        {% if found_question_sets | length > 0 %}
+            <a href="#QuestionSets">Selectietool: {{ found_question_sets | length}}; 
+        {% endif %}
+        {% if found_questions | length > 0 %}
+            <a href="#Questions">Vragen {{ found_questions | length}}; 
+        {% endif %}
+        {% if found_options | length > 0 %}
+            <a href="#Options">Antwoordoptie: {{ found_options | length}}; 
+        {% endif %}
+        {% if found_tags | length > 0 %}
+            <a href="#Tags">Tags {{ found_tags | length}}; 
+        {% endif %}
+        {% if found_users | length > 0 %}
+            <a href="#Users">Gebruiker: {{ found_users | length}}; </a>
+        {% endif %}
+    </div>
+    
+    
+
+
+
+    <a name="Worksessions"></a>
+     {% for worksession in found_worksessions %}
+        <div class="search">
+            <div class="search_result_type">Werksessie</div>
+            <div class="search_result">
+                <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a>
+            </div>
+            <div class="search_result_context">
+                {{ worksession.description | escape | markdown |truncate(250)}}
+            </div>
+        </div>      
+    {% endfor %}
+
+    <a name="Answers"></a>
+    {% for answer in found_answers %}
+        <div class="search">
+            <div class="search_result_type">Antwoord in werksessie {{ answer.worksession }}</div>
+            <div class="search_result">
+                {{ answer.motivation }}
+            </div>
+            <div class="search_result_context">
+                {{ answer.worksession.description | escape | markdown |truncate(250)}}
+            </div>
+        </div>      
+    {% endfor %}
+    
+    <a name="Instruments"></a>
+    {% for instrument in found_instruments %}
+        <div class="search">
+            <div class="search_result_type">Instrument</div>
+            <div class="search_result">
+                <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }}</a>
+            </div>
+            <div class="search_result_context">
+                {{ instrument.introduction | escape | markdown |truncate(250)}}
+            </div>
+        </div>
+    {% endfor %}
+
+    <a name="QuestionSets"></a>
+    {% for question_set in found_question_sets %}
+        <div class="search">
+            <div class="search_result_type">Selectietool</div>
+            <div class="search_result">
+                <a href="{{ url_for('tools.design_question_set', question_set_id=question_set.id) }}">{{ question_set.name }}</a>
+            </div>
+            <div class="search_result_context">
+                {{ question_set.description | escape | markdown |truncate(250)}}
+            </div>
+        </div> 
+    {% endfor %}
+
+    <a name="Questions"></a>
+    {% for question in found_questions %}
+        <div class="search">
+            <div class="search_result_type">Vraag in selectietool <a href="{{ url_for('tools.design_question_set', question_set_id=question.question_set.id) }}">{{ question.question_set.name }}</a></div>
+                <div class="search_result">
+                    <a href="{{ url_for('tools.edit_question', question_id=question.id) }}">{{ question.name }}</a>
+                </div>
+                <div class="search_result_context">
+                    {{ question.question_set.description | escape | markdown |truncate(250)}}
+                </div>
+            </div>  
+    {% endfor %}
+
+    <a name="Options"></a>
+    {% for option in found_options %}
+        <div class="search">
+            <div class="search_result_type">Antwoordoptie in selectietool <a href="{{ url_for('tools.design_question_set', question_set_id=option.question.question_set.id) }}">{{ option.question.question_set.name }}</a> op vraag <a href="{{ url_for('tools.edit_question', question_id=option.question.id) }}">{{ option.question.name }}</a></div>
+            <div class="search_result">
+                <a href="{{ url_for('tools.edit_question_options', question_id=option.question.id) }}">{{ option.name }}</a>
+            </div>
+            <div class="search_result_context">
+                {{ option.question.question_set.description | escape | markdown |truncate(250)}}
+            </div>
+        </div>
+    {% endfor %}
+
+    <a name="Tags"></a>
+    {% for tag in found_tags %}
+        <div class="search">
+            <div class="search_result_type">Tag</div>
+            <div class="search_result">
+                <a href="{{ url_for('analysis.tag', tag_id=tag.id) }}" class="tag">{{ tag.name }}</a>
+            </div>
+            <div class="search_result_context"></div>
+        </div>
+    {% endfor %}
+
+    <a name="Users"></a>
+    {% for user in found_users %}
+    <div class="search">
+        <div class="search_result_type">Gebruiker</div>
+        <div class="search_result">
+            <a href="{{ url_for('admin.user', id=user.id) }}">{{ user.name }}</a>
+        </div>
+        <div class="search_result_context">
+            {{ user.description | escape | markdown |truncate(250)}}
+        </div>
+    </div>      
+{% endfor %}
+
+{% endblock %}

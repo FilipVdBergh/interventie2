@@ -7,10 +7,13 @@
 {% endblock %}
 
 {% block page_title %}
-    Taganalyse: {{ tag.name }}
+    Taganalyse
 {% endblock %}
 
 {% block body %}
+    <h1>Tag {{ tag.name }}</h1>
+    <ul><li><a href="{{ url_for('catalog.edit_tag', tag_id=tag.id) }}">Tag aanpassen</a></li></ul>
+
     <h1>Selectietools: antwoordopties</h1>
     <table>
         <tr>
