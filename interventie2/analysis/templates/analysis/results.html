@@ -56,7 +56,9 @@
     <a name="Worksessions"></a>
      {% for worksession in found_worksessions %}
         <div class="search">
-            <div class="search_result_type">Werksessie {% if worksession.archived %}(gearchiveerd){% endif %}</div>
+            <div class="search_result_type">
+                Werksessie{% if worksession.archived %} (gearchiveerd){% endif %} {% if search_text in worksession.creator.name | lower %} (Zoekterm in maker werksessie){% endif %}
+            </div>
             <div class="search_result">
                 <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a>
             </div>
@@ -82,7 +84,9 @@
     <a name="Instruments"></a>
     {% for instrument in found_instruments %}
         <div class="search">
-            <div class="search_result_type">Instrument</div>
+            <div class="search_result_type">
+                Instrument {% if search_text in instrument.owner.name | lower %} (Zoekterm in beheerder instrument){% endif %}
+            </div>
             <div class="search_result">
                 <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }}</a>
             </div>
@@ -95,7 +99,9 @@
     <a name="QuestionSets"></a>
     {% for question_set in found_question_sets %}
         <div class="search">
-            <div class="search_result_type">Selectietool</div>
+            <div class="search_result_type">
+                Selectietool {% if search_text in question_set.owner.name | lower %} (Zoekterm in eigenaar selectietool){% endif %}
+            </div>
             <div class="search_result">
                 <a href="{{ url_for('tools.design_question_set', question_set_id=question_set.id) }}">{{ question_set.name }}</a>
             </div>
@@ -132,15 +138,17 @@
     {% endfor %}
 
     <a name="Tags"></a>
-    {% for tag in found_tags %}
-        <div class="search">
+    {% if found_tags | length > 0 %}
+            <div class="search">
             <div class="search_result_type">Tag</div>
             <div class="search_result">
-                <a href="{{ url_for('analysis.tag', tag_id=tag.id) }}" class="tag">{{ tag.name }}</a>
+                {% for tag in found_tags %}
+                    <a href="{{ url_for('analysis.tag', tag_id=tag.id) }}" class="tag">{{ tag.name }}</a>
+                {% endfor %}
             </div>
             <div class="search_result_context"></div>
         </div>
-    {% endfor %}
+    {% endif %}
 
     <a name="Users"></a>
     {% for user in found_users %}

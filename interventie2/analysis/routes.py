@@ -27,11 +27,11 @@ def index():
                 found_tags.append(tag)
         found_instruments = []
         for instrument in Instrument.query.order_by(Instrument.name):
-            if search_text in instrument.name.lower() or search_text in instrument.description.lower() or search_text in instrument.considerations.lower() or search_text in instrument.examples.lower():
+            if search_text in instrument.name.lower() or search_text in instrument.description.lower() or search_text in instrument.considerations.lower() or search_text in instrument.examples.lower() or search_text in instrument.owner.name.lower():
                 found_instruments.append(instrument)
         found_question_sets = []
         for question_set in QuestionSet.query.order_by(QuestionSet.name):
-            if search_text in question_set.name.lower() or search_text in question_set.description.lower():
+            if search_text in question_set.name.lower() or search_text in question_set.description.lower() or search_text in question_set.owner.name.lower():
                 found_question_sets.append(question_set)
         found_questions = []
         for question in Question.query.order_by(Question.name):
@@ -43,7 +43,7 @@ def index():
                 found_options.append(option)
         found_worksessions = []
         for worksession in Worksession.query.order_by(Worksession.name):
-            if search_text in worksession.name.lower() or search_text in worksession.description.lower() or search_text in worksession.effect.lower() or search_text in worksession.conclusion.lower() or search_text in worksession.participants.lower():
+            if search_text in worksession.name.lower() or search_text in worksession.description.lower() or search_text in worksession.effect.lower() or search_text in worksession.conclusion.lower() or search_text in worksession.participants.lower() or search_text in worksession.creator.name.lower():
                 found_worksessions.append(worksession)
         found_answers = []
         for answer in Answer.query.order_by(Answer.motivation):
