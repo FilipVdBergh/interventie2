@@ -56,12 +56,12 @@
     <a name="Worksessions"></a>
      {% for worksession in found_worksessions %}
         <div class="search">
-            <div class="search_result_type">Werksessie</div>
+            <div class="search_result_type">Werksessie {% if worksession.archived %}(gearchiveerd){% endif %}</div>
             <div class="search_result">
                 <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a>
             </div>
             <div class="search_result_context">
-                {{ worksession.description | escape | markdown |truncate(250)}}
+                {{ worksession.description | escape | markdown |truncate(250)}} 
             </div>
         </div>      
     {% endfor %}

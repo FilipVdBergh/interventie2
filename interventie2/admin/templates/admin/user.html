@@ -68,6 +68,23 @@
         </table>
     {% endif %}
 
+    
+    {% if user.worksession | length > 0 %}
+        <h1>Eigenaar werksessies</h1>
+        <table>
+            <tr>
+                <th>Werksessie</th>
+                <th>Beschrijving</th>
+            </tr>
+            {% for worksession in user.worksession | sort(attribute='name') %}
+                <tr>
+                    <td><a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}">{{ worksession.name }} {% if worksession.archived %}(gearchiveerd){% endif %}</a></td>
+                    <td>{{ worksession.description }}</td>
+                </tr>  
+            {% endfor %}
+        </table>
+    {% endif %}
+
     {% if user.edit_allowed() %}
         <h1>Acties</h1>
         <ul>
