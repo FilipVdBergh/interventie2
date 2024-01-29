@@ -30,6 +30,7 @@ De Autoriteit Financiële Markten (AFM) heeft een werkwijze ontwikkeld voor de s
 
 - Make sure the new user has full privileges for the new database.
 - Stop phpmyadmin when you no longer need it:
+
     docker stop phpmyadmin
 
 ## Clone interventie2 image from github
