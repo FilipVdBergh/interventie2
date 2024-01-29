@@ -30,7 +30,7 @@ def list_worksessions(question_set_id):
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een tool te ontwerpen.')
     
     question_set = QuestionSet.query.get(question_set_id)
-    return render_template('tools/worksessions.html', question_set=question_set)
+    return render_template('analysis/worksessions.html', question_set=question_set)
 
 
 @tools.route('/edit_question_set/<int:question_set_id>', methods=['GET', 'POST'])

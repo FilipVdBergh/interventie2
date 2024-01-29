@@ -19,19 +19,6 @@ analysis = Blueprint('analysis', __name__,
 def index():
     return render_template('analysis/index.html')
 
-@analysis.route('/tag/all')
-@login_required
-def all_tags():
-    if not current_user.role.edit_questionnaire:
-        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
-    
-    return render_template('analysis/tags.html', 
-                        edit_catalog_allowed=current_user.role.edit_catalog, 
-                        tags=Tag.query.order_by(Tag.name),
-                        question_sets=QuestionSet.query.order_by(QuestionSet.name),
-                        instrument_tag_assignments=InstrumentTagAssignment.query.order_by(InstrumentTagAssignment.id))
-
-
 
 @analysis.route('/tag/<int:tag_id>')
 @login_required
