@@ -3,7 +3,6 @@
 {% block steps %}
     <a href="{{ url_for('tools.index') }}" class="step">Selectietool ontwerpen</a>
     <a href="{{url_for('tools.design_question_set', question_set_id=question.question_set.id)}}" class="step">{{ question.question_set.name }}</a>
-    <span class="step">Routering</span>
 {% endblock %}
 
 {% block page_title %}

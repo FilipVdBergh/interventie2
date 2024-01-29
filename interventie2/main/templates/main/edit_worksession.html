@@ -3,7 +3,6 @@
 {% block steps %}
     <a href="{{ url_for('main.index') }}" class="step">Werksessies</a>
     <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">{{ worksession.name }}</a>
-    <span class="step">Aanpassen</span>
 {% endblock %}
 
 {% block page_title %}

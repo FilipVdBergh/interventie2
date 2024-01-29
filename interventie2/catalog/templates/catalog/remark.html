@@ -3,7 +3,6 @@
 {% block steps %}
     <a href="{{ url_for('catalog.index') }}" class="step">Instrumenten</a>
     <a href="{{ url_for('catalog.show_instrument', id=remark.instrument.id) }}" class="step">{{ remark.instrument.name }}</a>
-    <span class="step">Opmerking</span>
 {% endblock %}
 
 {% block page_title %}

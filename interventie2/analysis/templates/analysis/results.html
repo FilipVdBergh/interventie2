@@ -2,8 +2,8 @@
 
 {% block steps %}
     <a href="{{ url_for('analysis.index') }}" class="step">Zoeken</a>
-    <span class="step">Zoekresultaten</span>
-{% endblock %}
+
+    {% endblock %}
 
 {% block page_title %}
     Zoekresultaten '{{ search_text }}'
@@ -121,7 +121,7 @@
     <a name="Options"></a>
     {% for option in found_options %}
         <div class="search">
-            <div class="search_result_type">Antwoordoptie in selectietool <a href="{{ url_for('tools.design_question_set', question_set_id=option.question.question_set.id) }}">{{ option.question.question_set.name }}</a> op vraag <a href="{{ url_for('tools.edit_question', question_id=option.question.id) }}">{{ option.question.name }}</a></div>
+            <div class="search_result_type">Antwoordoptie in selectietool <a href="{{ url_for('tools.design_question_set', question_set_id=option.question.question_set.id) }}">{{ option.question.question_set.name }}</a> op vraag <a href="{{ url_for('tools.edit_question', question_id=option.question.id) }}">{{ option.question.name | truncate(30) }}</a></div>
             <div class="search_result">
                 <a href="{{ url_for('tools.edit_question_options', question_id=option.question.id) }}">{{ option.name }}</a>
             </div>

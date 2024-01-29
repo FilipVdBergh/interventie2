@@ -2,11 +2,10 @@
 
 {% block steps %}
     <a href="{{ url_for('admin.index') }}" class="step">Gebruikers</a> 
-    <span class="step">{{ user.name }} {% if user == current_user %}(mijn account){% endif %}</span>
 {% endblock %}
 
 {% block page_title %}
-    {{ user.name }}
+    {{ user.name }} {% if user == current_user %}(mijn account){% endif %}
 {% endblock %}
 
 {% block instrumenten %}   

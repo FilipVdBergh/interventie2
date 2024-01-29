@@ -4,9 +4,9 @@
     <a href="{{ url_for('catalog.index') }}" class="step">Instrumenten</a>
     {% if instrument is not none %}
         <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}" class="step">{{ instrument.name }}</a>
-        <span class="step">Instrument aanpassen</span>
+
     {% else %}
-        <span class="step">Instrument toevoegen</span>
+
     {% endif %}
 {% endblock %}
 

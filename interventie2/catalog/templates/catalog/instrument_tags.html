@@ -3,7 +3,6 @@
 {% block steps %}
     <a href="{{ url_for('catalog.index') }}" class="step">Instrumenten</a>
     <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}" class="step">{{ instrument.name }}</a>
-    <span class="step">Tags toewijzen aan instrument</span>
 {% endblock %}
 
 {% block page_title %}

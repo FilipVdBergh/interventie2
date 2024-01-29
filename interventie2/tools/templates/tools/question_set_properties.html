@@ -3,11 +3,6 @@
 
 {% block steps %}
     <a href="{{ url_for('tools.index') }}" class="step">Selectietool ontwerpen</a>
-    {% if question_set.id is not none %}
-        <span class="step">{{ question_set.name }}</span>
-    {% else %}
-        <span class="step">Nieuwe tool</span>
-    {% endif %}
 {% endblock %}
 
 {% block page_title %}
