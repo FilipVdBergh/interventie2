@@ -6,14 +6,37 @@
 {% endblock %}
 
 {% block page_title %}
-    Taganalyse
+    Tag: {{ tag.name }}
 {% endblock %}
 
 {% block body %}
-    <h1>Tag {{ tag.name }}</h1>
-    <ul><li><a href="{{ url_for('catalog.edit_tag', tag_id=tag.id) }}">Tag aanpassen</a></li></ul>
+    <h1>Informatie</h1>
+    <ul>
+        <li><a href="{{ url_for('catalog.edit_tag', tag_id=tag.id) }}">Tagnaam aanpassen</a></li>
+        <li>id: {{ tag.id }}</li>
+    </ul>
 
-    <h1>Selectietools: antwoordopties</h1>
+    <h1>Instrumenten met deze tag</h1>
+    <table>
+        <tr>
+            <th>Instrument met tag {{ tag.name }}</th>
+            <th>Beschrijving</th>
+            <th>Acties</th>
+        </tr>
+        {% for instrument_tag_assignment in instrument_tag_assignments %}
+                {% if tag == instrument_tag_assignment.tag %}
+                <tr>
+                    <td><a href="{{ url_for('catalog.show_instrument', id=instrument_tag_assignment.instrument.id) }}">{{ instrument_tag_assignment.instrument.name }}</a></td>
+                    <td>{{ instrument_tag_assignment.instrument.introduction | escape | truncate(200) | markdown }}</td>
+                    <td><a href="{{ url_for('catalog.instrument_tags', id=instrument_tag_assignment.instrument.id) }}"><button>Tags aanpassen</button></a></td>
+                </tr>
+                
+            {% endif %}
+        {% endfor %}
+    </table>
+
+
+    <h1>Antwoordopties met deze tag</h1>
     <table>
         <tr>
             <th>Selectietool</th>
@@ -38,7 +61,7 @@
             {% endfor %}
     </table>
 
-    <h1>Selectietools: routing</h1>
+    <h1>Routing op basis van deze tag</h1>
     <table>
         <tr>
             <th>Selectietool</th>
@@ -58,24 +81,7 @@
         </tr>
     </table>
 
-    <h1>Instrumenten</h1>
-    <table>
-        <tr>
-            <th>Instrument met tag {{ tag.name }}</th>
-            <th>Beschrijving</th>
-            <th>Acties</th>
-        </tr>
-        {% for instrument_tag_assignment in instrument_tag_assignments %}
-                {% if tag == instrument_tag_assignment.tag %}
-                <tr>
-                    <td><a href="{{ url_for('catalog.show_instrument', id=instrument_tag_assignment.instrument.id) }}">{{ instrument_tag_assignment.instrument.name }}</a></td>
-                    <td>{{ instrument_tag_assignment.instrument.introduction | escape | truncate(200) | markdown }}</td>
-                    <td><a href="{{ url_for('catalog.instrument_tags', id=instrument_tag_assignment.instrument.id) }}"><button>Tags aanpassen</button></a></td>
-                </tr>
-                
-            {% endif %}
-        {% endfor %}
-    </table>
+
     
 
 {% endblock %}

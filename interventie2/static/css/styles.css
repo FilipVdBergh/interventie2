@@ -254,6 +254,10 @@ td {
     padding-bottom: 2px;
 }
 
+.search_result:hover {
+    text-decoration: underline;
+}
+
 .search_result_type {
     text-transform: uppercase;
     font-size: small;
