@@ -44,9 +44,9 @@
                     <div class="plan_conclusion">
                         {{ plan.conclusion }} 
                     </div>
-                    <div class="plan_instruments">
+                    <div class="plan_instruments">Instrumenten: 
                         {% for chosen_instrument in plan.instruments %}
-                            Instrumenten: {{ chosen_instrument.instrument.name }}{{ ", " if not loop.last else "" }}
+                            {{ chosen_instrument.instrument.name }}{{ ", " if not loop.last else "" }}
                         {% endfor %}
                     </div>
                 </div>
