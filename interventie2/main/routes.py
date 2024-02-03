@@ -526,7 +526,7 @@ def conclusion(worksession_id):
 
 		db.session.add(plan)
 		db.session.commit()
-		return redirect(url_for('export.worksession', worksession_id=worksession.id))
+		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 
 	return render_template('/main/conclusion.html', 
 						worksession=worksession, 
