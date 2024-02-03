@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, send_file, requ
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, current_user, login_required
 from interventie2.forms import LoginForm, NewWorksessionForm, EditWorksessionForm, EditCaseForm, EditConclusionForm, MarkdownPlaygroundForm, EditWorksessionAccessForm
-from interventie2.models import User, Worksession, QuestionSet, Instrument, Option, Answer, Selection, Question, Process
+from interventie2.models import User, Worksession, QuestionSet, Instrument, Option, Answer, Selection, Question, Process, InstrumentChoice, Plan
 from interventie2.models import db, generate_secret_key
 from interventie2.classes import Advisor
 from sqlalchemy.sql import func
@@ -163,6 +163,72 @@ def show_worksession(worksession_id):
 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 	return render_template('main/worksession.html', worksession=Worksession.query.get(worksession_id), worksessions=Worksession.query.order_by(Worksession.name))
+
+
+@main.route('/worksession/<int:worksession_id>/plan/<int:plan_id>', methods=['GET', 'POST'])
+@login_required
+def show_plan(worksession_id, plan_id):
+	plan = Plan.query.get(plan_id)
+	worksession = plan.worksession
+	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+	if not current_user.role.see_all_worksessions and current_user not in worksession.allowed_users:
+		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+	
+	if request.method == "POST":
+		plan.description = request.form.get("plan_description")
+		plan.conclusion = chosen_instruments = request.form.get("plan_motivation")
+		#Erase previously selected instruments
+		for instrument_choice in plan.instruments:
+			db.session.delete(instrument_choice)
+		#Store all checked instruments
+		chosen_instruments = request.form.getlist('choose_instrument')
+		for instrument_id in chosen_instruments:
+			new_instrument_choice = InstrumentChoice(plan=plan, instrument_id=instrument_id)
+			db.session.add(new_instrument_choice)	
+
+		db.session.add(plan)
+		db.session.commit()
+		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
+
+	return render_template('main/plan.html', worksession=worksession, plan=plan, advisor=advisor)
+
+
+@main.route('/worksession/<int:worksession_id>/new_plan', methods=['GET', 'POST'])
+@login_required
+def new_plan(worksession_id):
+	worksession = Worksession.query.get(worksession_id)
+	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+	if not current_user.role.see_all_worksessions and current_user not in worksession.allowed_users:
+		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+	
+	plan = Plan(worksession=worksession, date=date.today())
+
+	if request.method == "POST":
+		plan.description = request.form.get("plan_description")
+		plan.conclusion = chosen_instruments = request.form.get("plan_motivation")
+		#Store all checked instruments
+		chosen_instruments = request.form.getlist('choose_instrument')
+		for instrument_id in chosen_instruments:
+			new_instrument_choice = InstrumentChoice(plan=plan, instrument_id=instrument_id)
+			db.session.add(new_instrument_choice)	
+
+		db.session.add(plan)
+		db.session.commit()
+		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
+
+	return render_template('main/plan.html', worksession=worksession, plan=plan, advisor=advisor)
+
+
+@main.route('/worksession/delete_plan/<int:plan_id>')
+@login_required
+def delete_plan(plan_id):
+	plan = Plan.query.get(plan_id)
+	worksession = plan.worksession
+	if not current_user.role.see_all_worksessions and current_user not in worksession.allowed_users:
+		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+	db.session.delete(plan)
+	db.session.commit()
+	return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 
 
 @main.route('/worksession/<int:worksession_id>/edit', methods=['GET', 'POST'])
@@ -428,19 +494,44 @@ def case(worksession_id):
 def conclusion(worksession_id):
 	worksession = Worksession.query.get(worksession_id)
 	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
-	
+
+
 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+	
+	# Create an interventionplan based on the finished worksession if one doesn't exist
+	# A plan is a selection of instruments relevant to a worksession, with some motivation.
+	# A worksession can have multiple plans, but plan 0 os always the one made immediately after
+	# the session. This way, the actually executed plan can also be stored in the database.
 
-	form = EditConclusionForm()
+	plan = Plan.query.filter_by(worksession_id=worksession.id).filter_by(stage=0).first()
+		# Stage = 0 is always the primary conclusion after finishing a worksession
+	if  plan is None:
+		plan = Plan(worksession=worksession,
+			  stage=0,
+			  description="Interventieplan aangemaakt na de werksessie")
 
-	if form.validate_on_submit():
-		worksession.conclusion = form.conclusion.data
+	if request.method == "POST":
+		#Store the conclusion with the new plan.
+		plan.conclusion = chosen_instruments = request.form.get("motivation")
+		#Erase previously selected instruments
+		for instrument_choice in plan.instruments:
+			db.session.delete(instrument_choice)
+		#Store all checked instruments
+		chosen_instruments = request.form.getlist('choose_instrument')
+		for instrument_id in chosen_instruments:
+			new_instrument_choice = InstrumentChoice(plan=plan,
+											instrument_id=instrument_id)
+			db.session.add(new_instrument_choice)	
+
+		db.session.add(plan)
 		db.session.commit()
-		return redirect(url_for('export.worksession', worksession_id=worksession.id))
-	elif request.method == "GET":
-		form.conclusion.data = worksession.conclusion
-	return render_template('/main/conclusion.html', worksession=worksession, form=form, advisor=advisor)
+		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
+
+	return render_template('/main/conclusion.html', 
+						worksession=worksession, 
+						advisor=advisor,
+						plan=plan)
 
 
 @main.route('/worksession/<int:worksession_id>/summary', methods=['GET', 'POST'])

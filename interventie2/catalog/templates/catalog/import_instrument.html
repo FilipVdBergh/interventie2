@@ -9,13 +9,13 @@
 {% endblock %}
 
 {% block body %}
-    <p>Importeer een bestand dat eerder is geëxporteerd. </p>
-    <form method="POST" action="" enctype="multipart/form-data">
-        <p>
-            <input type="checkbox" name="create_tags" value="create_tags" checked="yes">
-            <label>Importeer tags (ontbrekende tags worden aangemaakt).</label>
-        </p>
-        <p><input type="file" name="file"></p>
-        <p><input type="submit" value="Submit"></p>
-    </form>
+        <form method="POST" action="" enctype="multipart/form-data">
+            <p>
+                <input type="checkbox" name="create_tags" value="create_tags" checked="yes">
+                <label>Importeer tags (ontbrekende tags worden aangemaakt).</label>
+            </p>
+            <p><input type="file" name="file" multiple="multiple"></p>
+
+            <p><input type="submit" value="Verwerk bestanden"></p>
+        </form>
 {% endblock %}

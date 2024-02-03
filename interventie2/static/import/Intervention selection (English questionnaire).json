@@ -1,9 +1,9 @@
 {
   "filetype": "question_set",
   "filetype_version": "1.0",
-  "name": "Interventiekeuze",
+  "name": "Intervention selection (English questionnaire)",
   "default_process": 1,
-  "description": "Originele interventiekeuzevragenlijst. Formele handhavingsinstrumenten maken geen onderdeel uit van het instrumentarium in scope.",
+  "description": "A translation of the standard intervention selection tool for demonstration purposes. Note that the instruments in the catalog are not translated, and neither is the rest of the user interface.",
   "forbidden_tags": [
     {
       "name": "convergentie"
@@ -12,7 +12,7 @@
   "mandatory_tags": [],
   "questions": [
     {
-      "name": "Kenmerken van de doelgroep",
+      "name": "Characteristics of the target audience",
       "description": "",
       "allow_motivation": false,
       "allow_choice": false,
@@ -22,7 +22,7 @@
       "options": []
     },
     {
-      "name": "Wie is de doelgroep van de be\u00efnvloeding?",
+      "name": "Who is the intervention target audience?",
       "description": "",
       "allow_motivation": true,
       "allow_choice": true,
@@ -31,25 +31,25 @@
       "required_active_tags": [],
       "options": [
         {
-          "name": "Individuele onderneming",
+          "name": "Single company",
           "tags": [
             "individuele onderneming"
           ]
         },
         {
-          "name": "Meerdere ondernemingen",
+          "name": "Multiple companies",
           "tags": [
             "meer ondernemingen"
           ]
         },
         {
-          "name": "Marktsegment",
+          "name": "Market segment",
           "tags": [
             "marktsegment"
           ]
         },
         {
-          "name": "Consumenten",
+          "name": "Consumers",
           "tags": [
             "consumenten"
           ]
@@ -57,7 +57,7 @@
       ]
     },
     {
-      "name": "Is de doelgroep (organisatorisch) volwassen?",
+      "name": "Is the target audience mature/professional?",
       "description": "",
       "allow_motivation": true,
       "allow_choice": true,
@@ -66,13 +66,13 @@
       "required_active_tags": [],
       "options": [
         {
-          "name": "Overwegend volwassen/professioneel",
+          "name": "Mature/professional",
           "tags": [
             "volwassen"
           ]
         },
         {
-          "name": "Overwegend niet volwassen/niet professioneel",
+          "name": "Immature/not professional",
           "tags": [
             "onvolwassen"
           ]
@@ -80,7 +80,7 @@
       ]
     },
     {
-      "name": "Is de doelgroep proactief of afwachtend?",
+      "name": "Is the target audience proactive or waiting?",
       "description": "",
       "allow_motivation": true,
       "allow_choice": true,
@@ -89,13 +89,13 @@
       "required_active_tags": [],
       "options": [
         {
-          "name": "Overwegend proactief/constructief/welwillend",
+          "name": "Proactive/constructive/willing",
           "tags": [
             "proactief"
           ]
         },
         {
-          "name": "Overwegend afwachtend/sceptisch/dwarsliggend",
+          "name": "Waiting/skeptical/obstinate",
           "tags": [
             "afwachtend"
           ]
@@ -103,7 +103,7 @@
       ]
     },
     {
-      "name": "Kenmerken van het ongewenste gedrag",
+      "name": "Characteristics of the behaviour",
       "description": "",
       "allow_motivation": false,
       "allow_choice": false,
@@ -113,7 +113,7 @@
       "options": []
     },
     {
-      "name": "Gaat het om ongewenst gedrag, een overtreding of een andersoortig risico?",
+      "name": "Is the behavior harmful or illegal?",
       "description": "",
       "allow_motivation": true,
       "allow_choice": true,
@@ -122,35 +122,36 @@
       "required_active_tags": [],
       "options": [
         {
-          "name": "Overtreding",
+          "name": "Illegal",
           "tags": [
             "overtreding"
           ]
         },
         {
-          "name": "Ongewenst gedrag",
+          "name": "Only harmful",
           "tags": [
-            "ongewenst gedrag",
-            "geen overtreding"
-          ]
-        },
-        {
-          "name": "Overtreding en ongewenst gedrag",
-          "tags": [
-            "overtreding",
+            "geen overtreding",
             "ongewenst gedrag"
           ]
         },
         {
-          "name": "Andersoortig risico (bijv. nieuwe norm)",
+          "name": "Other type of risk",
           "tags": [
-            "andersoortig risico"
+            "andersoortig risico",
+            "geen overtreding"
+          ]
+        },
+        {
+          "name": "Both harmful and illegal",
+          "tags": [
+            "ongewenst gedrag",
+            "overtreding"
           ]
         }
       ]
     },
     {
-      "name": "Gaat het om een incident of om een patroon?",
+      "name": "Is the behavior incidental or a pattern?",
       "description": "",
       "allow_motivation": true,
       "allow_choice": true,
@@ -159,13 +160,13 @@
       "required_active_tags": [],
       "options": [
         {
-          "name": "Incident",
+          "name": "Incidental",
           "tags": [
             "incident"
           ]
         },
         {
-          "name": "Patroon",
+          "name": "Recurring pattern",
           "tags": [
             "patroon"
           ]
@@ -173,7 +174,7 @@
       ]
     },
     {
-      "name": "Wat lijkt de belangrijkste oorzaak van de overtreding/het ongewenste gedrag?",
+      "name": "What seems to be the main cause of the behavior?",
       "description": "",
       "allow_motivation": true,
       "allow_choice": true,
@@ -182,19 +183,19 @@
       "required_active_tags": [],
       "options": [
         {
-          "name": "Gebrek aan kennis/kunde (\"weten\")",
+          "name": "Lack of knowledge (of the rules and regulations)",
           "tags": [
             "niet weten"
           ]
         },
         {
-          "name": "Gebrek aan motivatie (\"willen\")",
+          "name": "Lack of motivation to comply",
           "tags": [
             "niet willen"
           ]
         },
         {
-          "name": "Gebrek aan mogelijkheden (\"kunnen\")",
+          "name": "Lack of ability to comply",
           "tags": [
             "niet kunnen"
           ]
@@ -202,7 +203,7 @@
       ]
     },
     {
-      "name": "Kenmerken van de mogelijke/gewenste be\u00efnvloeding",
+      "name": "Characteristics of the intervention",
       "description": "",
       "allow_motivation": false,
       "allow_choice": false,
@@ -212,70 +213,58 @@
       "options": []
     },
     {
-      "name": "Is het uitstralingseffect naar andere/nieuwe partijen belangrijk?",
+      "name": "Is the communicative aspect of the intervention important?",
       "description": "",
       "allow_motivation": true,
       "allow_choice": true,
-      "allow_multiselect": false,
+      "allow_multiselect": true,
       "allow_weight": false,
       "required_active_tags": [],
       "options": [
         {
-          "name": "Uitstralingseffect is hier (zeer) belangrijk",
+          "name": "Communication to other parties is (very) important",
           "tags": [
             "uitstralingseffect"
           ]
-        },
-        {
-          "name": "Uitstralingseffect is hier niet zo belangrijk",
-          "tags": []
         }
       ]
     },
     {
-      "name": "Is er momentum voor toezicht om te interveni\u00ebren?",
+      "name": "Is now the proper moment to act on this behavior?",
       "description": "",
       "allow_motivation": true,
       "allow_choice": true,
-      "allow_multiselect": false,
+      "allow_multiselect": true,
       "allow_weight": false,
       "required_active_tags": [],
       "options": [
         {
-          "name": "Er is momentum",
+          "name": "Yes, now is the moment to act",
           "tags": [
             "momentum"
           ]
-        },
-        {
-          "name": "Er is geen momentum",
-          "tags": []
         }
       ]
     },
     {
-      "name": "Is er een aangrijpingspunt voor toezicht om te interveni\u00ebren?",
+      "name": "Does the supervisor have a solid opportunity to act? (rules and regulations, media attention, political pressure or societal pressure)",
       "description": "",
       "allow_motivation": true,
       "allow_choice": true,
-      "allow_multiselect": false,
+      "allow_multiselect": true,
       "allow_weight": false,
       "required_active_tags": [],
       "options": [
         {
-          "name": "Er is een (stevig) aangrijpingspunt",
+          "name": "Yes, there is ample opportunity",
           "tags": [
             "aangrijpingspunt"
           ]
-        },
-        {
-          "name": "Er is geen aangrijpingspunt",
-          "tags": []
         }
       ]
     },
     {
-      "name": "Overige vragen",
+      "name": "Managerial considerations",
       "description": "",
       "allow_motivation": false,
       "allow_choice": false,
@@ -285,7 +274,7 @@
       "options": []
     },
     {
-      "name": "Hoeveel capaciteit heeft de toezichthouder beschikbaar voor be\u00efnvloeding?",
+      "name": "How much capacity is available for the intervention?",
       "description": "",
       "allow_motivation": true,
       "allow_choice": true,
@@ -294,38 +283,15 @@
       "required_active_tags": [],
       "options": [
         {
-          "name": "Beperkte capaciteit",
-          "tags": []
-        },
-        {
-          "name": "Ruime capaciteit",
+          "name": "Ample capacity is available",
           "tags": [
             "ruime toezichtscapaciteit"
           ]
-        }
-      ]
-    },
-    {
-      "name": "Als handhaving een re\u00eble optie is, neem dan contact op met de Handhavingseenheid",
-      "description": "",
-      "allow_motivation": true,
-      "allow_choice": true,
-      "allow_multiselect": false,
-      "allow_weight": false,
-      "required_active_tags": [
-        {
-          "name": "overtreding"
-        }
-      ],
-      "options": [
-        {
-          "name": "Handhaving is een re\u00eble optie",
-          "tags": []
         },
         {
-          "name": "Handhaving is geen re\u00eble optie",
+          "name": "Capacity is limited",
           "tags": [
-            "handhaving"
+            "beperkte toezichtcapaciteit"
           ]
         }
       ]

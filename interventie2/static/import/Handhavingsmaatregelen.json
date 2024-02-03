@@ -1,0 +1,69 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Handhavingsmaatregelen",
+  "introduction": "Er zijn verschillende handhavingsmaatregelen. Informele maatregelen zijn bijvoorbeeld: norminformerende, normoverdragende of een waarschuwingsbrief. Onder formele maatregelen vallen onder anderen: een aanwijzing, aanstellen curator, last onder dwangsom, vergunning intrekken, boete of een openbare waarschuwing.",
+  "description": "- Wanneer er sprake is van een duidelijk overtreding van wet- en regelgeving, is de inzet van een (in)formele maatregel passend. Inzet geeft een duidelijk signaal af naar de onderneming dat zij onwenselijk gedrag vertonen. \r\n- Bij het bepalen van de meest passende maatregel spelen onder meer de volgende factoren mee: de duur en ernst van de overtreding, de houding en verwijtbaarheid van de onderneming. De HE kan je helpen bij het bepalen van de passende maatregel.\r\n\r\n",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- Er moet sprake zijn van een overtreding door een individuele onderneming.\r\n- Opleggen van een maatregel is relatief tijdsintensief. Het wordt tegelijkertijd gezien als de instrumenten waar formeel de meeste kracht vanuit gaat. Denk dan bijvoorbeeld ook aan het afgeven van een signaal richting de markt. \r\n- Maatregelen worden aangemerkt als een toezichtsantecedent welke gevolgen kunnen hebben voor de betrouwbaarheidstoetsing van de betrokken personen. \r\n",
+  "examples": "- Meer informatie vind je op intranet bij HenK",
+  "links": "- Voor het bepalen van de meest passende maatregel: neem contact op met de HE en gebruik het [Handhavingskompas](https://connect.stelan.nl/sites/servicepunt/HE/Paginas/Handhavingskompas/Handhavingskompas.aspx).",
+  "tags": [
+    {
+      "name": "aangrijpingspunt",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "overtreding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "afwachtend",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "incident",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet willen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet kunnen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "onvolwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "geen overtreding",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "patroon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}
