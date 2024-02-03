@@ -126,10 +126,9 @@ def import_instrument():
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een instrument te importeren.')
     
     if request.method == "POST":
-        uploaded_files = request.files.getlist("file") 
-        errors = []
+        uploaded_file = request.files['file']
 
-        for uploaded_file in uploaded_files:
+        if uploaded_file.filename != '':
             instrument_file = os.path.join(current_app.static_folder, 'import', uploaded_file.filename)
             uploaded_file.save(instrument_file)
 
@@ -138,11 +137,10 @@ def import_instrument():
 
             # Check if the filetype and version match
             if not(instrument_json['filetype'] == 'instrument'):
-                errors.append(f"- Het bestand {instrument_json['name']} is niet geïmporteerd omdat het een ander bestandstype heeft (filetype: {instrument_json['filetype']}).")
-                continue # Skip the rest of the import and move to the next file.
+                return render_template('error/index.html', title='Verkeerd bestandstype', message=f"Het bestand beschrijft geen instrument (filetype: {instrument_json['filetype']}). Importeren is niet mogelijk.")
             if not(instrument_json['filetype_version'] == current_app.config['FILETYPE_VERSION']):
-                errors.append(f"- Het bestand {instrument_json['name']} is niet geïmporteerd omdat het een andere indelingsversie heeft dan de applicatie (versie {instrument_json['filetype_version']} in plaats van {current_app.config['FILETYPE_VERSION']}).")
-                continue
+                return render_template('error/index.html', title='Verkeerde indelingsversie', message=f"Het bestand heeft indelingsversie {instrument_json['filetype_version']}, en de applicatie verwacht indelingsversie {current_app.config['FILETYPE_VERSION']}. Importeren is niet mogelijk.")
+
 
             # Rename instrument in case of a duplicate instrument name in the database:
             imported_name = instrument_json['name']
@@ -174,15 +172,22 @@ def import_instrument():
                 newly_created_tags = []
                 for new_tag in instrument_json['tags']:
                     tag = Tag.query.filter_by(name=new_tag['name']).first()
-                    if tag is None:
-                        #Tag needs to be created first
-                        tag = Tag(name = new_tag['name'])
-                        newly_created_tags.append(tag.name)
-                    instrument_tag_assignment = InstrumentTagAssignment(instrument = instrument,
+                    if tag is not None:
+                        # Tag already in tag list
+                        instrument_tag_assignment = InstrumentTagAssignment(instrument = instrument,
                                                                     tag = tag,
                                                                     weight = new_tag['weight'],
                                                                     multiplier = new_tag['multiplier'])
-                    db.session.add(instrument_tag_assignment)
+                    else:
+                        #Tag needs to be created first
+                        tag = Tag(name = new_tag['name'])
+                        newly_created_tags.append(tag.name)
+                        instrument_tag_assignment = InstrumentTagAssignment(instrument = instrument,
+                                                                    tag = tag,
+                                                                    weight = new_tag['weight'],
+                                                                    multiplier = new_tag['multiplier'])
+                        
+                        db.session.add(instrument_tag_assignment)
             
             # Add remark about importing this instrument
             import_remark = f'Instrument geïmporteerd uit bestand: {uploaded_file.filename}. '
@@ -195,10 +200,7 @@ def import_instrument():
             db.session.add(remark)
 
             db.session.commit()
-        if len(errors) > 0:
-            errors.insert(0, f"In totaal zijn er {len(uploaded_files)} bestanden verwerkt. In {len(errors)} bestand(en) zijn problemen gevonden waardoor ze niet zijn geïmporteerd. Hieronder staat een overzicht van deze bestanden:")
-            return  render_template('error/index.html', title='Verkeerd bestandstype', message=errors)
-        return redirect(url_for('catalog.index'))
+            return redirect(url_for('catalog.show_instrument', id=instrument.id))
     return render_template('catalog/import_instrument.html')
 
 

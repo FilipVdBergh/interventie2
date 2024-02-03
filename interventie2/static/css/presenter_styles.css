@@ -26,16 +26,10 @@ p {
 h1 {
     padding-top: 10px;
     font-size: x-large;
-    color: black;
 }
 
 h2 {
     font-size: large;
-
-}
-
-h3 {
-    font-style: italic;
 }
 
 .divsteps {   
@@ -87,7 +81,7 @@ h3 {
 
 .worksession_title {
     font-size:xx-large;
-    font-weight: bold;
+    font-weight: lighter;
     padding-bottom: 5x;
 }
 

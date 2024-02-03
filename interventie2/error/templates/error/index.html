@@ -9,15 +9,9 @@
 
 {% block body %}
     <h1>{{ title }}</h1>
-    {% if message is string %}
-        {{ message }}
-    {% else %}
-        {% for line in message %}
-            <div>
-                {{ line | markdown }}
-            </div>
-        {% endfor %}
-    {% endif %}
+    <div>
+        {{ message | markdown }}
+    </div>
     <br>
     {% if error | length %}
         <h1 class="collapsible">Technische informatie</h1>
@@ -25,5 +19,5 @@
             {{ error }}
         </div>
     {% endif %}
-    <!-- <button onclick="window.history.back();">Terug</button> -->
+    <button onclick="window.history.back();">Terug</button>
 {% endblock %}

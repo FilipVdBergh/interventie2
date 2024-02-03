@@ -60,7 +60,6 @@ class User(db.Model, UserMixin):
 
     role = relationship('Role')
     worksession = relationship('Worksession', back_populates='creator')
-    plan = relationship('Plan', back_populates='creator')
     allowed_worksessions = relationship('Worksession', secondary='worksession_access', back_populates='allowed_users')
     owned_instruments = relationship('Instrument', back_populates='owner')
     
@@ -95,8 +94,8 @@ class Worksession(db.Model):
     date          = db.Column(db.String(100))
     description   = db.Column(db.String(2000), nullable=False, default="")
     effect        = db.Column(db.String(2000), nullable=False, default="")
-    conclusion    = db.Column(db.String(2000), nullable=False, default="") # This is legacy. Conclusions are now stored as part of a Plan.
-    link_to_page  = db.Column(db.String(1000), nullable=False, default="")
+    conclusion    = db.Column(db.String(2000), nullable=False, default="")
+    link_to_page  = db.Column(db.String(1000))
     show_instruments = db.Column(db.Boolean, default=True)
     mark_top_instruments = db.Column(db.Integer, nullable=False, default=1)
     show_rest_instruments = db.Column(db.Boolean, default=False)
@@ -126,7 +125,6 @@ class Worksession(db.Model):
     answers = relationship('Answer', back_populates='worksession', cascade='all, delete-orphan')
     question_set = relationship('QuestionSet')
     process = relationship('Process')
-    plan = relationship('Plan', back_populates='worksession', cascade='all, delete-orphan')
 
 
     def is_option_selected(self, option):
@@ -187,39 +185,6 @@ WorksessionAccess = db.Table('worksession_access',
                             db.Column('id', db.Integer, primary_key=True),
                             db.Column('worksession_id', db.Integer, db.ForeignKey('worksessions.id')),
                             db.Column('user_id', db.Integer, db.ForeignKey('users.id')))
-
-
-class Plan(db.Model):
-    __tablename__ = 'plans'
-    id            = db.Column(db.Integer, primary_key=True)
-    stage         = db.Column(db.Integer) # Each new plan has a later stage. The initial conclusion of a worksession is always stage 0.
-    date          = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    description   = db.Column(db.String(2000), nullable=False, default="")
-    conclusion    = db.Column(db.String(2000), nullable=False, default="")
-    worksession_id= db.Column(db.Integer, db.ForeignKey('worksessions.id'), nullable=False) #references worksessions.id
-    creator_id    = db.Column(db.Integer, db.ForeignKey('users.id')) #references users.id
-
-    creator = relationship('User', back_populates='plan')
-    worksession = relationship('Worksession')
-    instruments = relationship('InstrumentChoice', back_populates='plan', cascade='all, delete-orphan')
-
-    def __repr__(self):
-        return f'<Plan stage {self.stage} in {self.worksession}>'
-
-
-class InstrumentChoice(db.Model):
-    __tablename__ = 'instrument_choice'
-    id            = db.Column(db.Integer, primary_key=True)
-    plan_id       = db.Column(db.Integer, db.ForeignKey('plans.id'), nullable=False)
-    instrument_id = db.Column(db.Integer, db.ForeignKey('instruments.id'), nullable=False)
-    motivation    = db.Column(db.String(2000), nullable=False, default="")
-    weight        = db.Column(db.Numeric(2,1), nullable=False, default=1.0)
-
-    plan           = relationship('Plan')
-    instrument     = relationship('Instrument')
-
-    def __repr__(self):
-        return f'<{self.instrument} in {self.plan}>'
 
 
 class Instrument(db.Model):

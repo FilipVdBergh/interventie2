@@ -2,14 +2,9 @@
   "filetype": "question_set",
   "filetype_version": "1.0",
   "name": "Handhavingskompas",
-  "default_process": 2,
   "description": "Conceptversie van het Handhavingskompas. Gebruik het Handhavingskompas om een passende maatregel te kiezen.",
   "forbidden_tags": [],
-  "mandatory_tags": [
-    {
-      "name": "handhaving"
-    }
-  ],
+  "mandatory_tags": [],
   "questions": [
     {
       "name": "Wie",
@@ -18,7 +13,6 @@
       "allow_choice": false,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": []
     },
     {
@@ -28,7 +22,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Accountrelatie",
@@ -55,7 +48,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Groot",
@@ -82,7 +74,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Hoog",
@@ -109,7 +100,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja, op dezelfde of vergelijkbare normen als in het huidige dossier",
@@ -146,11 +136,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [
-        {
-          "name": "[kompas] recidive"
-        }
-      ],
       "options": [
         {
           "name": "Ja, met een formele maatregel",
@@ -177,14 +162,6 @@
       "allow_choice": true,
       "allow_multiselect": true,
       "allow_weight": true,
-      "required_active_tags": [
-        {
-          "name": "[kompas] recidive"
-        },
-        {
-          "name": "[kompas] vaker in overtreding"
-        }
-      ],
       "options": [
         {
           "name": "Proactief om eerdere overtredingen te melden",
@@ -203,7 +180,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja",
@@ -230,7 +206,6 @@
       "allow_choice": false,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": []
     },
     {
@@ -240,7 +215,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja",
@@ -263,7 +237,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja",
@@ -286,7 +259,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja, om een maatschappelijk relevant en actueel thema",
@@ -309,7 +281,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Lange duur, overtreding meermaals begaan",
@@ -344,7 +315,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja",
@@ -367,7 +337,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja",
@@ -386,7 +355,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja",
@@ -413,7 +381,6 @@
       "allow_choice": false,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": []
     },
     {
@@ -423,7 +390,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja, en de informatie kun je kwalificeren als misleidend",
@@ -450,7 +416,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja, zij hebben al (financi\u00eble) schade geleden",
@@ -477,11 +442,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [
-        {
-          "name": "[kompas] schade"
-        }
-      ],
       "options": [
         {
           "name": "Ja, volledig",
@@ -504,7 +464,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja",
@@ -527,7 +486,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja, en dit voordeel is ook zichtbaar in de priv\u00e9sfeer genoten",
@@ -550,7 +508,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja",
@@ -573,7 +530,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja",
@@ -600,7 +556,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja",
@@ -627,7 +582,6 @@
       "allow_choice": false,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": []
     },
     {
@@ -637,7 +591,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja, en de overtreder is de overtreding al aan het herstellen",
@@ -673,7 +626,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": []
     },
     {
@@ -683,7 +635,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": []
     },
     {
@@ -693,7 +644,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Ja, zowel tijdig als structureel",
@@ -720,11 +670,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [
-        {
-          "name": "[kompas] herstel onvoldoende"
-        }
-      ],
       "options": [
         {
           "name": "Ja",
@@ -751,11 +696,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": true,
-      "required_active_tags": [
-        {
-          "name": "[kompas] herstel onvoldoende"
-        }
-      ],
       "options": [
         {
           "name": "Ja",

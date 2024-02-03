@@ -9,53 +9,58 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Beschrijving casus</h1>
+    <h1>Samenvatting casus</h1>
     <div>{{ worksession.description | escape | markdown }}</div>
     <div>{{ worksession.effect | escape | markdown}}</div>
 
+   
+
     <form method="POST">
+        {{ form.csrf_token }}
         <h1>Definitieve overwegingen</h1>
-        <div>
-            De export van de werksessie biedt aanknopingspunten voor een plan van aanpak. 
-            Beschrijf hieronder welke instrumenten relevant zijn voor deze casus en welke 
-            overwegingen daarbij een rol spelen. Ook kan besloten worden niets te doen. 
-            De aanpak kan gebaseerd zijn op de instrumenten die door de keuzehulp zijn 
-            geprioriteerd, maar dat is niet noodzakelijk.
-        </div>
-        <br><textarea name="motivation" rows="5" cols="100">{{ plan.conclusion }}</textarea>
-        <br><button>Opslaan</button>
+        De export van de werksessie biedt aanknopingspunten voor een plan van aanpak. 
+        Beschrijf hieronder welke instrumenten relevant zijn voor deze casus en welke 
+        overwegingen daarbij een rol spelen. Ook kan besloten worden niets te doen. 
+        De aanpak kan gebaseerd zijn op de instrumenten die door de keuzehulp zijn 
+        geprioriteerd, maar dat is niet noodzakelijk.
+        <br>
+        <br>{{ form.conclusion }}
+        <br>{{ form.submit }}
+    </form>
 
     <h1>Instrumenten</h1>
-    <div>
-        Vink de instrumenten aan die je van plan bent in te zetten. Deze informatie kan 
-        worden gebruikt om de selectioetool te verbeteren.
-    </div>
     <table>
         <tr>
             <th>Instrument</th>
-            <th>Interventieplan</th>
+            <th></th>
+            <th>Score</th>
         </tr>
         {% for (instrument, score) in advisor.get_sorted_instruments() %}
-            {% if score >= (advisor.get_highest_score() - worksession.mark_top_instruments) %}
-                <tr>
-                    <td>
-                        <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }} ({{ score | round(1) }})</a>
-                    </td>
-                    <td>
-                        <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
-                            {% for chosen_instrument in plan.instruments %}
-                                {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
-                            {% endfor %}
-                        >
-                    </td>
-                </tr>
-            {% endif %}
-
+            <tr>
+                <td><a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }}</a></td>
+                <td>{{ instrument.introduction | truncate(250) | escape | markdown }}</td>
+                <td>{{ score | round(2) }}</td>
+            </tr>
         {% endfor %}
-    </form>
     </table>
 
-
+    <h1>Antwoorden</h1>
+    {% for question in worksession.question_set.questions | sort(attribute='order') %}
+        {% if question.is_category %}
+            <h2 class="question_category">{{ question.name }}</h2>
+        {% elif not question.is_category %}          
+            {{ question.name }}:
+            <ul>
+                {% for selection in worksession.answers | selectattr('question', '==', question) | map(attribute='selection') %}
+                    {% for selected in selection %}
+                        <li>[{{ selected.option.name }}]</li>
+                    {% endfor %}
+                {% endfor %}
+                <li>{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first | truncate(75) }}</li>
+                <li>Factor {{ worksession.answers | selectattr('question', '==', question) | map(attribute='weight') | first }}</li>
+            </ul>
+        {% endif %}
+    {% endfor %}
     <h1>Actieve tags</h1>
     {% for active_tag in advisor.get_active_tags() %}
         <span class="tag">{{ active_tag.tag.name }}: {{ active_tag.weight}}</span>

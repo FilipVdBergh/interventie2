@@ -1,14 +1,9 @@
 {
   "filetype": "question_set",
   "filetype_version": "1.0",
-  "name": "Interventiekeuze",
-  "default_process": 1,
+  "name": "Interventiekeuze Test",
   "description": "Originele interventiekeuzevragenlijst. Formele handhavingsinstrumenten maken geen onderdeel uit van het instrumentarium in scope.",
-  "forbidden_tags": [
-    {
-      "name": "convergentie"
-    }
-  ],
+  "forbidden_tags": [],
   "mandatory_tags": [],
   "questions": [
     {
@@ -18,7 +13,6 @@
       "allow_choice": false,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": []
     },
     {
@@ -28,7 +22,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Individuele onderneming",
@@ -57,13 +50,12 @@
       ]
     },
     {
-      "name": "Is de doelgroep (organisatorisch) volwassen?",
+      "name": "Hoe zou je de volwassenheid van deze doelgroep omschrijven?",
       "description": "",
       "allow_motivation": true,
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Overwegend volwassen/professioneel",
@@ -86,7 +78,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Overwegend proactief/constructief/welwillend",
@@ -109,7 +100,6 @@
       "allow_choice": false,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": []
     },
     {
@@ -119,7 +109,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Overtreding",
@@ -156,7 +145,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Incident",
@@ -179,7 +167,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Gebrek aan kennis/kunde (\"weten\")",
@@ -208,7 +195,6 @@
       "allow_choice": false,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": []
     },
     {
@@ -218,7 +204,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Uitstralingseffect is hier (zeer) belangrijk",
@@ -239,7 +224,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Er is momentum",
@@ -260,7 +244,6 @@
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Er is een (stevig) aangrijpingspunt",
@@ -281,17 +264,15 @@
       "allow_choice": false,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": []
     },
     {
-      "name": "Hoeveel capaciteit heeft de toezichthouder beschikbaar voor be\u00efnvloeding?",
+      "name": "Hoeveel capaciteit heeft de AFM beschikbaar voor be\u00efnvloeding?",
       "description": "",
       "allow_motivation": true,
       "allow_choice": true,
       "allow_multiselect": false,
       "allow_weight": false,
-      "required_active_tags": [],
       "options": [
         {
           "name": "Beperkte capaciteit",
@@ -301,31 +282,6 @@
           "name": "Ruime capaciteit",
           "tags": [
             "ruime toezichtscapaciteit"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Als handhaving een re\u00eble optie is, neem dan contact op met de Handhavingseenheid",
-      "description": "",
-      "allow_motivation": true,
-      "allow_choice": true,
-      "allow_multiselect": false,
-      "allow_weight": false,
-      "required_active_tags": [
-        {
-          "name": "overtreding"
-        }
-      ],
-      "options": [
-        {
-          "name": "Handhaving is een re\u00eble optie",
-          "tags": []
-        },
-        {
-          "name": "Handhaving is geen re\u00eble optie",
-          "tags": [
-            "handhaving"
           ]
         }
       ]

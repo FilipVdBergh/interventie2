@@ -57,10 +57,11 @@
 
     <body>
         <div class="divsteps">
+            <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">&#9204;</a>
             <a href="{{ url_for('main.case', worksession_id=worksession.id) }}" class="step">1. Casus</a>
-            <a href="{{ url_for('main.process_single', worksession_id=worksession.id) }}" class="step">2. {{ worksession.question_set.name }}</a>
+            <a href="{{ url_for('main.process_simultaneous', worksession_id=worksession.id) }}" class="step">2. {{ worksession.question_set.name }}</a>
             <a href="{{ url_for('main.conclusion', worksession_id=worksession.id) }}" class="step">3. Conclusie</a>
-            <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">Afsluiten</a>
+            <a href="{{ url_for('export.worksession', worksession_id=worksession.id) }}" class="step">Afsluiten</a>
             {% include 'presenter_mode_screen_controls.html' %}
         </div>
 
