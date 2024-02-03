@@ -1,0 +1,64 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Seminar of webinar (grootschalig)",
+  "introduction": "Organiseren van een grootschalige bijeenkomst om een breder onderwerp op de kaart te zetten bij financi\u00eble professionals en andere stakeholders om te laten zien dat de AFM het belangrijk vindt en wilt uitstralen \u2019thought leader\u2019 te zijn. ",
+  "description": "- Wanneer je aandacht wilt geven aan een onderwerp dat belangrijk, nieuw, erg in ontwikkeling en/of juist onderbelicht is. ",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- Het is een middel om urgentie en momentum te cre\u00ebren bij een grotere groep ondernemingen. Het is minder persoonlijk en indringend dan bijvoorbeeld een ronde tafel, maar uiteraard meer effici\u00ebnt om grotere groepen te bereiken dan 1:1 gesprekken met ondernemingen. \r\n- Het potenti\u00eble bereik is groot, maar de organisatie van een grootschalig seminar is arbeidsintensief en kostbaar. Je kunt vaak hetzelfde bereiken via een generieke rapportage of een sectorbrief, ook al zijn deze minder persoonlijk en interactief.\r\n- Het kan fysiek maar (met flinke inzet) ook online. Bij een online event moet je een studio cre\u00ebren en veel doen met filmpjes en online publiek. Deelsessies zijn lastiger te organiseren online. Wanneer het iets toevoegt aan seminars die al door anderen worden georganiseerd, dan kun je daarop meeliften door als spreker op te treden of een workshop te verzorgen. \r\n\r\nDe kracht van Seminar/webinar (grootschalig) hangt af van: \r\n\r\n- De helderheid van je doelen, [...].",
+  "examples": "- Online-bijeenkomst met Finfluencers die belegggingsadvies gaven. Zie ook de animaties die zijn gemaakt om uitleg te geven. De AFM heeft de finfluencers die bij haar in beeld zijn duidelijk gemaakt welke regels voor hen gelden en dat ze zich hieraan moeten houden.",
+  "links": "",
+  "tags": [
+    {
+      "name": "marktsegment",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "uitstralingseffect",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "andersoortig risico",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "afwachtend",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "beperkte toezichtcapaciteit",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "momentum",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "volwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "meer ondernemingen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 0.0
+    }
+  ]
+}

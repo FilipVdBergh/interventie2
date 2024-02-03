@@ -1,0 +1,64 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Ronde tafel ",
+  "introduction": "Organiseren van een fysiek overleg met leiders uit de sector om ontwikkelingen, risico's, toezichtbevindingen en aanbevelingen te bespreken. ",
+  "description": "- Wanneer je het leiderschap van (grote) ondernemingen wilt confronteren met hoe de sector ervoor staat, bijvoorbeeld over de beheersing van een bepaald risico, of over de adoptie van een recent ge\u00efntroduceerde norm. \r\n- Wanneer je de algehele urgentie om in actie te komen wilt vergroten. ",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- De Ronde Tafel is een stap persoonlijker dan de publicatie van een Sectorbrief of Generieke Rapportage en een stap minder confronterend dan een 1:1 gesprek met ondernemingen.  \r\n- De Ronde Tafel is een stap informeler dan een Sectorbrief en biedt de mogelijkheid om sociale druk te genereren. \r\n- De Ronde Tafel is (in potentie) meer effectief (aanspreken van individuele leiders) dan effici\u00ebnt (bereik is beperkt tot het aantal partijen aan tafel).\r\n\r\nDe kracht van Ronde Tafel hangt af van: \r\n\r\n- De acceptatie van leiders van het Waarom van de boodschap;\r\n- De mate waarin het leiderschap zich aangesproken voelt (\u201cZo gaat het bij ons niet\u201d); \r\n- De groepsdynamiek en de eventuele sociale druk die gegenereerd wordt; en\r\n- Hun beeld over de professionaliteit (geloofwaardigheid) van de AFM.  ",
+  "examples": "- Ronde Tafel van FV (in jan/feb 2022) over het belang van de integratie van goede niet-financi\u00eble informatie met financi\u00eble informatie in de jaarrekening. Door met elkaar de belemmeringen en mogelijkheden te bespreken wordt er indirect commitment afgegeven en ontstaat er een positieve sociale norm waaruit blijkt dat het normaal is om hier nu serieus mee bezig te zijn. ",
+  "links": "",
+  "tags": [
+    {
+      "name": "marktsegment",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "meer ondernemingen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "momentum",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "andersoortig risico",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "beperkte toezichtcapaciteit",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "volwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "uitstralingseffect",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "proactief",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet willen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

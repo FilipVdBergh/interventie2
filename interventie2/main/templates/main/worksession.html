@@ -6,7 +6,8 @@
 
 {% block instrumenten %}   
     <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button style="width: 100%;">Start de werksessie</button></a><br><br>
-    {% include 'link_new_worksession.html' %}   
+    {% include 'link_new_worksession.html' %} 
+    {% include 'link_new_plan.html' %}
 {% endblock %} 
 
 
@@ -32,12 +33,32 @@
     {{ worksession.participants | escape | markdown }}
     <h1>Beoogd effect</h1>
     {{ worksession.effect | escape | markdown }}
-    <h1>Conclusie</h1>
-    {{ worksession.conclusion | escape | markdown }}
-    {% if worksession.link_to_page is not none %}
+
+    {% if worksession.plan | length %}
+        <h1>Interventieplan</h1>
+            {% for plan in worksession.plan %}
+                <div class="plan_summary">
+                    <div class="plan_description">
+                        <a href="{{ url_for('main.show_plan', worksession_id=worksession.id, plan_id=plan.id) }}">{{ plan.description }}</a>
+                    </div>
+                    <div class="plan_conclusion">
+                        {{ plan.conclusion }} 
+                    </div>
+                    <div class="plan_instruments">
+                        {% for chosen_instrument in plan.instruments %}
+                            Instrumenten: {{ chosen_instrument.instrument.name }}{{ ", " if not loop.last else "" }}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        
+    {% endif %}
+
+    {% if worksession.link_to_page  | length > 0%}
         <h1>Link naar projectfolder</h1>
         {{ worksession.link_to_page | escape | markdown }}
     {% endif %}
+
     {% if worksession.children | length %}
         <h1>Afgeleide sessies</h1>
         <table>
@@ -94,7 +115,7 @@
 
     <h1>Acties</h1>
     <ul>
-        <li><a href="{{ url_for('main.worksession_summary', worksession_id=worksession.id) }}">Samenvatting</a></li>
+        <li><a href="{{ url_for('main.worksession_summary', worksession_id=worksession.id) }}">Overzicht van de uitkomsten</a></li>
         <li><a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}">Sessie aanpassen of verwijderen</a></li>
         {% if not worksession.archived %}<li><a href="{{ url_for('main.archive_worksession', worksession_id=worksession.id) }}">Sessie archiveren</a></li>{% endif %}
         <li><a href="{{ url_for('main.share_worksession', worksession_id=worksession.id) }}">Toegang tot de sessie beheren</a></li>
