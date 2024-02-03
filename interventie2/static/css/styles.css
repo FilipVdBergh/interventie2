@@ -22,7 +22,7 @@ h1 {
 
 h2 {
     font-size: large;
-    font-weight: lighter;
+
 }
 
 h3 {
@@ -48,6 +48,26 @@ td {
     padding-right: 10px;
     border-bottom: solid 1px #EEEEEE;
     vertical-align: top;
+}
+
+.plan_summary {
+    padding-bottom: 10px;
+}
+
+.plan_description {
+    font-weight: bold;;
+}
+
+.plan_stage {
+
+}
+
+.plan_conclusion {
+
+}
+
+.plan_instruments {
+    font-size: smaller;
 }
 
 .disabled {

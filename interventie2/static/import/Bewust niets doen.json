@@ -1,0 +1,59 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Bewust niets doen",
+  "introduction": "De bewuste keuze om op dit moment geen actie te ondernemen, ook al is er aanleiding om actie te ondernemen. ",
+  "description": "- Wanneer er gerede kans is dat de onderneming of de markt het probleem zelf oplost. \r\n- Wanneer met het zichtbaar niets doen de druk toeneemt bij de onderneming(en) om gedrag aan te passen/situatie op te lossen. \u2018We geven jullie nu de ruimte\u2026\u2019. \r\n- Wanneer de baten (effect, gedragsverandering) van het ondernemen van de actie niet opwegen tegen de kosten ervan (capaciteitsbeslag, bijeffecten, andere prioriteiten in het toezicht). \r\n- Wanneer er geen stevig aangrijpingspunt is voor toezicht.",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- Het bewust afzien van actie \u2013 terwijl er indicaties zijn van een probleem of vaststelling van ongewenst gedrag \u2013 is lastig uitlegbaar. \r\n- Het raakt aan de \u2018haunting question\u2019 Waarom greep de AFM niet in? \r\n- De afweging om niets te doen moet uitlegbaar en vindbaar zijn. Bijvoorbeeld, we houden risico-geori\u00ebnteerd toezicht, dat betekent dat binnen de capaciteit die we hebben keuzes maken in waar we onze aandacht op richten.\r\n\r\nDe kracht van Bewust niets doen hangt af van:\r\n\r\n- De zichtbare bereidheid van de AFM om andere instrumenten in te zetten als het Bewust niets doen niet de gewenste veranderingen oplevert.\r\n- De uitlegbaarheid richting de buitenwereld. ",
+  "examples": "- Dit hebben we in de praktijk voor zover bekend nog niet toegepast.",
+  "links": "",
+  "tags": [
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "beperkte toezichtcapaciteit",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "marktsegment",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "meer ondernemingen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet kunnen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "volwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "proactief",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ongewenst gedrag",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

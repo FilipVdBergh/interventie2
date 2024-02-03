@@ -1,0 +1,29 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Toezichtbrief",
+  "introduction": "De AFM onderscheidt vanaf 1 januari 2024 twee varianten van informele handhaving (bij individuele partijen): de waarschuwingsbrief en de toezichtbrief (zonder waarschuwing). Beide varianten kunnen ook in de vorm van een gesprek: het toezichtgesprek en het waarschuwingsgesprek. \r\n\r\nDe waarschuwingsbrief en het waarschuwingsgesprek zijn conform het Handhavingsbeleid AFM en DNB informele maatregelen. Wanneer de AFM deze informele maatregel oplegt dan levert dit voor de eventuele (mede)beleidsbepalers en leden van het toezichthoudend orgaan een toezichtantecedent op. De toezichtbrief en het toezichtgesprek zijn geen informele maatregel en worden door de AFM niet aangemerkt als toezichtantecedent op.",
+  "description": "",
+  "referenced_elsewhere": true,
+  "reference_link": "https://connect.stelan.nl/sites/servicepunt/HE/Paginas/6.%20Informele%20handhaving/b%20Informele%20individuele%20handhaving/Toezichtbrief-en-waarschuwing.aspx",
+  "considerations": "",
+  "examples": "",
+  "links": "",
+  "tags": [
+    {
+      "name": "handhaving",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[kompas] eerste overtreding",
+      "weight": 4.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[kompas] vaker in overtreding",
+      "weight": 2.0,
+      "multiplier": 1.0
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Wft Curator",
+  "introduction": "\u200bEen Wft curator is een stille curator die wordt benoemd als er overtredingen moeten worden be\u00ebindigd. Op grond van artikel 1:76 Wft kan de AFM een curator benoemen ten aanzien van alle of bepaalde organen of vertegenwoordigers van een financi\u00eble onderneming indien die financi\u00eble onderneming niet voldoet aan de Wft. ",
+  "description": "",
+  "referenced_elsewhere": true,
+  "reference_link": "https://connect.stelan.nl/sites/servicepunt/HE/Paginas/7.%20Formele%20maatregelen/a%20Maatregelen/Curator.aspx",
+  "considerations": "",
+  "examples": "",
+  "links": "",
+  "tags": [
+    {
+      "name": "handhaving",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[kompas] eerste overtreding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[kompas] vaker in overtreding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

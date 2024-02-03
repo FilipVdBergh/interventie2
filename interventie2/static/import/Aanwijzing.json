@@ -1,0 +1,29 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Aanwijzing",
+  "introduction": "Een aanwijzing is een formeel besluit waarin de toezichthouder een overtreder[1] voorschrijft om binnen een door de toezichthouder bepaalde (1) (redelijke) termijn een (2) gedragslijn te volgen, met als doel dat de overtreder zich aan de wettelijke regels houdt. Voor deze wiki wordt voor het gemak de algemene aanwijzing in de Wft (Artikel 1:75 Wft[2]) als uitgangspunt genomen. De aanwijzing is de lichtste formele maatregel, in die zin dat er geen dwangsom(men) aan verbonden zijn\u200b.",
+  "description": "",
+  "referenced_elsewhere": true,
+  "reference_link": "https://wiki.stelan.nl/aanwijzing/Pages/Home.aspx",
+  "considerations": "",
+  "examples": "",
+  "links": "",
+  "tags": [
+    {
+      "name": "handhaving",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[kompas] eerste overtreding",
+      "weight": 3.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[kompas] vaker in overtreding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

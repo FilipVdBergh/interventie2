@@ -1,0 +1,64 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Generieke rapportage",
+  "introduction": "Extern publiceren van rapportage met bevindingen uit een toezichtsonderzoek, veelal gecombineerd met een standpuntbepaling van de AFM en handvatten ter verbetering. ",
+  "description": "- Wanneer je groepen ondernemingen wilt informeren over de uitkomsten van een onderzoek.\r\n- Wanneer je ondernemingen wilt aansporen tot betere naleving; met een generieke rapportage de \u2018stand van de markt\u2019 is, inclusief mogelijke peer pressure en good practices. \r\n- Generieke rapportage kan goed gecombineerd worden met individuele be\u00efnvloeding van ondernemingen die in scope van het onderzoek waren. \r\n",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- De Generieke Rapportage is een effici\u00ebnte manier om een grote groep ondernemingen te bereiken, en daarnaast een breder publiek inzicht te geven in de bevindingen van de AFM.\r\n- Met een generieke rapportage bereik je een grotere doelgroep, maar dit instrument is minder indringend, persoonlijk of op maat gesneden dan een individuele rapportage of een-op-een gesprek.\r\n- De Generieke rapportage is een stap minder indringend dan een sectorbrief.\r\n- De generieke rapportage doet minder een beroep op bestuurders dan de sectorbrief. \r\n- Een generieke rapportage leent zich goed voor het overbrengen van de resultaten van normnaleving binnen de sector aan de hand van een nulmeting, een meting, etc.\r\n\r\nDe kracht van Generieke rapportage hangt af van:\r\n\r\n- Een goede communicatiestrategie: bedenk goed wat de nieuwswaarde van de generieke rapportage is en hoe de boodschap bij de doelgroep kan landen. \r\n\r\n",
+  "examples": "- Rapportage onderzoek naar de impact en werkwijze van Raad van Commissarissen van OOB-accountantsorganisaties uit 2021. Het onderzoek laat aan de hand van praktijkvoorbeelden zien hoe de rvc\u2019s van de zes OOB-accountantsorganisaties werken. Daarmee biedt de AFM-handvatten voor het verder vormgeven van intern toezicht. Deze lessen zijn ook van belang in het licht van het wetsvoorstel toekomst accountancysector, waarin wordt voorgesteld om ook bij grotere niet-OOB-accountantsorganisaties een rvc verplicht te stellen.",
+  "links": "",
+  "tags": [
+    {
+      "name": "marktsegment",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "meer ondernemingen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "andersoortig risico",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "uitstralingseffect",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "volwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "proactief",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "momentum",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "onvolwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ongewenst gedrag",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

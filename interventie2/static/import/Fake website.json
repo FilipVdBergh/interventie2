@@ -1,0 +1,74 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Fake website",
+  "introduction": "Opzetten van een fake website om consumenten te waarschuwen voor malafide aanbiedingen. ",
+  "description": "- Wanneer we consumenten direct willen waarschuwen. \r\n- Wanneer be\u00efnvloeding via reguliere ondernemingen ontoereikendheid is, bijv. aangezien niet zij, maar malafide of illegale aanbieders het probleem vormen.  ",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- Het bereik en daarmee succes kan beperkt zijn. De consumenten die je daarentegen wel weet te bereiken, bereik je op het goede moment (moment van ori\u00ebnteren).   \r\n- Fake website is een vorm van misleiding en dat past niet zomaar bij een toezichtorganisatie.\r\n\r\nDe kracht van Fake Website hangt af van: \r\n\r\n- De vindbaarheid. Dit is cruciaal voor het succes van het instrument. Er zijn beperkingen als toezichthouder in hoe je kan zorgen dat je site bijv. hoog op Google searches terechtkomt. \r\n- De bredere uitstralingseffecten van de campagne. Bijvoorbeeld publiciteit achteraf over waarom we dit hebben gelanceerd. ",
+  "examples": "- Teakhout casus 2007: Wanneer mensen op zoek waren naar informatie over teak om te investeren, kwamen ze via Google op een waarschuwingspagina van de AFM. Helaas is deze film en het project niet meer terug te vinden in Fides.",
+  "links": "",
+  "tags": [
+    {
+      "name": "andersoortig risico",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "beperkte toezichtcapaciteit",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "onvolwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "momentum",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "marktsegment",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ongewenst gedrag",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "afwachtend",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "consumenten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "uitstralingseffect",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "meer ondernemingen",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "volwassen",
+      "weight": 1.0,
+      "multiplier": 0.0
+    }
+  ]
+}
