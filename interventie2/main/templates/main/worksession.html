@@ -54,7 +54,7 @@
         
     {% endif %}
 
-    {% if worksession.link_to_page  | length > 0%}
+    {% if worksession.link_to_page  | length > 0 %}
         <h1>Link naar projectfolder</h1>
         {{ worksession.link_to_page | escape | markdown }}
     {% endif %}
