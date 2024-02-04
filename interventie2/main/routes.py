@@ -509,7 +509,8 @@ def conclusion(worksession_id):
 	if  plan is None:
 		plan = Plan(worksession=worksession,
 			  stage=0,
-			  description="Interventieplan aangemaakt na de werksessie")
+			  description="Interventieplan aangemaakt na de werksessie",
+			  conclusion="") # I actually don't understand why the value can ever be None, but it is.
 
 	if request.method == "POST":
 		#Store the conclusion with the new plan.
@@ -641,17 +642,3 @@ def stop_share(worksession_id, user_id):
 	worksession.allowed_users.remove(user)
 	db.session.commit()
 	return redirect(url_for('main.share_worksession', worksession_id=worksession.id))
-
-
-def debug_answers(worksession_id):
-	worksession = Worksession.query.get(worksession_id)
-	print (f'{worksession.name}'.upper())
-	for answer in worksession.answers:
-		print (f'{answer.question.name}:')
-		for selection in answer.selection:
-			print(f'- Option: {selection.option.name}')
-		print (f'- Motivation: {answer.motivation}')
-	print('All options in question set:')
-	for question in worksession.question_set.questions:
-		for option in question.options:
-			print(f'- {option.name} {worksession.is_option_selected(option)}')

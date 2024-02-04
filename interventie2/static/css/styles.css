@@ -55,7 +55,7 @@ td {
 }
 
 .plan_description {
-    font-weight: bold;;
+    font-weight: bold;
 }
 
 .plan_stage {
@@ -63,7 +63,9 @@ td {
 }
 
 .plan_conclusion {
-
+    font-style: italic;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .plan_instruments {

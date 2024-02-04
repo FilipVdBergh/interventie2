@@ -21,7 +21,6 @@
     </form>
     <br>
 
-    <h1>Zoekresultaten</h1>
     <div class="results_summary">
         {% if found_worksessions | length > 0 %}
             <a href="#Worksessions">Werksessies {{ found_worksessions | length}}; 
@@ -33,19 +32,19 @@
             <a href="#Instruments">Instrumenten {{ found_instruments | length}}; 
         {% endif %}
         {% if found_question_sets | length > 0 %}
-            <a href="#QuestionSets">Selectietool: {{ found_question_sets | length}}; 
+            <a href="#QuestionSets">Selectietools {{ found_question_sets | length}}; 
         {% endif %}
         {% if found_questions | length > 0 %}
             <a href="#Questions">Vragen {{ found_questions | length}}; 
         {% endif %}
         {% if found_options | length > 0 %}
-            <a href="#Options">Antwoordoptie: {{ found_options | length}}; 
+            <a href="#Options">Antwoordopties {{ found_options | length}}; 
         {% endif %}
         {% if found_tags | length > 0 %}
             <a href="#Tags">Tags {{ found_tags | length}}; 
         {% endif %}
         {% if found_users | length > 0 %}
-            <a href="#Users">Gebruiker: {{ found_users | length}}; </a>
+            <a href="#Users">Gebruikers {{ found_users | length}} </a>
         {% endif %}
     </div>
     
