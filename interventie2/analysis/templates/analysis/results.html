@@ -28,6 +28,9 @@
         {% if found_answers | length > 0 %}
             <a href="#Answers">Antwoorden {{ found_answers | length}}; 
         {% endif %}
+        {% if found_plans | length > 0 %}
+            <a href="#Plans">Interventieplannen {{ found_plans | length}}; 
+        {% endif %}
         {% if found_instruments | length > 0 %}
             <a href="#Instruments">Instrumenten {{ found_instruments | length}}; 
         {% endif %}
@@ -70,12 +73,25 @@
     <a name="Answers"></a>
     {% for answer in found_answers %}
         <div class="search">
-            <div class="search_result_type">Antwoord in werksessie {{ answer.worksession }}</div>
+            <div class="search_result_type">Antwoord in werksessie <a href="{{url_for('main.show_worksession', worksession_id=answer.worksession.id)}}">{{ answer.worksession.name }}</a></div>
             <div class="search_result">
                 {{ answer.motivation }}
             </div>
             <div class="search_result_context">
                 {{ answer.worksession.description | escape | markdown |truncate(250)}}
+            </div>
+        </div>      
+    {% endfor %}
+
+    <a name="Plans"></a>
+    {% for plan in found_plans %}
+        <div class="search">
+            <div class="search_result_type">Antwoord in interventieplan bij werksessie <a href="{{url_for('main.show_worksession', worksession_id=plan.worksession.id)}}">{{ plan.worksession.name }}</a></div>
+            <div class="search_result">
+                <a href="{{ url_for('main.show_plan', worksession_id=plan.worksession.id, plan_id=plan.id) }}">{{ plan.description }}</a>
+            </div>
+            <div class="search_result_context">
+                {{ plan.conclusion | escape | markdown |truncate(250)}}
             </div>
         </div>      
     {% endfor %}

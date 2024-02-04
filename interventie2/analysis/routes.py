@@ -2,7 +2,7 @@ import os
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import current_user, login_required
 from interventie2.models import db
-from interventie2.models import User, Instrument, Remark, Tag, InstrumentTagAssignment, QuestionSet, Question, Answer, Option, Worksession
+from interventie2.models import User, Instrument, Remark, Tag, InstrumentTagAssignment, QuestionSet, Question, Answer, Option, Worksession, Plan
 from interventie2.forms import SearchForm
 from sqlalchemy.sql import func, text
 import simplejson as json
@@ -49,6 +49,10 @@ def index():
         for answer in Answer.query.order_by(Answer.motivation):
             if search_text in answer.motivation.lower():
                 found_answers.append(answer)
+        found_plans = []
+        for plan in Plan.query.order_by(Plan.description):
+            if search_text in plan.description.lower() or search_text in plan.conclusion.lower():
+                found_plans.append(plan)
         found_users = []
         for user in User.query.order_by(User.name):
             if search_text in user.name.lower() or search_text in user.description.lower():
@@ -64,6 +68,7 @@ def index():
                                 found_options=found_options,
                                 found_worksessions=found_worksessions,
                                 found_answers=found_answers,
+                                found_plans=found_plans,
                                 found_users=found_users)
     return render_template('analysis/index.html', form=form)
 
