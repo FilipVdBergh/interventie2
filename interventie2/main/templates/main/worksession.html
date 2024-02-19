@@ -39,7 +39,7 @@
             {% for plan in worksession.plan %}
                 <div class="plan_summary">
                     <div class="plan_description">
-                        <a href="{{ url_for('main.show_plan', worksession_id=worksession.id, plan_id=plan.id) }}">{{ plan.description }}</a>
+                        <a href="{{ url_for('main.show_plan', worksession_id=worksession.id, plan_id=plan.id) }}">{{ loop.index }}. {{ plan.description }}</a>
                     </div>
                     <div class="plan_conclusion">
                         {{ plan.conclusion }} 
