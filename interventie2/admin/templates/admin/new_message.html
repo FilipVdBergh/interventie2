@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+
+{% endblock %}
+
+
+{% block page_title %}
+    Bericht versturen
+{% endblock %}
+
+
+
+{% block body %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        <table>
+            <tr>
+                <td>Ontvanger</td>
+                <td>{{ recipient.name }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.subject.label }}</td>
+                <td>{{ form.subject }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.body.label }}
+                    {{ macro.markdown_help() }}
+                </td>
+                <td>{{ form.body }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.submit }}</td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+    
+{% endblock %}

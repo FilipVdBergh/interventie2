@@ -2,7 +2,7 @@ from flask import Blueprint, current_app, render_template, redirect, url_for, re
 from flask_login import current_user, login_required, fresh_login_required
 from interventie2.models import db
 from interventie2.models import User, Role, Process, Message
-from interventie2.forms import RegisterForm, EditUserForm, ChangePasswordForm, SendSystemMessageForm
+from interventie2.forms import RegisterForm, EditUserForm, ChangePasswordForm, SendSystemMessageForm, SendMessageForm
 from datetime import date
 
 admin = Blueprint('admin', __name__,
@@ -229,6 +229,30 @@ def send_system_message(subject, body, recipient, sender=current_user, deliver_a
                         deliver_after = deliver_after)
     db.session.add(message)
     db.session.commit()
+
+
+@admin.route('/new_message/<int:recipient_id>', methods=['GET', 'POST'])
+@login_required
+def new_message(recipient_id):
+    if not current_user.role.edit_users: 
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om berichten te versturen.')
+
+    form = SendMessageForm()
+    recipient = User.query.get(recipient_id)
+
+    if form.validate_on_submit():
+        message = Message(subject = form.subject.data,
+                        body = form.body.data,
+                        recipient = recipient,
+                        system = False,
+                        sender = current_user,
+                        deliver_after = date.today())
+        db.session.add(message)
+        db.session.commit()
+        return redirect(url_for('admin.user', user_id=recipient_id))
+
+    return render_template('admin/new_message.html', form=form, recipient=recipient)
+
 
 @admin.route('/message/<int:message_id>/unread')
 @login_required

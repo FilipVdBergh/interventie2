@@ -46,6 +46,12 @@ class SendSystemMessageForm(FlaskForm):
     submit             = SubmitField('Verzenden')
 
 
+class SendMessageForm(FlaskForm):
+    subject            = StringField('Onderwerp', validators=[Optional(), Length(min=1, max=500)], render_kw={'size': 100})
+    body               = TextAreaField('Bericht', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100}) 
+    submit             = SubmitField('Verzenden')
+
+
 class LoginForm(FlaskForm):
     name        = StringField('Naam', validators=[DataRequired()], render_kw={'placeholder': 'Naam', 'size': 60})
     password    = PasswordField('Wachtwoord', validators=[DataRequired()], render_kw={'placeholder': 'Wachtwoord', 'size': 60})

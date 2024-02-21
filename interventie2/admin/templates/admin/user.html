@@ -18,7 +18,8 @@
 {% endblock %}
 
 {% block body %}
-
+    <div>{{ user.description | escape | markdown }}</div>
+    <br>
     {% if current_user == user %}    
         <h1>Inbox</h1>
         {% if current_user.messages_list() | count > 0 %}
@@ -43,16 +44,40 @@
                 {% endfor %}
             </table>
         {% else %}
-            <div>Geen Berichten</div>
+            <div>Geen berichten</div>
         {% endif %}
         <br>
+
+        <h1  class="collapsible">Outbox ({{current_user.messages_sent | count}})</h1>
+        {% if current_user.messages_sent | count > 0 %}
+            <div class="collapsible_content">
+                <table>
+                    <tr>
+                        <th>Onderwerp</th>
+                        <th>Ontvanger</th>
+                        <th>Datum</th>
+                    </tr>
+                    {% for message in current_user.messages_sent %}
+                        <tr>
+                            <td><a href="{{ url_for('admin.message', message_id=message.id) }}" {% if message.unread %} class="unread"{% endif %}>{{ message.subject }}</a></td>
+                            <td>
+                                <a href="{{ url_for('admin.user', id=message.recipient.id) }}">{{ message.recipient.name }}</a>
+                                
+                            </td>
+                            <td>{{ message.date_created }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            <div class="collapsible_content">Geen berichten</div>
+        {% endif %}
+        <br>
+
     {% endif %}
 
     <h1 class="collapsible">Informatie over {{ user.name }}</h1>
     <div class="collapsible_content">
-        <h2>Beschrijving</h2>
-        {{ user.description | escape | markdown }}
-        <h2>Kenmerken</h2>
         <table>
             <tr>
                 <td>Id</td>
@@ -79,15 +104,15 @@
                 <td>{{ user.link }}</td>
             </tr>
             <tr>
-                <td>Inloggen toegestaan</td>
-                <td>{{ user.active }}</td>
+                <td></td>
+                <td>{% if user.active %}Inloggen toegestaan{% endif %}</td>
             </tr>
         </table>
     </div>
     <br>
 
     {% if user.worksession |  length > 0 %}
-        <h1 class="collapsible">Werksessies</h1>
+        <h1 class="collapsible">Werksessies ({{ user.worksession |  length }})</h1>
         <div class="collapsible_content">
             <table>
                 <tr>
@@ -106,27 +131,30 @@
     {% endif %}
 
 
-    <h1 class="collapsible">Beheerde instrumenten</h1>
-    <div class="collapsible_content">
-        <table>
-            <tr>
-                <th>Instrument</th>
-                <th>Openstaande opmerkingen</th>
-            </tr>
-            {% for instrument in user.owned_instruments | sort(attribute='name') %}
+    {% if user.owned_instruments | count > 0 %}
+        <h1 class="collapsible">Beheerde instrumenten ({{ user.owned_instruments | count }})</h1>
+        
+        <div class="collapsible_content">
+            <table>
                 <tr>
-                    <td><a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }}</a></td>
-                    <td>
-                        {% for remark in instrument.remarks %}
-                            {% if remark.active %}
-                                <a href="{{ url_for('catalog.show_remark', remark_id=remark.id) }}">{{ remark.remark | escape | truncate(50) | markdown }} ({{ remark.sender.name }}, {{ remark.date_modified }})</a><br>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>  
-            {% endfor %}
-        </table>
-    </div>
+                    <th>Instrument</th>
+                    <th>Openstaande opmerkingen</th>
+                </tr>
+                {% for instrument in user.owned_instruments | sort(attribute='name') %}
+                    <tr>
+                        <td><a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }}</a></td>
+                        <td>
+                            {% for remark in instrument.remarks %}
+                                {% if remark.active %}
+                                    <a href="{{ url_for('catalog.show_remark', remark_id=remark.id) }}">{{ remark.remark | escape | truncate(50) | markdown }} ({{ remark.sender.name }}, {{ remark.date_modified }})</a><br>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>  
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
 
     {% if user.edit_allowed() %}
         <h1>Acties</h1>
@@ -134,6 +162,9 @@
             {% if user == current_user %}<li><a href="{{ url_for('main.logout') }}">Uitloggen</a></li>{% endif %}
             <li><a href="{{ url_for('admin.edit_user', user_id=user.id) }}">Gebruiker aanpassen of verwijderen</a></li>
             <li><a href="{{ url_for('admin.change_password', user_id=user.id) }}">Wachtwoord veranderen</a></li>
+            {% if user != current_user %}
+                <li><a href="{{ url_for('admin.new_message', recipient_id=user.id) }}">Stuur een bericht</a></li>
+            {% endif %}
         </ul>
     {% endif %}
 {% endblock %}

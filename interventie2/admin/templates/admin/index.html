@@ -12,9 +12,9 @@
 {% block instrumenten %}   
     {% if current_user.role.edit_users %}
         <a href="{{ url_for('admin.register') }}"><div class="instrument">+ Nieuwe gebruiker maken</div></a>
+        <a href="{{ url_for('admin.new_system_message') }}"><div class="instrument">Stuur bericht aan alle gebruikers</div></a>
+        <a href="{{ url_for('admin.all_messages') }}"><div class="instrument">Bekijk alle berichten</div></a>
         <a href="{{ url_for('admin.roles') }}"><div class="instrument">Bekijk rollen</div></a>
-        <a href="{{ url_for('admin.new_system_message') }}"><div class="instrument">Bericht aan alle gebruikers</div></a>
-        <a href="{{ url_for('admin.all_messages') }}"><div class="instrument">Alle berichten</div></a>
     {% endif %}
 {% endblock %}
 
