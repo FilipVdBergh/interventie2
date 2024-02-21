@@ -17,10 +17,11 @@
     {% if current_user.unread_message_alert() %}
         {% for message in current_user.unread_messages_list() %}
             <div class="message">
-                <div class="subject"><a href="{{ url_for('admin.message', message_id=message.id) }}">{{ message.subject }}</a></div>
+                <div class="subject">{{ message.subject }}</div>
                 <div class="date_created">Datum: {{ message.date_created.strftime('%d-%m-%Y') }}</div>
                 {% if message.sender.name|length >0 %}<div class="sender">Afzender: {{ message.sender.name }}</div>{% endif %}
                 <div class="body">{{ message.body | escape | markdown}}</div>
+                <a href="{{ url_for('admin.message', message_id=message.id) }}">Meer...</a>
             </div>
         {% endfor %}
     {% endif %}
