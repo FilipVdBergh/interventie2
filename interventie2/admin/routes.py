@@ -1,8 +1,9 @@
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import current_user, login_required, fresh_login_required
 from interventie2.models import db
-from interventie2.models import User, Role, Process
-from interventie2.forms import RegisterForm, EditUserForm, ChangePasswordForm
+from interventie2.models import User, Role, Process, Message
+from interventie2.forms import RegisterForm, EditUserForm, ChangePasswordForm, SendSystemMessageForm
+from datetime import date
 
 admin = Blueprint('admin', __name__,
                   template_folder='templates',
@@ -94,6 +95,12 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
+        send_system_message(
+                subject = 'Interventiekeuze',
+                body = 'Deze app ondersteunt toezichthouders bij het maken van een interventieplan. Het maken van een interventieplan gebeurt in een werksessie, waarin alle betrokken toezichthouders samen een selectietool doorlopen. Op basis van de antwoorden presenteert de app een lijst van kansrijke interventies.',
+                recipient = user,
+                sender = None
+            )
         return redirect(url_for('admin.index'))
     return render_template('admin/register.html', form=form)
 
@@ -169,4 +176,78 @@ def roles():
 def info():
     if current_user.role.see_app_info:
         return render_template('admin/info.html')
-    return("Hoe ben je hier terecht gekomen?")
+    return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten voor deze pagina.')        
+
+
+@admin.route('messages')
+@login_required
+def all_messages():
+    messages = Message.query.order_by(Message.date_created)
+    return render_template('admin/all_messages.html', messages=messages, user=current_user)
+
+
+@admin.route('message/<int:message_id>')
+@login_required
+def message(message_id):
+    message = Message.query.get(message_id)
+    user = message.recipient
+    if not user == current_user:
+        if not current_user.role.edit_users:
+            return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten dit bericht te lezen.')
+    message.unread = False
+    db.session.commit()
+    return render_template('admin/message.html', message=message, user=user)
+
+
+@admin.route('/new_system_message', methods=['GET', 'POST'])
+@login_required
+def new_system_message():
+    if not current_user.role.edit_users: 
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om berichten te versturen.')
+
+    form = SendSystemMessageForm()
+
+    if form.validate_on_submit():
+        for user in User.query.order_by(User.name):
+            send_system_message(
+                subject = form.subject.data,
+                body = form.body.data,
+                recipient = user,
+                sender = current_user,
+                deliver_after = form.deliver_after.data
+            )
+        return redirect(url_for('admin.user', user_id=current_user.id))
+
+    return render_template('admin/new_system_message.html', form=form)
+
+def send_system_message(subject, body, recipient, sender=current_user, deliver_after=date.today()):
+    message = Message(subject = subject,
+                        body = body,
+                        recipient = recipient,
+                        system = True,
+                        sender = sender,
+                        deliver_after = deliver_after)
+    db.session.add(message)
+    db.session.commit()
+
+@admin.route('/message/<int:message_id>/unread')
+@login_required
+def unread_message(message_id):
+    message = Message.query.get(message_id)
+    if not message.recipient == current_user:
+        if not current_user.role.edit_users:
+            return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om dit bericht te markeren.')
+    message.unread = True
+    db.session.commit()
+    return redirect(url_for('admin.user', user_id=current_user.id))
+
+@admin.route('/message/<int:message_id>/delete')
+@login_required
+def delete_message(message_id):
+    message = Message.query.get(message_id)
+    if not message.recipient == current_user:
+        if not current_user.role.edit_users:
+            return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om dit bericht te markeren.')
+    db.session.delete(message)
+    db.session.commit()
+    return redirect(url_for('admin.user', id=current_user.id))

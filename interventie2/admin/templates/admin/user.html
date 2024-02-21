@@ -5,49 +5,109 @@
 {% endblock %}
 
 {% block page_title %}
-    {{ user.name }} {% if user == current_user %}(mijn account){% endif %}
+    
+    {% if user == current_user %}
+        Mijn account
+    {% else %}
+        {{ user.name }} 
+    {% endif %}
 {% endblock %}
 
 {% block instrumenten %}   
+
 {% endblock %}
 
 {% block body %}
-    <h1>Beschrijving</h1>
-    {{ user.description | escape | markdown }}
-    <h1>Kenmerken</h1>
-    <table>
-        <tr>
-            <td>Id</td>
-            <td>{{ user.id }}</td>
-        </tr>
-        <tr>
-            <td>Aangemaakt</td>
-            <td>{{ user.date_created }}</td>
-        </tr>
-        <tr>
-            <td>Laatst gezien</td>
-            <td>{{ user.last_seen }}</td>
-        </tr>
-        <tr>
-            <td>Rol</td>
-            <td><a href="{{ url_for('admin.roles') }}">{{ user.role.name }}</a> ({{ user.role_id }})</td>
-        </tr>
-        <tr>
-            <td>E-mail</td>
-            <td>{{ user.email }}</td>
-        </tr>
-        <tr>
-            <td>Link</td>
-            <td>{{ user.link }}</td>
-        </tr>
-        <tr>
-            <td>Inloggen toegestaan</td>
-            <td>{{ user.active }}</td>
-        </tr>
-    </table>
 
-    {% if user.owned_instruments | length > 0 %}
-        <h1>Beheerde instrumenten</h1>
+    {% if current_user == user %}    
+        <h1>Inbox</h1>
+        {% if current_user.messages | count > 0 %}
+            <table>
+                <tr>
+                    <th>Onderwerp</th>
+                    <th>Afzender</th>
+                    <th>Datum</th>
+                </tr>
+                {% for message in user.messages %}
+                    <tr>
+                        <td><a href="{{ url_for('admin.message', message_id=message.id) }}" {% if message.unread %} class="unread"{% endif %}>{{ message.subject }}</a></td>
+                        <td>
+                            {% if message.system %}
+                                Systeem ({{ message.sender.name }})
+                            {% else %}
+                                {{ message.sender.name }}
+                            {% endif %}
+                        </td>
+                        <td>{{ message.date_created }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <div>Geen Berichten</div>
+        {% endif %}
+        <br>
+    {% endif %}
+
+    <h1 class="collapsible">Informatie over {{ user.name }}</h1>
+    <div class="collapsible_content">
+        <h2>Beschrijving</h2>
+        {{ user.description | escape | markdown }}
+        <h2>Kenmerken</h2>
+        <table>
+            <tr>
+                <td>Id</td>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <td>Aangemaakt</td>
+                <td>{{ user.date_created }}</td>
+            </tr>
+            <tr>
+                <td>Laatst gezien</td>
+                <td>{{ user.last_seen }}</td>
+            </tr>
+            <tr>
+                <td>Rol</td>
+                <td><a href="{{ url_for('admin.roles') }}">{{ user.role.name }}</a> ({{ user.role_id }})</td>
+            </tr>
+            <tr>
+                <td>E-mail</td>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <td>Link</td>
+                <td>{{ user.link }}</td>
+            </tr>
+            <tr>
+                <td>Inloggen toegestaan</td>
+                <td>{{ user.active }}</td>
+            </tr>
+        </table>
+    </div>
+    <br>
+
+    {% if user.worksession |  length > 0 %}
+        <h1 class="collapsible">Werksessies</h1>
+        <div class="collapsible_content">
+            <table>
+                <tr>
+                    <th>Werksessie</th>
+                    <th>Beschrijving</th>
+                </tr>
+                {% for worksession in user.worksession | sort(attribute='name') | rejectattr('archived') %}
+                    <tr>
+                        <td><a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}">{{ worksession.name }}</a></td>
+                        <td>{{ worksession.description }}</td>
+                    </tr>  
+                {% endfor %}
+            </table>
+        </div>
+        <br>
+    {% endif %}
+
+
+    <h1 class="collapsible">Beheerde instrumenten</h1>
+    <div class="collapsible_content">
         <table>
             <tr>
                 <th>Instrument</th>
@@ -66,24 +126,7 @@
                 </tr>  
             {% endfor %}
         </table>
-    {% endif %}
-
-    
-    {% if user.worksession |  length > 0 %}
-        <h1>Eigenaar werksessies</h1>
-        <table>
-            <tr>
-                <th>Werksessie</th>
-                <th>Beschrijving</th>
-            </tr>
-            {% for worksession in user.worksession | sort(attribute='name') | rejectattr('archived') %}
-                <tr>
-                    <td><a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}">{{ worksession.name }}</a></td>
-                    <td>{{ worksession.description }}</td>
-                </tr>  
-            {% endfor %}
-        </table>
-    {% endif %}
+    </div>
 
     {% if user.edit_allowed() %}
         <h1>Acties</h1>

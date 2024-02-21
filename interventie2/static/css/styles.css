@@ -288,3 +288,32 @@ td {
 .search_result_context {
     font-style: italic;
 }
+
+.message {
+    margin-bottom: 30px;
+}
+
+.subject {
+    font-size: x-large;
+    font-weight: bold;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.unread {
+    font-weight: bold;
+}
+
+.date_created {
+    text-transform: uppercase;
+    font-size: small;
+}
+
+.sender {
+    text-transform: uppercase;
+    font-size: small;
+}
+
+.body {
+
+}

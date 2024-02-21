@@ -2,7 +2,7 @@ from datetime import date, timedelta
 from flask import Blueprint, render_template, redirect, url_for, send_file, request
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, current_user, login_required
-from interventie2.forms import LoginForm, NewWorksessionForm, EditWorksessionForm, EditCaseForm, EditConclusionForm, MarkdownPlaygroundForm, EditWorksessionAccessForm
+from interventie2.forms import LoginForm, NewWorksessionForm, EditWorksessionForm, EditCaseForm, EditConclusionForm, MarkdownPlaygroundForm, EditWorksessionAccessForm, SearchForm
 from interventie2.models import User, Worksession, QuestionSet, Instrument, Option, Answer, Selection, Question, Process, InstrumentChoice, Plan
 from interventie2.models import db, generate_secret_key
 from interventie2.classes import Advisor

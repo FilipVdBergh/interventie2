@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+
+{% endblock %}
+
+
+{% block page_title %}
+    Systeembericht versturen
+{% endblock %}
+
+
+
+{% block body %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        <table>
+            <tr>
+                <td>Ontvanger</td>
+                <td>Alle gebruikers</td>
+            </tr>
+            <tr>
+                <td>{{ form.subject.label }}</td>
+                <td>{{ form.subject }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.body.label }}
+                    {{ macro.markdown_help() }}
+                </td>
+                <td>{{ form.body }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.deliver_after.label }}</td>
+                <td>{{ form.deliver_after }}</td>
+            </tr>
+
+            <tr>
+                <td>{{ form.submit }}</td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+    
+{% endblock %}

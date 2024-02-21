@@ -7,6 +7,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm.session import make_transient
 from sqlalchemy import inspect
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import date
 import random
 
 db = SQLAlchemy(app)
@@ -59,11 +60,35 @@ class User(db.Model, UserMixin):
     last_seen     = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
     role = relationship('Role')
+    messages = relationship('Message', back_populates='recipient', foreign_keys="Message.recipient_id")
+    messages_sent = relationship('Message', back_populates='sender', foreign_keys="Message.sender_id")
     worksession = relationship('Worksession', back_populates='creator')
     plan = relationship('Plan', back_populates='creator')
     allowed_worksessions = relationship('Worksession', secondary='worksession_access', back_populates='allowed_users')
     owned_instruments = relationship('Instrument', back_populates='owner')
     
+    def unread_messages(self):
+        return sum(1 for message in self.messages if (message.unread) and (message.deliver_after.date() >= date.today()))
+    
+    def unread_message_alert(self):
+        return self.unread_messages() > 0
+    
+    def unread_messages_list(self):
+        unread_messages = []
+        for message in self.messages:
+            if (message.unread) and (message.deliver_after.date() >= date.today()):
+                unread_messages.append(message)
+        return unread_messages
+    
+    def instrument_remarks(self):
+        remarks = 0
+        for instrument in self.owned_instruments:
+            remarks += len(instrument.remarks)
+        return remarks
+    
+    def instrument_remark_alert(self):
+        return self.instrument_questions() > 0
+
     def edit_allowed(self):
         if not current_user.is_authenticated:
             return False
@@ -82,6 +107,26 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password, password)
     def __repr__(self):
         return f'<User {self.name}>'
+    
+
+class Message(db.Model):
+    __tablename__ = 'messages'
+    id            = db.Column(db.Integer, primary_key=True)
+    date_created  = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    deliver_after = db.Column(db.DateTime(timezone=True))
+    subject       = db.Column(db.String(500), nullable=False, default="")
+    body          = db.Column(db.String(2000), nullable=False, default="")
+    sender_id     = db.Column(db.Integer, db.ForeignKey('users.id'))
+    recipient_id  = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    unread        = db.Column(db.Boolean, nullable=False, default=True)
+    archived      = db.Column(db.Boolean, nullable=False, default=True)
+    system        = db.Column(db.Boolean, nullable=False, default=True)
+
+    sender = relationship('User', foreign_keys=[sender_id])
+    recipient = relationship('User', foreign_keys=[recipient_id])
+
+    def __repr__(self):
+        return f'<Remark {self.remark}>'
 
 
 class Worksession(db.Model):

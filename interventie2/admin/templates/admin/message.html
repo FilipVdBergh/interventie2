@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    {% if current_user.role.edit_users %}<a href="{{ url_for('admin.index') }}" class="step">Gebruikers</a>{% endif %}
+    {% if current_user.role.edit_users %}<a href="{{ url_for('admin.user', id=user.id) }}" class="step">{{ user.name }}</a>{% endif %}
+
+{% endblock %}
+
+{% block page_title %}
+    Berichten 
+{% endblock %}
+
+{% block instrumenten %}   
+{% endblock %}
+
+{% block body %}
+    <div class="message">
+        <div class="subject">{{ message.subject }}</div>
+        <div class="date_created">Datum: {{ message.date_created }}</div>
+        <div class="sender">Afzender: {{ message.sender.name }}</div>
+        <div class="body">{{ message.body | escape | markdown}}</div>
+    </div>
+    <button>{{ macro.confirm_redirect( "Verwijderen", "Wilt u dit bericht verwijderen?", url_for('admin.delete_message', message_id=message.id) ) }}</button>
+    <button><a href="{{ url_for('admin.unread_message', message_id=message.id) }}">Markeren als ongelezen</a></button>
+{% endblock %}

@@ -1,9 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectField, SubmitField, PasswordField, EmailField, BooleanField, DecimalField, RadioField, IntegerField, SelectMultipleField
-from wtforms.widgets import ColorInput
-from wtforms.validators import DataRequired, DataRequired, Length, ValidationError, Email, Optional, URL, EqualTo, NumberRange
+from wtforms import StringField, TextAreaField, SelectField, SubmitField, PasswordField, EmailField, BooleanField, DecimalField, RadioField, IntegerField, SelectMultipleField, DateField
+from wtforms.widgets import ColorInput, CheckboxInput
+from wtforms.validators import DataRequired, DataRequired, Length, ValidationError, Email, Optional, EqualTo, NumberRange
 from interventie2.models import User
-import random
 
 class RegisterForm(FlaskForm):
     name        = StringField('Naam', validators=[DataRequired(), Length(min=2, max=80)], render_kw={'placeholder': 'Naam', 'size': 100})
@@ -38,6 +37,13 @@ class EditUserForm(FlaskForm):
     description = TextAreaField('Omschrijving', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100}) 
     link        = StringField('Link naar persoonlijke pagina', validators=[Optional(), Length(max=1000)], render_kw={'size': 100})
     submit      = SubmitField('Opslaan')
+
+
+class SendSystemMessageForm(FlaskForm):
+    subject            = StringField('Onderwerp', validators=[Optional(), Length(min=1, max=500)], render_kw={'size': 100})
+    body               = TextAreaField('Bericht', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100}) 
+    deliver_after      = DateField('Datum verzending', format='%Y-%m-%d')
+    submit             = SubmitField('Verzenden')
 
 
 class LoginForm(FlaskForm):

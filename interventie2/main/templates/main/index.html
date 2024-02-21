@@ -14,10 +14,16 @@
 
 
 {% block body %}
-    <h1>Interventiekeuze</h1>
-    Deze app ondersteunt toezichthouders bij het maken van een interventieplan. Het maken van een interventieplan gebeurt in een werksessie,
-    waarin alle betrokken toezichthouders samen een selectietool doorlopen. Op basis van de antwoorden presenteert de app een lijst van 
-    kansrijke interventies.
+    {% if current_user.unread_message_alert() %}
+        {% for message in current_user.unread_messages_list() %}
+            <div class="message">
+                <div class="subject"><a href="{{ url_for('admin.message', message_id=message.id) }}">{{ message.subject }}</a></div>
+                <div class="date_created">Datum: {{ message.date_created.strftime('%d-%m-%Y') }}</div>
+                {% if message.sender.name|length >0 %}<div class="sender">Afzender: {{ message.sender.name }}</div>{% endif %}
+                <div class="body">{{ message.body | escape | markdown}}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
     
     <h1>Eigen werksessies</h1>
     <table>
