@@ -8,6 +8,8 @@ from interventie2.models import db, generate_secret_key
 from interventie2.classes import Advisor
 from sqlalchemy.sql import func
 from decimal import Decimal
+from interventie2.admin.routes import send_system_message
+from datetime import date, timedelta
 import hashlib
 
 
@@ -527,6 +529,16 @@ def conclusion(worksession_id):
 
 		db.session.add(plan)
 		db.session.commit()
+
+		# Remind the user in 90 days to enter the final intervention plan
+		send_system_message(
+			subject = f'Welke interventies zijn uitgevoerd bij de casus {worksession.name}?',
+			body = f'Laat weten welke interventies zijn uitgevoerd bij de casus {worksession.name}. Open de werksessie en voer een nieuw interventieplan in. Kies daar uitgevoerde interventies. Zo kunnen de selectietool en de instrumenten verder worden ontwikkeld.',
+			deliver_after = date.today() + timedelta(90),
+			recipient = current_user,
+			sender = None
+		)
+
 		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 
 	return render_template('/main/conclusion.html', 

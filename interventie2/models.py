@@ -68,7 +68,7 @@ class User(db.Model, UserMixin):
     owned_instruments = relationship('Instrument', back_populates='owner')
     
     def unread_messages(self):
-        return sum(1 for message in self.messages if (message.unread) and (message.deliver_after.date() >= date.today()))
+        return sum(1 for message in self.messages if (message.unread) and (message.deliver_after.date() <= date.today()))
     
     def unread_message_alert(self):
         return self.unread_messages() > 0
@@ -76,9 +76,16 @@ class User(db.Model, UserMixin):
     def unread_messages_list(self):
         unread_messages = []
         for message in self.messages:
-            if (message.unread) and (message.deliver_after.date() >= date.today()):
+            if (message.unread) and (message.deliver_after.date() <= date.today()):
                 unread_messages.append(message)
         return unread_messages
+    
+    def messages_list(self):
+        messages = []
+        for message in self.messages:
+            if message.deliver_after.date() <= date.today():
+                messages.append(message)
+        return messages
     
     def instrument_remarks(self):
         remarks = 0

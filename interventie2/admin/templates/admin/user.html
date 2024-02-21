@@ -21,14 +21,14 @@
 
     {% if current_user == user %}    
         <h1>Inbox</h1>
-        {% if current_user.messages | count > 0 %}
+        {% if current_user.messages_list() | count > 0 %}
             <table>
                 <tr>
                     <th>Onderwerp</th>
                     <th>Afzender</th>
                     <th>Datum</th>
                 </tr>
-                {% for message in user.messages %}
+                {% for message in current_user.messages_list() %}
                     <tr>
                         <td><a href="{{ url_for('admin.message', message_id=message.id) }}" {% if message.unread %} class="unread"{% endif %}>{{ message.subject }}</a></td>
                         <td>
