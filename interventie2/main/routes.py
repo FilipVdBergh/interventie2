@@ -6,6 +6,7 @@ from interventie2.forms import LoginForm, NewWorksessionForm, EditWorksessionFor
 from interventie2.models import User, Worksession, QuestionSet, Instrument, Option, Answer, Selection, Question, Process, InstrumentChoice, Plan
 from interventie2.models import db, generate_secret_key
 from interventie2.classes import Advisor
+from interventie2.analysis.routes import search
 from sqlalchemy.sql import func
 from decimal import Decimal
 from interventie2.admin.routes import send_system_message
@@ -19,11 +20,20 @@ main = Blueprint('main', __name__,
                  static_url_path='assets')
 
 
-@main.route('/')
+@main.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
+	form = SearchForm()
 	worksessions = Worksession.query.order_by(Worksession.name)
-	return render_template('main/index.html', worksessions=worksessions)
+
+	if form.validate_on_submit():
+		search_text = form.search_text.data
+		search_results = search(search_text)
+		return render_template('analysis/results.html', 
+                                form=form,
+                                search_text=search_text,
+                                search_results=search_results)
+	return render_template('main/index.html', worksessions=worksessions, form=form)
 
 
 @main.route('/archived')

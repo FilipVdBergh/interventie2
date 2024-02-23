@@ -108,10 +108,13 @@ class User(db.Model, UserMixin):
             return True
         else:
             return False
+        
     def set_password(self, password):
         self.password = generate_password_hash(password)
+
     def check_password(self, password):
         return check_password_hash(self.password, password)
+        
     def __repr__(self):
         return f'<User {self.name}>'
     
@@ -133,7 +136,7 @@ class Message(db.Model):
     recipient = relationship('User', foreign_keys=[recipient_id])
 
     def __repr__(self):
-        return f'<Remark {self.remark}>'
+        return f'<Message {self.id}>'
 
 
 class Worksession(db.Model):
