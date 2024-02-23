@@ -163,7 +163,7 @@
             <li><a href="{{ url_for('admin.edit_user', user_id=user.id) }}">Gebruiker aanpassen of verwijderen</a></li>
             <li><a href="{{ url_for('admin.change_password', user_id=user.id) }}">Wachtwoord veranderen</a></li>
             {% if user != current_user %}
-                <li><a href="{{ url_for('admin.new_message', recipient_id=user.id) }}">Stuur een bericht</a></li>
+                <li><a href="{{ url_for('admin.new_message', recipient_id=user.id) }}">Stuur {{ user.name }} een bericht</a></li>
             {% endif %}
         </ul>
     {% endif %}

@@ -26,14 +26,19 @@
                 <td><a href="{{ url_for('admin.message', message_id=message.id) }}" {% if message.unread %} class="unread"{% endif %}>{{ message.subject }}</a></td>
                 <td>
                     {% if message.system %}
-                        Systeem ({{ message.sender.name }})
+                        Systeem
                     {% else %}
                         {{ message.sender.name }}
                     {% endif %}
                 </td>
                 <td>{{ message.recipient.name }}</td>
                 <td>{{ message.date_created }}</td>
-                <td>{{ message.deliver_after }}</td>
+                <td>
+                    <span {% if message.deliver_after > message.deliver_after.now() %} class="future_date" {% endif %}>
+                        {{ message.deliver_after }}
+                    </span>
+                    
+                </td>
                 <td><button>{{ macro.confirm_redirect( "Verwijderen", "Wilt u dit bericht verwijderen?", url_for('admin.delete_message', message_id=message.id) ) }}</button></td>
             </tr>
         {% endfor %}

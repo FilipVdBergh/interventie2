@@ -309,6 +309,10 @@ td {
     font-size: small;
 }
 
+.future_date {
+    color: #AAAAAA;
+}
+
 .sender {
     text-transform: uppercase;
     font-size: small;
