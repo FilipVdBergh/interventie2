@@ -11,7 +11,7 @@ class BaseConfig(object):
 	ALLOW_DB_INIT = environ.get('ALLOW_DB_INIT', False)
 	MAINTAINER = environ.get('MAINTAINER', 'interventieteam')
 	MAINTAINER_EMAIL = environ.get('MAINTAINER_EMAIL', 'interventie@afm.nl')
-	SQLALCHEMY_DATABASE_URI = environ.get('CONNECTION_STRING')
+	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI')
 
 class DevelopmentConfig(BaseConfig):
 	DEBUG = True
@@ -22,4 +22,4 @@ class TestingConfig(BaseConfig):
 	TESTING = True
 
 class ProductionConfig(BaseConfig):
-	SECRET_KEY = environ.get("$3V\V5U2*H~VX]):57DSS7M@J")
+	SECRET_KEY = environ.get("SECRET_KEY")

@@ -14,6 +14,7 @@
 
 
 {% block body %}
+
     {% if current_user.unread_message_alert() %}
         {% for message in current_user.unread_messages_list() %}
             <div class="message">

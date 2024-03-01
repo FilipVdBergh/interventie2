@@ -45,10 +45,10 @@ RUN echo 'export PATH="$PATH:/app"'
 #CMD ["gunicorn", "--timeout", "600", "--workers", "5", "--bind", "0.0.0.0:443", "app:app"]
 
 # OPTION 3: gunicorn met gevent
-#CMD ["gunicorn", "--timeout", "600", "--worker-class", "gevent", "--workers", "5", "--bind", "0.0.0.0:443", "patched:app"]
+CMD ["gunicorn", "--timeout", "600", "--worker-class", "gevent", "--workers", "5", "--bind", "0.0.0.0:443", "patched:app"]
 
 # OPTION 4: gunicorn met Letsencrypt certificates
-CMD ["gunicorn", "--timeout", "600", "--worker-class", "gevent", "--workers", "5", "--bind", "0.0.0.0:443", "--certfile", "/etc/letsencrypt/certificates/fullchain.pem", "--keyfile", "/etc/letsencrypt/certificates/privkey.pem", "patched:app"]
+#CMD ["gunicorn", "--timeout", "600", "--worker-class", "gevent", "--workers", "5", "--bind", "0.0.0.0:443", "--certfile", "/etc/letsencrypt/certificates/fullchain.pem", "--keyfile", "/etc/letsencrypt/certificates/privkey.pem", "patched:app"]
 
 
 

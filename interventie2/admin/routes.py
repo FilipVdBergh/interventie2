@@ -3,7 +3,8 @@ from flask_login import current_user, login_required, fresh_login_required
 from interventie2.models import db
 from interventie2.models import User, Role, Process, Message
 from interventie2.forms import RegisterForm, EditUserForm, ChangePasswordForm, SendSystemMessageForm, SendMessageForm
-from datetime import date
+from datetime import datetime, timedelta
+from sqlalchemy.sql import func
 
 admin = Blueprint('admin', __name__,
                   template_folder='templates',
@@ -24,37 +25,39 @@ def initialize():
         root_user = None
 
     if root_user is None:
-        print('Creating structure...')
-        db.create_all()
+        try:
+            print('Creating structure...')
+            db.create_all()
 
-        print('Populating permissions table...')
-        root = Role(name='root',             see_app_info=True, see_all_worksessions=True,  edit_catalog=True,  edit_questionnaire=True,  edit_users=True, demo=False)
-        admin = Role(name='admin',           see_app_info=False, see_all_worksessions=True,  edit_catalog=True,  edit_questionnaire=True,  edit_users=True, demo=False)
-        maintainer = Role(name='maintainer', see_app_info=False, see_all_worksessions=True,  edit_catalog=True,  edit_questionnaire=True, edit_users=False, demo=False)
-        user = Role(name='user',             see_app_info=False, see_all_worksessions=False, edit_catalog=False, edit_questionnaire=False, edit_users=False, demo=False)
-        demo = Role(name='demo',             see_app_info=False, see_all_worksessions=False, edit_catalog=False, edit_questionnaire=False, edit_users=False, demo=True)
-        for new_role in [root, admin, maintainer, user, demo]:
-            db.session.add(new_role)
+            print('Populating permissions table...')
+            root = Role(name='root',             see_app_info=True, see_all_worksessions=True,  edit_catalog=True,  edit_questionnaire=True,  edit_users=True, demo=False)
+            admin = Role(name='admin',           see_app_info=False, see_all_worksessions=True,  edit_catalog=True,  edit_questionnaire=True,  edit_users=True, demo=False)
+            maintainer = Role(name='maintainer', see_app_info=False, see_all_worksessions=True,  edit_catalog=True,  edit_questionnaire=True, edit_users=False, demo=False)
+            user = Role(name='user',             see_app_info=False, see_all_worksessions=False, edit_catalog=False, edit_questionnaire=False, edit_users=False, demo=False)
+            demo = Role(name='demo',             see_app_info=False, see_all_worksessions=False, edit_catalog=False, edit_questionnaire=False, edit_users=False, demo=True)
+            for new_role in [root, admin, maintainer, user, demo]:
+                db.session.add(new_role)
 
-        print('Creating root user (root:root). Remember to change the password!')
-        root_user = User(name='root', 
-                         email=current_app.config['MAINTAINER_EMAIL'], 
-                         role_id=1, 
-                         description='Gemaakt bij initialisatie van de database. **Vergeet niet het wachtwoord te veranderen**.',)
-        root_user.set_password('root')
-        db.session.add(root_user)
+            print('Creating root user (root:root). Remember to change the password!')
+            root_user = User(name='root', 
+                            email=current_app.config['MAINTAINER_EMAIL'], 
+                            role_id=1, 
+                            description='Gemaakt bij initialisatie van de database. **Vergeet niet het wachtwoord te veranderen**.',)
+            root_user.set_password('root')
+            db.session.add(root_user)
 
-        print('Finsihing touches...')
-        standard_process = Process(name='Presenteer alle vragen tegelijk')
-        wizard_process = Process(name='Presenteer één vraag tegelijk')
-        for new_process in [standard_process, wizard_process]:
-            db.session.add(new_process)
+            print('Finsihing touches...')
+            standard_process = Process(name='Presenteer alle vragen tegelijk')
+            wizard_process = Process(name='Presenteer één vraag tegelijk')
+            for new_process in [standard_process, wizard_process]:
+                db.session.add(new_process)
 
-        db.session.commit()
-        print('Done.')
-        print('================================================================')
-        return redirect(url_for('main.index'))
-    
+            db.session.commit()
+            print('Done.')
+            print('================================================================')
+            return redirect(url_for('main.index'))
+        except Exception as e:
+            return f"Failed on database creation {e}"
     print('Root user exists, operation cancelled.')
     print('================================================================')
     return render_template('error/index.html', title='Database is al geïnitialiseerd', message='Om te voorkomen dat er data verloren gaat is deze bewerking niet toegestaan als de root gebruiker bestaat.')
@@ -174,15 +177,18 @@ def roles():
 @admin.route('/info')
 @login_required
 def info():
-    if current_user.role.see_app_info:
-        return render_template('admin/info.html')
+    try:
+        if current_user.role.see_app_info:
+            return render_template('admin/info.html')
+    except Exception as e:
+        return f"Failed to display info: {e}"
     return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten voor deze pagina.')        
 
 
 @admin.route('messages')
 @login_required
 def all_messages():
-    messages = Message.query.order_by(Message.date_created)
+    messages = Message.query.order_by(Message.id)
     return render_template('admin/all_messages.html', messages=messages, user=current_user)
 
 
@@ -208,27 +214,36 @@ def new_system_message():
     form = SendSystemMessageForm()
 
     if form.validate_on_submit():
+        deliver_after = form.deliver_after.data.strftime('%Y-%m-%d %H:%M%z')
+
+
         for user in User.query.order_by(User.name):
             send_system_message(
                 subject = form.subject.data,
                 body = form.body.data,
                 recipient = user,
                 sender = current_user,
-                deliver_after = form.deliver_after.data
+                deliver_after = deliver_after
             )
-        return redirect(url_for('admin.user', user_id=current_user.id))
+        return redirect(url_for('admin.user', id=current_user.id))
 
     return render_template('admin/new_system_message.html', form=form)
 
-def send_system_message(subject, body, recipient, sender=current_user, deliver_after=date.today()):
+def send_system_message(subject, body, recipient, sender=current_user, deliver_after=func.now()):
     message = Message(subject = subject,
                         body = body,
                         recipient = recipient,
                         system = True,
                         sender = sender,
-                        deliver_after = deliver_after)
-    db.session.add(message)
-    db.session.commit()
+                        deliver_after = deliver_after
+                        )
+    
+    try:
+        db.session.add(message)
+        db.session.commit()
+    except Exception as e:
+        return f"Failed to send message: {e}"
+
 
 
 @admin.route('/new_message/<int:recipient_id>', methods=['GET', 'POST'])
@@ -245,10 +260,13 @@ def new_message(recipient_id):
                         body = form.body.data,
                         recipient = recipient,
                         system = False,
-                        sender = current_user,
-                        deliver_after = date.today())
-        db.session.add(message)
-        db.session.commit()
+                        deliver_after=func.now(),
+                        sender = current_user)
+        try:
+            db.session.add(message)
+            db.session.commit()
+        except Exception as e:
+            return f'Failed to send message: {e}'
         return redirect(url_for('admin.user', user_id=recipient_id))
 
     return render_template('admin/new_message.html', form=form, recipient=recipient)

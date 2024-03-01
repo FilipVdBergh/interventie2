@@ -18,7 +18,7 @@
             <th>Afzender</th>
             <th>Ontvanger</th>
             <th>Datum aangemaakt</th>
-            <th>Datum verzonden</th>
+            <th>Datum bezorging</th>
             <th>Verwijderen</th>
         </tr>
         {% for message in messages %}
@@ -32,16 +32,15 @@
                     {% endif %}
                 </td>
                 <td>{{ message.recipient.name }}</td>
-                <td>{{ message.date_created }}</td>
+                <td>{{ message.date_created.strftime('%Y-%m-%d %H:%M')}}</td>
                 <td>
-                    <span {% if message.deliver_after > message.deliver_after.now() %} class="future_date" {% endif %}>
-                        {{ message.deliver_after }}
-                    </span>
+                        {{ message.deliver_after.strftime('%Y-%m-%d %H:%M') }}
+
                     
                 </td>
                 <td><button>{{ macro.confirm_redirect( "Verwijderen", "Wilt u dit bericht verwijderen?", url_for('admin.delete_message', message_id=message.id) ) }}</button></td>
             </tr>
         {% endfor %}
-    </table>
+        </table>
 
 {% endblock %}
