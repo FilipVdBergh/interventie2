@@ -36,6 +36,9 @@ def index():
 @login_required
 def worksession(worksession_id):
     worksession = Worksession.query.get(worksession_id)
+    if not current_user.role.see_all_worksessions and current_user not in worksession.allowed_users:
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+
     form = ExportWorksessionForm()
     advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 

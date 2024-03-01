@@ -111,7 +111,7 @@
     </div>
     <br>
 
-    {% if user.worksession |  length > 0 %}
+    {% if user.worksession |  length > 0 and current_user.see_all_sessions %}
         <h1 class="collapsible">Werksessies ({{ user.worksession |  length }})</h1>
         <div class="collapsible_content">
             <table>
