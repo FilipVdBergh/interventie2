@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block instrumenten %}
+{% include 'search.html' %}
     {% if current_user.role.edit_questionnaire %}
         <a href="{{ url_for('tools.edit_question_set') }}"><div class="instrument">+ Nieuwe selectietool maken</div></a>
         <a href="{{ url_for('tools.import_question_set') }}"><div class="instrument">Selectietool importeren</div></a>

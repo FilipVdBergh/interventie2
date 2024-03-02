@@ -1,4 +1,7 @@
-<form method="POST">
-    {{ form.csrf_token }}    
-    {{ form.search_text }}{{ form.submit }}
-</form>
+<div class="search_form">
+    <form method="POST">
+        {{ form.csrf_token }}    
+        {{ form.search_text }}{{ form.submit }}
+        <div class="search_option">{{ form.limit_search }}{{ form.limit_search.label }}</div>
+    </form>
+</div>

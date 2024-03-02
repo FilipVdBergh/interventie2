@@ -209,6 +209,20 @@ td {
     margin-left: 25px;
 }
 
+
+.instrument_section {
+    display: block;
+    color: black;
+    font-weight: bold;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-decoration: none;
+    font-size: small;
+
+}
+
 .instrument {
     display: block;
     color: black;
@@ -266,9 +280,19 @@ td {
 
 .results_summary {
     font-size: small;
+    display: inline;
     padding-top: 2px;
     padding-bottom: 25px;
 }
+
+.results_summary:hover {
+    text-decoration: underline;
+}
+
+.results_found {
+    font-weight: bold;
+}
+
 
 .search_result {
     font-weight: bold;
@@ -289,6 +313,22 @@ td {
     font-style: italic;
 }
 
+.search_form {
+    padding-top: 3px;
+    padding-bottom: 14px;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.search_option {
+    display: block;
+    color: black;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-decoration: none;
+    font-size: small;
+}
+
 .message {
     margin-bottom: 30px;
 }
@@ -296,21 +336,16 @@ td {
 .subject {
     font-size: x-large;
     font-weight: bold;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    color: black;
 }
 
 .unread {
     font-weight: bold;
 }
 
-.date_created {
+.date {
     text-transform: uppercase;
     font-size: small;
-}
-
-.future_date {
-    color: #AAAAAA;
 }
 
 .sender {
@@ -319,5 +354,17 @@ td {
 }
 
 .body {
+    color: black;
+}
 
+.message:hover {
+    background-color: #F7FAFC;
+}
+
+.message_more {
+    float: right;
+}
+
+.future_date {
+    color: #AAAAAA;
 }

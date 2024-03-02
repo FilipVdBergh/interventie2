@@ -16,8 +16,8 @@
 {% block body %}
     <div class="message">
         <div class="subject">{{ message.subject }}</div>
-        <div class="date_created">Datum: {{ message.date_created }}</div>
         <div class="sender">Afzender: {{ message.sender.name }}</div>
+        <div class="date">Datum: {{ message.date_created }}</div>
         <div class="body">{{ message.body | escape | markdown}}</div>
     </div>
     <button>{{ macro.confirm_redirect( "Verwijderen", "Wilt u dit bericht verwijderen?", url_for('admin.delete_message', message_id=message.id) ) }}</button>

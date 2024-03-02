@@ -2,7 +2,8 @@ from flask import Blueprint, current_app, render_template, redirect, url_for, re
 from flask_login import current_user, login_required, fresh_login_required
 from interventie2.models import db
 from interventie2.models import User, Role, Process, Message
-from interventie2.forms import RegisterForm, EditUserForm, ChangePasswordForm, SendSystemMessageForm, SendMessageForm
+from interventie2.forms import RegisterForm, EditUserForm, ChangePasswordForm, SendSystemMessageForm, SendMessageForm, SearchForm
+from interventie2.analysis.routes import search
 from datetime import datetime, timedelta
 from sqlalchemy.sql import func
 
@@ -72,13 +73,27 @@ def user(id=None):
     return render_template('admin/user.html', user=User.query.get(id))
 
 
-@admin.route('/users')
+@admin.route('/users', methods=['GET', 'POST'])
 @login_required
 def index():
     if not current_user.role.edit_users: 
         return redirect(url_for('main.index'))
     list_of_users = User.query.order_by(User.id)
-    return render_template('admin/index.html', users=list_of_users)
+    form = SearchForm()
+    form.limit_search.label = 'Zoek alleen in gebruikers'
+
+    if form.validate_on_submit():
+        search_text = form.search_text.data
+        search_results = search(search_text, # The user can choose to only search in a aprticular field by checking a box on the form.
+                                worksessions=not form.limit_search.data, 
+                                catalog=not form.limit_search.data, 
+                                tools=not form.limit_search.data,
+                                users=True)
+        return render_template('analysis/results.html', 
+                                form=form,
+                                search_text=search_text,
+                                search_results=search_results)
+    return render_template('admin/index.html', users=list_of_users, form=form)
 
 
 @admin.route('/register', methods=['GET', 'POST'])
@@ -185,14 +200,14 @@ def info():
     return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten voor deze pagina.')        
 
 
-@admin.route('messages')
+@admin.route('/messages')
 @login_required
 def all_messages():
     messages = Message.query.order_by(Message.id)
     return render_template('admin/all_messages.html', messages=messages, user=current_user)
 
 
-@admin.route('message/<int:message_id>')
+@admin.route('/message/<int:message_id>')
 @login_required
 def message(message_id):
     message = Message.query.get(message_id)

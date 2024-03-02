@@ -7,7 +7,8 @@
     Instrumenten
 {% endblock %}
 
-{% block instrumenten %}   
+{% block instrumenten %}
+    {% include 'search.html' %}
     {% if edit_catalog_allowed %}
         <a href="{{ url_for('catalog.add_instrument') }}"><div class="instrument">+ Nieuw instrument maken</div></a>
         <a href="{{ url_for('catalog.import_instrument') }}"><div class="instrument">Instrument importeren</div></a>
@@ -16,10 +17,10 @@
     {% endif %}
      
     <br>
-    <p class="instrument collapsible">Tag filter</p>
+    <p class="instrument_section collapsible">Tag filter</p>
     <div class="collapsible_content">
         {% for tag in tags %}
-                <a href="{{ url_for('catalog.index', tag_id = tag.id) }}" class="tag">
+                <a href="{{ url_for('catalog.index', tag_id = tag.id) }}" class="instrument">
                     {{ tag.name }}
                 </a>
         {% endfor %}

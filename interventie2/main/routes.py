@@ -22,12 +22,18 @@ main = Blueprint('main', __name__,
 @main.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-	form = SearchForm()
 	worksessions = Worksession.query.order_by(Worksession.name)
 
+	form = SearchForm()
+	form.limit_search.label = 'Zoek alleen in werksessies'
+	
 	if form.validate_on_submit():
 		search_text = form.search_text.data
-		search_results = search(search_text)
+		search_results = search(search_text, # The user can choose to only search in a particular field by checking a box on the form.
+                                worksessions=True, 
+                                catalog=not form.limit_search.data, 
+                                tools=not form.limit_search.data,
+                                users=not form.limit_search.data)
 		return render_template('analysis/results.html', 
                                 form=form,
                                 search_text=search_text,

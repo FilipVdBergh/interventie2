@@ -3,7 +3,8 @@ from flask import Blueprint, current_app, render_template, redirect, url_for, re
 from flask_login import login_user, logout_user, current_user, login_required
 from interventie2.models import User
 from interventie2.models import db, QuestionSet, Process, User, Question, Option, Tag, Worksession
-from interventie2.forms import QuestionSetForm, AddQuestionForm, QuestionForm, OptionForm, AddTagToQuestionSet, AddRequiredTagToQuestionForm
+from interventie2.forms import QuestionSetForm, AddQuestionForm, QuestionForm, OptionForm, AddTagToQuestionSet, AddRequiredTagToQuestionForm, SearchForm
+from interventie2.analysis.routes import search
 from sqlalchemy.sql import func
 import simplejson as json
 
@@ -13,14 +14,29 @@ tools = Blueprint('tools', __name__,
                  static_url_path='assets')
 
 
-@tools.route('/')
+@tools.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
     if not current_user.role.edit_questionnaire: 
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een tool te ontwerpen.')
-    
+
     question_sets = QuestionSet.query.order_by()
-    return render_template('tools/index.html', question_sets=question_sets)
+    form = SearchForm()
+    form.limit_search.label = 'Zoek alleen in selectietools'
+
+    if form.validate_on_submit():
+        search_text = form.search_text.data
+        search_results = search(search_text, # The user can choose to only search in a aprticular field by checking a box on the form.
+                                worksessions=not form.limit_search.data, 
+                                catalog=not form.limit_search.data, 
+                                tools=True,
+                                users=not form.limit_search.data)
+        return render_template('analysis/results.html', 
+                                form=form,
+                                search_text=search_text,
+                                search_results=search_results)
+
+    return render_template('tools/index.html', question_sets=question_sets, form=form)
 
 
 @tools.route('list_worksessions/<int:question_set_id>', methods=['GET', 'POST'])

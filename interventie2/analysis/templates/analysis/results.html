@@ -1,31 +1,26 @@
 {% extends 'base.html' %}
 
 {% block steps %}
-    <a href="{{ url_for('analysis.index') }}" class="step">Zoeken</a>
-
-    {% endblock %}
+{% endblock %}
 
 {% block page_title %}
     Zoekresultaten '{{ search_text }}'
 {% endblock %}
 
-{% block instrumenten %}   
+{% block instrumenten %}  
+    {% include 'search.html' %}
 {% endblock %} 
 
 
 {% block body %}
-
-    <form method="POST">
-        {{ form.csrf_token }}    
-        {{ form.search_text }}{{ form.submit }}
-    </form>
-    <br>
-
-    <div class="results_summary">
+    <div>
         {% for (type, results) in search_results.items() %}
-            <a href='#{{ type }}'>{{ type }} {{ results | count }}</a>{% if not loop.last %};{% endif %}
+            {% if results | count > 0 %}
+                <a href='#{{ type }}' class="results_summary">[{{ type }}: {{ results | count }}]</a>
+            {% endif %}
         {% endfor %}
     </div>
+    <br>
     
     {% for (type, results) in search_results.items() %}
         <a name="{{ type }}"></a>

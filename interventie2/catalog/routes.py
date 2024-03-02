@@ -3,7 +3,8 @@ from flask import Blueprint, current_app, render_template, redirect, url_for, re
 from flask_login import current_user, login_required
 from interventie2.models import db
 from interventie2.models import User, Instrument, Remark, Tag, InstrumentTagAssignment, QuestionSet
-from interventie2.forms import InstrumentsForm, RemarkForm, TagForm, TagInstrumentAssignmentForm
+from interventie2.forms import InstrumentsForm, RemarkForm, TagForm, TagInstrumentAssignmentForm, SearchForm
+from interventie2.analysis.routes import search
 from sqlalchemy.sql import func, text
 import simplejson as json
 
@@ -14,14 +15,15 @@ catalog = Blueprint('catalog', __name__,
 
 
 
-@catalog.route('/')
-@catalog.route('/filter/<int:tag_id>')
+@catalog.route('/', methods=['GET', 'POST'])
+@catalog.route('/filter/<int:tag_id>', methods=['GET', 'POST'])
 def index(tag_id=None):
     # Login is niet nodig om de catalogus in te zien, maar om te wijzigen natuurlijk wel.
     if current_user.is_authenticated:
         edit_catalog_allowed = current_user.role.edit_catalog
     else:
         edit_catalog_allowed = False
+
 
     
     if tag_id is not None:        
@@ -35,12 +37,27 @@ def index(tag_id=None):
         list_of_instruments = Instrument.query.order_by(Instrument.name)
         filter_tag=None
 
+    form = SearchForm()
+    form.limit_search.label = 'Zoek alleen in instrumenten'
+
+    if form.validate_on_submit():
+        search_text = form.search_text.data
+        search_results = search(search_text, # The user can choose to only search in a aprticular field by checking a box on the form.
+                                worksessions=not form.limit_search.data, 
+                                catalog=True, 
+                                tools=not form.limit_search.data,
+                                users=not form.limit_search.data)
+        return render_template('analysis/results.html', 
+                                form=form,
+                                search_text=search_text,
+                                search_results=search_results)
 
     return render_template('catalog/index.html', 
                            edit_catalog_allowed=edit_catalog_allowed, 
                            instruments=list_of_instruments,
                            filter_tag=filter_tag,
-                           tags = Tag.query.order_by(Tag.name))
+                           tags = Tag.query.order_by(Tag.name),
+                           form=form)
 
 
 @catalog.route('/instrument/<int:id>')

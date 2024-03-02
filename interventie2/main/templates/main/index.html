@@ -7,7 +7,8 @@
     Werksessies
 {% endblock %}
 
-{% block instrumenten %}   
+{% block instrumenten %}
+    {% include 'search.html' %}    
     {% include 'link_new_worksession.html' %}   
     {% include 'link_archived_worksessions.html' %}   
 {% endblock %} 
@@ -18,17 +19,19 @@
     {% if current_user.unread_message_alert() %}
         {% for message in current_user.unread_messages_list() %}
             <div class="message">
-                <div class="subject">{{ message.subject }}</div>
-                <div class="date_created">Datum: {{ message.date_created.strftime('%d-%m-%Y') }}</div>
-                {% if message.sender.name|length >0 %}<div class="sender">Afzender: {{ message.sender.name }}</div>{% endif %}
-                <div class="body">{{ message.body | escape | markdown}}</div>
-                <a href="{{ url_for('admin.message', message_id=message.id) }}">Meer...</a>
+                    <a href="{{ url_for('admin.message', message_id=message.id) }}">
+                        <div class="subject">{{ message.subject }}</div>
+                        {% if message.sender.name|length >0 %}<div class="sender">Afzender: {{ message.sender.name }}</div>{% endif %}
+                        <div class="date">Datum: {{ message.deliver_after.strftime('%d-%m-%Y') }}</div>                    
+                        <div  class="body">
+                            {{ message.body | escape | markdown}}
+                        </div>
+                    </a>    
             </div>
         {% endfor %}
     {% endif %}
 
-    <h1>Zoeken</h1>
-    {% include 'search.html' %}
+
     
     <h1>Eigen werksessies</h1>
     <table>
