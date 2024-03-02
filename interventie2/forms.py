@@ -200,6 +200,6 @@ class ExportWorksessionForm(FlaskForm):
 
 class SearchForm(FlaskForm):
     search_text        = StringField('Zoektekst', validators=[DataRequired(), Length(min=3, max=100)])
-    limit_search       = BooleanField('Zoek alleen in ***', default=True)
+    limit_search       = BooleanField('Beperk zoekopdracht', default=True)
         # If limit search is checked, search results are limited to the page on which the search was made.
     submit             = SubmitField('Zoeken')

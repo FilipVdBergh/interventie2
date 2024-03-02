@@ -238,6 +238,26 @@ td {
     background-color: #cacfd2;
 }
 
+.search_form {
+    padding-top: 3px;
+    padding-bottom: 14px;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.search_field {
+
+}
+
+.search_option {
+    display: block;
+    color: black;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-decoration: none;
+    font-size: small;
+}
+
 .instrument_introduction {
     font-weight: bold;
 }
@@ -311,22 +331,6 @@ td {
 
 .search_result_context {
     font-style: italic;
-}
-
-.search_form {
-    padding-top: 3px;
-    padding-bottom: 14px;
-    padding-left: 7px;
-    padding-right: 7px;
-}
-
-.search_option {
-    display: block;
-    color: black;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    text-decoration: none;
-    font-size: small;
 }
 
 .message {

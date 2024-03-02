@@ -296,7 +296,7 @@ def unread_message(message_id):
             return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om dit bericht te markeren.')
     message.unread = True
     db.session.commit()
-    return redirect(url_for('admin.user', user_id=current_user.id))
+    return redirect(url_for('main.index', user_id=current_user.id))
 
 @admin.route('/message/<int:message_id>/delete')
 @login_required
@@ -307,4 +307,4 @@ def delete_message(message_id):
             return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om dit bericht te markeren.')
     db.session.delete(message)
     db.session.commit()
-    return redirect(url_for('admin.user', id=current_user.id))
+    return redirect(url_for('main.index', user_id=current_user.id))
