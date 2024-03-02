@@ -50,131 +50,6 @@ td {
     vertical-align: top;
 }
 
-/* Page layout */
-.app {
-    display: grid;
-    grid-template-columns: 300px  auto;
-}
-
-.div_navigation {
-    height: 100vh;
-    color: #d7d7d7;
-    background-color: #091e31;
-}
-
-.div_logo {
-    padding: 15px 15px 15px 15px;
-    height: 80px;
-}
-
-.div_mode {
-    padding: 0px 15px 0px 15px;
-}
-
-.div_options {
-    padding: 15px 15px 15px 15px;
-
-}
-
-.div_settings {
-    padding: 15px 15px 15px 15px;
-}
-
-.divmain {
-    height: 100vh;
-}
-
-.div_main_header {
-    padding-bottom: 20px;
-    border-bottom: solid 1px #EEEEEE;
-}
-
-.div_title {
-    grid-column-start: 1;
-    grid-column-end: 2;
-    padding: 50px 25px 15px 15px;
-    font-size:xxx-large;
-    font-weight: bold;
-}
-
-.div_search_box {
-
-}
-
-.div_steps {   
-    padding: 15px 15px 15px 15px;
-    color: #111111;
-    text-decoration: none;
-}
-
-.div_workarea { 
-    margin: 10px 10px 10px 10px;
-    padding: 15px 25px 15px 25px;
-}
-
-/* Page elements */
-
-.nav {
-    display: block;
-    text-transform: uppercase;
-    padding: 10px 7px 10px 7px;
-    color: #dbdbdb;
-    text-decoration: none;
-    font-size: small;
-}
-
-.nav:hover {
-    background-color: #4a5b6c;
-    border-radius: 5px;
-}
-
-.option_header {
-    color: #4a5b6c;
-    display: block;
-    font-weight: bold;
-    padding-top: 30px;
-    padding-bottom: 3px;
-    padding-left: 7px;
-    padding-right: 7px;
-    text-decoration: none;
-    font-size: small;
-
-}
-
-.option {
-    display: block;
-    color: white;
-    padding: 10px 7px 10px 7px;
-    text-decoration: none;
-    font-size: small;
-}
-
-.option:hover {
-    background-color: #4a5b6c;
-    border-radius: 5px;
-}
-
-.search_form {
-    float: right;
-    padding-top: 3px;
-    padding-bottom: 14px;
-    padding-left: 7px;
-    padding-right: 7px;
-}
-
-.search_field {
-    display: inline;
-}
-
-.search_option {
-    display: inline;
-    color: black;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    text-decoration: none;
-    font-size: small;
-}
-
 .plan_summary {
     padding-bottom: 10px;
 }
@@ -246,10 +121,60 @@ td {
     content: '-';
 }
 
+.divnav {
+    display: block;
+    color: #d7d7d7;
+    background-color: #091e31;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+    font-size: x-small;
+}
+
+.nav {
+    padding-right: 20px;
+    padding-left: 20px;
+    color: #dbdbdb
+}
+
+.nav:hover {
+    background-color: #4a5b6c;
+    color: #FFFFFF;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.divtoolbar {
+    background-color: #F7FAFC;
+    display: grid;
+    grid-template-columns: min-content auto;
+    grid-template-rows: max-content max-content;
+}
+
 .tool {       
     font-size: smaller;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     text-decoration-line: none;
+}
+
+.divlogo {
+    grid-row: 1 / 3;
+    padding: 15px;
+    padding-left: 20px;
+    padding-right: 40px;
+}
+
+.page_title {
+    padding-top: 10px;
+    font-size:xx-large;
+    font-weight: bold;
+}
+
+.divsteps {   
+    padding-right: 25px;
+    padding-bottom: 15px;
+    color: #111111;
+    text-decoration: none;
 }
 
 .step {
@@ -259,6 +184,78 @@ td {
 
 .step:after {
     content: " ▸"; 
+}
+
+.divcurrentstep {
+    font-size:xx-large;
+    font-weight: lighter;
+}
+
+.divmain {
+    margin-top: 25px;
+    margin-bottom: 50px;
+    display:grid;
+    grid-template-columns: 20%  auto;
+}
+
+.divinstrumenten {  
+    display:block;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.divworkarea { 
+    max-width: 800px;
+    margin-left: 25px;
+}
+
+
+.instrument_section {
+    display: block;
+    color: black;
+    font-weight: bold;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-decoration: none;
+    font-size: small;
+
+}
+
+.instrument {
+    display: block;
+    color: black;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-decoration: none;
+    font-size: small;
+}
+
+.instrument:hover {
+    background-color: #cacfd2;
+}
+
+.search_form {
+    padding-top: 3px;
+    padding-bottom: 14px;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.search_field {
+
+}
+
+.search_option {
+    display: block;
+    color: black;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-decoration: none;
+    font-size: small;
 }
 
 .instrument_introduction {

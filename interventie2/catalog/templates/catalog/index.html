@@ -7,26 +7,28 @@
     Instrumenten
 {% endblock %}
 
-{% block instrumenten %}
+{% block searchbox %}
     {% include 'search.html' %}
+{% endblock %}
+
+{% block instrumenten %}
+    <div class="option_header">Opties</div>
     {% if edit_catalog_allowed %}
-        <a href="{{ url_for('catalog.add_instrument') }}"><div class="instrument">+ Nieuw instrument maken</div></a>
-        <a href="{{ url_for('catalog.import_instrument') }}"><div class="instrument">Instrument importeren</div></a>
-        <a href="{{ url_for('export.catalog') }}"><div class="instrument">Exporteer catalogus naar Word</div></a>
-        <a href="{{ url_for('catalog.tags') }}"><div class="instrument">Taglijst aanpassen</div></a>  
+        <a href="{{ url_for('catalog.add_instrument') }}"><div class="option">+ Nieuw instrument maken</div></a>
+        <a href="{{ url_for('catalog.import_instrument') }}"><div class="option">Instrument importeren</div></a>
+        <a href="{{ url_for('export.catalog') }}"><div class="option">Exporteer catalogus naar Word</div></a>
+        <a href="{{ url_for('catalog.tags') }}"><div class="option">Taglijst aanpassen</div></a>  
     {% endif %}
-     
-    <br>
-    <p class="instrument_section collapsible">Tag filter</p>
+    <div class="collapsible option">Tag filter</div>
     <div class="collapsible_content">
         {% for tag in tags %}
-                <a href="{{ url_for('catalog.index', tag_id = tag.id) }}" class="instrument">
+                <a href="{{ url_for('catalog.index', tag_id = tag.id) }}" class="tag">
                     {{ tag.name }}
                 </a>
         {% endfor %}
     </div>
     {% if not filter_tag == none %}
-        <a href="{{ url_for('catalog.index') }}" class="instrument">
+        <a href="{{ url_for('catalog.index') }}" class="tool">
             <button type="button">&#10060; </button> Filter: {{ filter_tag.name }}</a>    
         </a>
     {% endif %}

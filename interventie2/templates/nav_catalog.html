@@ -1,3 +1,8 @@
-{% if config['ALLOW_CATALOG_VIEW'] or current_user.is_authenticated %}    
-    <a href="{{ url_for('catalog.index') }}" class="nav">&#128366; Catalogus</a>
+{% if config['ALLOW_CATALOG_VIEW'] or current_user.is_authenticated %} 
+    <a href="{{ url_for('catalog.index') }}">
+        <div class="nav">
+            Catalogus
+        </div>
+    </a>
+    
 {% endif %}

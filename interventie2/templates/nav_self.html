@@ -1,5 +1,3 @@
 {% if current_user.is_authenticated %}
-    <span style="float: right">
-        <a href="{{ url_for('admin.user', id=current_user.id) }}" class="nav">{{ current_user.name }} {% if current_user.unread_message_alert() %}(&#128489; {{ current_user.unread_messages() }}){% endif %}</a>
-    </span>
+    <a href="{{ url_for('admin.user', id=current_user.id) }}" class="option">{{ current_user.name }} {% if current_user.unread_message_alert() %}(&#128489; {{ current_user.unread_messages() }}){% endif %}</a>
 {% endif %}

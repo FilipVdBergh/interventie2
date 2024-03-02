@@ -7,12 +7,16 @@
     Selectietool ontwerpen
 {% endblock %}
 
+{% block searchbox %}
+    {% include 'search.html' %}
+{% endblock %}
+
 {% block instrumenten %}
-{% include 'search.html' %}
+    <div class="option_header">Opties</div>
     {% if current_user.role.edit_questionnaire %}
-        <a href="{{ url_for('tools.edit_question_set') }}"><div class="instrument">+ Nieuwe selectietool maken</div></a>
-        <a href="{{ url_for('tools.import_question_set') }}"><div class="instrument">Selectietool importeren</div></a>
-        <a href="{{ url_for('catalog.tags') }}"><div class="instrument">Taglijst aanpassen</div></a>
+        <a href="{{ url_for('tools.edit_question_set') }}"><div class="option">+ Nieuwe selectietool maken</div></a>
+        <a href="{{ url_for('tools.import_question_set') }}"><div class="option">Selectietool importeren</div></a>
+        <a href="{{ url_for('catalog.tags') }}"><div class="option">Taglijst aanpassen</div></a>
     {% endif %}
 {% endblock %}
 

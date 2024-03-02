@@ -1,5 +1,5 @@
 {% if current_user.is_authenticated %}
     {% if current_user.role.see_app_info %}
-        <span style="float: right"><a href="{{ url_for('admin.info') }}" class="nav">App info</a></span>
+        <a href="{{ url_for('admin.info') }}" class="option">App info</a>
     {% endif %}
 {% endif %}

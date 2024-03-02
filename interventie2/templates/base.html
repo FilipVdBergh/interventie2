@@ -6,48 +6,59 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <title>{{ config['APP_NAME'] }}</title>
     </head>
     <body>
         {% import 'jinja_macros.html' as macro %}
 
-        <div class="divnav">
-            {% include 'nav_login.html'%}
-            {% include 'nav_worksessions.html'%}
-            {% include 'nav_catalog.html'%}
-            {% include 'nav_tools.html' %}
-            {% include 'nav_self.html' %}
-            {% include 'nav_admin.html' %}
-            {% include 'nav_contact.html' %}
-            {% include 'nav_app_info.html' %}
-        </div>
-
-        <div class="divtoolbar">
-            <div class="divlogo">
-                <img src="{{ url_for('static', filename='img/logo.png') }}", height="75px">
-            </div>
-            <div class="page_title">
-                {% block page_title %}
-                {% endblock %}
-            </div>
-            <div class="divsteps">
-                {% block steps %}
-                {% endblock %}
-            </div>
-        </div>
-
-        <div class="divmain">
-            <div class="divinstrumenten">
-                {% block instrumenten %}   
-                {% endblock %} 
+        <div class="app">
+            <div class="div_navigation">
+                <div class="div_logo">
+                    <img src="{{ url_for('static', filename='img/logo.png') }}", height="75px">
+                </div>
+                <div class="div_mode">
+                    {% include 'nav_worksessions.html'%}
+                    {% include 'nav_catalog.html'%}
+                    {% include 'nav_tools.html' %}
+                </div>
+                <div class="div_options">
+                    {% block instrumenten %}{% endblock %} 
+                </div>
+                <div class="div_settings">
+                    <div class="option_header">Instellingen</div>
+                    {% include 'nav_login.html'%}
+                    {% include 'nav_self.html' %}
+                    {% include 'nav_admin.html' %}
+                    {% include 'nav_contact.html' %}
+                    {% include 'nav_app_info.html' %}
+                </div>
             </div>
 
-            <div class="divworkarea">
-                {% block body %}
-                {% endblock %}
+            <div class="div_main">
+                <div class="div_main_header">
+                    <div class="div_title">
+                        {% block page_title %}{% endblock %}
+                    </div>
+                    <div class="div_search">
+                        {% block searchbox %}{% endblock %}
+                    </div>
+                    <div class="div_steps">
+                        {% block steps %}
+                        {% endblock %}
+                    </div>
+                </div>
+                <div class="div_workarea">
+                    {% block body %}
+                    {% endblock %}
+                </div>
+            </div>
+
+            <div class="footer">
+
             </div>
         </div>
-        
+      
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/confirm_redirect.js')}}"></script>
     </body>

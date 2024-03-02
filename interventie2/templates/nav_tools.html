@@ -1,5 +1,9 @@
 {% if current_user.is_authenticated %}
     {% if current_user.role.edit_questionnaire %}
-        <a href="{{ url_for('tools.index') }}" class="nav">&#9881; Selectietools</a> 
+       <a href="{{ url_for('tools.index') }}">
+            <div class="nav">
+                Selectietools
+            </div>
+        </a> 
     {% endif %}
 {% endif %}

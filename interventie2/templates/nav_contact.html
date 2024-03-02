@@ -1,5 +1,3 @@
 {% if config['ALLOW_CONTACT'] %}    
-    <span style="float: right">
-        <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}"" class="nav">&#9993; Contact</a>
-    </span>
+    <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}" class="option">&#9993; Contact</a>
 {% endif %}

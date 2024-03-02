@@ -7,8 +7,12 @@
     Werksessies
 {% endblock %}
 
+{% block searchbox %}
+    {% include 'search.html' %}
+{% endblock %}
+
 {% block instrumenten %}
-    {% include 'search.html' %}    
+    <div class="option_header">Opties</div>
     {% include 'link_new_worksession.html' %}   
     {% include 'link_archived_worksessions.html' %}   
 {% endblock %} 
