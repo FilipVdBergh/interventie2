@@ -11,14 +11,31 @@
 {% include 'search.html' %}
     {% if current_user.role.edit_questionnaire %}
         <div class="instrument_section">Opties</div>
-        <a href="{{ url_for('tools.edit_question_set') }}"><div class="instrument">+ Nieuwe selectietool maken</div></a>
-        <a href="{{ url_for('tools.import_question_set') }}"><div class="instrument">Selectietool importeren</div></a>
         <a href="{{ url_for('catalog.tags') }}"><div class="instrument">Taglijst aanpassen</div></a>
     {% endif %}
 {% endblock %}
 
 {% block body %}
-
+    <a href="{{ url_for('tools.edit_question_set') }}">
+        <div class="card new">
+            <div class="card_title">
+                Nieuwe selectietool maken
+            </div>
+            <div class="card_description">
+                Klik hier om een nieuwe selectietool te maken.
+            </div>
+        </div>
+    </a>
+    <a href="{{ url_for('tools.import_question_set') }}">
+        <div class="card new">
+            <div class="card_title">
+                Selectietool importeren
+            </div>
+            <div class="card_description">
+                Klik hier om een selectietool te importeren uit een JSON-bestand.
+            </div>
+        </div>
+    </a>
 
     {% for question_set in question_sets | sort(attribute="name") %}
         <a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}">

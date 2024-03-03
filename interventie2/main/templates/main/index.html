@@ -10,8 +10,7 @@
 {% block instrumenten %}
     {% include 'search.html' %}
     <div class="instrument_section">Opties</div>
-    {% include 'link_new_worksession.html' %}   
-    {% include 'link_archived_worksessions.html' %}   
+    {% include 'link_archived_worksessions.html' %}
 {% endblock %} 
 
 
@@ -35,6 +34,17 @@
             </div>
         {% endfor %}
     {% endif %}
+
+    <a href="{{ url_for('main.new_worksession') }}">
+        <div class="card new">
+            <div class="card_title">
+                Nieuwe werksessie maken
+            </div>
+            <div class="card_description">
+                Klik hier om een nieuwe werksessie te maken.
+            </div>
+        </div>
+    </a>
 
     {% for worksession in worksessions | selectattr('parent', 'none') %}
         {% if worksession.archived == false %}
@@ -84,9 +94,5 @@
                 {% endif %}
             {% endif %}
         {% endfor %}
-    </table>
-
-
-
 
 {% endblock %}

@@ -85,7 +85,7 @@ tr:hover td{
 }
 
 .divtoolbar {
-    background-color: #F7FAFC;
+    background-color: #eaeff3;
     display: grid;
     grid-template-columns: min-content auto;
     grid-template-rows: max-content max-content;
@@ -135,7 +135,7 @@ tr:hover td{
     margin-top: 25px;
     margin-bottom: 50px;
     display:grid;
-    grid-template-columns: 20%  auto;
+    grid-template-columns: 300px  auto;
 }
 
 .divinstrumenten {  
@@ -255,8 +255,12 @@ tr:hover td{
     scrollbar-width: none;
 }
 
+.new {
+    background-color: #ebf8eb;
+}
+
 .card:hover {
-    background-color: #f0f6fe;
+    background-color: #cfd4db;
     overflow-y: scroll;
 }
 
@@ -274,8 +278,32 @@ tr:hover td{
 
 .card_owner {
     font-size: small;
+    font-weight: bold;
     color: black;
     padding-bottom: 3px;
+}
+
+/* Messages */
+.message {
+    padding: 0px 10px 10px 10px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+}
+
+.unread {
+    font-weight: bold;
+}
+.message:hover {
+    background-color: #cfd4db;
+}
+
+.message_more {
+    float: right;
+}
+
+.future_date {
+    color: #AAAAAA;
 }
 
 /* Other formatting */
@@ -366,18 +394,3 @@ tr:hover td{
     content: "🡣"; 
 }
 
-
-.unread {
-    font-weight: bold;
-}
-.message:hover {
-    background-color: #f0f6fe ;
-}
-
-.message_more {
-    float: right;
-}
-
-.future_date {
-    color: #AAAAAA;
-}

@@ -11,31 +11,55 @@
     {% include 'search.html' %}
     {% if edit_catalog_allowed %}
         <div class="instrument_section">Opties</div>
-        <a href="{{ url_for('catalog.add_instrument') }}"><div class="instrument">+ Nieuw instrument maken</div></a>
-        <a href="{{ url_for('catalog.import_instrument') }}"><div class="instrument">Instrument importeren</div></a>
         <a href="{{ url_for('export.catalog') }}"><div class="instrument">Exporteer catalogus naar Word</div></a>
         <a href="{{ url_for('catalog.tags') }}"><div class="instrument">Taglijst aanpassen</div></a>  
     {% endif %}
-     
-    <br>
-    <p class="instrument_section collapsible">Tag filter</p>
-    <div class="collapsible_content">
-        {% for tag in tags %}
-                <a href="{{ url_for('catalog.index', tag_id = tag.id) }}" class="instrument">
-                    {{ tag.name }}
-                </a>
-        {% endfor %}
-    </div>
-    {% if not filter_tag == none %}
-        <a href="{{ url_for('catalog.index') }}" class="instrument">
-            <button type="button">&#10060; </button> Filter: {{ filter_tag.name }}</a>    
-        </a>
-    {% endif %}
-
 {% endblock %} 
 
 
 {% block body %}
+    {% if filter_tag == none %}
+        <div class="collapsible">Tag filter</div>
+    {% else %}
+        <div class="collapsible">Tag filter: {{ filter_tag.name }}
+            <a href="{{ url_for('catalog.index') }}">
+                <button type="button">&#10060; </button></a>    
+            </a>
+        </div>
+    {% endif %}
+        <div class="collapsible_content">
+            {% for tag in tags %}
+                    <a href="{{ url_for('catalog.index', tag_id = tag.id) }}" class="tag">
+                        {{ tag.name }}
+                    </a>
+            {% endfor %}
+        </div>
+
+    <br>
+
+    {% if filter_tag == none %}
+        <a href="{{ url_for('catalog.add_instrument') }}">
+            <div class="card new">
+                <div class="card_title">
+                    Nieuw instrument maken
+                </div>
+                <div class="card_description">
+                    Klik hier om een nieuw instrument te maken.
+                </div>
+            </div>
+        </a>
+        <a href="{{ url_for('catalog.import_instrument') }}">
+            <div class="card new">
+                <div class="card_title">
+                    Instrument importeren
+                </div>
+                <div class="card_description">
+                    Klik hier om een instrument te importeren uit een JSON-bestand.
+                </div>
+            </div>
+        </a>
+    {% endif %}
+
     {% for instrument in instruments %}
         <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">
             <div class="card">
