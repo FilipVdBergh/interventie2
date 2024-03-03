@@ -4,6 +4,7 @@ html,body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 0px;
     margin: 0px;
+    font-size: 11pt;
 }
 
 a {
@@ -237,11 +238,12 @@ tr:hover td{
     font-style: italic;
 }
 
-/* General cards */
+/* Generic cards */
+
 .card {
     display: inline-block;
     vertical-align: middle;
-    width: 260px;
+    width: 240px;
     height: 260px;
     padding: 10px;
     margin-right: 15px;
