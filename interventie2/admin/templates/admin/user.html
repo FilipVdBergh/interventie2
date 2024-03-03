@@ -20,9 +20,32 @@
 {% block body %}
     <div>{{ user.description | escape | markdown }}</div>
     <br>
-    {% if current_user == user %}    
+    {% if current_user == user %}   
+
         <h1>Inbox</h1>
         {% if current_user.messages_list() | count > 0 %}
+            {% for message in current_user.messages_list() %}
+                <a href="{{ url_for('admin.message', message_id=message.id) }}">
+                    <div class="card">
+                        <div class="card_title">
+                            {{ message.subject }} {% if message.unread %}(nieuw){% endif %}
+                        </div>
+                        <div class="card_owner">Van 
+                            {% if message.system %}
+                                Systeem ({{ message.sender.name }})
+                            {% else %}
+                                {{ message.sender.name }}
+                            {% endif %}
+                             op {{ message.date_created.strftime('%d-%m-%Y') }}.
+                        </div>
+                        <div class="card_description">
+                            {{ message.body | escape | truncate(200) | markdown }}
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+
+<!--
             <table>
                 <tr>
                     <th>Onderwerp</th>
@@ -46,7 +69,10 @@
         {% else %}
             <div>Geen berichten</div>
         {% endif %}
+
+-->
         <br>
+
 
         <h1  class="collapsible">Outbox ({{current_user.messages_sent | count}})</h1>
         {% if current_user.messages_sent | count > 0 %}

@@ -10,6 +10,7 @@
 {% block instrumenten %}
 {% include 'search.html' %}
     {% if current_user.role.edit_questionnaire %}
+        <div class="instrument_section">Opties</div>
         <a href="{{ url_for('tools.edit_question_set') }}"><div class="instrument">+ Nieuwe selectietool maken</div></a>
         <a href="{{ url_for('tools.import_question_set') }}"><div class="instrument">Selectietool importeren</div></a>
         <a href="{{ url_for('catalog.tags') }}"><div class="instrument">Taglijst aanpassen</div></a>
@@ -17,6 +18,22 @@
 {% endblock %}
 
 {% block body %}
+
+
+    {% for question_set in question_sets | sort(attribute="name") %}
+        <a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}">
+            <div class="card">
+                <div class="card_title">
+                    {{ question_set.name }}
+                </div>
+                <div class="card_description">
+                    {{ question_set.description | escape | markdown }}
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+
+<!--
     <table>
         <tr>
             <th>Selectietools</th>
@@ -29,4 +46,5 @@
             </tr>   
         {% endfor %}
     </table>
+-->
 {% endblock %}

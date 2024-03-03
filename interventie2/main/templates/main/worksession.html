@@ -37,19 +37,22 @@
     {% if worksession.plan | length %}
         <h1>Interventieplan</h1>
             {% for plan in worksession.plan %}
-                <div class="plan_summary">
-                    <div class="plan_description">
-                        <a href="{{ url_for('main.show_plan', worksession_id=worksession.id, plan_id=plan.id) }}">{{ loop.index }}. {{ plan.description }}</a>
+                <a href="{{ url_for('main.show_plan', worksession_id=worksession.id, plan_id=plan.id) }}">
+                    <div class="card">
+                        <div class="card_title">
+                            {{ plan.description }}
+                        </div>
+                        <div class="card_owner">
+                            Plan {{ loop.index }}. Instrumenten: 
+                            {% for chosen_instrument in plan.instruments %}
+                                {{ chosen_instrument.instrument.name }}{{ ", " if not loop.last else "" }}
+                            {% endfor %}
+                        </div>
+                        <div class="card_description">
+                            {{ plan.conclusion }} 
+                        </div>
                     </div>
-                    <div class="plan_conclusion">
-                        {{ plan.conclusion }} 
-                    </div>
-                    <div class="plan_instruments">Instrumenten: 
-                        {% for chosen_instrument in plan.instruments %}
-                            {{ chosen_instrument.instrument.name }}{{ ", " if not loop.last else "" }}
-                        {% endfor %}
-                    </div>
-                </div>
+                </a>
             {% endfor %}
         
     {% endif %}

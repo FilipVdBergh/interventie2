@@ -14,12 +14,12 @@
 {% endblock %}
 
 {% block body %}
-    <div class="message">
-        <div class="subject">{{ message.subject }}</div>
-        <div class="sender">Afzender: {{ message.sender.name }}</div>
-        <div class="date">Datum: {{ message.date_created }}</div>
-        <div class="body">{{ message.body | escape | markdown}}</div>
-    </div>
+    <h1>{{ message.subject }}</h1>
+    <div class="card_owner">Afzender: {{ message.sender.name }}</div>
+    <div class="card_owner">Datum: {{ message.date_created }}</div>
+    <div class="card_description">{{ message.body | escape | markdown}}</div>
+    <br>
+    
     <button>{{ macro.confirm_redirect( "Verwijderen", "Wilt u dit bericht verwijderen?", url_for('admin.delete_message', message_id=message.id) ) }}</button>
     <button><a href="{{ url_for('admin.unread_message', message_id=message.id) }}">Markeren als ongelezen</a></button>
 {% endblock %}

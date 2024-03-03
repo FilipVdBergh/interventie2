@@ -10,6 +10,7 @@
 {% block instrumenten %}
     {% include 'search.html' %}
     {% if edit_catalog_allowed %}
+        <div class="instrument_section">Opties</div>
         <a href="{{ url_for('catalog.add_instrument') }}"><div class="instrument">+ Nieuw instrument maken</div></a>
         <a href="{{ url_for('catalog.import_instrument') }}"><div class="instrument">Instrument importeren</div></a>
         <a href="{{ url_for('export.catalog') }}"><div class="instrument">Exporteer catalogus naar Word</div></a>
@@ -35,6 +36,20 @@
 
 
 {% block body %}
+    {% for instrument in instruments %}
+        <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">
+            <div class="card">
+                <div class="card_title">
+                    {{ instrument.name}}
+                </div>
+                <div class="card_description">
+                    {{ instrument.introduction | escape | markdown }}
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+
+<!--
     <table>
         <tr>
             <th>Instrument</th>
@@ -48,7 +63,7 @@
         {% endfor %}
     </table>
     <br>
-
+-->
 
 
 
