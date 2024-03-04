@@ -229,7 +229,7 @@ def new_system_message():
     form = SendSystemMessageForm()
 
     if form.validate_on_submit():
-        deliver_after = form.deliver_after.data.strftime('%Y-%m-%d %H:%M%z')
+        deliver_after = form.deliver_after.data
 
 
         for user in User.query.order_by(User.name):
@@ -244,13 +244,15 @@ def new_system_message():
 
     return render_template('admin/new_system_message.html', form=form)
 
-def send_system_message(subject, body, recipient, sender=current_user, deliver_after=func.now()):
+def send_system_message(subject, body, recipient, sender=current_user, deliver_after=datetime.today()):
+    deliver_after_for_db = deliver_after.strftime('%Y-%m-%d %H:%M%z')
+
     message = Message(subject = subject,
                         body = body,
                         recipient = recipient,
                         system = True,
                         sender = sender,
-                        deliver_after = deliver_after
+                        deliver_after = deliver_after_for_db
                         )
     
     try:

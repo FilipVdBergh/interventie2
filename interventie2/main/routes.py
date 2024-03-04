@@ -9,6 +9,7 @@ from interventie2.classes import Advisor
 from interventie2.analysis.routes import search
 from sqlalchemy.sql import func
 from decimal import Decimal
+from datetime import datetime
 from interventie2.admin.routes import send_system_message
 import hashlib
 
@@ -218,7 +219,7 @@ def new_plan(worksession_id):
 	if not current_user.role.see_all_worksessions and current_user not in worksession.allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 	
-	plan = Plan(worksession=worksession, date=date.today())
+	plan = Plan(worksession=worksession, date=datetime.today())
 
 	if request.method == "POST":
 		plan.description = request.form.get("plan_description")
