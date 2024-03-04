@@ -124,7 +124,7 @@ def register():
 
 
 @admin.route('/user/<int:user_id>/password', methods=['GET', 'POST'])
-@fresh_login_required
+@login_required
 def change_password(user_id):
     user = User.query.get(user_id)
     if not user.edit_allowed(): 
