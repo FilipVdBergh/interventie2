@@ -6,8 +6,6 @@
 
 {% block instrumenten %}   
     <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button style="width: 100%;">Start de werksessie</button></a><br><br>
-    {% include 'link_new_worksession.html' %} 
-    {% include 'link_new_plan.html' %}
 {% endblock %} 
 
 
