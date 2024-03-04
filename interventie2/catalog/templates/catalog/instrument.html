@@ -10,6 +10,15 @@
 
 
 {% block instrumenten %}   
+    {% if edit_catalog_allowed %}
+    <div class="instrument_section">Opties</div>
+    <a href="{{ url_for('catalog.edit_instrument', id=instrument.id) }}" class="instrument">Instrument aanpassen of verwijderen</a>
+    <a href="{{ url_for('catalog.instrument_tags', id=instrument.id) }}" class="instrument">Tags toewijzen</a>
+    <a href="{{ url_for('export.instrument', instrument_id=instrument.id) }}" class="instrument">Exporteren naar Word</a>
+    <a href="{{ url_for('export.instrument_to_json', instrument_id=instrument.id) }}" class="instrument">Exporteren naar JSON</a>
+    {% endif %}
+
+    <div class="instrument_section">Instrumenten</div>
     {% include 'links_all_instruments.html' %}
 {% endblock %} 
 
@@ -84,15 +93,5 @@
                 </td>
             </tr>
         </table>
-
-    {% if edit_catalog_allowed %}
-    <h1>Acties</h1>
-        <ul>
-            <li><a href="{{ url_for('catalog.edit_instrument', id=instrument.id) }}">Instrument aanpassen of verwijderen</a></li>
-            <li><a href="{{ url_for('catalog.instrument_tags', id=instrument.id) }}">Tags toewijzen</a></li>
-            <li><a href="{{ url_for('export.instrument', instrument_id=instrument.id) }}">Exporteren naar Word</a></li>
-            <li><a href="{{ url_for('export.instrument_to_json', instrument_id=instrument.id) }}">Exporteren naar JSON</a></li>
-        </ul>
-    {% endif %}
 
 {% endblock %}

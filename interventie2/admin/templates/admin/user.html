@@ -14,7 +14,15 @@
 {% endblock %}
 
 {% block instrumenten %}   
-
+    {% if user.edit_allowed() %}
+    <div class="instrument_section">Opties</div>
+        {% if user == current_user %}<a href="{{ url_for('main.logout') }}" class="instrument">Uitloggen</a>{% endif %}
+        <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" class="instrument">Gebruiker aanpassen of verwijderen</a>
+        <a href="{{ url_for('admin.change_password', user_id=user.id) }}" class="instrument">Wachtwoord veranderen</a>
+        {% if user != current_user %}
+            <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}" class="instrument">Stuur {{ user.name }} een bericht</a>
+        {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block body %}
@@ -182,15 +190,5 @@
         </div>
     {% endif %}
 
-    {% if user.edit_allowed() %}
-        <h1>Acties</h1>
-        <ul>
-            {% if user == current_user %}<li><a href="{{ url_for('main.logout') }}">Uitloggen</a></li>{% endif %}
-            <li><a href="{{ url_for('admin.edit_user', user_id=user.id) }}">Gebruiker aanpassen of verwijderen</a></li>
-            <li><a href="{{ url_for('admin.change_password', user_id=user.id) }}">Wachtwoord veranderen</a></li>
-            {% if user != current_user %}
-                <li><a href="{{ url_for('admin.new_message', recipient_id=user.id) }}">Stuur {{ user.name }} een bericht</a></li>
-            {% endif %}
-        </ul>
-    {% endif %}
+
 {% endblock %}

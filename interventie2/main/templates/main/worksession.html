@@ -6,6 +6,16 @@
 
 {% block instrumenten %}   
     <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button style="width: 100%;">Start de werksessie</button></a><br><br>
+
+        <div class="instrument_section">Opties</div>
+        <a href="{{ url_for('main.worksession_summary', worksession_id=worksession.id) }}" class="instrument">Overzicht van de uitkomsten</a>
+        <a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}" class="instrument">Sessie aanpassen of verwijderen</a>
+        {% if not worksession.archived %}<a href="{{ url_for('main.archive_worksession', worksession_id=worksession.id) }}" class="instrument">Sessie archiveren</a>{% endif %}
+        <a href="{{ url_for('main.share_worksession', worksession_id=worksession.id) }}" class="instrument">Toegang tot de sessie beheren</a>
+        <a href="{{ url_for('export.worksession', worksession_id=worksession.id) }}" class="instrument">Sessie exporteren naar Word</a>
+    </ul>
+
+
 {% endblock %} 
 
 
@@ -123,13 +133,4 @@
             </tr>
         </table>
     </div>
-
-    <h1>Acties</h1>
-    <ul>
-        <li><a href="{{ url_for('main.worksession_summary', worksession_id=worksession.id) }}">Overzicht van de uitkomsten</a></li>
-        <li><a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}">Sessie aanpassen of verwijderen</a></li>
-        {% if not worksession.archived %}<li><a href="{{ url_for('main.archive_worksession', worksession_id=worksession.id) }}">Sessie archiveren</a></li>{% endif %}
-        <li><a href="{{ url_for('main.share_worksession', worksession_id=worksession.id) }}">Toegang tot de sessie beheren</a></li>
-        <li><a href="{{ url_for('export.worksession', worksession_id=worksession.id) }}">Sessie exporteren naar Word</a></li>
-    </ul>
 {% endblock %}
