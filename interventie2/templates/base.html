@@ -11,7 +11,7 @@
     <body>
         {% import 'jinja_macros.html' as macro %}
 
-        <div class="divnav">
+        <div class="div_mode">
             {% include 'nav_login.html'%}
             {% include 'nav_worksessions.html'%}
             {% include 'nav_catalog.html'%}
@@ -22,27 +22,27 @@
             {% include 'nav_app_info.html' %}
         </div>
 
-        <div class="divtoolbar">
-            <div class="divlogo">
+        <div class="div_toolbar">
+            <div class="div_logo">
                 <img src="{{ url_for('static', filename='img/logo.png') }}", height="75px">
             </div>
-            <div class="page_title">
+            <div class="div_title">
                 {% block page_title %}
                 {% endblock %}
             </div>
-            <div class="divsteps">
+            <div class="div_steps">
                 {% block steps %}
                 {% endblock %}
             </div>
         </div>
 
-        <div class="divmain">
-            <div class="divinstrumenten">
+        <div class="div_main">
+            <div class="div_options">
                 {% block instrumenten %}   
                 {% endblock %} 
             </div>
 
-            <div class="divworkarea">
+            <div class="div_workarea">
                 {% block body %}
                 {% endblock %}
             </div>
@@ -50,5 +50,11 @@
         
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/confirm_redirect.js')}}"></script>
+
+        <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/switch_tab.js')}}"></script>
+        <script>
+            // Open the default tab
+            document.getElementById("defaultOpen").click();
+        </script>
     </body>
 </html>

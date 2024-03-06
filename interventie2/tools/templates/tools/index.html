@@ -10,8 +10,8 @@
 {% block instrumenten %}
 {% include 'search.html' %}
     {% if current_user.role.edit_questionnaire %}
-        <div class="instrument_section">Opties</div>
-        <a href="{{ url_for('catalog.tags') }}"><div class="instrument">Taglijst aanpassen</div></a>
+        <div class="option_header">Opties</div>
+        <a href="{{ url_for('catalog.tags') }}"><div class="option">Taglijst aanpassen</div></a>
     {% endif %}
 {% endblock %}
 

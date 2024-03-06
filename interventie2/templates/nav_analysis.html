@@ -1,5 +1,5 @@
 {% if current_user.is_authenticated %}
     {% if current_user.role.edit_catalog %}
-        <a href="{{ url_for('analysis.index') }}" class="nav">Zoeken</a> 
+        <a href="{{ url_for('analysis.index') }}" class="mode">Zoeken</a> 
     {% endif %}
 {% endif %}

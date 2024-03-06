@@ -9,10 +9,10 @@
 {% endblock %}
 
 {% block instrumenten %}   
-    <div class="instrument_section">Opties</div>
-    <a href="{{ url_for('tools.list_worksessions', question_set_id=question_set.id) }}" class="instrument">Werksessies die seze selectietool gebruiken</a>
-    <a href="{{ url_for('tools.edit_question_set', question_set_id=question_set.id) }}" class="instrument">Selectietool aanpassen of verwijderen</a>
-    <a href="{{ url_for('export.question_set_to_json', question_set_id=question_set.id) }}" class="instrument">Selectietool exporteren naar JSON</a>
+    <div class="option_header">Opties</div>
+    <a href="{{ url_for('tools.list_worksessions', question_set_id=question_set.id) }}" class="option">Werksessies die seze selectietool gebruiken</a>
+    <a href="{{ url_for('tools.edit_question_set', question_set_id=question_set.id) }}" class="option">Selectietool aanpassen of verwijderen</a>
+    <a href="{{ url_for('export.question_set_to_json', question_set_id=question_set.id) }}" class="option">Selectietool exporteren naar JSON</a>
 {% endblock %} 
 
 {% block body %}

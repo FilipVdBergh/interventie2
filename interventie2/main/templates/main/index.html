@@ -9,7 +9,7 @@
 
 {% block instrumenten %}
     {% include 'search.html' %}
-    <div class="instrument_section">Opties</div>
+    <div class="option_header">Opties</div>
     {% include 'link_archived_worksessions.html' %}
 {% endblock %} 
 
@@ -35,44 +35,51 @@
         {% endfor %}
     {% endif %}
 
-    <a href="{{ url_for('main.new_worksession') }}">
-        <div class="card new">
-            <div class="card_title">
-                Nieuwe werksessie maken
-            </div>
-            <div class="card_description">
-                Klik hier om een nieuwe werksessie te maken.
-            </div>
-        </div>
-    </a>
+    <!-- <div class="tab_bar">
+        <button class="tablinks" onclick="switch_tab(event, 'ws_owned')" id="defaultOpen">Mijn sessies</button>
+        <button class="tablinks" onclick="switch_tab(event, 'ws_shared')">Gedeelde sessies</button>
+        <button class="tablinks" onclick="switch_tab(event, 'ws_archived')">Gearchiveerde sessies</button>
+    </div> -->
 
-    {% for worksession in worksessions | selectattr('parent', 'none') %}
-        {% if worksession.archived == false %}
-            {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
-                {% if current_user == worksession.creator %}
-                    <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
-                        <div class="card">
-                            <div class="card_title">
-                                {{ worksession.name}}
+    <div id="ws_owned" class="tabcontent">
+        <a href="{{ url_for('main.new_worksession') }}">
+            <div class="card new">
+                <div class="card_title">
+                    Nieuwe werksessie maken
+                </div>
+                <div class="card_description">
+                    Klik hier om een nieuwe werksessie te maken.
+                </div>
+            </div>
+        </a>
+
+        {% for worksession in worksessions | selectattr('parent', 'none') %}
+            {% if worksession.archived == false %}
+                {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
+                    {% if current_user == worksession.creator %}
+                        <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
+                            <div class="card">
+                                <div class="card_title">
+                                    {{ worksession.name}}
+                                </div>
+                                <div class="card_owner">
+                                    {{ worksession.question_set.name }} 
+                                    ({{ worksession.creator.name }}, {{ worksession.date_modified.strftime('%d-%m-%Y') }})
+                                </div>
+                                <div class="card_description">
+                                    {{ worksession.description | escape | markdown }}
+                                </div>
                             </div>
-                            <div class="card_owner">
-                                {{ worksession.question_set.name }} 
-                                ({{ worksession.creator.name }}, {{ worksession.date_modified.strftime('%d-%m-%Y') }})
-                            </div>
-                            <div class="card_description">
-                                {{ worksession.description | escape | markdown }}
-                            </div>
-                        </div>
-                    </a>
+                        </a>
+                    {% endif %}
                 {% endif %}
             {% endif %}
-        {% endif %}
-    {% endfor %}   
+        {% endfor %}   
+    </div>
 
 
-
-
-    <h1>Gedeelde werksessies</h1>
+    <div id="ws_shared" class="tabcontent">
+        <h1>Gedeelde werksessies</h1>
         {% for worksession in worksessions | selectattr('parent', 'none') %}
             {% if worksession.archived == false %}
                 {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
@@ -94,5 +101,10 @@
                 {% endif %}
             {% endif %}
         {% endfor %}
+    </div>
+
+    <div id="ws_archived" class="tabcontent">
+
+    </div>
 
 {% endblock %}
