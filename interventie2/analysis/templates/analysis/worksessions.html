@@ -7,26 +7,32 @@
     {% endblock %}
 
 {% block page_title %}
-    {{ question_set.name }}
+    Werksessies op basis van selectietool {{ question_set.name }}
 {% endblock %}
 
 {% block body %}
-    <h1>Deze selectietool wordt gebruikt in {{ question_set.worksessions | length }} werksessie(s)</h1>
-    <br><br>
-    <table>
-        <tr>
-            <th>Werksessie</th>
-            <th>Beschrijving</th>
-            <th>Eigenaar</th>
-            <th>Status</th>
-        </tr>
-        {% for worksession in question_set.worksessions  %}
-            <tr>
-                <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
-                <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
-                <td><a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></td>
-                <td>{% if worksession.archived %}Gearchiveerd{% else %}Actief{% endif %}</td>
-            </tr>
-        {% endfor %}
-    </table>
+    <div>Deze selectietool wordt gebruikt in {{ question_set.worksessions | length }} werksessie(s):</div>
+    <br>
+    
+    {% for worksession in question_set.worksessions  %}
+        {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
+            {% if current_user == worksession.creator %}
+                <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
+                    <div class="card">
+                        <div class="card_title">
+                            {{ worksession.name}} {% if worksession.archived %}(gearchiveerd){% endif %}
+                        </div>
+                        <div class="card_owner">
+                            {{ worksession.question_set.name }} 
+                            ({{ worksession.creator.name }}, {{ worksession.date_modified.strftime('%d-%m-%Y') }})
+                        </div>
+                        <div class="card_description">
+                            {{ worksession.description | escape | markdown }}
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
+        {% endif %}
+    {% endfor %}   
+
 {% endblock %}

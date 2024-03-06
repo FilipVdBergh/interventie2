@@ -74,7 +74,7 @@ tr:hover td{
 .nav {
     padding-right: 20px;
     padding-left: 20px;
-    color: #dbdbdb
+    color: #dbdbdb;
 }
 
 .nav:hover {
@@ -85,10 +85,12 @@ tr:hover td{
 }
 
 .divtoolbar {
-    background-color: #eaeff3;
+    background-color: white;
     display: grid;
     grid-template-columns: min-content auto;
     grid-template-rows: max-content max-content;
+    background-color: #F7FAFC;
+    box-shadow: 3px 3px 3px 3px #88888811;
 }
 
 .tool {       
@@ -250,8 +252,9 @@ tr:hover td{
     margin-right: 15px;
     margin-bottom: 15px;;
     background-color: #F7FAFC;
-    border: 1px solid white;
-    border-radius: 6px;
+    /* border: 1px solid white; */
+    box-shadow: 3px 3px 3px 3px #88888811;
+    border-radius: 2px;
     overflow: hidden;
     scrollbar-width: none;
 }
@@ -261,7 +264,7 @@ tr:hover td{
 }
 
 .card:hover {
-    background-color: #cfd4db;
+    background-color: #e9ecf2;
     overflow-y: scroll;
 }
 
