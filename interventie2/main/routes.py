@@ -175,12 +175,32 @@ def clone_worksession(worksession_id):
 	return render_template('main/clone_worksession.html', worksession=parent_worksession)
 
 
-@main.route('/worksession/<int:worksession_id>')
+@main.route('/worksession/<int:worksession_id>', methods=['GET', 'POST'])
 @login_required
 def show_worksession(worksession_id):
 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
-	return render_template('main/worksession.html', worksession=Worksession.query.get(worksession_id), worksessions=Worksession.query.order_by(Worksession.name))
+	
+	worksession = Worksession.query.get(worksession_id)
+	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+	to_be_hashed = f'{date.today()}{worksession.secret_key}'
+	invitation_string = hashlib.sha1(to_be_hashed.encode('utf-8')).hexdigest()
+
+	form = EditWorksessionAccessForm()
+	form.user.choices = [(user.id, user.name) for user in User.query.order_by(User.name)]
+
+	if form.validate_on_submit():
+		for user_id in form.user.data:
+			worksession.allowed_users.append(User.query.get(user_id))
+		db.session.commit()
+	elif request.method == "GET":
+		pass
+
+	return render_template('main/worksession.html', 
+						worksession=worksession, 
+						advisor=advisor,
+						form=form,
+						invitation_string=invitation_string)
 
 
 @main.route('/worksession/<int:worksession_id>/plan/<int:plan_id>', methods=['GET', 'POST'])
@@ -603,29 +623,29 @@ def zoom(worksession_id, change):
 	return 'Zoom changed'
 
 
-@main.route('/worksession/<int:worksession_id>/share', methods=['GET', 'POST'])
-@login_required
-def share_worksession(worksession_id):
-	"""There are two ways of inviting people to a worksession. The first is by creating an invitation link. Anyone who clicks that link 
-	is granted access to a worksession. The second way is by directly adding users to a worksession. This can only be done bu admins, because
-	only admins can see all users."""
-	worksession = Worksession.query.get(worksession_id)
-	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
-		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+# @main.route('/worksession/<int:worksession_id>/share', methods=['GET', 'POST'])
+# @login_required
+# def share_worksession(worksession_id):
+# 	"""There are two ways of inviting people to a worksession. The first is by creating an invitation link. Anyone who clicks that link 
+# 	is granted access to a worksession. The second way is by directly adding users to a worksession. This can only be done bu admins, because
+# 	only admins can see all users."""
+# 	worksession = Worksession.query.get(worksession_id)
+# 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
+# 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-	to_be_hashed = f'{date.today()}{worksession.secret_key}'
-	invitation_string = hashlib.sha1(to_be_hashed.encode('utf-8')).hexdigest()
+# 	to_be_hashed = f'{date.today()}{worksession.secret_key}'
+# 	invitation_string = hashlib.sha1(to_be_hashed.encode('utf-8')).hexdigest()
 
-	form = EditWorksessionAccessForm()
-	form.user.choices = [(user.id, user.name) for user in User.query.order_by(User.name)]
+# 	form = EditWorksessionAccessForm()
+# 	form.user.choices = [(user.id, user.name) for user in User.query.order_by(User.name)]
 
-	if form.validate_on_submit():
-		for user_id in form.user.data:
-			worksession.allowed_users.append(User.query.get(user_id))
-		db.session.commit()
-	elif request.method == "GET":
-		pass
-	return render_template('main/share_worksession.html', worksession=worksession, form=form, invitation_string=invitation_string)
+# 	if form.validate_on_submit():
+# 		for user_id in form.user.data:
+# 			worksession.allowed_users.append(User.query.get(user_id))
+# 		db.session.commit()
+# 	elif request.method == "GET":
+# 		pass
+# 	return render_template('main/share_worksession.html', worksession=worksession, form=form, invitation_string=invitation_string)
 
 
 @main.route('/worksession/<int:worksession_id>/reset_secret_key')
@@ -669,4 +689,4 @@ def stop_share(worksession_id, user_id):
 	user = User.query.get(user_id)
 	worksession.allowed_users.remove(user)
 	db.session.commit()
-	return redirect(url_for('main.share_worksession', worksession_id=worksession.id))
+	return redirect(url_for('main.show_worksession', worksession_id=worksession.id))

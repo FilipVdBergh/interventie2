@@ -6,45 +6,94 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
         <title>{{ config['APP_NAME'] }}</title>
     </head>
     <body>
         {% import 'jinja_macros.html' as macro %}
 
-        <div class="div_mode">
-            {% include 'nav_login.html'%}
-            {% include 'nav_worksessions.html'%}
-            {% include 'nav_catalog.html'%}
-            {% include 'nav_tools.html' %}
-            {% include 'nav_self.html' %}
-            {% include 'nav_admin.html' %}
-            {% include 'nav_contact.html' %}
-            {% include 'nav_app_info.html' %}
-        </div>
-
-        <div class="div_toolbar">
+        <div class="div_main">
             <div class="div_logo">
-                <img src="{{ url_for('static', filename='img/logo.png') }}", height="75px">
+                <!-- <img src="{{ url_for('static', filename='img/logo.png') }}" height="150px"> -->
             </div>
             <div class="div_title">
                 {% block page_title %}
                 {% endblock %}
             </div>
             <div class="div_steps">
-                {% block steps %}
-                {% endblock %}
+                {% block steps %}{% endblock %}
             </div>
-        </div>
+            <div class="div_tabs">
+                {% block tabs %}{% endblock %}
+            </div>
+            <div class="div_sidebar">
 
-        <div class="div_main">
-            <div class="div_options">
+                <div class="sidebar_option_header">Ontwerpen</div>
+                {% if current_user.is_authenticated %}
+                    
+                    <a href="{{ url_for('main.index') }}" class="sidebar_option">
+                        <i class='bx bxs-slideshow'></i>
+                        Werksessies
+                    </a>
+                {% endif %}
+                {% if config['ALLOW_CATALOG_VIEW'] or current_user.is_authenticated %}    
+                    <a href="{{ url_for('catalog.index') }}" class="sidebar_option">
+                        <i class='bx bxs-food-menu'></i>
+                        Catalogus
+                    </a>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                    {% if current_user.role.edit_questionnaire %}
+                        <a href="{{ url_for('tools.index') }}" class="sidebar_option">
+                            <i class='bx bx-list-check'></i>
+                            Selectietools
+                        </a> 
+                    {% endif %}
+                {% endif %}
+                {% block search %}{% endblock %}
                 {% block instrumenten %}   
                 {% endblock %} 
             </div>
-
+            <div class="div_contents">{% block contents %}{% endblock %}</div>
             <div class="div_workarea">
                 {% block body %}
                 {% endblock %}
+            </div>
+            <div class="div_admin">
+                <div class="sidebar_option_header">Administratie</div>
+                {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('main.login') }}" class="sidebar_option">Login</a>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                    {% if current_user.role.edit_users %}
+                            <a href="{{ url_for('admin.index') }}" class="sidebar_option">
+                                <i class='bx bxs-cog'></i>
+                                Gebruikers
+                            </a> 
+                    {% endif %}
+                {% endif %}
+                {% if config['ALLOW_CONTACT'] %}    
+                    <span style="float: right">
+                        <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}" class="sidebar_option">
+                            <i class='bx bxs-envelope'></i>
+                            Contact
+                        </a>
+                    </span>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                    {% if current_user.role.see_app_info %}
+                        <a href="{{ url_for('admin.info') }}" class="sidebar_option">
+                            <i class='bx bxs-info-circle'></i>
+                            App info
+                        </a>
+                    {% endif %}
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('admin.user', id=current_user.id) }}" class="sidebar_option">
+                        <i class='bx bxs-user-circle'></i>
+                        {{ current_user.name }} {% if current_user.unread_message_alert() %}(&#128489; {{ current_user.unread_messages() }}){% endif %}
+                    </a>
+                {% endif %}
             </div>
         </div>
         

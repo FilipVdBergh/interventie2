@@ -1,12 +1,10 @@
-<div class="option_header">Zoeken</div>
+<div class="sidebar_option_header">Zoeken</div>
 <div class="search_form">
     <form method="POST">
-        {{ form.csrf_token }}    
-        <div class="search_field">
+        {{ form.csrf_token }}
             {{ form.search_text }}
-        </div>
-        <div class="search_option">
+            <div>
             {{ form.limit_search }}{{ form.limit_search.label }}
-        </div>
+            </div>
     </form>
 </div>

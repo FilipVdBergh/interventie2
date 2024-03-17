@@ -1,5 +1,0 @@
-{% if current_user.is_authenticated %}
-    {% if current_user.role.edit_questionnaire %}
-        <a href="{{ url_for('tools.index') }}" class="mode">&#9881; Selectietools</a> 
-    {% endif %}
-{% endif %}

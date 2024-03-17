@@ -1,94 +1,91 @@
 {% extends 'base.html' %}
 
-{% block steps %}
-{% endblock %}
 
 {% block page_title %}
-    Instrumenten
+Catalogus
 {% endblock %}
 
-{% block instrumenten %}
-    {% include 'search.html' %}
-    {% if edit_catalog_allowed %}
-        <div class="option_header">Opties</div>
-        <a href="{{ url_for('export.catalog') }}"><div class="option">Exporteer catalogus naar Word</div></a>
-        <a href="{{ url_for('catalog.tags') }}"><div class="option">Taglijst aanpassen</div></a>  
-    {% endif %}
-{% endblock %} 
+{% block tabs %}
+<div class="tab_bar">
+    <button class="tablinks" onclick="switch_tab(event, 'cat_all')" id="defaultOpen">Instrumenten{% if filter_tag is not
+        none %} met tag <i>{{ filter_tag.name }}</i>{% endif %}</button>
+    <button class="tablinks" onclick="switch_tab(event, 'cat_filter')">Filter</button>
+    <button class="tablinks" onclick="switch_tab(event, 'cat_options')">Opties</button>
+</div>
+{% endblock %}
+
+{% block search %}
+{% include 'search.html' %}
+{% endblock %}
 
 
 {% block body %}
-    {% if filter_tag == none %}
-        <div class="collapsible">Tag filter</div>
-    {% else %}
-        <div class="collapsible">Tag filter: {{ filter_tag.name }}
-            <a href="{{ url_for('catalog.index') }}">
-                <button type="button">&#10060; </button></a>    
-            </a>
-        </div>
+
+<div id="cat_all" class="tabcontent card_area">
+
+    {% if filter_tag is not none %}
+    <div>
+        <a href="{{ url_for('catalog.index') }}"><button type="button">&#10060; Wis filter</button></a>
+    </div><br>
     {% endif %}
-        <div class="collapsible_content">
-            {% for tag in tags %}
-                    <a href="{{ url_for('catalog.index', tag_id = tag.id) }}" class="tag">
-                        {{ tag.name }}
-                    </a>
-            {% endfor %}
-        </div>
-
-    <br>
-
     {% if filter_tag == none %}
-        <a href="{{ url_for('catalog.add_instrument') }}">
-            <div class="card new">
-                <div class="card_title">
-                    Nieuw instrument maken
-                </div>
-                <div class="card_description">
-                    Klik hier om een nieuw instrument te maken.
-                </div>
+    <a href="{{ url_for('catalog.add_instrument') }}">
+        <div class="card new">
+            <div class="card_title">
+                Nieuw instrument maken
             </div>
-        </a>
-        <a href="{{ url_for('catalog.import_instrument') }}">
-            <div class="card new">
-                <div class="card_title">
-                    Instrument importeren
-                </div>
-                <div class="card_description">
-                    Klik hier om een instrument te importeren uit een JSON-bestand.
-                </div>
+            <div class="card_description">
+                Klik hier om een nieuw instrument te maken.
             </div>
-        </a>
+        </div>
+    </a>
+    <a href="{{ url_for('catalog.import_instrument') }}">
+        <div class="card new">
+            <div class="card_title">
+                Instrument importeren
+            </div>
+            <div class="card_description">
+                Klik hier om een instrument te importeren uit een JSON-bestand.
+            </div>
+        </div>
+    </a>
     {% endif %}
 
     {% for instrument in instruments %}
-        <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">
-            <div class="card">
-                <div class="card_title">
-                    {{ instrument.name}}
-                </div>
-                <div class="card_description">
-                    {{ instrument.introduction | escape | markdown }}
-                </div>
+    <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">
+        <div class="card">
+            <div class="card_title">
+                {{ instrument.name}}
             </div>
-        </a>
+            <div class="card_description">
+                {{ instrument.introduction | escape | markdown }}
+            </div>
+        </div>
+    </a>
     {% endfor %}
+</div>
 
-<!--
-    <table>
-        <tr>
-            <th>Instrument</th>
-            <th>Beschrijving</th>
-        </tr>
-        {% for instrument in instruments %}
-            <tr>
-                <td><a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }}</a></td>
-                <td>{{ instrument.introduction | escape | truncate(200) | markdown }}</td>
-            </tr>
+<div id="cat_filter" class="tabcontent textarea">
+    <div class="option_header">Filter op tag</div>
+    <ul>
+        {% for tag in tags %}
+        <li><a href="{{ url_for('catalog.index', tag_id = tag.id) }}"><span class="tag">{{ tag.name }}</span></a></li>
         {% endfor %}
-    </table>
-    <br>
--->
+    </ul>
+</div>
 
+<div id="cat_options" class="tabcontent text_area">
 
+    {% if edit_catalog_allowed %}
+    <div class="option_header">Opties</div>
+    <a href="{{ url_for('export.catalog') }}">
+        <div class="option">Exporteer catalogus naar Word</div>
+    </a>
+    <a href="{{ url_for('catalog.tags') }}">
+        <div class="option">Taglijst aanpassen</div>
+    </a>
+    {% endif %}
+
+</div>
 
 {% endblock %}

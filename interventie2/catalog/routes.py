@@ -69,6 +69,7 @@ def show_instrument(id):
         edit_catalog_allowed = False
     instrument = Instrument.query.get(id)
     list_of_instruments = Instrument.query.order_by(Instrument.name)
+    
     return render_template('catalog/instrument.html', edit_catalog_allowed=edit_catalog_allowed, instrument=instrument, instruments=list_of_instruments)
 
 

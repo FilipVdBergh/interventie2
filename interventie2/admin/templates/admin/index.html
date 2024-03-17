@@ -1,17 +1,14 @@
 {% extends 'base.html' %}
 
-{% block steps %}
-
-{% endblock %}
-
-
 {% block page_title %}
     Gebruikers
 {% endblock %}
 
-{% block instrumenten %}   
+{% block search %}
     {% include 'search.html' %}
+{% endblock %}
 
+{% block instrumenten %}   
     {% if current_user.role.edit_users %}
         <div class="option_header">Gebruikers</div>
         <a href="{{ url_for('admin.register') }}"><div class="option">+ Nieuwe gebruiker maken</div></a>
