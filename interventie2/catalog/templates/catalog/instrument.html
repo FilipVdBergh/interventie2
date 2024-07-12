@@ -9,16 +9,18 @@
     <button class="tablinks" onclick="switch_tab(event, 'ins_description')" id="defaultOpen">Beschrijving</button>
     <button class="tablinks" onclick="switch_tab(event, 'ins_tags')" id="defaultOpen">Tags</button>
     <button class="tablinks" onclick="switch_tab(event, 'ins_remarks')">Opmerkingen</button>
-<button class="tablinks" onclick="switch_tab(event, 'ins_export')">Exporteren</button>
+    <button class="tablinks" onclick="switch_tab(event, 'ins_export')">Exporteren</button>
 </div>
 {% endblock %}
 
 {% block contents %}
-    {% for instrument in instruments %}
-    <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">
-        <div class="option">{{ instrument.name }}</div>
-    </a>
-    {% endfor %}
+    <ul>
+        {% for i in instruments %}
+        <li class="contents_item {% if i == instrument %}selected{% endif %}">
+            <a href="{{ url_for('catalog.show_instrument', id=i.id) }}">{{ i.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 
 {% block body %}
@@ -69,45 +71,49 @@
 <div id="ins_remarks" class="tabcontent">
     <div class="text_area">
         <table>
-            <tr>
-                <th>Afzender</th>
-                <th>Datum</th>
-                <th>Opmerking</th>
-                <th>Acties</th>
-            </tr>
-            {% for remark in instrument.remarks %}
-            <tr>
-                <td>
-                    <a href="{{ url_for('admin.user', id=remark.sender.id) }}"
-                        class="{% if not remark.active %}inactive{% endif %}">
-                        {{ remark.sender.name }}
-                    </a>
-                </td>
-                <td>
-                    <span class="{% if not remark.active %}inactive{% endif %}">{{ remark.date_created }}</span>
-                </td>
-                <td>
-                    <a href="{{ url_for('catalog.show_remark', remark_id=remark.id) }}"
-                        class="{% if not remark.active %}inactive{% endif %}">
-                        {{ remark.remark | escape | truncate(100) | markdown }}
-                    </a>
-                </td>
-                <td>
-                    {% if remark.edit_allowed() %}
-                    <a href="{{ url_for('catalog.edit_remark', instrument_id=instrument.id, remark_id=remark.id) }}">
-                        <button type="button">✎ Bewerken</button>
-                    </a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-            <tr>
-                <td colspan="3"></td>
-                <td>
-                    <a href="{{ url_for('catalog.add_remark', instrument_id=instrument.id) }}"><button>Opmerking
-                            toevoegen</button></a>
-                </td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Afzender</th>
+                    <th>Datum</th>
+                    <th>Opmerking</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for remark in instrument.remarks %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('admin.user', id=remark.sender.id) }}"
+                            class="{% if not remark.active %}inactive{% endif %}">
+                            {{ remark.sender.name }}
+                        </a>
+                    </td>
+                    <td>
+                        <span class="{% if not remark.active %}inactive{% endif %}">{{ remark.date_created }}</span>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('catalog.show_remark', remark_id=remark.id) }}"
+                            class="{% if not remark.active %}inactive{% endif %}">
+                            {{ remark.remark | escape | truncate(100) | markdown }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if remark.edit_allowed() %}
+                        <a href="{{ url_for('catalog.edit_remark', instrument_id=instrument.id, remark_id=remark.id) }}">
+                            <button type="button">✎ Bewerken</button>
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="3"></td>
+                    <td>
+                        <a href="{{ url_for('catalog.add_remark', instrument_id=instrument.id) }}"><button>Opmerking
+                                toevoegen</button></a>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>

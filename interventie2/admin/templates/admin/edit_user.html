@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block steps %}
-    <a href="{{ url_for('admin.index') }}" class="step">Gebruikers</a> 
     <a href="{{ url_for('admin.user', id=user.id) }}" class="step">{{ user.name }}</a>
 {% endblock %}
 

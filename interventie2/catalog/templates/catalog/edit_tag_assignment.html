@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block steps %}
-    <a href="{{ url_for('catalog.index') }}" class="step">Instrumenten</a>
     <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}" class="step">{{ instrument.name }}</a>
     <a href="{{ url_for('catalog.instrument_tags', id=instrument.id) }}" class="step">Tags toewijzen aan instrument</a>
 {% endblock %}
@@ -18,7 +17,7 @@
             <th>Tag</th>
             <th>Factor</th>
             <th>Gewicht</th>
-            <th colspan="2">Acties</th>
+            <th>Acties</th>
         </tr>
         <tr>
             <form method="POST">
@@ -32,7 +31,7 @@
                 </td>
                 <td>{{ form.multiplier }}</td>
                 <td>{{ form.weight }}</td>
-                <td colspan="2">{{ form.submit }}</td>
+                <td>{{ form.submit }}</td>
             </form>
         </tr>
     </table>

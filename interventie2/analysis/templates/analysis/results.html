@@ -1,43 +1,37 @@
 {% extends 'base.html' %}
 
-{% block steps %}
-{% endblock %}
 
 {% block page_title %}
     Zoekresultaten '{{ search_text }}'
 {% endblock %}
 
-{% block search %}
-    {% include 'search.html' %}
+{% block contents %}
+    {% for (type, results) in search_results.items() %}
+        {% if results | count > 0 %}
+            <div><a href='#{{ type }}'>{{ type }}: {{ results | count }}</a></div>
+        {% endif %}
+    {% endfor %}
 {% endblock %}
 
+
 {% block body %}
-    <div>
+       
         {% for (type, results) in search_results.items() %}
-            {% if results | count > 0 %}
-                <a href='#{{ type }}' class="results_summary">[{{ type }}: {{ results | count }}]</a>
-            {% endif %}
-        {% endfor %}
-    </div>
-    <br>
-    
-    {% for (type, results) in search_results.items() %}
-        <a name="{{ type }}"></a>
-        {% for result in results %}
-            <div class="search">
-                <div class="search_result_type">
-                    {{ type }}
-                </div>
+            <a name="{{ type }}"></a>
+            {% for result in results %}
                 <div class="search_result">
-                    <a href='{{ result.url }}'>{{ result.name }}</a>
-                </div>
-                <div class="search_result_context">
-                    {{ result.context | escape | markdown |truncate(500)}} 
-                </div>
-            </div>     
+                    <div class="search_result_type">
+                        {{ type }}
+                    </div>
+                    <div class="search_result_item">
+                        <a href='{{ result.url }}'>{{ result.name }}</a>
+                    </div>
+                    <div class="search_result_context">
+                        {{ result.context | escape | markdown |truncate(500)}} 
+                    </div>
+                </div>     
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
-        
 
 
 {% endblock %}

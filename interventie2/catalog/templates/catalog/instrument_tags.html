@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block steps %}
-    <a href="{{ url_for('catalog.index') }}" class="step">Instrumenten</a>
     <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}" class="step">{{ instrument.name }}</a>
 {% endblock %}
 
@@ -18,7 +17,7 @@
             <th>Tag</th>
             <th>Factor</th>
             <th>Gewicht</th>
-            <th colspan="2">Acties</th>
+            <th>Acties</th>
         </tr>
         {% for tag_assignment in tag_assignments %}
         <tr>
@@ -31,8 +30,6 @@
             </td>
             <td>* {{ tag_assignment.multiplier }}</td>
             <td>{{ tag_assignment.weight }}</td>
-            <td>
-            </td>
             <td><a href="{{ url_for('catalog.remove_tag_from_instrument', instrument_id=instrument.id, tag_assignment_id=tag_assignment.id) }}">
                     <button>Verwijderen</button>
                 </a>
@@ -44,7 +41,7 @@
                 <td>{{ form.tag }}</td>
                 <td>{{ form.type }}</td>
                 <td>{{ form.weight }}</td>
-                <td colspan="2">{{ form.submit }}</td>
+                <td>{{ form.submit }}</td>
             </form>
     </table>
 {% endblock %}

@@ -2,11 +2,10 @@ from datetime import date, timedelta
 from flask import Blueprint, render_template, redirect, url_for, send_file, request
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, current_user, login_required
-from interventie2.forms import LoginForm, NewWorksessionForm, EditWorksessionForm, EditCaseForm, EditConclusionForm, MarkdownPlaygroundForm, EditWorksessionAccessForm, SearchForm
+from interventie2.forms import LoginForm, NewWorksessionForm, EditWorksessionForm, EditCaseForm, EditConclusionForm, MarkdownPlaygroundForm, EditWorksessionAccessForm
 from interventie2.models import User, Worksession, QuestionSet, Instrument, Option, Answer, Selection, Question, Process, InstrumentChoice, Plan, Message
 from interventie2.models import db, generate_secret_key
 from interventie2.classes import Advisor
-from interventie2.analysis.routes import search
 from sqlalchemy.sql import func
 from decimal import Decimal
 from datetime import datetime
@@ -20,26 +19,35 @@ main = Blueprint('main', __name__,
                  static_url_path='assets')
 
 
+
+
 @main.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
+	# worksessions = Worksession.query.order_by(Worksession.name)
+
+	# form = SearchForm()
+	# form.limit_search.label = 'Zoek alleen in werksessies'
+	
+	# if form.validate_on_submit():
+	# 	search_text = form.search_text.data
+	# 	search_results = search(search_text, # The user can choose to only search in a particular field by checking a box on the form.
+    #                             worksessions=True, 
+    #                             catalog=not form.limit_search.data, 
+    #                             tools=not form.limit_search.data,
+    #                             users=not form.limit_search.data)
+	# 	return render_template('analysis/results.html', 
+    #                             form=form,
+    #                             search_text=search_text,
+    #                             search_results=search_results)
+	return render_template('main/index.html', worksessions=worksessions)
+
+@main.route('/worksessions', methods=['GET', 'POST'])
+@login_required
+def worksessions():
 	worksessions = Worksession.query.order_by(Worksession.name)
 
-	form = SearchForm()
-	form.limit_search.label = 'Zoek alleen in werksessies'
-	
-	if form.validate_on_submit():
-		search_text = form.search_text.data
-		search_results = search(search_text, # The user can choose to only search in a particular field by checking a box on the form.
-                                worksessions=True, 
-                                catalog=not form.limit_search.data, 
-                                tools=not form.limit_search.data,
-                                users=not form.limit_search.data)
-		return render_template('analysis/results.html', 
-                                form=form,
-                                search_text=search_text,
-                                search_results=search_results)
-	return render_template('main/index.html', worksessions=worksessions, form=form)
+	return render_template('main/worksessions.html', worksessions=worksessions)
 
 
 @main.route('/archived')

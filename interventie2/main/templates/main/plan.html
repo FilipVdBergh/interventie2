@@ -52,10 +52,12 @@ Interventieplan bij {{ worksession.name }}
                         <button>Opslaan</button>
                     </td>
                     <td style="text-align: right;">
-                        {% if plan.id is not none %}
-                        {{ macro.confirm_redirect( "Plan verwijderen", "Weet je zeker dat je dit interventieplan wilt
-                        verwijderen?", url_for('main.delete_plan', plan_id=plan.id) ) }}
-                        {% endif %}
+                        <button type="button" id="delete">
+                            {% if plan.id is not none %}
+                            {{ macro.confirm_redirect( "Plan verwijderen", "Weet je zeker dat je dit interventieplan wilt
+                            verwijderen?", url_for('main.delete_plan', plan_id=plan.id) ) }}
+                            {% endif %}
+                        </button>
 
                     </td>
                 </tr>

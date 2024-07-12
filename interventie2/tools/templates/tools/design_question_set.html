@@ -8,14 +8,18 @@
     {{ question_set.name }}
 {% endblock %}
 
-{% block instrumenten %}   
-    <div class="option_header">Opties</div>
-    <a href="{{ url_for('tools.list_worksessions', question_set_id=question_set.id) }}" class="option">Werksessies die seze selectietool gebruiken</a>
-    <a href="{{ url_for('tools.edit_question_set', question_set_id=question_set.id) }}" class="option">Selectietool aanpassen of verwijderen</a>
-    <a href="{{ url_for('export.question_set_to_json', question_set_id=question_set.id) }}" class="option">Selectietool exporteren naar JSON</a>
-{% endblock %} 
+
+
+
+{% block tabs %}
+<div class="tab_bar">
+    <button class="tablinks" onclick="switch_tab(event, 'qs_config')" id="defaultOpen">Aanpassen</button>
+    <button class="tablinks" onclick="switch_tab(event, 'qs_options')">Opties</button>
+</div>
+{% endblock %}
 
 {% block body %}
+<div id="qs_config" class="tabcontent">
     <h1>Beschrijving</h1>
         <p>{{ question_set.description | escape | markdown }}</p>
         <br>
@@ -161,5 +165,15 @@
                 instrumenten selecteren.</div>
             {% endif %}
         {% endfor %}
+</div>
 
+
+<div id="qs_options" class="tabcontent">
+    <h1>Opties</h1>
+        <ul>
+            <li><a href="{{ url_for('tools.list_worksessions', question_set_id=question_set.id) }}">Werksessies die seze selectietool gebruiken</a></li>
+            <li><a href="{{ url_for('tools.edit_question_set', question_set_id=question_set.id) }}">Selectietool aanpassen of verwijderen</a></li>
+            <li><a href="{{ url_for('export.question_set_to_json', question_set_id=question_set.id) }}">Selectietool exporteren naar JSON</a></li>
+        </ul>
+</div>
 {% endblock %}

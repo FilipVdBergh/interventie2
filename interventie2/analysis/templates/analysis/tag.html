@@ -32,8 +32,9 @@
     </div>
 
     <div id="tag_ins" class="tabcontent">
+        <h1>Instrumenten met deze tag</h1>
         <div class="card_area">
-            <h1>Instrumenten met deze tag</h1>
+
             {% for instrument_tag_assignment in instrument_tag_assignments %}
                 {% if tag == instrument_tag_assignment.tag %}
                     <a href="{{ url_for('catalog.show_instrument', id=instrument_tag_assignment.instrument.id) }}">

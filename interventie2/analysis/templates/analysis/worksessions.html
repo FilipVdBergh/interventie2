@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    
+<div class="card_area">
     {% for worksession in question_set.worksessions  %}
         {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
             {% if current_user == worksession.creator %}
@@ -26,5 +26,5 @@
             {% endif %}
         {% endif %}
     {% endfor %}   
-
+</div>
 {% endblock %}

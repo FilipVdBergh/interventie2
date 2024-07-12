@@ -7,85 +7,73 @@ Catalogus
 
 {% block tabs %}
 <div class="tab_bar">
-    <button class="tablinks" onclick="switch_tab(event, 'cat_all')" id="defaultOpen">Instrumenten{% if filter_tag is not
-        none %} met tag <i>{{ filter_tag.name }}</i>{% endif %}</button>
-    <button class="tablinks" onclick="switch_tab(event, 'cat_filter')">Filter</button>
+    <button class="tablinks" onclick="switch_tab(event, 'cat_all')" id="defaultOpen">Instrumenten</button>
     <button class="tablinks" onclick="switch_tab(event, 'cat_options')">Opties</button>
 </div>
-{% endblock %}
-
-{% block search %}
-{% include 'search.html' %}
 {% endblock %}
 
 
 {% block body %}
 
-<div id="cat_all" class="tabcontent card_area">
-
+<div id="cat_all" class="tabcontent">
     {% if filter_tag is not none %}
     <div>
-        <a href="{{ url_for('catalog.index') }}"><button type="button">&#10060; Wis filter</button></a>
+        <a href="{{ url_for('catalog.index') }}"><button type="button">&#10060; Wis filter <i>{{ filter_tag.name }}</i></button></a>
     </div><br>
     {% endif %}
-    {% if filter_tag == none %}
-    <a href="{{ url_for('catalog.add_instrument') }}">
-        <div class="card new">
-            <div class="card_title">
-                Nieuw instrument maken
-            </div>
-            <div class="card_description">
-                Klik hier om een nieuw instrument te maken.
-            </div>
-        </div>
-    </a>
-    <a href="{{ url_for('catalog.import_instrument') }}">
-        <div class="card new">
-            <div class="card_title">
-                Instrument importeren
-            </div>
-            <div class="card_description">
-                Klik hier om een instrument te importeren uit een JSON-bestand.
-            </div>
-        </div>
-    </a>
-    {% endif %}
-
-    {% for instrument in instruments %}
-    <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">
-        <div class="card">
-            <div class="card_title">
-                {{ instrument.name}}
-            </div>
-            <div class="card_description">
-                {{ instrument.introduction | escape | markdown }}
-            </div>
-        </div>
-    </a>
-    {% endfor %}
-</div>
-
-<div id="cat_filter" class="tabcontent textarea">
-    <div class="option_header">Filter op tag</div>
-    <ul>
-        {% for tag in tags %}
-        <li><a href="{{ url_for('catalog.index', tag_id = tag.id) }}"><span class="tag">{{ tag.name }}</span></a></li>
+    <div class="card_area">
+        {% if filter_tag == none %}
+            <a href="{{ url_for('catalog.add_instrument') }}">
+                <div class="card new">
+                    <div class="card_title">
+                        Nieuw instrument maken
+                    </div>
+                    <div class="card_description">
+                        Klik hier om een nieuw instrument te maken.
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('catalog.import_instrument') }}">
+                <div class="card new">
+                    <div class="card_title">
+                        Instrument importeren
+                    </div>
+                    <div class="card_description">
+                        Klik hier om een instrument te importeren uit een JSON-bestand.
+                    </div>
+                </div>
+            </a>
+        {% endif %}
+        {% for instrument in instruments %}
+            <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">
+                <div class="card">
+                    <div class="card_title">
+                        {{ instrument.name}}
+                    </div>
+                    <div class="card_description">
+                        {{ instrument.introduction | markdown | escape }}
+                    </div>
+                </div>
+            </a>
         {% endfor %}
-    </ul>
+    </div>
 </div>
 
-<div id="cat_options" class="tabcontent text_area">
-
-    {% if edit_catalog_allowed %}
-    <div class="option_header">Opties</div>
-    <a href="{{ url_for('export.catalog') }}">
-        <div class="option">Exporteer catalogus naar Word</div>
-    </a>
-    <a href="{{ url_for('catalog.tags') }}">
-        <div class="option">Taglijst aanpassen</div>
-    </a>
-    {% endif %}
-
+<div id="cat_options" class="tabcontent">
+    <div class="text_area">
+        <h1>Exporteren</h1>
+        <ul>
+            <li>
+                <a href="{{ url_for('export.catalog') }}">Exporteer catalogus naar Word</a>
+            </li>
+        </ul>
+        <h1>Filter instrumenten op tag</h1>
+        <ul>
+            {% for tag in tags %}
+            <li><a href="{{ url_for('catalog.index', tag_id = tag.id) }}"><span class="tag">{{ tag.name }}</span></a></li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 
 {% endblock %}
