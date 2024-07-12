@@ -1,5 +1,0 @@
-{% if current_user.is_authenticated %}
-    <span style="float: right">
-        <a href="{{ url_for('admin.user', id=current_user.id) }}" class="mode">{{ current_user.name }} {% if current_user.unread_message_alert() %}(&#128489; {{ current_user.unread_messages() }}){% endif %}</a>
-    </span>
-{% endif %}

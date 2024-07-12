@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+Werksessies
+{% endblock %}
+
+{% block tabs %}
+    <button class="tablinks" onclick="switch_tab(event, 'ws_owned')" id="defaultOpen">Mijn sessies</button>
+    <button class="tablinks" onclick="switch_tab(event, 'ws_shared')">Gedeelde sessies</button>
+    <!-- <button class="tablinks" onclick="switch_tab(event, 'ws_archived')">Gearchiveerde sessies</button> -->
+    <button class="tablinks" onclick="switch_tab(event, 'ws_all')">Alle sessies</button>
+
+{% endblock %}
+
+
+{% block body %}
+<div id="ws_owned" class="tabcontent">
+    <div class="card_area">
+
+        <a href="{{ url_for('main.new_worksession') }}">
+            <div class="card new">
+                <div class="card_title">
+                    Nieuwe werksessie maken
+                </div>
+                <div class="card_description">
+                    Klik hier om een nieuwe werksessie te maken.
+                </div>
+            </div>
+        </a>
+
+        {% for worksession in worksessions | selectattr('parent', 'none') %}
+        {% if worksession.archived == false %}
+        {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
+        {% if current_user == worksession.creator %}
+        <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
+            <div class="card">
+                <div class="card_title">
+                    {{ worksession.name}}
+                </div>
+                
+                <div class="card_owner">
+                    {{ worksession.question_set.name }} ({{ worksession.date_modified.strftime('%d-%m-%Y') }})
+                </div>
+                <div class="card_description">
+                    {{ worksession.description | escape | markdown }}
+                </div>
+            </div>
+        </a>
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
+<div id="ws_shared" class="tabcontent">
+    <div class="card_area">
+
+        {% for worksession in worksessions | selectattr('parent', 'none') %}
+        {% if worksession.archived == false %}
+        {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
+        {% if current_user != worksession.creator %}
+        <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
+            <div class="card">
+                <div class="card_title">
+                    {{ worksession.name}}
+                </div>
+                <div class="card_owner">
+                    {{ worksession.question_set.name }} ({{ worksession.creator.name }}, {{ worksession.date_modified.strftime('%d-%m-%Y') }})
+                </div>
+                <div class="card_description">
+                    {{ worksession.description | escape | markdown }}
+                </div>
+            </div>
+        </a>
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </div>
+
+</div>
+
+<div id="ws_archived" class="tabcontent">
+    <div class="text_area">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Werksessie</th>
+                <th>Datum</th>
+                <th>Selectietool</th>
+                <th>Beschrijving</th>
+                <th>Eigenaar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for worksession in worksessions | selectattr('parent', 'none') %}
+            {% if worksession.archived == true %}
+            {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
+            {% if current_user == worksession.creator %}
+            <tr>
+                <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
+                <td>{{ worksession.date_modified.strftime('%d-%m-%Y') }}</td>
+                <td>{{ worksession.question_set.name }}</td>
+                <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
+                <td>Eigen sessie</td>
+            </tr>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+
+            {% for worksession in worksessions | selectattr('parent', 'none') %}
+            {% if worksession.archived == true %}
+            {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
+            {% if current_user != worksession.creator %}
+            <tr>
+                <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
+                <td>{{ worksession.date_modified.strftime('%d-%m-%Y') }}</td>
+                <td>{{ worksession.question_set.name }}</td>
+                <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
+                <td><a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></td>
+            </tr>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+
+<div id="ws_all" class="tabcontent">
+    <div class="text_area">
+
+    <table class="sortable">
+        <thead>
+            <tr>
+                <th>Werksessie</th>
+                <th>Status</th>
+                <th>Datum</th>
+                <th>Selectietool</th>
+                <th>Beschrijving</th>
+                <th>Eigenaar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for worksession in worksessions | selectattr('parent', 'none') %}
+                {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
+                <tr>
+                    <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
+                    <td>{% if worksession.archived == true %}Gearchiveerd{% endif %}</td>
+                    <td>{{ worksession.date_modified.strftime('%d-%m-%Y') }}</td>
+                    <td>{{ worksession.question_set.name }}</td>
+                    <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
+                    <td><a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+
+{% endblock %}

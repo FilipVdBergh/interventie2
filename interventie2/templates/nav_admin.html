@@ -1,7 +1,0 @@
-{% if current_user.is_authenticated %}
-    {% if current_user.role.edit_users %}
-        <span style="float: right">
-            <a href="{{ url_for('admin.index') }}" class="mode">Administratie</a> 
-        </span>
-    {% endif %}
-{% endif %}

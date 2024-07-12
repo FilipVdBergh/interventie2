@@ -1,67 +1,92 @@
 {% extends 'base.html' %}
 
-{% block steps %}
-{% endblock %}
-
 {% block page_title %}
-    Selectietool ontwerpen
+    Ontwerpen
 {% endblock %}
 
-{% block instrumenten %}
-{% include 'search.html' %}
-    {% if current_user.role.edit_questionnaire %}
-        <div class="option_header">Opties</div>
-        <a href="{{ url_for('catalog.tags') }}"><div class="option">Taglijst aanpassen</div></a>
-    {% endif %}
+{% block tabs %}
+    <div class="tab_bar">
+        <button class="tablinks" onclick="switch_tab(event, 'st_all')" id="defaultOpen">Selectietools</button>
+        <button class="tablinks" onclick="switch_tab(event, 'st_tags')" id="defaultOpen">Tags</button>
+    </div>
+{% endblock %}
+
+{% block search %}
+    {% include 'search.html' %}
 {% endblock %}
 
 {% block body %}
-    <a href="{{ url_for('tools.edit_question_set') }}">
-        <div class="card new">
-            <div class="card_title">
-                Nieuwe selectietool maken
-            </div>
-            <div class="card_description">
-                Klik hier om een nieuwe selectietool te maken.
+    <div id="st_all" class="tabcontent">
+        <div class="card_area">
+            <a href="{{ url_for('tools.edit_question_set') }}">
+                <div class="card new">
+                    <div class="card_title">
+                        Nieuwe selectietool maken
+                    </div>
+                    <div class="card_description">
+                        Klik hier om een nieuwe selectietool te maken.
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('tools.import_question_set') }}">
+                <div class="card new">
+                    <div class="card_title">
+                        Selectietool importeren
+                    </div>
+                    <div class="card_description">
+                        Klik hier om een selectietool te importeren uit een JSON-bestand.
+                    </div>
+                </div>
+            </a>
+
+            {% for question_set in question_sets | sort(attribute="name") %}
+                <a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}">
+                    <div class="card">
+                        <div class="card_title">
+                            {{ question_set.name }}
+                        </div>
+                        <div class="card_description">
+                            {{ question_set.description | escape | markdown }}
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div id="st_tags" class="tabcontent">
+        <div class="text_area">
+            <h1>Tag toevoegen</h1>
+                {% if edit_catalog_allowed %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th colspan="2">Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <form method="POST">
+                            {{ form.csrf_token }}
+                            <tr>
+                                <td>{{ form.name }}</td>
+                                <td>{{ form.submit }}</td>
+                            </tr>
+                        </form>
+                    </tbody>
+                </table>
+                {% endif %}
+            <h1>Alle tags</h1>
+                <ul>
+                {% for tag in tags %}
+                <li><a href="{{ url_for('analysis.tag', tag_id=tag.id) }}"><span class="tag">{{ tag.name }}</span></a></li>
+                {% endfor %}
+                </ul>
+        
             </div>
         </div>
-    </a>
-    <a href="{{ url_for('tools.import_question_set') }}">
-        <div class="card new">
-            <div class="card_title">
-                Selectietool importeren
-            </div>
-            <div class="card_description">
-                Klik hier om een selectietool te importeren uit een JSON-bestand.
-            </div>
-        </div>
-    </a>
+    </div>
 
-    {% for question_set in question_sets | sort(attribute="name") %}
-        <a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}">
-            <div class="card">
-                <div class="card_title">
-                    {{ question_set.name }}
-                </div>
-                <div class="card_description">
-                    {{ question_set.description | escape | markdown }}
-                </div>
-            </div>
-        </a>
-    {% endfor %}
 
-<!--
-    <table>
-        <tr>
-            <th>Selectietools</th>
-            <th>Beschrijving</th>
-        </tr>
-        {% for question_set in question_sets | sort(attribute="name") %}
-            <tr>
-                <td><a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}">{{ question_set.name }}</a></td>
-                <td>{{ question_set.description | escape | markdown }}</td>
-            </tr>   
-        {% endfor %}
-    </table>
--->
 {% endblock %}

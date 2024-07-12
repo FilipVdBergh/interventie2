@@ -197,9 +197,3 @@ class ExportWorksessionForm(FlaskForm):
     export_tags            = BooleanField('Neem actieve tags op in de export', validators=[], default=False)
     export_technical_info  = BooleanField('Neem technische info van de app op in de export', validators=[], default=False)
     submit                 = SubmitField('Exporteren')
-
-class SearchForm(FlaskForm):
-    search_text        = StringField('Zoektekst', validators=[DataRequired(), Length(min=3, max=100)])
-    limit_search       = BooleanField('Beperk zoekopdracht', default=True)
-        # If limit search is checked, search results are limited to the page on which the search was made.
-    submit             = SubmitField('Zoeken')

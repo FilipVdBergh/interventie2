@@ -1,42 +1,95 @@
 {% extends 'base.html' %}
 
-{% block steps %}
-
-{% endblock %}
-
-
 {% block page_title %}
     Gebruikers
 {% endblock %}
 
-{% block instrumenten %}   
-    {% include 'search.html' %}
-
-    {% if current_user.role.edit_users %}
-        <div class="option_header">Gebruikers</div>
-        <a href="{{ url_for('admin.register') }}"><div class="option">+ Nieuwe gebruiker maken</div></a>
-        <a href="{{ url_for('admin.roles') }}"><div class="option">Rollen</div></a>
-        <div class="option_header">Berichten</div>
-        <a href="{{ url_for('admin.all_messages') }}"><div class="option">Alle berichten</div></a>
-        <a href="{{ url_for('admin.new_system_message') }}"><div class="option">Stuur bericht aan alle gebruikers</div></a>
-        <div class="option_header">Exporteren</div>
-        <a href="{{ url_for('export.index') }}"><div class="option">Exporteren</div></a>
-    {% endif %}
+{% block tabs %}
+    <div class="tab_bar">
+        <button class="tablinks" onclick="switch_tab(event, 'adm_users')" id="defaultOpen">Gebruikers</button>
+        <button class="tablinks" onclick="switch_tab(event, 'adm_messages')">Berichten</button>
+        <!-- <button class="tablinks" onclick="switch_tab(event, 'adm_options')">Opties</button> -->
+    </div>
 {% endblock %}
 
+
+
 {% block body %}
-    <table>
-        <tr>
-            <th>Naam</th>
-            <th>Rol</th>
-            <th>Beschrijving</th>
-        </tr>
-        {% for user in users %}
-            <tr>
-                <td><a href="{{ url_for('admin.user', id=user.id) }}">{{ user.name }}</a></td>
-                <td>{{ user.role.name }}</td>
-                <td>{{ user.description | escape | truncate(100) | markdown }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+<div id="adm_users" class="tabcontent">
+    <div class="text_area">
+        {% if current_user.role.edit_users %}
+            <h1>Nieuwe gebruiker</h1>
+            <button><a href="{{ url_for('admin.register') }}">Nieuwe gebruiker maken</button></a>
+        {% endif %}
+        <h1>Alle gebruikers</h1>
+        <table class="sortable">
+            <thead>
+                <tr>
+                    <th>Naam</th>
+                    <th>Rol</th>
+                    <th>Beschrijving</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td><a href="{{ url_for('admin.user', id=user.id) }}">{{ user.name }}</a></td>
+                        <td><a href="{{ url_for('admin.roles') }}">{{ user.role.name }}</a></td>
+                        <td>{{ user.description | escape | truncate(100) | markdown }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="adm_messages" class="tabcontent">
+    <div class="text_area">
+        {% if current_user.role.edit_users %}
+            <h1>Systeembericht</h1>
+            <button><a href="{{ url_for('admin.new_system_message') }}">Stuur bericht aan alle gebruikers</a></button>
+        {% endif %}
+        <h1>Alle berichten</h1>
+        <table class="sortable">
+            <thead>
+                <tr>
+                    <th>Onderwerp</th>
+                    <th>Afzender</th>
+                    <th>Ontvanger</th>
+                    <th>Datum aangemaakt</th>
+                    <th>Datum bezorging</th>
+                    <th>Verwijderen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in messages %}
+                    <tr>
+                        <td><a href="{{ url_for('admin.message', message_id=message.id) }}" {% if message.unread %} class="unread"{% endif %}>{{ message.subject }}</a></td>
+                        <td>
+                            {% if message.system %}
+                                Systeem
+                            {% else %}
+                                {{ message.sender.name }}
+                            {% endif %}
+                        </td>
+                        <td>{{ message.recipient.name }}</td>
+                        <td>{{ message.date_created.strftime('%Y-%m-%d %H:%M')}}</td>
+                        <td>
+                                {{ message.deliver_after.strftime('%Y-%m-%d %H:%M') }}
+        
+                            
+                        </td>
+                        <td><button>{{ macro.confirm_redirect( "Verwijderen", "Wilt u dit bericht verwijderen?", url_for('admin.delete_message', message_id=message.id) ) }}</button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="adm_options" class="tabcontent">
+    <div class="text_area">
+            <a href="{{ url_for('export.index') }}"><div class="option">Exporteren</div></a>
+
+    </div>
+</div>
 {% endblock %}

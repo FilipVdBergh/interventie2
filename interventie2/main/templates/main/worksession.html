@@ -1,39 +1,34 @@
 {% extends 'base.html' %}
 
-{% block steps %}
-    <a href="{{ url_for('main.index') }}" class="step">Werksessies</a>
-{% endblock %}
-
-{% block instrumenten %}   
-    <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button style="width: 100%;">Start de werksessie</button></a><br><br>
-
-        <div class="option_header">Opties</div>
-        <a href="{{ url_for('main.worksession_summary', worksession_id=worksession.id) }}" class="option">Overzicht van de uitkomsten</a>
-        <a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}" class="option">Sessie aanpassen of verwijderen</a>
-        {% if not worksession.archived %}<a href="{{ url_for('main.archive_worksession', worksession_id=worksession.id) }}" class="option">Sessie archiveren</a>{% endif %}
-        <a href="{{ url_for('main.share_worksession', worksession_id=worksession.id) }}" class="option">Toegang tot de sessie beheren</a>
-        <a href="{{ url_for('export.worksession', worksession_id=worksession.id) }}" class="option">Sessie exporteren naar Word</a>
-    </ul>
-
-
-{% endblock %} 
-
-
 {% block page_title %}
-    {% if worksession.parent is not none %}Afgeleide sessie: {% endif %}{{ worksession.name }}
+{{ worksession.name }}
 {% endblock %}
+
+{% block tabs %}
+<div class="tab_bar">
+    <button class="tablinks" onclick="switch_tab(event, 'ws_main')" id="defaultOpen">Informatie</button>
+    <button class="tablinks" onclick="switch_tab(event, 'ws_summary')">Uitkomsten</button>
+    <button class="tablinks" onclick="switch_tab(event, 'ws_plans')">Interventieplannen</button>
+    <button class="tablinks" onclick="switch_tab(event, 'ws_details')">Details</button>
+    <button class="tablinks" onclick="switch_tab(event, 'ws_settings')">Toegang</button>
+</div>
+{% endblock %}
+
+
 
 {% block body %}
-    {% if worksession.parent is not none %}
-        <div><a href="{{ url_for('main.show_worksession', worksession_id=worksession.parent.id) }}">&#9204; Ga naar oorspronkelijke sessie</a></div>
-        <br>
-    {% endif %}
-    {% if worksession.archived %}Deze werksessie is gearchiveerd.{% endif %}
+
+<div id="ws_main" class="tabcontent text_area">
+        <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button type="button">▷ Start de werksessie</button></a>
+        <a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}"><button type="button">✎ Bewerken</button></a>
+        {% if not worksession.archived %}
+            <a href="{{ url_for('main.archive_worksession', worksession_id=worksession.id) }}"><button type="button">Archiveren</button></a>
+        {% endif %}
     <h1>Beschrijving</h1>
     {{ worksession.description | escape | markdown }}
     {% if worksession.parent is not none %}
-        <h2>Beschrijving afgeleide sessie</h2>
-        {{ worksession.child_description }}
+    <h2>Beschrijving afgeleide sessie</h2>
+    {{ worksession.child_description }}
     {% endif %}
     <h1>Sessiedatum</h1>
     {{ worksession.date | escape | markdown }}
@@ -41,98 +36,199 @@
     {{ worksession.participants | escape | markdown }}
     <h1>Beoogd effect</h1>
     {{ worksession.effect | escape | markdown }}
+    {% if worksession.link_to_page | length > 0 %}
+    <h1>Link naar projectfolder</h1>
+    {{ worksession.link_to_page | escape | markdown }}
+    {% endif %}
+</div>
 
-        <h1>Interventieplan</h1>
-        {% for plan in worksession.plan %}
-            <a href="{{ url_for('main.show_plan', worksession_id=worksession.id, plan_id=plan.id) }}">
-                <div class="card">
-                    <div class="card_title">
-                        {{ loop.index }}. {{ plan.description }}
-                    </div>
-                    <div class="card_owner">
-                        
-                        {% if plan.instruments | count > 0 %}Instrumenten: {% endif %}
-                        {% for chosen_instrument in plan.instruments %}
-                            {{ chosen_instrument.instrument.name }}{{ ", " if not loop.last else "" }}
-                        {% endfor %}
-                    </div>
-                    <div class="card_description">
-                        {{ plan.conclusion }} ({{ plan.date.strftime('%d-%m-%Y') }})
-                    </div>
-                </div>
-            </a>
+<div id="ws_summary" class="tabcontent text_area">
+    <a href="{{ url_for('export.worksession', worksession_id=worksession.id) }}"><button>Exporteren naar Word</button></a><br>
+    <h1>Samenvatting casus</h1>
+    <div>{{ worksession.description | escape | markdown }}</div>
+    <div>{{ worksession.effect | escape | markdown }}</div>
+    <h1>Definitieve overwegingen</h1>
+    <div>{{ worksession.conclusion | escape | markdown }}</div>
+
+    <h1>Instrumenten</h1>
+    <table>
+        <tr>
+            <th>Instrument</th>
+            <th></th>
+            <th>Score</th>
+        </tr>
+        {% for (instrument, score) in advisor.get_sorted_instruments() %}
+        {% if score > 0 %}
+        <tr>
+            <td><a
+                    href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{
+                    instrument.name }}</a></td>
+            <td>{{ instrument.introduction | truncate(250) | escape | markdown }}</td>
+            <td>{{ score | round(2) }}</td>
+        </tr>
+        {% endif %}
         {% endfor %}
+    </table>
+
+    <h1>Antwoorden</h1>
+    <ol>
+        {% for question in worksession.question_set.questions | sort(attribute='order') %}
+
+        {% if question.is_category %}
+        <li>
+            <h2 class="question_category">{{ question.name }}</h2>
+        </li>
+        {% elif not question.is_category %}
+        <div style="font-weight: bold;">{{ question.name }} (Factor {{ worksession.answers | selectattr('question',
+            '==', question) | map(attribute='weight') | first }}):</div>
+        <ul>
+            {% for selection in worksession.answers | selectattr('question', '==', question) |
+            map(attribute='selection') %}
+            <li>
+                {% for selected in selection %}
+                {{ selected.option.name }}{{ "; " if not loop.last else "." }}
+                {% endfor %}
+                {% endfor %}
+
+                <br>{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') |
+                first | truncate(75) }}
+            </li>
+        </ul>
+        {% endif %}
+        {% endfor %}
+    </ol>
+
+    <h1>Actieve tags</h1>
+    {% for active_tag in advisor.get_active_tags() %}
+    <span class="tag">{{ active_tag.tag.name }}: {{ active_tag.weight}}</span>
+    {% endfor %}
+    </>
+</div>
+
+<div id="ws_plans" class="tabcontent ">
+    <div class="card_area">
         <a href="{{ url_for('main.new_plan', worksession_id=worksession.id) }}">
-            <div class="card new">
+        <div class="card new">
+            <div class="card_title">
+                Nieuw interventieplan maken
+            </div>
+            <div class="card_owner">
+            </div>
+            <div class="card_description">
+                Klik hier om een interventieplan toe te voegen aan deze werksessie.
+            </div>
+        </div>
+    </a>
+        {% for plan in worksession.plan %}
+        <a href="{{ url_for('main.show_plan', worksession_id=worksession.id, plan_id=plan.id) }}">
+            <div class="card">
                 <div class="card_title">
-                    Nieuw interventieplan maken
+                    {{ loop.index }}. {{ plan.description }}
                 </div>
                 <div class="card_owner">
+
+                    {% if plan.instruments | count > 0 %}Instrumenten: {% endif %}
+                    {% for chosen_instrument in plan.instruments %}
+                    {{ chosen_instrument.instrument.name }}{{ ", " if not loop.last else "" }}
+                    {% endfor %}
                 </div>
                 <div class="card_description">
-                    Klik hier om een interventieplan toe te voegen aan deze werksessie.
+                    {{ plan.conclusion }} ({{ plan.date.strftime('%d-%m-%Y') }})
                 </div>
             </div>
         </a>
-        
-
-    {% if worksession.link_to_page  | length > 0 %}
-        <h1>Link naar projectfolder</h1>
-        {{ worksession.link_to_page | escape | markdown }}
-    {% endif %}
-
-    {% if worksession.children | length %}
-        <h1>Afgeleide sessies</h1>
-        <table>
-            <tr>
-                <th>Link</th>
-                <th>Beschrijving</th>
-            </tr>
-            {% for child_worksession in worksession.children %}    
-                <tr>
-                    <td><a href="{{ url_for('main.show_worksession', worksession_id=child_worksession.id) }}">Afgeleide sessie {{ loop.index }}</a></td>
-                    <td>{{ child_worksession.child_description }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
-    <br>
-
-    <h1 class="collapsible">Kenmerken van de sessie</h1>
-    <div class="collapsible_content">
-        <table>
-            <tr>
-                <td>Keuzetool</td>
-                <td>{{ worksession.question_set.name }}</td>
-            </tr>
-            <tr>
-                <td>Keuzeproces</td>
-                <td>{{ worksession.process.name }}</td>
-            </tr>
-            <tr>
-                <td>
-                    Maker
-                </td>
-                <td>
-                    <a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a>
-                </td>
-            </tr>
-            <tr>
-                <td>Vragen</td>
-                <td>{{ worksession.question_set.questions | length }}</td>
-            </tr>
-            <tr>
-                <td>Laatste wijziging</td>
-                <td>{{ worksession.date_modified }}</td>
-            </tr>
-            <tr>
-                <td>Instellingen</td>
-                <td>
-                    {% if worksession.show_instruments %}<span class="property">Instrumenten weergeven</span>{% endif %}
-                    {% if worksession.show_tags %}<span class="property">Tags weergeven</span>{% endif %}
-                    {% if worksession.archived %}<span class="property">Gearchiveerd</span>{% endif %}
-                </td>
-            </tr>
-        </table>
+    {% endfor %}
     </div>
+</div>
+
+
+
+
+<div id="ws_details" class="tabcontent text_area">
+    <h1>Kenmerken van de werksessie</h1>
+    <table>
+        <tr>
+            <td>Status</td>
+            <td>{% if worksession.archived %}Gearchiveerd{% else %}Actief{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Keuzetool</td>
+            <td>{{ worksession.question_set.name }}</td>
+        </tr>
+        <tr>
+            <td>Keuzeproces</td>
+            <td>{{ worksession.process.name }}</td>
+        </tr>
+        <tr>
+            <td>
+                Maker
+            </td>
+            <td>
+                <a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Vragen</td>
+            <td>{{ worksession.question_set.questions | length }}</td>
+        </tr>
+        <tr>
+            <td>Laatste wijziging</td>
+            <td>{{ worksession.date_modified }}</td>
+        </tr>
+        <tr>
+            <td>Instellingen</td>
+            <td>
+                {% if worksession.show_instruments %}<span class="property">Instrumenten weergeven</span>{% endif %}
+                {% if worksession.show_tags %}<span class="property">Tags weergeven</span>{% endif %}
+                {% if worksession.archived %}<span class="property">Gearchiveerd</span>{% endif %}
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="ws_settings" class="tabcontent text_area">
+    <div class="text_area">
+        <h1>Sessie delen</h1>
+        <p>Om toegangsrechten tot deze sessie te krijgen klikt de nieuwe gebruiker op de link. De link is zeven dagen
+            geldig.</p>
+        <input type="text"
+            value="{{ url_for('main.share_link', worksession_id=worksession.id, invitation_string=invitation_string, _external=True) }}"
+            id="link" size="80">
+        <button onclick="copy_to_clipboard('link')">Kopieer link</button>
+        <ul>
+            <li>
+                <a href="{{ url_for('main.reset_secret_key', worksession_id=worksession.id) }}">Trek alle openstaande
+                    uitnodigingen in.</a>
+            </li>
+        </ul>
+        {% if current_user.role.edit_users %}
+        <h1>Gebruikers die de sessie mogen zien</h1>
+        <table>
+            <tr>
+                <th>Gebruiker</th>
+                <th>Acties</th>
+            </tr>
+            {% for user in worksession.allowed_users %}
+            <tr>
+                <td>
+                    <span class="user"><a href="{{ url_for('admin.user', id=user.id) }}">{{ user.name }}</a></span>
+                </td>
+                <td>
+                    <a
+                        href="{{ url_for('main.stop_share', worksession_id=worksession.id, user_id=user.id) }}"><button>Verwijderen</button></a>
+                </td>
+            </tr>
+            {% endfor %}
+            <form method="POST">{{ form.csrf_token }}
+                <tr>
+                    <td>{{ form.user(size=10) }}</td>
+                    <td>{{ form.submit }}</td>
+                </tr>
+            </form>
+        </table>
+        <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/copy_to_clipboard.js')}}"></script>
+        {% endif %}
+    </div>
+</div>
+
 {% endblock %}

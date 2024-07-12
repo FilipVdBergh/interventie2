@@ -2,11 +2,10 @@ from datetime import date, timedelta
 from flask import Blueprint, render_template, redirect, url_for, send_file, request
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, current_user, login_required
-from interventie2.forms import LoginForm, NewWorksessionForm, EditWorksessionForm, EditCaseForm, EditConclusionForm, MarkdownPlaygroundForm, EditWorksessionAccessForm, SearchForm
+from interventie2.forms import LoginForm, NewWorksessionForm, EditWorksessionForm, EditCaseForm, EditConclusionForm, MarkdownPlaygroundForm, EditWorksessionAccessForm
 from interventie2.models import User, Worksession, QuestionSet, Instrument, Option, Answer, Selection, Question, Process, InstrumentChoice, Plan, Message
 from interventie2.models import db, generate_secret_key
 from interventie2.classes import Advisor
-from interventie2.analysis.routes import search
 from sqlalchemy.sql import func
 from decimal import Decimal
 from datetime import datetime
@@ -20,26 +19,35 @@ main = Blueprint('main', __name__,
                  static_url_path='assets')
 
 
+
+
 @main.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
+	# worksessions = Worksession.query.order_by(Worksession.name)
+
+	# form = SearchForm()
+	# form.limit_search.label = 'Zoek alleen in werksessies'
+	
+	# if form.validate_on_submit():
+	# 	search_text = form.search_text.data
+	# 	search_results = search(search_text, # The user can choose to only search in a particular field by checking a box on the form.
+    #                             worksessions=True, 
+    #                             catalog=not form.limit_search.data, 
+    #                             tools=not form.limit_search.data,
+    #                             users=not form.limit_search.data)
+	# 	return render_template('analysis/results.html', 
+    #                             form=form,
+    #                             search_text=search_text,
+    #                             search_results=search_results)
+	return render_template('main/index.html', worksessions=worksessions)
+
+@main.route('/worksessions', methods=['GET', 'POST'])
+@login_required
+def worksessions():
 	worksessions = Worksession.query.order_by(Worksession.name)
 
-	form = SearchForm()
-	form.limit_search.label = 'Zoek alleen in werksessies'
-	
-	if form.validate_on_submit():
-		search_text = form.search_text.data
-		search_results = search(search_text, # The user can choose to only search in a particular field by checking a box on the form.
-                                worksessions=True, 
-                                catalog=not form.limit_search.data, 
-                                tools=not form.limit_search.data,
-                                users=not form.limit_search.data)
-		return render_template('analysis/results.html', 
-                                form=form,
-                                search_text=search_text,
-                                search_results=search_results)
-	return render_template('main/index.html', worksessions=worksessions, form=form)
+	return render_template('main/worksessions.html', worksessions=worksessions)
 
 
 @main.route('/archived')
@@ -175,12 +183,32 @@ def clone_worksession(worksession_id):
 	return render_template('main/clone_worksession.html', worksession=parent_worksession)
 
 
-@main.route('/worksession/<int:worksession_id>')
+@main.route('/worksession/<int:worksession_id>', methods=['GET', 'POST'])
 @login_required
 def show_worksession(worksession_id):
 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
-	return render_template('main/worksession.html', worksession=Worksession.query.get(worksession_id), worksessions=Worksession.query.order_by(Worksession.name))
+	
+	worksession = Worksession.query.get(worksession_id)
+	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+	to_be_hashed = f'{date.today()}{worksession.secret_key}'
+	invitation_string = hashlib.sha1(to_be_hashed.encode('utf-8')).hexdigest()
+
+	form = EditWorksessionAccessForm()
+	form.user.choices = [(user.id, user.name) for user in User.query.order_by(User.name)]
+
+	if form.validate_on_submit():
+		for user_id in form.user.data:
+			worksession.allowed_users.append(User.query.get(user_id))
+		db.session.commit()
+	elif request.method == "GET":
+		pass
+
+	return render_template('main/worksession.html', 
+						worksession=worksession, 
+						advisor=advisor,
+						form=form,
+						invitation_string=invitation_string)
 
 
 @main.route('/worksession/<int:worksession_id>/plan/<int:plan_id>', methods=['GET', 'POST'])
@@ -603,29 +631,29 @@ def zoom(worksession_id, change):
 	return 'Zoom changed'
 
 
-@main.route('/worksession/<int:worksession_id>/share', methods=['GET', 'POST'])
-@login_required
-def share_worksession(worksession_id):
-	"""There are two ways of inviting people to a worksession. The first is by creating an invitation link. Anyone who clicks that link 
-	is granted access to a worksession. The second way is by directly adding users to a worksession. This can only be done bu admins, because
-	only admins can see all users."""
-	worksession = Worksession.query.get(worksession_id)
-	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
-		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+# @main.route('/worksession/<int:worksession_id>/share', methods=['GET', 'POST'])
+# @login_required
+# def share_worksession(worksession_id):
+# 	"""There are two ways of inviting people to a worksession. The first is by creating an invitation link. Anyone who clicks that link 
+# 	is granted access to a worksession. The second way is by directly adding users to a worksession. This can only be done bu admins, because
+# 	only admins can see all users."""
+# 	worksession = Worksession.query.get(worksession_id)
+# 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
+# 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-	to_be_hashed = f'{date.today()}{worksession.secret_key}'
-	invitation_string = hashlib.sha1(to_be_hashed.encode('utf-8')).hexdigest()
+# 	to_be_hashed = f'{date.today()}{worksession.secret_key}'
+# 	invitation_string = hashlib.sha1(to_be_hashed.encode('utf-8')).hexdigest()
 
-	form = EditWorksessionAccessForm()
-	form.user.choices = [(user.id, user.name) for user in User.query.order_by(User.name)]
+# 	form = EditWorksessionAccessForm()
+# 	form.user.choices = [(user.id, user.name) for user in User.query.order_by(User.name)]
 
-	if form.validate_on_submit():
-		for user_id in form.user.data:
-			worksession.allowed_users.append(User.query.get(user_id))
-		db.session.commit()
-	elif request.method == "GET":
-		pass
-	return render_template('main/share_worksession.html', worksession=worksession, form=form, invitation_string=invitation_string)
+# 	if form.validate_on_submit():
+# 		for user_id in form.user.data:
+# 			worksession.allowed_users.append(User.query.get(user_id))
+# 		db.session.commit()
+# 	elif request.method == "GET":
+# 		pass
+# 	return render_template('main/share_worksession.html', worksession=worksession, form=form, invitation_string=invitation_string)
 
 
 @main.route('/worksession/<int:worksession_id>/reset_secret_key')
@@ -669,4 +697,4 @@ def stop_share(worksession_id, user_id):
 	user = User.query.get(user_id)
 	worksession.allowed_users.remove(user)
 	db.session.commit()
-	return redirect(url_for('main.share_worksession', worksession_id=worksession.id))
+	return redirect(url_for('main.show_worksession', worksession_id=worksession.id))

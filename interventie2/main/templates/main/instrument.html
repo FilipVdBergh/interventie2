@@ -1,14 +1,12 @@
 {% extends 'presenter_mode.html' %}
 
-{% block page_title %}
-    {{ instrument.name }}
-{% endblock %}
 
 {% block instrumenten %}   
     {% include 'main/scored_instruments.html' %}
 {% endblock %} 
 
 {% block body %}
+    <h1>{{ instrument.name }}</h1>
     <div class="instrument_introduction">{{ instrument.introduction | escape | markdown }}</div>
     {% if instrument.referenced_elsewhere %}
         <a href="http://{{ instrument.reference_link }}"><button>Link naar de beschrijving van dit instrument</button></a>

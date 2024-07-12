@@ -1,19 +1,11 @@
 {% extends 'base.html' %}
 
-{% block steps %}
-    <a href="{{ url_for('tools.index') }}" class="step">Selectietool ontwerpen</a>
-    <a href="{{ url_for('tools.design_question_set', question_set_id=question_set.id) }}" class="step">{{ question_set.name }}</a>
-
-    {% endblock %}
-
 {% block page_title %}
     Werksessies op basis van selectietool {{ question_set.name }}
 {% endblock %}
 
 {% block body %}
-    <div>Deze selectietool wordt gebruikt in {{ question_set.worksessions | length }} werksessie(s):</div>
-    <br>
-    
+<div class="card_area">
     {% for worksession in question_set.worksessions  %}
         {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
             {% if current_user == worksession.creator %}
@@ -34,5 +26,5 @@
             {% endif %}
         {% endif %}
     {% endfor %}   
-
+</div>
 {% endblock %}

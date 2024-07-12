@@ -1,3 +1,0 @@
-{% if config['ALLOW_CATALOG_VIEW'] or current_user.is_authenticated %}    
-    <a href="{{ url_for('catalog.index') }}" class="mode">&#128366; Catalogus</a>
-{% endif %}

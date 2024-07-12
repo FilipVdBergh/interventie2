@@ -1,21 +1,28 @@
 {% extends 'base.html' %}
 
-{% block steps %}
+{% block page_title %}
+Tags
 {% endblock %}
 
-{% block page_title %}
-    Tags
+{% block tabs %}
+<div class="tab_bar">
+    <button class="tablinks" onclick="switch_tab(event, 'tag_analysis')" id="defaultOpen">Tags</button>
+    <button class="tablinks" onclick="switch_tab(event, 'tag_new')">Toevoegen</button>
+
+</div>
 {% endblock %}
 
 {% block body %}
-    {% if edit_catalog_allowed %}
-        <h1>Nieuwe tag toevoegen</h1>
+<div id="tag_new" class="tabcontent">
+    <div class="text_area">
+        <h1>Tag toevoegen</h1>
+        {% if edit_catalog_allowed %}
         <table>
             <tr>
                 <th>Naam</th>
                 <th colspan="2">Acties</th>
             </tr>
-                <form method="POST">
+            <form method="POST">
                 {{ form.csrf_token }}
                 <tr>
                     <td>{{ form.name }}</td>
@@ -23,23 +30,18 @@
                 </tr>
             </form>
         </table>
-    {% endif %}
-
-    <h1>Tag overzicht</h1>
-    <table>
-        <tr>
-            <th>Naam</th>
-            <th>Acties</th>
-        </tr>
+        {% endif %}
+    </div>
+</div>
+<div id="tag_analysis" class="tabcontent">
+    <div class="text_area">
+        <ul>
         {% for tag in tags %}
-            <tr>
-                <td><a href="{{ url_for('catalog.edit_tag', tag_id=tag.id) }}"><span class="tag">{{ tag.name }}</span></a></td>
-                <td>
-
-                    <a href="{{ url_for('analysis.tag', tag_id=tag.id) }}"><button>Analyse</button></a>
-                </td>
-                
-            </tr>
+        <li><a href="{{ url_for('analysis.tag', tag_id=tag.id) }}"><span class="tag">{{ tag.name }}</span></a></li>
         {% endfor %}
-    </table>
+        </ul>
+
+    </div>
+</div>
+
 {% endblock %}

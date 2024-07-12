@@ -3,8 +3,7 @@ from flask import Blueprint, current_app, render_template, redirect, url_for, re
 from flask_login import current_user, login_required
 from interventie2.models import db
 from interventie2.models import User, Instrument, Remark, Tag, InstrumentTagAssignment, QuestionSet, Question, Answer, Option, Worksession, Plan
-from interventie2.forms import SearchForm
-from interventie2.utilities import search
+from interventie2.utilities import search_database
 from sqlalchemy.sql import func, text
 import simplejson as json
 
@@ -41,3 +40,12 @@ def tag(tag_id):
                            tag=Tag.query.get(tag_id),
                            question_sets=QuestionSet.query.order_by(QuestionSet.name),
                            instrument_tag_assignments=InstrumentTagAssignment.query.order_by(InstrumentTagAssignment.id))
+
+@analysis.route('/search')
+@login_required
+def search():
+    search_text = request.args.get('q')
+    search_results = search_database(search_text)
+    return render_template('analysis/results.html', 
+                            search_text=search_text,
+                            search_results=search_results)

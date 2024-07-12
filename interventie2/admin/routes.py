@@ -2,7 +2,7 @@ from flask import Blueprint, current_app, render_template, redirect, url_for, re
 from flask_login import current_user, login_required, fresh_login_required
 from interventie2.models import db
 from interventie2.models import User, Role, Process, Message
-from interventie2.forms import RegisterForm, EditUserForm, ChangePasswordForm, SendSystemMessageForm, SendMessageForm, SearchForm
+from interventie2.forms import RegisterForm, EditUserForm, ChangePasswordForm, SendSystemMessageForm, SendMessageForm
 from interventie2.analysis.routes import search
 from datetime import datetime, timedelta
 from sqlalchemy.sql import func
@@ -79,21 +79,9 @@ def index():
     if not current_user.role.edit_users: 
         return redirect(url_for('main.index'))
     list_of_users = User.query.order_by(User.id)
-    form = SearchForm()
-    form.limit_search.label = 'Zoek alleen in gebruikers'
+    messages = Message.query.order_by(Message.id)
 
-    if form.validate_on_submit():
-        search_text = form.search_text.data
-        search_results = search(search_text, # The user can choose to only search in a aprticular field by checking a box on the form.
-                                worksessions=not form.limit_search.data, 
-                                catalog=not form.limit_search.data, 
-                                tools=not form.limit_search.data,
-                                users=True)
-        return render_template('analysis/results.html', 
-                                form=form,
-                                search_text=search_text,
-                                search_results=search_results)
-    return render_template('admin/index.html', users=list_of_users, form=form)
+    return render_template('admin/index.html', users=list_of_users, messages=messages)
 
 
 @admin.route('/register', methods=['GET', 'POST'])

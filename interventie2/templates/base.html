@@ -6,54 +6,109 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Karla:wght@500&family=Noto+Sans:wght@300&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@300;700&display=swap" rel="stylesheet">
+        <!-- Icons -->
+        <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+        <!-- HTMX -->
+        <script src="https://unpkg.com/htmx.org@2.0.0"></script>
         <title>{{ config['APP_NAME'] }}</title>
     </head>
     <body>
         {% import 'jinja_macros.html' as macro %}
 
-        <div class="div_mode">
-            {% include 'nav_login.html'%}
-            {% include 'nav_worksessions.html'%}
-            {% include 'nav_catalog.html'%}
-            {% include 'nav_tools.html' %}
-            {% include 'nav_self.html' %}
-            {% include 'nav_admin.html' %}
-            {% include 'nav_contact.html' %}
-            {% include 'nav_app_info.html' %}
-        </div>
+        <header>
+            <div class="logo">{{ config['APP_NAME'] }}</div>
+            <div class="modes">
+                <ul>
+                    {% if current_user.is_authenticated %}
+                        <li class="mode">
+                            <a href="{{ url_for('main.index') }}">Dashboard</a>
+                        </li>
+                    {% endif %}
 
-        <div class="div_toolbar">
-            <div class="div_logo">
-                <img src="{{ url_for('static', filename='img/logo.png') }}", height="75px">
-            </div>
-            <div class="div_title">
-                {% block page_title %}
-                {% endblock %}
-            </div>
-            <div class="div_steps">
-                {% block steps %}
-                {% endblock %}
-            </div>
-        </div>
+                    {% if current_user.is_authenticated %}
+                        <li class="mode">
+                            <a href="{{ url_for('main.worksessions') }}">Sessies</a>
+                        </li>
+                    {% endif %}
+                
+                    {% if config['ALLOW_CATALOG_VIEW'] or current_user.is_authenticated %}    
+                        <li class="mode">
+                            <a href="{{ url_for('catalog.index') }}">Catalogus</a>
+                        </li>
+                    {% endif %}
 
-        <div class="div_main">
-            <div class="div_options">
-                {% block instrumenten %}   
-                {% endblock %} 
+                    {% if current_user.is_authenticated %}{% if current_user.role.edit_questionnaire %}
+                        <li class="mode">
+                            <a href="{{ url_for('tools.index') }}">Ontwerpen</a> 
+                        </li>
+                    {% endif %}{% endif %}
+                </ul>
             </div>
+            <div class="tools">
+                <ul>
+                    {% if not current_user.is_authenticated %}
+                        <li class="mode">
+                            <a href="{{ url_for('main.login') }}"> Login</a>
+                        </li>
+                    {% endif %}
+                    {% if current_user.is_authenticated %}{% if current_user.role.edit_users %}
+                        <li class="mode">
+                            <a href="{{ url_for('admin.index') }}"><i class='bx bxs-cog'></i> Gebruikers</a> 
+                        </li>
+                    {% endif %}{% endif %}
+                    {% if config['ALLOW_CONTACT'] %}
+                        <li class="mode">
+                            <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}"><i class='bx bxs-envelope'></i> Contact</a>
+                        </li>
+                    {% endif %}
+                    {% if current_user.is_authenticated %}{% if current_user.role.see_app_info %}
+                        <li class="mode">
+                            <a href="{{ url_for('admin.info') }}"><i class='bx bxs-info-circle'></i> App info</a>
+                        </li>
+                    {% endif %}{% endif %}
+                    {% if current_user.is_authenticated %}
+                        <li class="mode">
+                            <a href="{{ url_for('admin.user', id=current_user.id) }}"><i class='bx bxs-user-circle'></i>
+                                {{ current_user.name }} {% if current_user.unread_message_alert() %}(&#128489; {{ current_user.unread_messages() }}){% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </header>    
 
-            <div class="div_workarea">
-                {% block body %}
-                {% endblock %}
+        <nav>
+            <div class="title">{% block page_title %}{% endblock %}</div>
+            <div class="search">
+                <form action="/analysis/search" method="get" class="search">
+                    <input id="search" type="search"  name="q" value="{{ request.args.get('q') or '' }}">
+                    <input type="submit" value="⌕" class="search">
+                </form>
             </div>
-        </div>
+            <div class="steps">{% block steps %}{% endblock %}</div>
+            <div class="tabs">{% block tabs %}{% endblock %}</div>
+        </nav>
+
+
+
+        <main>
+            <aside>{% block contents %}{% endblock %}</aside>
+            <section>{% block body %}{% endblock %}</section>
+        </main>
+
+              
+
+        <footer>{{ config['MAINTAINER'] }} (<a href="mailto:{{ config['MAINTAINER_EMAIL'] }}">{{ config['MAINTAINER_EMAIL'] }}</a>)</footer>
         
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/confirm_redirect.js')}}"></script>
-
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/switch_tab.js')}}"></script>
-        <script>
-            // Open the default tab
+        <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/sort_table.js')}}"></script>
+        <script> // Open the default tab
             document.getElementById("defaultOpen").click();
         </script>
     </body>
