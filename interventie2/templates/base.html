@@ -22,57 +22,47 @@
         <header>
             <div class="logo">{{ config['APP_NAME'] }}</div>
             <div class="modes">
-                <ul>
-                    {% if current_user.is_authenticated %}
-                        <li class="mode">
-                            <a href="{{ url_for('main.index') }}">Dashboard</a>
-                        </li>
-                    {% endif %}
-
-                    {% if current_user.is_authenticated %}
-                        <li class="mode">
-                            <a href="{{ url_for('main.worksessions') }}">Sessies</a>
-                        </li>
-                    {% endif %}
-                
-                    {% if config['ALLOW_CATALOG_VIEW'] or current_user.is_authenticated %}    
-                        <li class="mode">
-                            <a href="{{ url_for('catalog.index') }}">Catalogus</a>
-                        </li>
-                    {% endif %}
-
-                    {% if current_user.is_authenticated %}{% if current_user.role.edit_questionnaire %}
-                        <li class="mode">
+                {% if current_user.is_authenticated %}
+                    <button>
+                        <a href="{{ url_for('main.index') }}">Dashboard</a>
+                    </button>
+                    <button>
+                        <a href="{{ url_for('main.worksessions') }}">Sessies</a>
+                    </button>
+                    <button>
+                        <a href="{{ url_for('catalog.index') }}">Catalogus</a>
+                    </button>
+                    {% if current_user.role.edit_questionnaire %}
+                        <button>
                             <a href="{{ url_for('tools.index') }}">Ontwerpen</a> 
-                        </li>
-                    {% endif %}{% endif %}
-                <!-- </ul>
-            </div>
-            <div class="tools">
-                <ul> -->
-                    {% if current_user.is_authenticated %}{% if current_user.role.edit_users %}
-                        <li class="mode">
+                        </button>
+                    {% endif %}
+                    {% if current_user.role.edit_users %}
+                        <button>
                             <a href="{{ url_for('admin.index') }}">Instellingen</a> 
-                        </li>
-                    {% endif %}{% endif %}
+                        </button>
+                    {% endif %}
                     {% if config['ALLOW_CONTACT'] %}
-                        <li class="mode">
+                        <button>
                             <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}"><i class='bx bxs-envelope'></i></a>
-                        </li>
+                        </button>
                     {% endif %}
-                    {% if current_user.is_authenticated %}{% if current_user.role.see_app_info %}
-                        <li class="mode">
+                    {% if current_user.role.see_app_info %}
+                        <button>
                             <a href="{{ url_for('admin.info') }}"><i class='bx bxs-info-circle'></i></a>
-                        </li>
-                    {% endif %}{% endif %}
-                    {% if current_user.is_authenticated %}
-                        <li class="mode">
-                            <a href="{{ url_for('admin.user', id=current_user.id) }}"><i class='bx bxs-user-circle'></i>
-                                {{ current_user.name }} {% if current_user.unread_message_alert() %}(&#128489; {{ current_user.unread_messages() }}){% endif %}
-                            </a>
-                        </li>
+                        </button>
                     {% endif %}
-                </ul>
+                    <button>
+                        <a href="{{ url_for('admin.user', id=current_user.id) }}"><i class='bx bxs-user-circle'></i>
+                            {{ current_user.name }} {% if current_user.unread_message_alert() %}(&#128489; {{ current_user.unread_messages() }}){% endif %}
+                        </a>
+                    </button>
+                {% else %}
+                    <button>
+                        <a href="{{ url_for('main.login') }}">Login</a>
+                    </button>
+                {% endif %}
+
             </div>
         </header>    
 

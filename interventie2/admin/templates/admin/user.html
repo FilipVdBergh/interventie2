@@ -144,35 +144,43 @@
         </div>
         {% endif %}
         <h1>Kenmerken</h1>
-            <table>
-                <tr>
-                    <td>Id</td>
-                    <td>{{ user.id }}</td>
-                </tr>
-                <tr>
-                    <td>Aangemaakt</td>
-                    <td>{{ user.date_created }}</td>
-                </tr>
-                <tr>
-                    <td>Laatst gezien</td>
-                    <td>{{ user.last_seen }}</td>
-                </tr>
-                <tr>
-                    <td>Rol</td>
-                    <td><a href="{{ url_for('admin.roles') }}">{{ user.role.name }}</a> ({{ user.role_id }})</td>
-                </tr>
-                <tr>
-                    <td>E-mail</td>
-                    <td>{{ user.email }}</td>
-                </tr>
-                <tr>
-                    <td>Link</td>
-                    <td>{{ user.link }}</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>{% if user.active %}Inloggen toegestaan{% endif %}</td>
-                </tr>
+            <table class="sortable">
+                <thead>
+                    <tr>
+                        <th>Kenmerk</th>
+                        <th>Waarde</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Id</td>
+                        <td>{{ user.id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Aangemaakt</td>
+                        <td>{{ user.date_created }}</td>
+                    </tr>
+                    <tr>
+                        <td>Laatst gezien</td>
+                        <td>{{ user.last_seen }}</td>
+                    </tr>
+                    <tr>
+                        <td>Rol</td>
+                        <td><a href="{{ url_for('admin.roles') }}">{{ user.role.name }}</a> ({{ user.role_id }})</td>
+                    </tr>
+                    <tr>
+                        <td>E-mail</td>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Link</td>
+                        <td>{{ user.link }}</td>
+                    </tr>
+                    <tr>
+                        <td>Inloggen</td>
+                        <td>{% if user.active %}Toegestaan{% else %}Niet toegestaan{% endif %}</td>
+                    </tr>
+                </tbody>
             </table>
     </div>
 </div>

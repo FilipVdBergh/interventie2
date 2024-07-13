@@ -173,12 +173,26 @@ header {
 
     .modes {
         grid-area: modes;
+        padding: 0px;
+        margin: 0px;
     }
+    .modes button {
+        background: inherit;
+        outline: none;
+        cursor: pointer;
+        padding: 0;
+        margin: 0 1.5rem 0 0;
+        border: none;
+        border-radius: 0px;
+        color: white;
+        font-family: "Poppins", sans-serif;
+        font-size: smaller;
+        min-width: 0;
+    }        
+    .modes button:hover {
+        color: white;
+    }       
 
-    /* .tools {
-        grid-area: tools;
-        justify-content: right;
-    } */
 
 nav {
     grid-area: nav;

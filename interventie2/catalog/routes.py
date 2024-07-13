@@ -23,8 +23,6 @@ def index(tag_id=None):
     else:
         edit_catalog_allowed = False
 
-
-    
     if tag_id is not None:        
         filter_tag = Tag.query.get(tag_id)
         list_of_instruments = []
