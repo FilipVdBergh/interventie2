@@ -46,28 +46,23 @@
                             <a href="{{ url_for('tools.index') }}">Ontwerpen</a> 
                         </li>
                     {% endif %}{% endif %}
-                </ul>
+                <!-- </ul>
             </div>
             <div class="tools">
-                <ul>
-                    {% if not current_user.is_authenticated %}
-                        <li class="mode">
-                            <a href="{{ url_for('main.login') }}"> Login</a>
-                        </li>
-                    {% endif %}
+                <ul> -->
                     {% if current_user.is_authenticated %}{% if current_user.role.edit_users %}
                         <li class="mode">
-                            <a href="{{ url_for('admin.index') }}"><i class='bx bxs-cog'></i> Gebruikers</a> 
+                            <a href="{{ url_for('admin.index') }}">Instellingen</a> 
                         </li>
                     {% endif %}{% endif %}
                     {% if config['ALLOW_CONTACT'] %}
                         <li class="mode">
-                            <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}"><i class='bx bxs-envelope'></i> Contact</a>
+                            <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}"><i class='bx bxs-envelope'></i></a>
                         </li>
                     {% endif %}
                     {% if current_user.is_authenticated %}{% if current_user.role.see_app_info %}
                         <li class="mode">
-                            <a href="{{ url_for('admin.info') }}"><i class='bx bxs-info-circle'></i> App info</a>
+                            <a href="{{ url_for('admin.info') }}"><i class='bx bxs-info-circle'></i></a>
                         </li>
                     {% endif %}{% endif %}
                     {% if current_user.is_authenticated %}
@@ -83,12 +78,11 @@
 
         <nav>
             <div class="title">{% block page_title %}{% endblock %}</div>
-            <div class="search">
+            {% if current_user.is_authenticated %}
                 <form action="/analysis/search" method="get" class="search">
-                    <input id="search" type="search"  name="q" value="{{ request.args.get('q') or '' }}">
-                    <input type="submit" value="⌕" class="search">
+                    <input id="search" type="search"  name="q" value="{{ request.args.get('q') or '' }}" placeholder="Zoeken...">
                 </form>
-            </div>
+            {% endif %}
             <div class="steps">{% block steps %}{% endblock %}</div>
             <div class="tabs">{% block tabs %}{% endblock %}</div>
         </nav>

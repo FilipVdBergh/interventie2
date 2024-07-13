@@ -37,3 +37,4 @@ instruments_tools/*
 venv/
 examples/
 compose.yaml
+gunicorn.sh

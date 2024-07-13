@@ -1,32 +1,16 @@
 {% extends 'base.html' %}
 
-{% block page_title %}
-    Inloggen
-{% endblock %}
-
 {% block body %}
-<div class="text_area">
-    <div>
-        <h1>Interventiekeuze</h1>
-        Deze app ondersteunt toezichthouders bij het maken van een interventieplan. Het maken van een interventieplan
-        gebeurt in een werksessie,
-        waarin alle betrokken toezichthouders samen een selectietool doorlopen. Op basis van de antwoorden presenteert
-        de app een lijst van
-        kansrijke interventies.
-    </div>
-    <div>
+<div class="focus_area">
+
+    <div class="login">
         <h1>Inloggen</h1>
         <form method="POST">
             {{ form.csrf_token }}
-            <table>
-                <tr>
-                    <td>{{ form.name.label }}</td>
-                    <td>{{ form.name }}</td>
-                </tr>
-                <td>{{ form.password.label }}</td>
-                <td>{{ form.password }}</td>
-            </table>
+            {{ form.name }}<br>
+            {{ form.password }}<br>
             {{ form.submit }}
+                
         </form>
     </div>
 </div>

@@ -17,9 +17,9 @@ Catalogus
 
 <div id="cat_all" class="tabcontent">
     {% if filter_tag is not none %}
-    <div>
-        <a href="{{ url_for('catalog.index') }}"><button type="button">&#10060; Wis filter <i>{{ filter_tag.name }}</i></button></a>
-    </div><br>
+        <div>
+            <a href="{{ url_for('catalog.index') }}"><button type="button">&#10060; Wis filter <i>{{ filter_tag.name }}</i></button></a>
+        </div><br>
     {% endif %}
     <div class="card_area">
         {% if filter_tag == none %}

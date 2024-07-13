@@ -5,8 +5,7 @@
     --green: #3b7d23;
     --orange: #c04f14;
     --mid-grey: #bfbfbf;
-    --light-grey: #fbfbfb;
-
+    --light-grey: #f7f5f0;
 }
 
 @keyframes fadeInAnimation {
@@ -22,7 +21,7 @@
 html,
 body {
     font-family: sans-serif;
-    line-height: 1.5em;;
+    line-height: 1.5em;
     padding: 0px;
     margin: 0px;
 }
@@ -36,49 +35,66 @@ p {
 
 a {
     color: inherit;
-    text-decoration: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--light-blue);
 }
 
 h1, h2, h3 {
     font-family: "Poppins", sans-serif;
 }
+@media only screen and (max-width: 900px) {
+    h1 {
+        font-size: large;
+    }
+}
 
 ul {
-    list-style-type: none;
+    /* list-style-type: none; */
     margin: 0;
-    padding: 0;
+    padding-left: 1.5em;
+
 }
 
 button {
     border: 1px solid var(--mid-grey);
     background-color: white;
-    height: 36px;
+    min-height: 1.7em;
     border-radius: 2px;
-    /* width: 200px; */
-    min-width: 200px;
+    min-width: 150px;
+    
 }
+    button a {
+        text-decoration: none;
+    }
 
-button:hover {
-    background-color: var(--dark-blue);
-    color: white;
-}
+    button:hover {
+        background-color: var(--dark-blue);
+        color: white;
+    }
 
-.button.delete {
-    background-color: var(--orange);
-}
+    .button.delete {
+        background-color: var(--orange);
+    }
 
 input[type=submit] {
     border: 1px solid var(--mid-grey);
     background-color: var(--light-grey);
-    height: 36px;
+    height: 1.7rem;
     border-radius: 2px;
-    width: 200px;
+    min-width: 150px;
 }
-input[type=submit]:hover {
-    background-color: var(--orange);
-    color: white;
-}
+    input[type=submit]:hover {
+        background-color: var(--orange);
+        color: white;
+    }
 
+input {
+    border: none;
+    background-color: var(--light-grey);
+    border: 1px solid var(--mid-grey);
+    font-size: inherit;
+    height: 1.7rem;
+}
 
 table {
     background: var(--light-grey);
@@ -109,7 +125,7 @@ table {
     color: var(--mid-grey);
   }
   tbody tr {
-    border-left: 4px solid white;
+    border-left: 4px solid var(--light-grey);
     transition:all  0.25s ease;
   }
   tbody tr:hover {
@@ -133,31 +149,36 @@ header {
     grid-area: header;
     background-color: black;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto min-content;
     grid-template-rows: auto;
-    grid-template-areas: "logo modes tools";
+    grid-template-areas: "modes logo";
     color: white;
     border-radius: 6px 6px 0px 0px;
     align-items: center;
     padding: 1rem 5rem;
     font-family: "Poppins", sans-serif;
 }
+    header a {
+        text-decoration: none;
+    }
     .logo {
         grid-area: logo;
         font-size: large;
-        padding-right: 5rem;
+    }
+    @media only screen and (max-width: 900px) {
+        .logo {
+            display:none;
+        }
     }
 
     .modes {
         grid-area: modes;
-        display: flex;
     }
 
-    .tools {
+    /* .tools {
         grid-area: tools;
-        display: flex;
         justify-content: right;
-    }
+    } */
 
 nav {
     grid-area: nav;
@@ -180,6 +201,12 @@ nav {
         font-size: xx-large;
         font-weight: bold;
         padding: 0 0 1rem 0;
+        line-height: 1em;
+    }
+    @media only screen and (max-width: 900px) {
+        .title {
+            font-size: x-large;
+        }
     }
 
     .search {
@@ -190,25 +217,15 @@ nav {
         border: none;
     }
         .search input {
-            /* border: 1px solid var(--mid-grey); */
             border: none;
             background-color: var(--light-grey);
             border: 1px solid var(--mid-grey);
-            border-radius: 6px 0px 0px 6px;
+            border-radius: 6px;
             padding: 5px;
-            font-size: inherit;
-            height: 1.7em;
+            font-size: smaller;
+            height: 1.7rem;
         }
         
-        .search input[type=submit] {
-            border: none;
-            border: 1px solid var(--mid-grey);
-            padding: 5px;
-            border-radius: 0px 6px 6px 0px;
-            width: 2em;
-            height: 1.7em;
-        }
-
     .tabs {
         grid-area: tabs;
         display: flex;
@@ -267,32 +284,36 @@ nav {
         .step:hover {
             color: black;
         }
+        .steps a {
+            text-decoration: none;
+        }
     
-
-
-
 main {
     grid-area: main;
     padding: 1rem 5rem;
     display: grid;
-    grid-template-columns: max-content repeat(3, auto);
+    grid-template-columns: min-content 3fr;
     grid-template-areas: 
-        "aside section section section";
-        overflow-y: scroll;
+        "aside section ";
+    overflow-y: scroll;
 }
     aside {
         grid-area: aside;
-        /* overflow-y: scroll; */
-        padding: 0rem 3rem 1rem 0.5rem;
-        margin-right: 1rem;
-        border-radius: 6px;
+        padding: 0rem 3rem 1rem 0;
         background-color: var(--light-grey);
     }
         aside:empty {
             display: none;
         }
+        @media only screen and (max-width: 900px) {
+            aside {
+                border-top: 1px solid var(--mid-grey);
+            }
+        }
     section {
         grid-area: section;
+        padding: 0;
+        margin: 0;
     }
 
 footer {
@@ -305,7 +326,7 @@ footer {
 
 /* Phone changes  */
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 900px) {
     main {
         grid-area: main;
         display: grid;
@@ -313,20 +334,35 @@ footer {
         grid-template-areas:
             "section"
             "aside";
+        padding: 0.5rem 0 0;
     }
-    }
-    @media only screen and (max-width: 750px) {
+}
+@media only screen and (max-width: 900px) {
     header {
         grid-area: header;
         display: grid;
         grid-template-columns: auto;
         grid-template-areas:
             "logo"
-            "modes"
-            "tools";
+            "modes";
+        padding: 0.5rem 0.5rem;
     }
 }
+@media only screen and (max-width: 900px) {
+    nav {
+        grid-area: nav;
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-areas:
+            "title"
+            "search"
+            "steps"
+            "tabs";
+        padding: 0.5rem 0.5rem;
+        margin: 0.5rem;
 
+    }
+}
 
 
 /* Work area (contains cards or text, and sometimes also a contents bar) */
@@ -334,15 +370,49 @@ footer {
     display: flex;
     flex-flow: row wrap;
     gap: 1rem;
-    padding-bottom: 2rem;
+    padding-bottom: 2rem;    
+}
+@media only screen and (max-width: 900px) {
+    .card_area {
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 0;
+        
+    }
 }
 
 .text_area {
     width: 100%;
-    padding: 1em;
+    padding: 0 1em 1em 1em;
     background-color: white;
     border-radius: 5px;
 }
+@media only screen and (max-width: 900px) {
+    .text_area {
+        width: 90%;
+
+    }
+}
+
+.focus_area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login {
+    background-color: var(--light-grey);
+    border: 1px solid var(--mid-grey);
+    padding: 1rem 3rem 2rem 3rem;
+    border-radius: 6px;
+    animation: fadeInAnimation ease 0.7s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+    .login input[type=submit] {
+        width: 200px;
+    }
 
 
 
@@ -353,7 +423,7 @@ li.mode {
     background-color: inherit;
     outline: none;
     cursor: pointer;
-    padding: 0 1rem 0 1rem;
+    padding: 0 1rem 0 0rem;
     font-size: small;
     text-decoration: none;
 }
@@ -372,7 +442,9 @@ li.selected {
 .contents_item {
     padding-left: 1em;
     border-left: 4px solid var(--light-grey);
-    line-height: 1.7em;
+    /* line-height: 1.7em; */
+    margin-bottom: 0.6em;
+    list-style-type: none;
 }
     .contents_item:hover {
         border-left: 4px solid var(--light-blue);
@@ -422,57 +494,53 @@ li.selected {
     font-style: italic;
 }
 
-/* Generic cards */
-
+/* Cards */
 .card {
-    display: inline-block;
-    vertical-align: middle;
     width: 350px;
-    height: 350px;
+    height: 325px;
     background-color: var(--light-grey);
-    /* border: solid 1px var(--mid-grey); */
     border-radius: 5px;
+    padding: 0.2em 15px 0.2em 15px;
     overflow: hidden;
     scrollbar-width: none;
     animation: fadeInAnimation ease 0.7s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
-
-.card.new {
-    border: 1px dashed var(--mid-grey);
+@media only screen and (max-width: 900px) {
+    .card {
+        /* height: 200px; */
+        height: auto;
+        max-height: 200px;;
+        width: auto;
+        margin-bottom: 0.7em;
+    
+    }
 }
-
-.card:hover {
-    overflow-y: scroll;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-
-.card_title {
-    font-family: "Poppins", sans-serif;
-    font-weight: bold;
-    padding: 1em 15px 0.2em 15px;
-    color: black;
-}
-
-.card_extra_info {
-    color: black;
-    font-size: x-small;
-    padding: 0.2em 15px 0.2em 15px;
-}
-
-.card_description {
-    color: var(--mid-grey);
-    padding: 0.2em 15px 0.2em 15px;
-    overflow: hidden;
-    scrollbar-width: none;
-}
-
-.card_owner {
-    padding: 0.2em 15px 0.2em 15px;
-    font-size: x-small;
-    text-transform: uppercase;
-}
+    .card.new {
+        border: 1px dashed var(--mid-grey);
+    }
+    .card:hover {
+        overflow-y: scroll;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+    .card_title {
+        font-family: "Poppins", sans-serif;
+        color: black;
+        font-weight: bold;
+    }
+    .card_description {
+        color: var(--mid-grey);
+        overflow: hidden;
+        scrollbar-width: none;
+    }
+    .card_owner {
+        font-size: x-small;
+        text-transform: uppercase;
+    }
+    .card_area a {
+        text-decoration: none;
+    }
 
 
 /* Messages */
@@ -531,33 +599,34 @@ li.selected {
     border: 1px solid var(--mid-grey);
     white-space: nowrap;
 }
+    .tag:hover {
+        background-color: var(--light-blue);
+        color: white;
+    }
+    .tag a {
+        text-decoration: none;
+    }
+    .warning {
+        color: var(--orange);
+    }
 
-.tag:hover {
-    background-color: var(--light-blue);
-    color: white;
-}
+    .plus {
+        font-weight: bold;
+        color: var(--dark-blue);
+    }
 
-.warning {
-    color: var(--orange);
-}
+    .plus::before {
+        content: '+';
+    }
 
-.plus {
-    font-weight: bold;
-    color: var(--dark-blue);
-}
+    .min {
+        font-weight: bold;
+        color: var(--orange);
+    }
 
-.plus::before {
-    content: '+';
-}
-
-.min {
-    font-weight: bold;
-    color: var(--orange);
-}
-
-.min::before {
-    content: '-';
-}
+    .min::before {
+        content: '-';
+    }
 
 
 .instrument_introduction {

@@ -53,8 +53,8 @@ class SendMessageForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    name        = StringField('Naam', validators=[DataRequired()], render_kw={'placeholder': 'Naam', 'size': 60})
-    password    = PasswordField('Wachtwoord', validators=[DataRequired()], render_kw={'placeholder': 'Wachtwoord', 'size': 60})
+    name        = StringField('Naam', validators=[DataRequired()], render_kw={'placeholder': 'Naam'})
+    password    = PasswordField('Wachtwoord', validators=[DataRequired()], render_kw={'placeholder': 'Wachtwoord'})
     submit      = SubmitField('Log in')
 
 
