@@ -57,7 +57,7 @@ ul {
 
 button {
     border: 1px solid var(--mid-grey);
-    background-color: white;
+    background-color: var(--light-grey);
     min-height: 1.7em;
     border-radius: 2px;
     min-width: 150px;
