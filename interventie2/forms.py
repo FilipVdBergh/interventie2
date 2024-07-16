@@ -68,6 +68,7 @@ class InstrumentsForm(FlaskForm):
     examples           = TextAreaField('Voorbeelden', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100}) 
     links              = TextAreaField('Links', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100}) 
     owner              = SelectField('Eigenaar', coerce=int)
+    color              = StringField('Kleur titelbalkbalk', widget=ColorInput(), default='#000000')
     submit             = SubmitField('Instrument opslaan')
 
 
@@ -130,8 +131,9 @@ class AddRequiredTagToQuestionForm(FlaskForm):
 
 class NewWorksessionForm(FlaskForm):
     name               = StringField('Naam werksessie', validators=[DataRequired(), Length(min=2, max=500)], render_kw={'size': 100})
+    project_number     = StringField('Projectnummer',   validators=[Optional(), Length(max=500)], render_kw={'size': 100})
     participants       = TextAreaField('Deelnemers', validators=[Optional(), Length(max=500)], render_kw={'rows': 5, 'cols': 100})
-    date               = StringField('Datum werksessie', validators=[Length(max=100)], render_kw={'size': 100})
+    date               = DateField('Datum werksessie', format='%Y-%m-%d')
     link_to_page       = StringField('Link naar projectpagina', validators=[Optional(), Length(max=1000)], render_kw={'size': 100})
     question_set       = SelectField('Keuzetool', validators=[DataRequired()], coerce=int)
     submit             = SubmitField('Werksessie opslaan')
@@ -139,15 +141,16 @@ class NewWorksessionForm(FlaskForm):
 
 class EditWorksessionForm(FlaskForm):
     name               = StringField('Naam werksessie', validators=[DataRequired(), Length(min=2, max=500)], render_kw={'size': 100})
+    project_number     = StringField('Projectnummer',   validators=[Optional(), Length(max=500)], render_kw={'size': 100})
     participants       = TextAreaField('Deelnemers', validators=[Optional(), Length(max=500)], render_kw={'rows': 5, 'cols': 100})
     link_to_page       = StringField('Link naar projectpagina', validators=[Optional(), Length(max=1000)], render_kw={'size': 100})
-    date               = StringField('Datum werksessie', validators=[Length(max=100)], render_kw={'size': 100})
+    date               = DateField('Datum werksessie', format='%Y-%m-%d')
     choice_process     = SelectField('Keuzeproces', coerce=int)
     description        = TextAreaField('Beschrijving', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100})
-    show_instruments   = BooleanField('Laat de instrumentenlijst zien tijdens de werksessie', validators=[], default=True)
-    mark_top_instruments = IntegerField('Beveel instrumenten aan met maximaal verschil van de hoogste score', validators=[NumberRange(min=0)], default=1)
+    show_instruments   = BooleanField('Laat de instrumentenlijst zien', validators=[], default=True)
+    mark_top_instruments = IntegerField('Aanbevolen instrumenten', validators=[NumberRange(min=0)], default=1)
     show_rest_instruments = BooleanField('Laat instrumenten onder de top ook zien', validators=[], default=True)
-    show_tags          = BooleanField('Laat de actieve tags zien tijdens de werksessie', validators=[], default=True)
+    show_tags          = BooleanField('Laat de actieve tags zien', validators=[], default=True)
     presenter_mode_zoom                 = DecimalField('Zoomfactor', validators=[NumberRange(min=1, max=2.5)], places=2)
     presenter_mode_color_title          = StringField('Kleur titelbalkbalk', widget=ColorInput(), default='#000000')
     presenter_mode_text_color_title     = StringField('Kleur titelbalktekst', widget=ColorInput(), default='#DDDDDD')

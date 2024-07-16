@@ -90,7 +90,7 @@ input[type=submit] {
 
 input {
     border: none;
-    background-color: var(--light-grey);
+    background-color: white;;
     border: 1px solid var(--mid-grey);
     font-size: inherit;
     height: 1.7rem;
@@ -349,7 +349,7 @@ footer {
         grid-template-areas:
             "section"
             "aside";
-        padding: 0.5rem 0 0;
+        padding: 0.5rem 0 0 0;
     }
 }
 @media only screen and (max-width: 900px) {
@@ -549,9 +549,15 @@ li.selected {
         overflow: hidden;
         scrollbar-width: none;
     }
+    .card_description a:hover {
+        color: black;
+    }
     .card_owner {
         font-size: x-small;
         text-transform: uppercase;
+    }
+    .card_alert {
+        font-weight: bold;
     }
     .card_area a {
         text-decoration: none;

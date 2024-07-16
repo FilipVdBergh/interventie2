@@ -17,8 +17,8 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-def generate_secret_key():
-        return ''.join((random.choice('QWERTYUIOPASDFGHJKLZXCVBNM1234567890') for i in range(20)))
+def generate_secret_key(n=20):
+        return ''.join((random.choice('QWERTYUIOPASDFGHJKLZXCVBNM1234567890') for i in range(n)))
 
 
 def clone(obj, worksession):
@@ -147,10 +147,11 @@ class Worksession(db.Model):
     parent_id     = db.Column(db.Integer, db.ForeignKey('worksessions.id'))
     child_description = db.Column(db.String(2000), nullable=False, default="")
     participants  = db.Column(db.String(500), nullable=False, default="")
-    date          = db.Column(db.String(100))
+    date          = db.Column(db.DateTime(timezone=True))
+    project_number= db.Column(db.String(100))
     description   = db.Column(db.String(2000), nullable=False, default="")
     effect        = db.Column(db.String(2000), nullable=False, default="")
-    conclusion    = db.Column(db.String(2000), nullable=False, default="") # This is legacy. Conclusions are now stored as part of a Plan.
+    # conclusion    = db.Column(db.String(2000), nullable=False, default="") # This is legacy. Conclusions are now stored as part of a Plan.
     link_to_page  = db.Column(db.String(1000), nullable=False, default="")
     show_instruments = db.Column(db.Boolean, default=True)
     mark_top_instruments = db.Column(db.Integer, nullable=False, default=1)
@@ -172,13 +173,16 @@ class Worksession(db.Model):
     archived      = db.Column(db.Boolean, default=False)
     question_set_id = db.Column(db.Integer, db.ForeignKey('question_sets.id'))
     process_id    = db.Column(db.Integer, db.ForeignKey('processes.id'), nullable=False, default=1)
-    creator_id    = db.Column(db.Integer, db.ForeignKey('users.id')) #references users.id
+    enable_voting = db.Column(db.Boolean, default=False)
+    voting_key    = db.Column(db.String(6), nullable=False, default=generate_secret_key(6))
+    creator_id    = db.Column(db.Integer, db.ForeignKey('users.id'))
     secret_key    = db.Column(db.String(20), nullable=False, default=generate_secret_key())
 
     parent = relationship('Worksession', remote_side=[id], backref='children')
     creator = relationship('User', back_populates='worksession')
     allowed_users = relationship('User', secondary='worksession_access', back_populates='allowed_worksessions')
     answers = relationship('Answer', back_populates='worksession', cascade='all, delete-orphan')
+    votes = relationship('Votes', back_populates='worksession', cascade='all, delete-orphan')
     question_set = relationship('QuestionSet')
     process = relationship('Process')
     plan = relationship('Plan', back_populates='worksession', cascade='all, delete-orphan')
@@ -291,6 +295,8 @@ class Instrument(db.Model):
     examples      = db.Column(db.String(2000), nullable=False, default="")
     links         = db.Column(db.String(2000), nullable=False, default="")
     owner_id      = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False) #references users.id
+    color         = db.Column(db.String(7))
+    text_color    = db.Column(db.String(7))
     
     owner = relationship('User', back_populates='owned_instruments')
     tags = relationship('InstrumentTagAssignment', back_populates='instrument', cascade='all, delete-orphan')
@@ -462,10 +468,23 @@ class Selection(db.Model):
     id            = db.Column(db.Integer, primary_key=True)
     answer_id     = db.Column(db.Integer, db.ForeignKey('answers.id'), nullable=False) #references answers.id
     option_id     = db.Column(db.Integer, db.ForeignKey('options.id'), nullable=False) #references options.id
-    multiplier    = db.Column(db.Numeric(2,1), nullable=False, default=1.0) # The multiplier is not implemented!
+    multiplier    = db.Column(db.Numeric(2,1), nullable=False, default=1.0) # Is the multiplier implemented?
     
     answer = relationship('Answer', back_populates='selection', cascade='all, delete')
     option = relationship('Option')
 
     def __repr__(self):
         return f'<Selection Answer {self.answer}-Option{self.option}>'
+
+class Votes(db.Model):
+    __tablename__  = 'votes'
+    id             = db.Column(db.Integer, primary_key=True)
+    worksession_id = db.Column(db.Integer, db.ForeignKey('worksessions.id'), nullable=False) 
+    user_id        = db.Column(db.Integer, db.ForeignKey('users.id'))
+    question_id    = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False)
+    option_id      = db.Column(db.Integer, db.ForeignKey('options.id'), nullable=False) 
+
+    worksession = relationship('Worksession')
+    user = relationship('User')
+    question = relationship('Question')
+    option = relationship('Option')

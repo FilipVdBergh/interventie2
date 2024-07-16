@@ -24,28 +24,26 @@ main = Blueprint('main', __name__,
 @main.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-	# worksessions = Worksession.query.order_by(Worksession.name)
+	information = { "past_worksessions":  Worksession.query.filter(Worksession.date < datetime.now()).order_by(Worksession.name).count(),
+				    "next_worksessions":  Worksession.query.filter(Worksession.date > datetime.now()).order_by(Worksession.name).count(),
+					"instruments": Instrument.query.order_by(Instrument.name).count(),
+					"your_past_worksessions":  Worksession.query.filter(Worksession.date < datetime.now()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
+				    "your_next_worksessions":  Worksession.query.filter(Worksession.date > datetime.now()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
+					"your_instruments": Instrument.query.filter(Instrument.owner == current_user).order_by(Instrument.name).count() }
 
-	# form = SearchForm()
-	# form.limit_search.label = 'Zoek alleen in werksessies'
-	
-	# if form.validate_on_submit():
-	# 	search_text = form.search_text.data
-	# 	search_results = search(search_text, # The user can choose to only search in a particular field by checking a box on the form.
-    #                             worksessions=True, 
-    #                             catalog=not form.limit_search.data, 
-    #                             tools=not form.limit_search.data,
-    #                             users=not form.limit_search.data)
-	# 	return render_template('analysis/results.html', 
-    #                             form=form,
-    #                             search_text=search_text,
-    #                             search_results=search_results)
-	return render_template('main/index.html', worksessions=worksessions)
+	for ws in Worksession.query.order_by(Worksession.date):
+		print (f'{ws.date} : {datetime.now()}')
+
+
+	next_worksessions = Worksession.query.filter(Worksession.date > datetime.now).order_by(Worksession.date)
+	return render_template('main/index.html', 
+						information=information,
+						next_worksessions=next_worksessions)
 
 @main.route('/worksessions', methods=['GET', 'POST'])
 @login_required
 def worksessions():
-	worksessions = Worksession.query.order_by(Worksession.name)
+	worksessions = Worksession.query.order_by(Worksession.date)
 
 	return render_template('main/worksessions.html', worksessions=worksessions)
 

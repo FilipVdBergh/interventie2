@@ -5,25 +5,77 @@ Dashboard
 {% endblock %}
 
 {% block body %}
-<div class="card_area">
-    {% if current_user.unread_message_alert() %}
-        {% for message in current_user.unread_messages_list() %}
+    {% if information["your_next_worksessions"] > 0 %}
+        <h1>Komende werksessies</h1>
+            <div class="card_area">
+                {% for worksession in next_worksessions %}
+                    <div class="card">
+                        <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
+                            <div class="card_title">{{ worksession.name }}</div>
+                            <div class="card_alert">
+                                Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.
+                            </div>
+                            <div class="card_description">
+                                {{ worksession.description }}
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+    {% endif %}
+
+{% if current_user.unread_message_alert() %}
+    <h1>Nieuwe berichten</h1>
+        <div class="card_area">
+            {% for message in current_user.unread_messages_list() %}
+            <div class="card">
+                <a href="{{ url_for('admin.message', message_id=message.id) }}">
+                    <div class="card_title">{{ message.subject }}</div>
+                    <div class="card_owner">
+                        {% if message.sender.name|length >0 %}
+                        Van {{ message.sender.name }} op
+                        {% endif %}
+                        {{ message.deliver_after.strftime('%d-%m-%Y') }}
+                    </div>
+                    <div class="card_description">
+                        {{ message.body | escape | markdown}}
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        
+        </div>
+{% endif %}
+
+<h1>Statistieken</h1>
+    <div class="card_area">
         <div class="card">
-            <a href="{{ url_for('admin.message', message_id=message.id) }}">
-                <div class="card_title">{{ message.subject }}</div>
-                <div class="card_owner">
-                    {% if message.sender.name|length >0 %}
-                    Van {{ message.sender.name }} op
-                    {% endif %}
-                    {{ message.deliver_after.strftime('%d-%m-%Y') }}
-                </div>
+            <a href="{{ url_for('main.worksessions') }}">
+                <div class="card_title">Over {{ current_user.name }}</div>
                 <div class="card_description">
-                    {{ message.body | escape | markdown}}
+                    <ul>
+                        <li><a href="{{url_for('main.worksessions')}}">Je hebt {{ information["your_next_worksessions"]}} werksessies gepland.</a></li>
+                        <li><a href="{{url_for('main.worksessions')}}">Je hebt {{ information["your_past_worksessions"] }} werksessies gedaan.</a></li>
+                        <li><a href="{{ url_for('catalog.instruments_current_user') }}">Je beheert {{information["your_instruments"] }} instrumenten.</a></li>
+                    </ul>
                 </div>
             </a>
         </div>
-        {% endfor %}
-    {% endif %}
-</div>
+        <div class="card">
+            <a href="{{ url_for('main.worksessions') }}">
+                <div class="card_title">Over de database</div>
+                <div class="card_description">
+                    <ul>
+                        <li>Er zijn {{ information["your_next_worksessions"]}} werksessies gepland.</li>
+                        <li>Er zijn {{ information["your_past_worksessions"] }} werksessies uitgevoerd.</li>
+                        <li>In de database staan {{information["instruments"] }} instrumenten.</li>
+                    </ul>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+
 
 {% endblock %}

@@ -67,10 +67,12 @@ Catalogus
                 <a href="{{ url_for('export.catalog') }}">Exporteer catalogus naar Word</a>
             </li>
         </ul>
-        <h1>Filter instrumenten op tag</h1>
+        <h1>Filter catalogus</h1>
         <ul>
+            <li><a href="{{ url_for('catalog.instruments_current_user') }}">Laat alleen instrumenten zien die ik beheer</a></li>
+        <h2>Op tag</h2>
             {% for tag in tags %}
-            <li><a href="{{ url_for('catalog.index', tag_id = tag.id) }}"><span class="tag">{{ tag.name }}</span></a></li>
+            <li><a href="{{ url_for('catalog.instruments_by_tag', tag_id = tag.id) }}"><span class="tag">{{ tag.name }}</span></a></li>
             {% endfor %}
         </ul>
     </div>
