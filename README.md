@@ -2,7 +2,7 @@
 De Autoriteit Financiële Markten (AFM) heeft een werkwijze ontwikkeld voor de selectie van informele interventieinstrumenten. Deze werkwijze bestaat uit een gefaciliteerde sessie, software, een vragenlijst en een catalogus van instrumenten. Door al deze materialen vrij beschikbaar te maken en te delen met andere toezichthouders, willen wij een uitwisseling van methoden op gang brengen waarvan alle toezichthouders profiteren.
 
 # Installatie met Docker op een Linux server
-Installeer Linux op een machine, en installer vervolgens Docker. Daarna kan je de volgende stappen volgen om de app te installeren als webserver. 
+Installeer Linux op een machine, en installer vervolgens Docker. Daarna kan je de volgende stappen volgen om de app te installeren als webserver. De app kan met een databaseserver of een sqlite-bestand werken. Dat laatste is veel makkelijker. In dat geval hoef je niet de stappen te doorlopen over Mariadb en Phpmyadmin.
 
 # Get certificate for the server
 apt-get install certbot
@@ -40,6 +40,7 @@ ALLOW_CONTACT=False
 MAINTAINER=interventieteam
 MAINTAINER_EMAIL=interventie@afm.nl
 SQLALCHEMY_DATABASE_URI=mysql://interventie2_user:<your-user-password>@mariadb:3306/interventie2
+of: SQLALCHEMY_DATABASE_URI=sqlite:///interventie2.db
 
 # Check the Dockerfile to see if the image will be built with the correct gunicorn options (in particular the references to the certificates)
 
