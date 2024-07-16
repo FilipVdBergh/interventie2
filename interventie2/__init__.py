@@ -11,12 +11,12 @@ app = Flask(__name__)
 app.config.from_object(config.DevelopmentConfig)
 app.config.from_envvar('CONFIG_FILE', silent=True)
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'pool_size': 10,
-    'pool_recycle': 60,
-    'pool_pre_ping': True
-}
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+#     'pool_size': 10,
+#     'pool_recycle': 60,
+#     'pool_pre_ping': True
+# }
 
 login_manager = LoginManager()
 login_manager.init_app(app)
