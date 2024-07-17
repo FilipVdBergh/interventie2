@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block page_title %}
-{{ worksession.name }}
+{{ worksession.name }} {% if worksession.project_number != "" %}({{ worksession.project_number }}){% endif %}
 {% endblock %}
 
 {% block tabs %}
@@ -151,6 +151,10 @@
             <th>Waarde</th>
         </thead>
         <tbody>
+            <tr>
+                <td>Projectnummer</td>
+                <td>{{ worksession.project_number }}</td>
+            </tr>
             <tr>
                 <td>Status</td>
                 <td>{% if worksession.archived %}Gearchiveerd{% else %}Actief{% endif %}</td>

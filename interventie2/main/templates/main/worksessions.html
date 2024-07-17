@@ -81,56 +81,6 @@ Werksessies
 
 </div>
 
-<div id="ws_archived" class="tabcontent">
-    <div class="text_area">
-
-    <table class="sortable">
-        <thead>
-            <tr>
-                <th>Werksessie</th>
-                <th>Datum</th>
-                <th>Selectietool</th>
-                <th>Beschrijving</th>
-                <th>Eigenaar</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for worksession in worksessions | selectattr('parent', 'none') %}
-            {% if worksession.archived == true %}
-            {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
-            {% if current_user == worksession.creator %}
-            <tr>
-                <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
-                <td>{{ worksession.date_modified.strftime('%d-%m-%Y') }}</td>
-                <td>{{ worksession.question_set.name }}</td>
-                <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
-                <td>Eigen sessie</td>
-            </tr>
-            {% endif %}
-            {% endif %}
-            {% endif %}
-            {% endfor %}
-
-            {% for worksession in worksessions | selectattr('parent', 'none') %}
-            {% if worksession.archived == true %}
-            {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
-            {% if current_user != worksession.creator %}
-            <tr>
-                <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
-                <td>{{ worksession.date_modified.strftime('%d-%m-%Y') }}</td>
-                <td>{{ worksession.question_set.name }}</td>
-                <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
-                <td><a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></td>
-            </tr>
-            {% endif %}
-            {% endif %}
-            {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
-    </div>
-</div>
-
 <div id="ws_all" class="tabcontent">
     <div class="text_area">
 
@@ -138,6 +88,7 @@ Werksessies
         <thead>
             <tr>
                 <th>Werksessie</th>
+                <th>Projectnummer</th>
                 <th>Status</th>
                 <th>Datum</th>
                 <th>Selectietool</th>
@@ -150,6 +101,7 @@ Werksessies
                 {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
                 <tr>
                     <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
+                    <td>{{ worksession.project_number }}</td>
                     <td>{% if worksession.archived == true %}Gearchiveerd{% endif %}</td>
                     <td>{{ worksession.date_modified.strftime('%d-%m-%Y') }}</td>
                     <td>{{ worksession.question_set.name }}</td>

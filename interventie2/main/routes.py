@@ -105,6 +105,7 @@ def new_worksession():
 	if form.validate_on_submit():
 		worksession = Worksession()
 		worksession.name = form.name.data
+		worksession.project_number = form.project_number.data
 		worksession.link_to_page = form.link_to_page.data
 		worksession.date = form.date.data
 		worksession.participants = form.participants.data
@@ -144,6 +145,7 @@ def clone_worksession(worksession_id):
 	if request.method == "POST":
 		worksession = Worksession()
 		worksession.name = parent_worksession.name
+		worksession.project_number = parent_worksession.project_number.data
 		worksession.participants = parent_worksession.participants
 		worksession.date = parent_worksession.date
 		worksession.description = parent_worksession.description
@@ -286,6 +288,7 @@ def edit_worksession(worksession_id):
 
 	if form.validate_on_submit():
 		worksession.name = form.name.data
+		worksession.project_number = form.project_number.data
 		worksession.link_to_page = form.link_to_page.data
 		worksession.participants = form.participants.data
 		worksession.date = form.date.data
