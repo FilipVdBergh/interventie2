@@ -14,14 +14,14 @@
 
 {% block tabs %}
     <button class="tablinks" onclick="switch_tab(event, 'us_messages')" id="defaultOpen">Berichten</button>
-    <button class="tablinks" onclick="switch_tab(event, 'us_sessions')">Sessies</button>
-    <button class="tablinks" onclick="switch_tab(event, 'us_ins')">Instrumenten</button>
+    <button class="tablinks" onclick="switch_tab(event, 'us_options')" id="defaultOpen">Opties</button>
     <button class="tablinks" onclick="switch_tab(event, 'us_info')">Informatie</button>
 {% endblock %}
 
 {% block body %}
 <div id="us_messages" class="tabcontent">
     <div class="text_area">
+
         {% if current_user == user %}   
 
         <h1>Inbox</h1>
@@ -80,56 +80,9 @@
     </div>
 </div>
 
-<div id="us_sessions" class="tabcontent">
-    <div class="card_area">
-        {% for worksession in user.allowed_worksessions %}
-        {% if current_user == worksession.creator %}
-        <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
-            <div class="card">
-                <div class="card_title">
-                    {{ worksession.name}}
-                </div>
-                <div class="card_owner">
-                    {{ worksession.question_set.name }}({{ worksession.creator.name }}, {{ worksession.date_modified.strftime('%d-%m-%Y') }})
-                    {% if worksession.archived == true %}Gearchiveerd{% endif %}
-                </div>
-                <div class="card_description">
-                    {{ worksession.description | escape | markdown }}
-                </div>
-            </div>
-        </a>
-        {% endif %}
-        {% endfor %}
-    </div>
-</div>
-
-<div id="us_ins" class="tabcontent">
-    <div class="card_area">
-        {% if user.owned_instruments | count > 0 %}
-        {% for instrument in user.owned_instruments | sort(attribute='name') %}
-        <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">
-            <div class="card">
-                <div class="card_title">
-                    {{ instrument.name}}
-                </div>
-                <div class="card_extra_info">
-                    {% for remark in instrument.remarks %}{% if remark.active %}
-                        {{ remark.remark | markdown | escape }}
-                    {% endif %}{% endfor %}
-                </div>
-                <div class="card_description">
-
-                    {{ instrument.introduction | markdown | escape }}
-                </div>
-            </div>
-        </a>
-        {% endfor %}
-        {% endif %}
-    </div>
-</div>
-
-<div id="us_info" class="tabcontent">
+<div id="us_options" class="tabcontent">
     <div class="text_area">
+
         {% if user.edit_allowed() %}
         <h1>Opties</h1>
         <div class="div_options">
@@ -143,6 +96,11 @@
             </ul>
         </div>
         {% endif %}
+    </div>
+</div>
+
+<div id="us_info" class="tabcontent">
+    <div class="text_area">
         <h1>Kenmerken</h1>
             <table class="sortable">
                 <thead>

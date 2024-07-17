@@ -76,7 +76,7 @@ def search_database(search_text_all, worksessions=True, catalog=True, tools=True
         # Search worksessions. Permissions are a but strange here because some users can see all worksessions. 
         if worksessions:
             for item in Worksession.query.order_by(Worksession.name):
-                if search_text.lower() in item.name.lower() or search_text in item.description.lower() or search_text in item.effect.lower() or search_text in item.conclusion.lower() or search_text in item.participants.lower() or search_text in item.creator.name.lower():
+                if search_text.lower() in item.name.lower() or search_text in item.description.lower() or search_text in item.effect.lower() or search_text in item.participants.lower() or search_text in item.creator.name.lower():
                     if current_user.role.see_all_worksessions or item in current_user.allowed_worksessions:
                         search_results['werksessie'].append({'name': item.name,
                                     'context': item.description,

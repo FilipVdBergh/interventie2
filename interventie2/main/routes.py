@@ -24,18 +24,17 @@ main = Blueprint('main', __name__,
 @main.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-	information = { "past_worksessions":  Worksession.query.filter(Worksession.date < datetime.now()).order_by(Worksession.name).count(),
-				    "next_worksessions":  Worksession.query.filter(Worksession.date > datetime.now()).order_by(Worksession.name).count(),
+	information = { "past_worksessions":  Worksession.query.filter(Worksession.date < datetime.today()).order_by(Worksession.name).count(),
+				    "next_worksessions":  Worksession.query.filter(Worksession.date > datetime.today()).order_by(Worksession.name).count(),
 					"instruments": Instrument.query.order_by(Instrument.name).count(),
-					"your_past_worksessions":  Worksession.query.filter(Worksession.date < datetime.now()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
-				    "your_next_worksessions":  Worksession.query.filter(Worksession.date > datetime.now()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
+					"your_past_worksessions":  Worksession.query.filter(Worksession.date < datetime.today()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
+				    "your_next_worksessions":  Worksession.query.filter(Worksession.date > datetime.today()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
 					"your_instruments": Instrument.query.filter(Instrument.owner == current_user).order_by(Instrument.name).count() }
 
-	for ws in Worksession.query.order_by(Worksession.date):
-		print (f'{ws.date} : {datetime.now()}')
 
 
-	next_worksessions = Worksession.query.filter(Worksession.date > datetime.now).order_by(Worksession.date)
+
+	next_worksessions = Worksession.query.filter(Worksession.date > datetime.today()).order_by(Worksession.date)
 	return render_template('main/index.html', 
 						information=information,
 						next_worksessions=next_worksessions)

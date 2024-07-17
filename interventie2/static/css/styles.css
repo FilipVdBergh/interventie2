@@ -6,6 +6,7 @@
     --orange: #c04f14;
     --mid-grey: #bfbfbf;
     --light-grey: #f7f5f0;
+    --alert: red;
 }
 
 @keyframes fadeInAnimation {
@@ -329,6 +330,7 @@ main {
         grid-area: section;
         padding: 0;
         margin-left: 1rem;
+        margin-right: 1rem;
     }
 
 footer {
@@ -373,7 +375,7 @@ footer {
             "search"
             "steps"
             "tabs";
-        padding: 0.5rem 0.5rem;
+        padding: 0.5rem 0.5rem 0.5rem 0.5rem;
         margin: 0.5rem;
 
     }
@@ -526,7 +528,7 @@ li.selected {
     .card {
         /* height: 200px; */
         height: auto;
-        max-height: 200px;;
+        max-height: 200px;
         width: auto;
         margin-bottom: 0.7em;
     
@@ -557,6 +559,8 @@ li.selected {
         text-transform: uppercase;
     }
     .card_alert {
+        font-family: "Poppins", sans-serif;
+        color: var(--alert);
         font-weight: bold;
     }
     .card_area a {

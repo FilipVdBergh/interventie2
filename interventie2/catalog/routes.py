@@ -26,7 +26,7 @@ def index():
     return render_template('catalog/index.html', 
                            edit_catalog_allowed=edit_catalog_allowed, 
                            instruments=list_of_instruments,
-                           filter_tag=None,
+                           filter=None,
                            tags = Tag.query.order_by(Tag.name))
 
 
@@ -41,7 +41,7 @@ def instruments_current_user():
     return render_template('catalog/index.html', 
                            edit_catalog_allowed=edit_catalog_allowed, 
                            instruments=list_of_instruments,
-                           filter_tag=None,
+                           filter=f'Beheerd door { current_user.name }',
                            tags = Tag.query.order_by(Tag.name))
 
 
@@ -65,7 +65,7 @@ def instruments_by_tag(tag_id=None):
     return render_template('catalog/index.html', 
                     edit_catalog_allowed=edit_catalog_allowed, 
                     instruments=list_of_instruments,
-                    filter_tag=filter_tag,
+                    filter=filter_tag.name,
                     tags = Tag.query.order_by(Tag.name))
 
 

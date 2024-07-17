@@ -14,19 +14,19 @@ analysis = Blueprint('analysis', __name__,
 
 
 
-@analysis.route('/', methods=['GET', 'POST'])
-@login_required
-def index():
-    form = SearchForm()
+# @analysis.route('/', methods=['GET', 'POST'])
+# @login_required
+# def index():
+#     form = SearchForm()
 
-    if form.validate_on_submit():
-        search_text = form.search_text.data
-        search_results = search(search_text)
-        return render_template('analysis/results.html', 
-                                form=form,
-                                search_text=search_text,
-                                search_results=search_results)
-    return render_template('analysis/index.html', form=form)
+#     if form.validate_on_submit():
+#         search_text = form.search_text.data
+#         search_results = search(search_text)
+#         return render_template('analysis/results.html', 
+#                                 form=form,
+#                                 search_text=search_text,
+#                                 search_results=search_results)
+#     return render_template('analysis/index.html', form=form)
 
 
 @analysis.route('/tag/<int:tag_id>')
