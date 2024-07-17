@@ -38,7 +38,7 @@ Werksessies
                 </div>
                 
                 <div class="card_owner">
-                    {{ worksession.question_set.name }} ({{ worksession.date_modified.strftime('%d-%m-%Y') }})
+                    {{ worksession.question_set.name }} ({{ worksession.date.strftime('%d-%m-%Y') }})
                 </div>
                 <div class="card_description">
                     {{ worksession.description | escape | markdown }}
@@ -66,7 +66,7 @@ Werksessies
                     {{ worksession.name}}
                 </div>
                 <div class="card_owner">
-                    {{ worksession.question_set.name }} ({{ worksession.creator.name }}, {{ worksession.date_modified.strftime('%d-%m-%Y') }})
+                    {{ worksession.question_set.name }} ({{ worksession.creator.name }}, {{ worksession.date.strftime('%d-%m-%Y') }})
                 </div>
                 <div class="card_description">
                     {{ worksession.description | escape | markdown }}
@@ -103,7 +103,7 @@ Werksessies
                     <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
                     <td>{{ worksession.project_number }}</td>
                     <td>{% if worksession.archived == true %}Gearchiveerd{% endif %}</td>
-                    <td>{{ worksession.date_modified.strftime('%d-%m-%Y') }}</td>
+                    <td>{{ worksession.date.strftime('%d-%m-%Y') }}</td>
                     <td>{{ worksession.question_set.name }}</td>
                     <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
                     <td><a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></td>

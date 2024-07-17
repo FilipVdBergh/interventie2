@@ -68,7 +68,6 @@ class InstrumentsForm(FlaskForm):
     examples           = TextAreaField('Voorbeelden', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100}) 
     links              = TextAreaField('Links', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100}) 
     owner              = SelectField('Eigenaar', coerce=int)
-    color              = StringField('Kleur titelbalkbalk', widget=ColorInput(), default='#000000')
     submit             = SubmitField('Instrument opslaan')
 
 
@@ -99,6 +98,8 @@ class QuestionSetForm(FlaskForm):
     default_instruments_visible = BooleanField('Laat standaard de instrumentenlijst zien bij het invullen van de tool', validators=[], default=True)
     default_tags_visible = BooleanField('Laat standaard de actieve tags zien bij het invullen van de tool', validators=[], default=False)
     default_allow_weights = BooleanField('Sta vragen met weging standaard toe', validators=[], default=False)
+    color              = StringField('Achtergrondkleur', widget=ColorInput(), default='#f7f5f0')
+    text_color         = StringField('Tekstkleur', widget=ColorInput(), default='#000000')
     submit             = SubmitField('Tool opslaan')
 
 
