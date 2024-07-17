@@ -1,0 +1,7 @@
+version: '3'
+services:
+  interventie2:
+    image: interventie
+    volumes:
+      - interventie2.db:interventie2.db
+    command: tail -f /dev/null

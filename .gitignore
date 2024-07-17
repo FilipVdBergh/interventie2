@@ -36,5 +36,5 @@ documentation/
 instruments_tools/*
 venv/
 examples/
-compose.yaml
+compose copy.yaml
 gunicorn.sh

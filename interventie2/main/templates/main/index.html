@@ -50,7 +50,7 @@ Dashboard
 <h1>Statistieken</h1>
     <div class="card_area">
         <div class="card">
-            <a href="{{ url_for('main.worksessions') }}">
+
                 <div class="card_title">Over {{ current_user.name }}</div>
                 <div class="card_description">
                     <ul>
@@ -59,19 +59,19 @@ Dashboard
                         <li><a href="{{ url_for('catalog.instruments_current_user') }}">Je beheert {{information["your_instruments"] }} instrumenten.</a></li>
                     </ul>
                 </div>
-            </a>
+
         </div>
         <div class="card">
-            <a href="{{ url_for('main.worksessions') }}">
+
                 <div class="card_title">Over de database</div>
                 <div class="card_description">
                     <ul>
                         <li>Er zijn {{ information["your_next_worksessions"]}} werksessies gepland.</li>
                         <li>Er zijn {{ information["your_past_worksessions"] }} werksessies uitgevoerd.</li>
-                        <li>In de database staan {{information["instruments"] }} instrumenten.</li>
+                        <li><a href="{{ url_for('catalog.index') }}">In de database staan {{information["instruments"] }} instrumenten.</a></li>
                     </ul>
                 </div>
-            </a>
+
         </div>
     </div>
 
