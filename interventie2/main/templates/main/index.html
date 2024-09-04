@@ -5,9 +5,22 @@ Dashboard
 {% endblock %}
 
 {% block body %}
-    {% if information["your_next_worksessions"] > 0 %}
+    {% if (information["your_next_worksessions"]+information["your_current_worksessions"]) > 0 %}
         <h1>Komende werksessies</h1>
             <div class="card_area">
+                {% for worksession in current_worksessions %}
+                <div class="card">
+                    <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
+                        <div class="card_title">{{ worksession.name }}</div>
+                        <div class="card_alert">
+                            Gepland voor vandaag.
+                        </div>
+                        <div class="card_description">
+                            {{ worksession.description }}
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
                 {% for worksession in next_worksessions %}
                     <div class="card">
                         <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">

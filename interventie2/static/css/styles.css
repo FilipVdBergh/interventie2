@@ -3,9 +3,9 @@
     --dark-blue: #0f2841;
     --light-blue: #0e9ed5;
     --green: #3b7d23;
-    --orange: #c04f14;
-    --mid-grey: #bfbfbf;
-    --light-grey: #f7f5f0;
+    --highlight: #0f2841;
+    --mid-grey: #0e9ed5;
+    --light-grey: #eef7ff;
     --alert: red;
 }
 
@@ -69,12 +69,12 @@ button {
     }
 
     button:hover {
-        background-color: var(--dark-blue);
+        background-color: var(--highlight);
         color: white;
     }
 
     .button.delete {
-        background-color: var(--orange);
+        background-color: var(--highlight);
     }
 
 input[type=submit] {
@@ -85,7 +85,7 @@ input[type=submit] {
     min-width: 150px;
 }
     input[type=submit]:hover {
-        background-color: var(--orange);
+        background-color: var(--highlight);
         color: white;
     }
 
@@ -247,7 +247,7 @@ nav {
         padding-top: 3rem;
         overflow: hidden;
         font-size: inherit;
-        border-bottom: 1px solid var(--mid-grey);
+        border-bottom: 1px solid black;
     }
         /* .tabs:empty {
             display: none;
@@ -262,6 +262,7 @@ nav {
             border-radius: 0px;
             font-size: inherit;
             width: auto;
+            border-bottom: solid 2px white;
         }        
         .tabs button:hover {
             border-bottom: solid 2px var(--dark-blue);
@@ -336,9 +337,11 @@ main {
 footer {
     grid-area: footer;
     background-color: black;
+    border-radius: 0px 0px 6px 6px;
     color: white;
     align-items: center;
     padding: 1rem 5rem;
+    font-size: small;
 }
 
 /* Phone changes  */
@@ -633,7 +636,7 @@ li.selected {
         text-decoration: none;
     }
     .warning {
-        color: var(--orange);
+        color: var(--highlight);
     }
 
     .plus {
@@ -647,7 +650,7 @@ li.selected {
 
     .min {
         font-weight: bold;
-        color: var(--orange);
+        color: var(--highlight);
     }
 
     .min::before {

@@ -413,6 +413,8 @@ class QuestionSet(db.Model):
     default_instruments_visible = db.Column(db.Boolean, nullable=False, default=True)
     default_tags_visible = db.Column(db.Boolean, nullable=False, default=False)
     default_allow_weights = db.Column(db.Boolean, nullable=False, default=False)
+    color         = db.Column(db.String(7))
+    text_color    = db.Column(db.String(7))
     
     forbidden_tags = relationship('Tag', secondary='question_set_forbidden_tags')
     mandatory_tags = relationship('Tag', secondary='question_set_mandatory_tags')
