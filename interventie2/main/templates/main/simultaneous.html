@@ -139,7 +139,7 @@
                                     
                                     {% if question.allow_motivation %}
                                         <br>
-                                        <textarea name="motivation:{{ question.id }}" rows="5" cols="100">{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
+                                        <textarea name="motivation:{{ question.id }}" rows="5" style="width:95%;">{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
                                     {% endif %}
                                     <input type="submit" value="Opslaan">
                                 </div>
