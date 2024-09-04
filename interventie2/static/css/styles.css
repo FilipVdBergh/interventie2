@@ -65,6 +65,7 @@ button {
     min-height: 2.2em;
     border-radius: 5px;
     min-width: 150px;
+    margin-bottom: 2px;
     
 }
     button a {
@@ -81,11 +82,15 @@ button {
     }
 
 input[type=submit] {
+
     border: 1px solid var(--mid-grey);
-    background-color: var(--object);
-    height: 1.7rem;
-    border-radius: 2px;
+    background-color: var(--button-bg);
+    color: var(--button-fg);
+    min-height: 2.2em;
+    border-radius: 5px;
     min-width: 150px;
+    margin-bottom: 2px;
+    
 }
     input[type=submit]:hover {
         background-color: var(--highlight);
@@ -98,6 +103,7 @@ input {
     border: 1px solid var(--mid-grey);
     font-size: inherit;
     height: 1.7rem;
+    margin-bottom: 2px;
 }
 
 table {
@@ -238,7 +244,7 @@ nav {
             border: none;
             background-color: var(--object);
             border: 1px solid var(--mid-grey);
-            border-radius: 6px;
+            border-radius: 5px;
             padding: 5px;
             font-size: smaller;
             height: 1.7rem;
