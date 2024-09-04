@@ -5,7 +5,7 @@
     --green: #3b7d23;
     --highlight: #0f2841;
     --mid-grey: #0e9ed5;
-    --light-grey: #eef7ff;
+    --light-grey: #f4faff;
     --alert: red;
 }
 
@@ -423,7 +423,6 @@ footer {
 
 .login {
     background-color: var(--light-grey);
-    border: 1px solid var(--mid-grey);
     padding: 1rem 3rem 2rem 3rem;
     border-radius: 6px;
     animation: fadeInAnimation ease 0.7s;
