@@ -60,7 +60,7 @@ class User(db.Model, UserMixin):
     last_seen     = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
     role = relationship('Role')
-    messages = relationship('Message', back_populates='recipient', foreign_keys="Message.recipient_id")
+    messages = relationship('Message', back_populates='recipient', foreign_keys="Message.recipient_id", cascade='all, delete-orphan')
     messages_sent = relationship('Message', back_populates='sender', foreign_keys="Message.sender_id")
     worksession = relationship('Worksession', back_populates='creator')
     plan = relationship('Plan', back_populates='creator')
