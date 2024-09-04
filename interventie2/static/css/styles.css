@@ -49,11 +49,21 @@ a:hover {
 h1, h2, h3 {
     font-family: "Poppins", sans-serif;
 }
+h1 {
+    font-size: x-large;
+}
+h2 {
+    font-size: large;
+}
 @media only screen and (max-width: 900px) {
     h1 {
         font-size: large;
     }
+    h2 {
+        font-size: medium;
+    }
 }
+
 
 ul {
     /* list-style-type: none; */
