@@ -19,10 +19,10 @@
 {% block body %}
 
 <div id="ws_main" class="tabcontent text_area">
-        <p><a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button type="button">▷ Start de werksessie</button></a></p>
-        <p><a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}"><button type="button">✎ Bewerken</button></a></p>
+        <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button type="button">▷ Start de werksessie</button></a>
+        <a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}"><button type="button">✎ Bewerken</button></a>
         {% if not worksession.archived %}
-            <p><a href="{{ url_for('main.archive_worksession', worksession_id=worksession.id) }}"><button type="button">Archiveren</button></a></p>
+            <a href="{{ url_for('main.archive_worksession', worksession_id=worksession.id) }}"><button type="button">Archiveren</button></a>
         {% endif %}
     <h1>Beschrijving</h1>
     {{ worksession.description | escape | markdown }}
