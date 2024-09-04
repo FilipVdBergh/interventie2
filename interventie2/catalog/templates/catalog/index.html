@@ -72,7 +72,7 @@ Catalogus
             <li><a href="{{ url_for('catalog.instruments_current_user') }}">Laat alleen instrumenten zien die ik beheer</a></li>
         <h2>Op tag</h2>
             {% for tag in tags %}
-            <li><a href="{{ url_for('catalog.instruments_by_tag', tag_id = tag.id) }}"><span class="tag">{{ tag.name }}</span></a></li>
+            <li><span class="tag"><a href="{{ url_for('catalog.instruments_by_tag', tag_id = tag.id) }}">{{ tag.name }}</a></span></li>
             {% endfor %}
         </ul>
     </div>

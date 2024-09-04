@@ -5,15 +5,6 @@
     Zoekresultaten '{{ search_text }}'
 {% endblock %}
 
-{% block contents %}
-    {% for (type, results) in search_results.items() %}
-        {% if results | count > 0 %}
-            <div><a href='#{{ type }}'>{{ type }}: {{ results | count }}</a></div>
-        {% endif %}
-    {% endfor %}
-{% endblock %}
-
-
 {% block body %}
        
         {% for (type, results) in search_results.items() %}

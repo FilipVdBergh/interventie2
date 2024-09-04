@@ -3,10 +3,12 @@
     --dark-blue: #0f2841;
     --light-blue: #0e9ed5;
     --green: #3b7d23;
-    --highlight: #0f2841;
+    --highlight: #195fa6;
     --mid-grey: #0e9ed5;
-    --light-grey: #f4faff;
+    --object: #f5fbff;
     --alert: red;
+    --button-bg: #176cc2;
+    --button-fg: white;
 }
 
 @keyframes fadeInAnimation {
@@ -58,9 +60,10 @@ ul {
 
 button {
     border: 1px solid var(--mid-grey);
-    background-color: var(--light-grey);
-    min-height: 1.7em;
-    border-radius: 2px;
+    background-color: var(--button-bg);
+    color: var(--button-fg);
+    min-height: 2.2em;
+    border-radius: 5px;
     min-width: 150px;
     
 }
@@ -79,7 +82,7 @@ button {
 
 input[type=submit] {
     border: 1px solid var(--mid-grey);
-    background-color: var(--light-grey);
+    background-color: var(--object);
     height: 1.7rem;
     border-radius: 2px;
     min-width: 150px;
@@ -98,7 +101,7 @@ input {
 }
 
 table {
-    background: var(--light-grey);
+    background: var(--object);
     border-radius: 6px;
     border-collapse: collapse;
     animation: fadeInAnimation ease 0.7s;
@@ -126,7 +129,7 @@ table {
     color: var(--mid-grey);
   }
   tbody tr {
-    border-left: 4px solid var(--light-grey);
+    border-left: 4px solid var(--object);
     transition:all  0.25s ease;
   }
   tbody tr:hover {
@@ -233,7 +236,7 @@ nav {
     }
         .search input {
             border: none;
-            background-color: var(--light-grey);
+            background-color: var(--object);
             border: 1px solid var(--mid-grey);
             border-radius: 6px;
             padding: 5px;
@@ -254,6 +257,7 @@ nav {
         } */
         .tabs button {
             background: inherit;
+            color: black;
             outline: none;
             cursor: pointer;
             padding: 0rem 2rem 0rem 2rem;
@@ -266,7 +270,7 @@ nav {
         }        
         .tabs button:hover {
             border-bottom: solid 2px var(--dark-blue);
-            color: black;
+            
         }       
         .tabs button.active_tab {
             border-bottom: solid 2px var(--dark-blue);
@@ -315,8 +319,7 @@ main {
 }
     aside {
         grid-area: aside;
-        padding: 0rem 3rem 1rem 0;
-        background-color: var(--light-grey);
+        background-color: var(--object);
     }
         aside:empty {
             display: none;
@@ -327,6 +330,9 @@ main {
                 margin-left: 1rem;
             }
         }
+    aside ul {
+        padding: 0;
+    }
     section {
         grid-area: section;
         padding: 0;
@@ -340,7 +346,7 @@ footer {
     border-radius: 0px 0px 6px 6px;
     color: white;
     align-items: center;
-    padding: 1rem 5rem;
+    padding: 0.2rem 5rem;
     font-size: small;
 }
 
@@ -422,7 +428,7 @@ footer {
 }
 
 .login {
-    background-color: var(--light-grey);
+    background-color: var(--object);
     padding: 1rem 3rem 2rem 3rem;
     border-radius: 6px;
     animation: fadeInAnimation ease 0.7s;
@@ -461,7 +467,7 @@ li.selected {
 
 .contents_item {
     padding-left: 1em;
-    border-left: 4px solid var(--light-grey);
+    border-left: 4px solid var(--object);
     /* line-height: 1.7em; */
     margin-bottom: 0.6em;
     list-style-type: none;
@@ -518,7 +524,7 @@ li.selected {
 .card {
     width: 350px;
     height: 325px;
-    background-color: var(--light-grey);
+    background-color: var(--object);
     border-radius: 5px;
     padding: 0.2em 15px 0.2em 15px;
     overflow: hidden;
@@ -626,6 +632,7 @@ li.selected {
     margin:  0 0.5em 0 0.5em;
     border: 1px solid var(--mid-grey);
     white-space: nowrap;
+    text-decoration: none;
 }
     .tag:hover {
         background-color: var(--light-blue);
