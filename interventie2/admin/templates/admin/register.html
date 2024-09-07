@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block steps %}
-    <a href="{{ url_for('admin.index') }}" class="step">Gebruikers</a> 
+    {% if self_register == False %}
+        <a href="{{ url_for('admin.index') }}" class="step">Gebruikers</a> 
+    {% endif %}
 {% endblock %}
 
 {% block page_title %}
@@ -20,10 +22,12 @@
                 <td>{{ form.password.label }}</td>
                 <td>{{ form.password }} {{ form.password_match }}</td>
             </tr>
-            <tr>
-                <td>{{ form.role.label }}</td>
-                <td>{{ form.role }}</td>
-            </tr>
+            {% if self_register == False %}
+                <tr>
+                    <td>{{ form.role.label }}</td>
+                    <td>{{ form.role }}</td>
+                </tr>
+            {% endif %}
             <tr>
                 <td>{{ form.email.label }}</td>
                 <td>{{ form.email }}</td>

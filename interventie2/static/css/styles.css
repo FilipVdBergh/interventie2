@@ -78,7 +78,7 @@ button {
     color: var(--button-fg);
     min-height: 2.2em;
     border-radius: 3px;
-    min-width: 10rem;
+    min-width: 7rem;
     margin-bottom: 2px;
     
 }
@@ -476,6 +476,13 @@ footer {
         width: 200px;
     }
 
+.register {
+    text-align: center;
+    padding: 1rem;
+    font-size: small;
+    font-weight: bold;
+    color: var(--dark-blue)
+}
 
 
 /* Elements */
@@ -574,15 +581,6 @@ li.selected {
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
-@media only screen and (max-width: 900px) {
-    .card {
-        height: auto;
-        max-height: 200px;
-        width: auto;
-        margin-bottom: 0.7em;
-    
-    }
-}
     .card.new {
         border: 1px dashed var(--mid-grey);
     }
@@ -615,7 +613,20 @@ li.selected {
     .card_area a {
         text-decoration: none;
     }
+@media only screen and (max-width: 900px) {
+    /* .card_description {
+        visibility: hidden;
+        height: 0;
+    } */
+    .card {
+        height: auto;
+        max-height: 200px;
+        width: auto;
+        margin-bottom: 0.7em;
+    
+    }
 
+}
 
 /* Messages */
 .message {

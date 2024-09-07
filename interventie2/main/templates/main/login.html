@@ -9,9 +9,14 @@
             {{ form.csrf_token }}
             {{ form.name }}<br>
             {{ form.password }}<br>
-            {{ form.submit }}
-                
+            {{ form.submit }} 
         </form>
+
+        {% if config['ALLOW_SELF_REGISTER'] %}
+            <div class="register">
+                <a href="{{ url_for('admin.self_register') }}">Maak een account aan</a>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

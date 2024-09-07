@@ -108,7 +108,34 @@ def register():
                 sender = None
             )
         return redirect(url_for('admin.index'))
-    return render_template('admin/register.html', form=form)
+    return render_template('admin/register.html', form=form, self_register=False)
+
+@admin.route('/new', methods=['GET', 'POST'])
+def self_register():
+    print(current_app.config['ALLOW_SELF_REGISTER'])
+    if not current_app.config['ALLOW_SELF_REGISTER']:
+        return redirect(url_for('main.index'))
+
+
+    form = RegisterForm()
+    form.role.choices = [(role.id, role.name) for role in Role.query.order_by(Role.id)]
+    if form.validate_on_submit():
+        user = User(name = form.name.data, 
+                    role_id = 4, #User role
+                    email = form.email.data,
+                    description = form.description.data,
+                    link = form.link.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        send_system_message(
+                subject = 'Interventiekeuze',
+                body = 'Deze app ondersteunt toezichthouders bij het maken van een interventieplan. Het maken van een interventieplan gebeurt in een werksessie, waarin alle betrokken toezichthouders samen een selectietool doorlopen. Op basis van de antwoorden presenteert de app een lijst van kansrijke interventies.',
+                recipient = user,
+                sender = None
+            )
+        return redirect(url_for('admin.index'))
+    return render_template('admin/register.html', form=form, self_register=True)
 
 
 @admin.route('/user/<int:user_id>/password', methods=['GET', 'POST'])

@@ -18,7 +18,7 @@
     <div class="text_area">
         {% if current_user.role.edit_users %}
             <h1>Nieuwe gebruiker</h1>
-            <button><a href="{{ url_for('admin.register') }}">Nieuwe gebruiker maken</button></a>
+            <button><a href="{{ url_for('admin.register') }}">Nieuwe gebruiker maken</a></button>
         {% endif %}
         <h1>Alle gebruikers</h1>
         <table class="sortable">
@@ -37,7 +37,7 @@
                         <td><a href="{{ url_for('admin.roles') }}">{{ user.role.name }}</a></td>
                         <td>{{ user.description | escape | truncate(100) | markdown }}</td>
                         <td>
-                            <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><button>Stuur bericht</button></a>
+                            <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><button>Bericht</button></a>
                             <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><button>Aanpassen</button></a>
                             <button>{{ macro.confirm_redirect( "Verwijderen", user.name+" verwijderen?", url_for('admin.delete_user', user_id=user.id) ) }}</button>
                         </td>
