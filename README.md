@@ -78,7 +78,7 @@ docker build -t interventie2 .
 docker run --name interventie2 --env-file /root/settings.cfg -p 443:443 --network my_network --link mariadb --mount type=bind,source=/etc/letsencrypt/live/<url>>/fullchain.pem,target=/etc/letsencrypt/certificates/fullchain.pem --mount type=bind,source=/etc/letsencrypt/live/<url>/privkey.pem,target=/etc/letsencrypt/certificates/privkey.pem -d interventie2
 ```
 
-## Stappen bij het gebruik van sqlite
+# Stappen bij het gebruik van sqlite
 Als je sqlite wilt gebruiken moet je er voor zorgen dat het databestand op de host servwer staat, zodat de database niet gewist wordt als je de container herstart. Daarvoor kopieren we een bestaande database naar een hogergelegen directoryniveau:
 ```cp interventie2/instande/interventie2.db /root```
 
@@ -116,5 +116,3 @@ cd interventie2
 docker build -t interventie2 .
 docker run --name interventie2 --env-file /root/settings.cfg -p 443:443 --network my_network --link mariadb --mount type=bind,source=/etc/letsencrypt/live/<url>>/fullchain.pem,target=/etc/letsencrypt/certificates/fullchain.pem --mount type=bind,source=/etc/letsencrypt/live/<url>/privkey.pem,target=/etc/letsencrypt/certificates/privkey.pem -d interventie2
 ```
-
-
