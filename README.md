@@ -86,6 +86,7 @@ APP_NAME=interventie2
 ALLOW_DB_INIT=True
 ALLOW_CATALOG_VIEW=False
 ALLOW_CONTACT=False
+ALLOW_SELF_REGISTRATION=True
 MAINTAINER=interventieteam
 MAINTAINER_EMAIL=interventie@afm.nl
 SQLALCHEMY_DATABASE_URI=sqlite:///interventie2.db
