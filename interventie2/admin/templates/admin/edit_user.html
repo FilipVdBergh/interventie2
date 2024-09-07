@@ -12,7 +12,8 @@
 {% block body %}
     <form method="POST">
         {{ form.csrf_token }}
-        <table>
+        {{ form.submit }}
+        <table class="settings">
             <tr>
                 <td>{{ form.name.label }}</td>
                 <td>{{ form.name }}</td>
@@ -40,12 +41,7 @@
                 <td>{{ form.link.label }}</td>
                 <td>{{ form.link }}</td>
             </tr>
-            <tr>
-                <td>{{ form.submit }}</td>
-                <td style="text-align: right;">
-                    {{ macro.confirm_redirect( "Gebruiker verwijderen", user.name+" verwijderen?", url_for('admin.delete_user', user_id=user.id) ) }}
-                </td>
-            </tr>
+
         </table>
         
     </form>

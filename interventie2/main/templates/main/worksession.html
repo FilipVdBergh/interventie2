@@ -19,23 +19,30 @@
 {% block body %}
 
 <div id="ws_main" class="tabcontent text_area">
-        <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button type="button">▷ Start de werksessie</button></a>
-        <a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}"><button type="button">✎ Bewerken</button></a>
+        <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button type="button">Start de werksessie</button></a>
+        <a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}"><button type="button">Bewerken</button></a>
         {% if not worksession.archived %}
             <a href="{{ url_for('main.archive_worksession', worksession_id=worksession.id) }}"><button type="button">Archiveren</button></a>
         {% endif %}
     <h1>Beschrijving</h1>
     {{ worksession.description | escape | markdown }}
+    {% if worksession.description | length == 0 %}
+        (leeg)
+    {% endif %}
     {% if worksession.parent is not none %}
     <h2>Beschrijving afgeleide sessie</h2>
     {{ worksession.child_description }}
     {% endif %}
     <h1>Sessiedatum</h1>
-    {{ worksession.date | escape | markdown }}
-    <h1>Deelnemers</h1>
-    {{ worksession.participants | escape | markdown }}
+    {{ worksession.date.strftime('%d-%m-%Y') }}
+    {% if worksession.description | length > 0 %}
+        <h1>Deelnemers</h1>
+        {{ worksession.participants | escape | markdown }}
+    {% endif %}
+    {% if worksession.effect | length > 0 %}
     <h1>Beoogd effect</h1>
-    {{ worksession.effect | escape | markdown }}
+        {{ worksession.effect | escape | markdown }}
+    {% endif %}
     {% if worksession.link_to_page | length > 0 %}
     <h1>Link naar projectfolder</h1>
     {{ worksession.link_to_page | escape | markdown }}
@@ -47,8 +54,31 @@
     <h1>Samenvatting casus</h1>
     <div>{{ worksession.description | escape | markdown }}</div>
     <div>{{ worksession.effect | escape | markdown }}</div>
-    <h1>Definitieve overwegingen</h1>
-    <div>{{ worksession.conclusion | escape | markdown }}</div>
+    
+    <h1>Antwoorden ({{worksession.completion() | round}}% ingevuld)</h1>
+    <ol>
+        {% for question in worksession.question_set.questions | sort(attribute='order') %}
+            {% if question.is_category %}
+            <li>
+                <h2 class="question_category">{{ question.name }}</h2>
+            </li>
+            {% elif not question.is_category %}
+            <div class="collapsible">{{ question.name }} <i>{% for selection in worksession.answers | selectattr('question', '==', question) | map(attribute='selection') %}{% for selected in selection %}{{ selected.option.name }}{{ "; " if not loop.last}}{% endfor %}{% endfor %}</i>
+
+            </div>
+            <div class="collapsible_content">
+                Factor {{ worksession.answers | selectattr('question','==', question) | map(attribute='weight') | first }}
+                <ul>
+
+
+                        <br>{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') |
+                        first | truncate(75) }}
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </ol>
 
     <h1>Instrumenten</h1>
     <table>
@@ -69,34 +99,6 @@
         {% endif %}
         {% endfor %}
     </table>
-
-    <h1>Antwoorden</h1>
-    <ol>
-        {% for question in worksession.question_set.questions | sort(attribute='order') %}
-
-        {% if question.is_category %}
-        <li>
-            <h2 class="question_category">{{ question.name }}</h2>
-        </li>
-        {% elif not question.is_category %}
-        <div style="font-weight: bold;">{{ question.name }} (Factor {{ worksession.answers | selectattr('question',
-            '==', question) | map(attribute='weight') | first }}):</div>
-        <ul>
-            {% for selection in worksession.answers | selectattr('question', '==', question) |
-            map(attribute='selection') %}
-            <li>
-                {% for selected in selection %}
-                {{ selected.option.name }}{{ "; " if not loop.last else "." }}
-                {% endfor %}
-                {% endfor %}
-
-                <br>{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') |
-                first | truncate(75) }}
-            </li>
-        </ul>
-        {% endif %}
-        {% endfor %}
-    </ol>
 
     <h1>Actieve tags</h1>
     {% for active_tag in advisor.get_active_tags() %}
@@ -157,7 +159,7 @@
             </tr>
             <tr>
                 <td>Status</td>
-                <td>{% if worksession.archived %}Gearchiveerd{% else %}Actief{% endif %}</td>
+                <td>{% if worksession.archived %}Gearchiveerd <a href="{{ url_for('main.archive_worksession', archive=0, worksession_id=worksession.id) }}"> (Maak actief)</a>{% else %}Actief{% endif %}</td>
             </tr>
             <tr>
                 <td>Keuzetool</td>
@@ -197,6 +199,10 @@
 
 <div id="ws_settings" class="tabcontent text_area">
     <div class="text_area">
+        <h1>Sessie verwijderen</h1>
+            <ul>
+            <li>{{ macro.confirm_redirect( "Sessie verwijderen", "Weet je zeker dat je "+worksession.name+" wilt verwijderen?", url_for('main.delete_worksession', worksession_id=worksession.id) ) }}</li>
+            </ul>
         <h1>Sessie delen</h1>
         <p>Om toegangsrechten tot deze sessie te krijgen klikt de nieuwe gebruiker op de link. De link is zeven dagen
             geldig.</p>
@@ -206,12 +212,11 @@
         <button onclick="copy_to_clipboard('link')">Kopieer link</button>
         <ul>
             <li>
-                <a href="{{ url_for('main.reset_secret_key', worksession_id=worksession.id) }}">Trek alle openstaande
-                    uitnodigingen in.</a>
+                <a href="{{ url_for('main.reset_secret_key', worksession_id=worksession.id) }}">Trek alle openstaande uitnodigingen in.</a>
             </li>
         </ul>
         {% if current_user.role.edit_users %}
-        <h1>Gebruikers die de sessie mogen zien</h1>
+        <h2>Gebruikers die de sessie mogen zien</h2>
         <table>
             <tr>
                 <th>Gebruiker</th>
@@ -223,17 +228,11 @@
                     <span class="user"><a href="{{ url_for('admin.user', id=user.id) }}">{{ user.name }}</a></span>
                 </td>
                 <td>
-                    <a
-                        href="{{ url_for('main.stop_share', worksession_id=worksession.id, user_id=user.id) }}"><button>Verwijderen</button></a>
+                    <a href="{{ url_for('main.stop_share', worksession_id=worksession.id, user_id=user.id) }}"><button>Verwijderen</button></a>
                 </td>
             </tr>
             {% endfor %}
-            <!-- <form method="POST">{{ form.csrf_token }}
-                <tr>
-                    <td>{{ form.user(size=10) }}</td>
-                    <td>{{ form.submit }}</td>
-                </tr>
-            </form> -->
+
         </table>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/copy_to_clipboard.js')}}"></script>
         {% endif %}

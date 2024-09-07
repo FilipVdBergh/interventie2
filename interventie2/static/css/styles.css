@@ -116,7 +116,15 @@ input {
     background-color: white;;
     border: 1px solid var(--mid-grey);
     font-size: inherit;
-    height: 1.7rem;
+    min-height: 1.7rem;
+    margin-bottom: 2px;
+}
+
+textarea {
+    border: none;
+    background-color: white;;
+    border: 1px solid var(--mid-grey);
+    font-size: inherit;
     margin-bottom: 2px;
 }
 
@@ -143,7 +151,7 @@ table {
     text-align: left;
   }
   td {
-    padding: 0.65em 1em;
+    padding: 0.15em 1em;
   }
   .disabled td {
     color: var(--mid-grey);
@@ -156,6 +164,9 @@ table {
     border-left: 4px solid var(--light-blue);
   }
   
+  .settings td{
+    padding: 0em 1em;
+  }
 
 /*  Layout */
 body {
@@ -179,7 +190,7 @@ header {
     color: white;
     border-radius: 6px 6px 0px 0px;
     align-items: center;
-    padding: 1rem 5rem;
+    padding: 0.6rem 5rem;
     font-family: "Poppins", sans-serif;
 }
     header a {
@@ -204,17 +215,22 @@ header {
         background: inherit;
         outline: none;
         cursor: pointer;
-        padding: 0;
-        margin: 0 1.5rem 0 0;
+        padding: 0.4rem 0.2rem;
+        margin: 0 0.5rem 0 0;
         border: none;
         border-radius: 0px;
         color: white;
         font-family: "Poppins", sans-serif;
         font-size: smaller;
         min-width: 0;
-    }        
+    }     
+    .modes a{
+        text-decoration: none;
+    }   
     .modes button:hover {
         color: white;
+        background-color: var(--highlight);
+        text-decoration: none;
     }       
 
 
@@ -560,7 +576,6 @@ li.selected {
 }
 @media only screen and (max-width: 900px) {
     .card {
-        /* height: 200px; */
         height: auto;
         max-height: 200px;
         width: auto;
@@ -590,7 +605,7 @@ li.selected {
     }
     .card_owner {
         font-size: x-small;
-        text-transform: uppercase;
+        line-height: 1rem;
     }
     .card_alert {
         font-family: "Poppins", sans-serif;

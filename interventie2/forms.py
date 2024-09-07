@@ -105,7 +105,7 @@ class QuestionSetForm(FlaskForm):
 
 class AddQuestionForm(FlaskForm):
     name               = StringField('Vraag', validators=[DataRequired(), Length(min=2, max=500)], render_kw={'size': 100})
-    submit             = SubmitField('Opslaan')
+    submit             = SubmitField('Vraag opslaan')
 
 
 class QuestionForm(AddQuestionForm):

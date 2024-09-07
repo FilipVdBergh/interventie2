@@ -188,6 +188,20 @@ class Worksession(db.Model):
     plan = relationship('Plan', back_populates='worksession', cascade='all, delete-orphan')
 
 
+    def completion(self, perc=True):
+        """Retrieves the percentage of questions answered. This does not take into account that questions may be hidden at this time."""
+        # This assumes the number of answers is a valid way of counting, and I'm not sure it is.
+        given_answers = 0
+        for a in self.answers:
+            if a.completed():
+                given_answers += 1
+        if perc:
+            return (given_answers/self.question_set.size())*100
+        else:
+            return given_answers
+
+
+
     def is_option_selected(self, option):
         """Use this function to find out if a particular option is checked in this worksession."""
         for answer in self.answers:
@@ -423,6 +437,9 @@ class QuestionSet(db.Model):
     questions = relationship('Question', cascade='all, delete-orphan')
     worksessions = relationship('Worksession', back_populates='question_set', cascade='all, delete-orphan')
 
+    def size(self):
+        return len(self.questions)
+
     def __repr__(self):
         return f'<QuestionSet {self.name}>'
 
@@ -460,6 +477,13 @@ class Answer(db.Model):
     worksession = relationship('Worksession')
     question = relationship('Question')
     selection = relationship('Selection', cascade='all, delete-orphan')
+
+    def completed(self, require_motivation=False):
+        """Returns True if the question is completed"""
+        if require_motivation:
+            return (self.motivation>0) and (len(self.selection) > 0)
+        else:
+            return (len(self.selection) > 0)
 
     def __repr__(self):
         return f'<Answer Worksession {self.worksession}-Question{self.question}>'

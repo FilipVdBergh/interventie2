@@ -88,11 +88,10 @@
         <div class="div_options">
             <ul>
                 {% if user == current_user %}<a href="{{ url_for('main.logout') }}"><li class="option">Uitloggen</li></a>{% endif %}
-                <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><li class="option">Gebruiker aanpassen of verwijderen</li></a>
+                <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><li class="option">Gebruiker aanpassen</li></a>
                 <a href="{{ url_for('admin.change_password', user_id=user.id) }}"><li class="option">Wachtwoord veranderen</li></a>
-                {% if user != current_user %}
-                    <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><li class="option">Stuur {{ user.name }} een bericht</li></a>
-                {% endif %}
+                <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><li class="option">Stuur {{ user.name }} een bericht</li></a>
+                <li>{{ macro.confirm_redirect( "Gebruiker verwijderen", user.name+" verwijderen?", url_for('admin.delete_user', user_id=user.id) ) }}</li>
             </ul>
         </div>
         {% endif %}

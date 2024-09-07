@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block steps %}
-    <a href="{{ url_for('main.index') }}" class="step">Werksessies</a>
     <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">{{ worksession.name }}</a>
 {% endblock %}
 
@@ -12,7 +11,8 @@
 {% block body %}
     <form method="POST">
         {{ form.csrf_token }}
-        <table>
+        {{ form.submit }}
+        <table class="settings">
             <tr>
                 <td colspan="2">
                     <h1>Informatie</h1>
@@ -100,12 +100,6 @@
                 <td>
                     {{ form.presenter_mode_background_color1 }} Boven<br>
                     {{ form.presenter_mode_background_color2 }} Beneden
-                </td>
-            </tr>
-            <tr>
-                <td>{{ form.submit }}</td>
-                <td style="text-align: right;">
-                    {{ macro.confirm_redirect( "Sessie verwijderen", "Weet je zeker dat je "+worksession.name+" wilt verwijderen?", url_for('main.delete_worksession', worksession_id=worksession.id) ) }}
                 </td>
             </tr>
         </table>

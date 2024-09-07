@@ -21,7 +21,7 @@
 {% block body %}
     <form method="POST">
         {{ form.csrf_token }}
-        <table>
+        <table class="settings">
             <tr>
                 <td>{{ form.name.label }}</td>
                 <td>{{ form.name }}</td>

@@ -13,7 +13,8 @@
 {% block body %}
     <form method="POST">
         {{ form.csrf_token }}
-        <table>
+        {{ form.submit }}
+        <table class="settings">
             <tr>
                 <td>{{ form.name.label }}</td>
                 <td>{{ form.name }}</td>
@@ -44,16 +45,6 @@
             <tr>
                 <td></td>
                 <td>{{ form.default_allow_weights }} {{ form.default_allow_weights.label }}</td>
-            </tr>
-            
-            <tr>
-                <td>{{ form.submit }}</td>
-                <td style="text-align: right;">
-                    {% if question_set.id is not none %}
-                        {{ macro.confirm_redirect( "Selectietool verwijderen", question_set.name+" verwijderen? Let op: alle werksessies gebaseerd op deze tool worden ook verwijderd!",  url_for('tools.delete_question_set', question_set_id=question_set.id) ) }}
-                        
-                    {% endif %}
-                </td>
             </tr>
         </table>
     </form>

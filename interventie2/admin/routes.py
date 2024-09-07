@@ -233,14 +233,14 @@ def new_system_message():
     return render_template('admin/new_system_message.html', form=form)
 
 def send_system_message(subject, body, recipient, sender=current_user, deliver_after=datetime.today()):
-    deliver_after_for_db = deliver_after.strftime('%Y-%m-%d %H:%M%z')
+    # deliver_after = deliver_after.strftime('%Y-%m-%d %H:%M%z')
 
     message = Message(subject = subject,
                         body = body,
                         recipient = recipient,
                         system = True,
                         sender = sender,
-                        deliver_after = deliver_after_for_db
+                        deliver_after = deliver_after
                         )
     
     try:
@@ -298,3 +298,10 @@ def delete_message(message_id):
     db.session.delete(message)
     db.session.commit()
     return redirect(url_for('main.index', user_id=current_user.id))
+
+@admin.route('/rollback')
+@login_required
+def rollback():
+    db.session.rollback()
+    db.session.commit()
+    return 'Done.'
