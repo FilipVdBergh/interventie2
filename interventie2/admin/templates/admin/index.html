@@ -8,7 +8,6 @@
     <div class="tab_bar">
         <button class="tablinks" onclick="switch_tab(event, 'adm_users')" id="defaultOpen">Gebruikers</button>
         <button class="tablinks" onclick="switch_tab(event, 'adm_messages')">Berichten</button>
-        <!-- <button class="tablinks" onclick="switch_tab(event, 'adm_options')">Opties</button> -->
     </div>
 {% endblock %}
 
@@ -28,6 +27,7 @@
                     <th>Naam</th>
                     <th>Rol</th>
                     <th>Beschrijving</th>
+                    <th>Acties</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,6 +36,11 @@
                         <td><a href="{{ url_for('admin.user', id=user.id) }}">{{ user.name }}</a></td>
                         <td><a href="{{ url_for('admin.roles') }}">{{ user.role.name }}</a></td>
                         <td>{{ user.description | escape | truncate(100) | markdown }}</td>
+                        <td>
+                            <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><button>Stuur bericht</button></a>
+                            <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><button>Aanpassen</button></a>
+                            <button>{{ macro.confirm_redirect( "Verwijderen", user.name+" verwijderen?", url_for('admin.delete_user', user_id=user.id) ) }}</button>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -69,10 +74,13 @@
                             {% if message.system %}
                                 Systeem
                             {% else %}
-                                {{ message.sender.name }}
+                                <a href="{{ url_for('admin.user', id=message.recipient.id) }}">{{ message.sender.name }}</a>
                             {% endif %}
                         </td>
-                        <td>{{ message.recipient.name }}</td>
+                        <td>
+                            <a href="{{ url_for('admin.user', id=message.recipient.id) }}">{{ message.recipient.name }}</a>
+                        </td>
+
                         <td>{{ message.date_created.strftime('%Y-%m-%d %H:%M')}}</td>
                         <td>
                                 {{ message.deliver_after.strftime('%Y-%m-%d %H:%M') }}

@@ -13,9 +13,12 @@
 {% endblock %}
 
 {% block tabs %}
-    <button class="tablinks" onclick="switch_tab(event, 'us_messages')" id="defaultOpen">Berichten</button>
-    <button class="tablinks" onclick="switch_tab(event, 'us_options')" id="defaultOpen">Opties</button>
-    <button class="tablinks" onclick="switch_tab(event, 'us_info')">Informatie</button>
+    {% if current_user == user %}
+        <button class="tablinks" onclick="switch_tab(event, 'us_messages')" id="defaultOpen">Berichten</button>
+    {% endif %}
+    
+    <button class="tablinks" onclick="switch_tab(event, 'us_info')"  id="defaultOpen">Informatie</button>
+    <button class="tablinks" onclick="switch_tab(event, 'us_options')">Opties</button>
 {% endblock %}
 
 {% block body %}
@@ -54,12 +57,15 @@
 
         <h1>Outbox</h1>
         {% if current_user.messages_sent | count > 0 %}
-                <table>
-                    <tr>
-                        <th>Onderwerp</th>
-                        <th>Ontvanger</th>
-                        <th>Datum</th>
-                    </tr>
+                <table class="sortable">
+                    <thead>
+                        <tr>
+                            <th>Onderwerp</th>
+                            <th>Ontvanger</th>
+                            <th>Datum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     {% for message in current_user.messages_sent %}
                         <tr>
                             <td><a href="{{ url_for('admin.message', message_id=message.id) }}" {% if message.unread %} class="unread"{% endif %}>{{ message.subject }}</a></td>
@@ -70,6 +76,7 @@
                             <td>{{ message.date_created }}</td>
                         </tr>
                     {% endfor %}
+                </tbody>
                 </table>
         {% else %}
             <div class="collapsible_content">Geen berichten</div>
@@ -84,13 +91,12 @@
     <div class="text_area">
 
         {% if user.edit_allowed() %}
-        <h1>Opties</h1>
         <div class="div_options">
             <ul>
                 {% if user == current_user %}<a href="{{ url_for('main.logout') }}"><li class="option">Uitloggen</li></a>{% endif %}
                 <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><li class="option">Gebruiker aanpassen</li></a>
                 <a href="{{ url_for('admin.change_password', user_id=user.id) }}"><li class="option">Wachtwoord veranderen</li></a>
-                <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><li class="option">Stuur {{ user.name }} een bericht</li></a>
+                <!-- <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><li class="option">Stuur {{ user.name }} een bericht</li></a> -->
                 <li>{{ macro.confirm_redirect( "Gebruiker verwijderen", user.name+" verwijderen?", url_for('admin.delete_user', user_id=user.id) ) }}</li>
             </ul>
         </div>
@@ -100,6 +106,9 @@
 
 <div id="us_info" class="tabcontent">
     <div class="text_area">
+        <h1>Beschrijving</h1>
+        <p>{{ user.description }}</p>
+        <h1>Kenmerken</h1>
             <table class="sortable">
                 <thead>
                     <tr>

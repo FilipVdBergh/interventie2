@@ -190,7 +190,7 @@ header {
     color: white;
     border-radius: 6px 6px 0px 0px;
     align-items: center;
-    padding: 0.6rem 5rem;
+    padding: 0.6rem 4.4rem;
     font-family: "Poppins", sans-serif;
 }
     header a {
@@ -215,7 +215,7 @@ header {
         background: inherit;
         outline: none;
         cursor: pointer;
-        padding: 0.4rem 0.2rem;
+        padding: 0.4rem 0.4rem;
         margin: 0 0.5rem 0 0;
         border: none;
         border-radius: 0px;
