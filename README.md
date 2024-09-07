@@ -97,8 +97,10 @@ SQLALCHEMY_DATABASE_URI=sqlite:///interventie2.db
 
 ## Bouw en run de app
 Vervang <url> door je eigen domein.
-```docker build -t interventie2 .
-docker run --name interventie2 --env-file /root/settings.cfg -p 443:443 --network my_network --mount type=bind,source=/root/interventie2.db,target=/app/instance/interventie2.db --mount type=bind,source=/etc/letsencrypt/live/<url>>/fullchain.pem,target=/etc/letsencrypt/certificates/fullchain.pem --mount type=bind,source=/etc/letsencrypt/live/<url>/privkey.pem,target=/etc/letsencrypt/certificates/privkey.pem -d interventie2```
+```
+docker build -t interventie2 .
+docker run --name interventie2 --env-file /root/settings.cfg -p 443:443 --network my_network --mount type=bind,source=/root/interventie2.db,target=/app/instance/interventie2.db --mount type=bind,source=/etc/letsencrypt/live/<url>>/fullchain.pem,target=/etc/letsencrypt/certificates/fullchain.pem --mount type=bind,source=/etc/letsencrypt/live/<url>/privkey.pem,target=/etc/letsencrypt/certificates/privkey.pem -d interventie2
+```
 
 # Eerste gebruik van de app
 Ga naar <url>/admin/initialize. Dit zorgt ervoor dat de gehele database wordt gemaakt.
