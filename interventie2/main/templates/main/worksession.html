@@ -7,8 +7,8 @@
 {% block tabs %}
 <div class="tab_bar">
     <button class="tablinks" onclick="switch_tab(event, 'ws_main')" id="defaultOpen">Informatie</button>
-    <button class="tablinks" onclick="switch_tab(event, 'ws_summary')">Uitkomsten</button>
-    <button class="tablinks" onclick="switch_tab(event, 'ws_plans')">Interventieplannen</button>
+    <button class="tablinks" onclick="switch_tab(event, 'ws_summary')">Uitkomsten ({{ worksession.completion() }})</button>
+    <button class="tablinks" onclick="switch_tab(event, 'ws_plans')">Interventieplannen ({{ worksession.plan | count }})</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_details')">Details</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_settings')">Toegang</button>
 </div>
@@ -55,7 +55,7 @@
     <div>{{ worksession.description | escape | markdown }}</div>
     <div>{{ worksession.effect | escape | markdown }}</div>
     
-    <h1>Antwoorden ({{worksession.completion() | round}}% ingevuld)</h1>
+    <h1>Antwoorden ({{worksession.completion() }} ingevuld)</h1>
     <ol>
         {% for question in worksession.question_set.questions | sort(attribute='order') %}
             {% if question.is_category %}
@@ -67,15 +67,15 @@
 
             </div>
             <div class="collapsible_content">
-                Factor {{ worksession.answers | selectattr('question','==', question) | map(attribute='weight') | first }}
-                <ul>
-
-
-                        <br>{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') |
-                        first | truncate(75) }}
-                    </li>
-                </ul>
+                <div>
+                    Factor {{ worksession.answers | selectattr('question','==', question) | map(attribute='weight') | first }}
+                </div>
+                <div>
+                    {{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first | truncate(75) }}
+                </div>
+                <br>
             </div>
+            
             {% endif %}
         {% endfor %}
     </ol>

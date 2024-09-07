@@ -188,7 +188,7 @@ class Worksession(db.Model):
     plan = relationship('Plan', back_populates='worksession', cascade='all, delete-orphan')
 
 
-    def completion(self, perc=True):
+    def completion(self, perc=False, raw=False, dec=0):
         """Retrieves the percentage of questions answered. This does not take into account that questions may be hidden at this time."""
         # This assumes the number of answers is a valid way of counting, and I'm not sure it is.
         given_answers = 0
@@ -196,9 +196,10 @@ class Worksession(db.Model):
             if a.completed():
                 given_answers += 1
         if perc:
-            return (given_answers/self.question_set.size())*100
-        else:
-            return given_answers
+            return f'{round((given_answers/(1.0*self.question_set.size()))*100,dec)}%'
+        if raw:
+            return given_answers/(1.0*self.question_set.size())
+        return f'{given_answers}/{self.question_set.size()}'
 
 
 
@@ -438,7 +439,11 @@ class QuestionSet(db.Model):
     worksessions = relationship('Worksession', back_populates='question_set', cascade='all, delete-orphan')
 
     def size(self):
-        return len(self.questions)
+        s = 0
+        for question in self.questions:
+            if not question.is_category:
+                s += 1
+        return s
 
     def __repr__(self):
         return f'<QuestionSet {self.name}>'

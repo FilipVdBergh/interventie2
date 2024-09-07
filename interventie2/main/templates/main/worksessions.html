@@ -41,8 +41,13 @@ Werksessies
                                 Datum: {{ worksession.date.strftime('%d-%m-%Y') }}
                             </div>
                             <div class="card_owner">
-                                {{ worksession.question_set.name }}, {{ worksession.completion() | round}}% voltooid
+                                {{ worksession.question_set.name }}, {{ worksession.completion() }} voltooid
                             </div>
+                            {% if worksession.plan | count > 0 %}
+                                <div class="card_owner">
+                                    Interventieplannen: {{ worksession.plan | count }}
+                                </div>
+                            {% endif %}
                             <div class="card_description">
                                 {{ worksession.description | escape | markdown }}
                             </div>
@@ -75,7 +80,7 @@ Werksessies
                                 Datum: {{ worksession.date.strftime('%d-%m-%Y') }}
                             </div>
                             <div class="card_owner">
-                                {{ worksession.question_set.name }}, {{ worksession.completion() | round}}% voltooid
+                                {{ worksession.question_set.name }}, {{ worksession.completion() }} voltooid
                             </div>
                             <div class="card_description">
                                 {{ worksession.description | escape | markdown }}
@@ -98,12 +103,13 @@ Werksessies
             <tr>
                 <th>Werksessie</th>
                 <th>Projectnummer</th>
-                <th>Status</th>
+                <th>Voortgang</th>
                 <th>Interventieplannen</th>
                 <th>Datum</th>
                 <th>Selectietool</th>
                 <!-- <th>Beschrijving</th> -->
                 <th>Eigenaar</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -112,12 +118,13 @@ Werksessies
                 <tr>
                     <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
                     <td>{{ worksession.project_number }}</td>
-                    <td>{{ worksession.completion() | round }}% voltooid{% if worksession.archived == true %}, Gearchiveerd{% endif %}</td>
+                    <td>{{ worksession.completion() }}</td>
                     <td>{{ worksession.plan | count }}</td>
                     <td>{{ worksession.date.strftime('%d-%m-%Y') }}</td>
                     <td>{{ worksession.question_set.name }}</td>
                     <!-- <td>{{ worksession.description | escape | markdown | truncate(500) }}</td> -->
                     <td><a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></td>
+                    <td>{% if worksession.archived == true %}Archief{% endif %}</td>
                 </tr>
                 {% endif %}
             {% endfor %}

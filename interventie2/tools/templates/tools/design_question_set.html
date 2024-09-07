@@ -98,11 +98,12 @@
                 </tr>
             {% endfor %}
             <tr>
+                <td colspan="2"></td>
                 <form method="POST">
                     {{ form.csrf_token }}    
-                    <td colspan="4">{{ form.name }}
-                    {{ form.submit }}</td>
+                    <td colspan="2">{{ form.name }}</td>
                 </form>
+                <td>{{ form.submit }}</td>
             </tr>
         </table>
 
