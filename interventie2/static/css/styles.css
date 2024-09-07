@@ -288,9 +288,7 @@ nav {
         font-size: inherit;
         border-bottom: 1px solid black;
     }
-        /* .tabs:empty {
-            display: none;
-        } */
+
         .tabs button {
             background: inherit;
             color: black;
@@ -310,6 +308,15 @@ nav {
         }       
         .tabs button.active_tab {
             border-bottom: solid 2px var(--dark-blue);
+        }
+        @media only screen and (max-width: 900px) {
+            .tabs {
+                padding-top: 1rem;
+            }
+            .tabs button {
+                padding: 0rem 0.5rem 0rem 0.5rem;
+                margin: 0 0.2rem 0 0;
+            }
         }
 
     .steps {
