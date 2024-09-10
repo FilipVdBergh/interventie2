@@ -496,7 +496,7 @@ footer {
     text-align: center;
     font-size: small;
     font-weight: bold;
-    color: var(--dark-blue)
+    color: var(--alert)
 }
 
 .errors {

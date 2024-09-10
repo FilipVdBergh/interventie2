@@ -12,11 +12,13 @@
             {{ form.submit }} 
         </form>
 
-        <div class="errors">
-            {% for message in get_flashed_messages(category_filter=["login_error"]) %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
+        {% if get_flashed_messages() %}
+            <div class="errors">
+                {% for message in get_flashed_messages(category_filter=["login_error"]) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
 
         {% if config['ALLOW_SELF_REGISTER'] %}
             <div class="register">
