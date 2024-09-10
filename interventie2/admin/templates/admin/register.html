@@ -17,6 +17,7 @@
             <tr>
                 <td>{{ form.name.label }}</td>
                 <td>{{ form.name }}</td>
+
             </tr>
             <tr>
                 <td>{{ form.password.label }}</td>
@@ -43,10 +44,19 @@
                 <td>{{ form.link.label }}</td>
                 <td>{{ form.link }}</td>
             </tr>
-            <tr>
-                <td colspan="2">{{ form.submit }}</td>
-            </tr>
-
         </table>
+
+        <div class="errors">
+            {% for error in form.name.errors %}
+                <span style="color:var(--alert)">{{ error }}</span>
+            {% endfor %}
+            {% for error in form.email.errors %}
+                <span style="color:var(--alert)">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+
+        {{ form.submit }}
     </form>
+    
 {% endblock %}

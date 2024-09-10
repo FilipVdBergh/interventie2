@@ -468,6 +468,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 .login {
@@ -479,11 +480,11 @@ footer {
     animation-fill-mode: forwards;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
-    .login input[type=submit] {
-        width: 200px;
+    .login input {
+        width: 300px;
     }
 
-.register {
+.login .register {
     text-align: center;
     padding: 1rem;
     font-size: small;
@@ -491,6 +492,17 @@ footer {
     color: var(--dark-blue)
 }
 
+.login .errors {
+    text-align: center;
+    font-size: small;
+    font-weight: bold;
+    color: var(--dark-blue)
+}
+
+.errors {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
 
 /* Elements */
 li.mode {
@@ -616,7 +628,6 @@ li.selected {
         line-height: normal;
     }
  
-    }
     .card_alert {
         font-family: "Poppins", sans-serif;
         color: var(--alert);

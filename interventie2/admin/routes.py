@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app, render_template, redirect, url_for, request
+from flask import Blueprint, current_app, render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_required, fresh_login_required
 from interventie2.models import db
 from interventie2.models import User, Role, Process, Message
@@ -112,10 +112,8 @@ def register():
 
 @admin.route('/new', methods=['GET', 'POST'])
 def self_register():
-    print(current_app.config['ALLOW_SELF_REGISTER'])
     if not current_app.config['ALLOW_SELF_REGISTER']:
         return redirect(url_for('main.index'))
-
 
     form = RegisterForm()
     form.role.choices = [(role.id, role.name) for role in Role.query.order_by(Role.id)]
@@ -134,7 +132,7 @@ def self_register():
                 recipient = user,
                 sender = None
             )
-        return redirect(url_for('admin.index'))
+        return redirect(url_for('main.index'))
     return render_template('admin/register.html', form=form, self_register=True)
 
 

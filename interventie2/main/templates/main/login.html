@@ -12,9 +12,15 @@
             {{ form.submit }} 
         </form>
 
+        <div class="errors">
+            {% for message in get_flashed_messages(category_filter=["login_error"]) %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+
         {% if config['ALLOW_SELF_REGISTER'] %}
             <div class="register">
-                <a href="{{ url_for('admin.self_register') }}">Maak een account aan</a>
+                <a href="{{ url_for('admin.self_register') }}">Maak een nieuw account aan</a>
             </div>
         {% endif %}
     </div>
