@@ -41,7 +41,7 @@
 
             {% for question_set in question_sets | sort(attribute="name") %}
                 <a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}">
-                    <div class="card">
+                    <div class="card" style="background-color:{{ question_set.color }}; color:{{ question_set.text_color }}">
                         <div class="card_title">
                             {{ question_set.name }}
                         </div>

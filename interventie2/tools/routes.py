@@ -129,9 +129,16 @@ def import_question_set():
                 date_modified = func.now(),
                 description = question_set_json['description'],
                 default_process_id = question_set_json['default_process'],
-                owner = current_user 
+                owner = current_user
             )
-            
+            try:
+                question_set.color = question_set_json['color']
+            except:
+                question_set.color = "#FFFFFF"
+            try:            
+                question_set.text_color = question_set_json['text_color']
+            except:
+                question_set.text_color = "#000000"
 
             # Import forbidden and mandatory tags...
             if request.form.get('create_tags'):

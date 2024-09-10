@@ -580,6 +580,7 @@ li.selected {
     width: 350px;
     height: 325px;
     background-color: var(--object);
+    color: black;
     border-radius: 5px;
     padding: 0.2em 15px 0.2em 15px;
     overflow: hidden;
@@ -597,20 +598,24 @@ li.selected {
     }
     .card_title {
         font-family: "Poppins", sans-serif;
-        color: black;
         font-weight: bold;
+        padding-bottom: 1rem;
     }
+    
+    .card_info {
+        font-size: smaller;
+        font-weight: bold;
+        line-height: 1rem;
+        padding-bottom: 1rem;
+    }
+
     .card_description {
-        color: var(--mid-grey);
         overflow: hidden;
         scrollbar-width: none;
+        font-size: smaller;
+        line-height: normal;
     }
-    .card_description a:hover {
-        color: black;
-    }
-    .card_owner {
-        font-size: x-small;
-        line-height: 1rem;
+ 
     }
     .card_alert {
         font-family: "Poppins", sans-serif;

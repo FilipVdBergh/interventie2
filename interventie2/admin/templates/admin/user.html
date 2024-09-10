@@ -36,13 +36,15 @@
                         <div class="card_title">
                             {{ message.subject }} {% if message.unread %}(nieuw){% endif %}
                         </div>
-                        <div class="card_owner">Van 
-                            {% if message.system %}
-                                Systeem ({{ message.sender.name }})
-                            {% else %}
-                                {{ message.sender.name }}
-                            {% endif %}
-                             op {{ message.date_created.strftime('%d-%m-%Y') }}.
+                        <div class="card_info">
+                            <p>
+                                {% if message.system %}
+                                    Systeem ({{ message.sender.name }})
+                                {% else %}
+                                    {{ message.sender.name }}
+                                {% endif %}
+                                , {{ message.date_created.strftime('%d-%m-%Y') }}.
+                            </p> 
                         </div>
                         <div class="card_description">
                             {{ message.body | escape | truncate(200) | markdown }}
