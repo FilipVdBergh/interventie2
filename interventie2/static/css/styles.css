@@ -611,14 +611,14 @@ li.selected {
     .card_title {
         font-family: "Poppins", sans-serif;
         font-weight: bold;
-        padding-bottom: 1rem;
+        padding-bottom: 0.4rem;
     }
     
     .card_info {
         font-size: smaller;
         font-weight: bold;
         line-height: 1rem;
-        padding-bottom: 1rem;
+        padding-bottom: 0.4rem;
     }
 
     .card_description {
