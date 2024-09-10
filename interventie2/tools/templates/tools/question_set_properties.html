@@ -2,7 +2,7 @@
 
 
 {% block steps %}
-    <a href="{{ url_for('tools.index') }}" class="step">Selectietool ontwerpen</a>
+    <a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}" class="step">{{ question_set.name }}</a>
 {% endblock %}
 
 {% block page_title %}
@@ -45,6 +45,18 @@
             <tr>
                 <td></td>
                 <td>{{ form.default_allow_weights }} {{ form.default_allow_weights.label }}</td>
+            </tr>
+            <tr>
+                <td>Accentkleur 1</td>
+                <td>
+                    {{ form.text_color }}
+                </td>
+            </tr>
+            <tr>
+                <td>Accentkleur 2</td>
+                <td>
+                    {{ form.color }}
+                </td>
             </tr>
         </table>
     </form>

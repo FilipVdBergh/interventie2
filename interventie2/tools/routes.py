@@ -71,6 +71,8 @@ def edit_question_set(question_set_id=None):
         question_set.default_instruments_visible = form.default_instruments_visible.data
         question_set.default_tags_visible = form.default_tags_visible.data
         question_set.default_allow_weights = form.default_allow_weights.data
+        question_set.color = form.color.data
+        question_set.text_color = form.text_color.data
         if question_set_id is None: # Nieuwe tool
             db.session.add(question_set)
         db.session.commit()
@@ -83,6 +85,8 @@ def edit_question_set(question_set_id=None):
         form.default_instruments_visible.data = question_set.default_instruments_visible
         form.default_tags_visible.data = question_set.default_tags_visible
         form.default_allow_weights.data = question_set.default_allow_weights
+        form.color.data = question_set.color
+        form.text_color.data = question_set.text_color
     return render_template('tools/question_set_properties.html', form=form, question_set=question_set)
 
 
