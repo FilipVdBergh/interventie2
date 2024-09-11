@@ -1,7 +1,7 @@
 from os import environ
 
 class BaseConfig(object):
-	SECRET_KEY = 'REPLACE_THIS_5DAFJ9E1B7GD4XH'
+	SECRET_KEY = environ.get('SECRET_KEY', 'REPLACE_THIS_5DAFJ9E1B7GD4XH')
 	APP_VERSION = '1.0'
 	FILETYPE_VERSION = '1.0'
 	DEBUG = False
