@@ -195,10 +195,11 @@ header {
 }
     header a {
         text-decoration: none;
+        font-family: "Poppins", sans-serif;
     }
     .logo {
         grid-area: logo;
-        font-size: large;
+
     }
     @media only screen and (max-width: 900px) {
         .logo {
@@ -244,7 +245,7 @@ nav {
         "tabs  tabs  ";
 
     align-items: center;
-    margin: 5rem 5rem 1rem 5rem;
+    margin: 3rem 3rem 1rem 5rem;
 
 }
 
@@ -589,8 +590,8 @@ li.selected {
 
 /* Cards */
 .card {
-    width: 320px;
-    height: 300px;
+    width: 300px;
+    height: 280px;
     background-color: var(--object);
     color: black;
     border-radius: 5px;
