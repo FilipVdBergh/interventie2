@@ -14,11 +14,9 @@ Dashboard
                             
                             <div class="card_title">{{ worksession.name }}</div>
                                 {% if worksession.date.strftime('%d-%m-%Y') == today.strftime('%d-%m-%Y') %}
-                                    <div class="card_alert">
-                                        Vandaag
-                                    </div>
+                                    <div class="card_info card_alert">Vandaag</div>
                                 {% else %}
-                                    Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.
+                                <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
                                 {% endif %}
                             <div class="card_description">
                                 {{ worksession.description }}
@@ -38,7 +36,7 @@ Dashboard
                 <div class="card">
                 
                     <div class="card_title">{{ message.subject }}</div>
-                    <div class="card_owner">
+                    <div class="card_info">
                         {% if message.sender.name|length >0 %}
                         Van {{ message.sender.name }} op
                         {% endif %}
