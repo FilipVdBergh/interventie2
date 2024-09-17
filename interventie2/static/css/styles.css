@@ -590,7 +590,7 @@ li.selected {
 
 /* Cards */
 .card {
-    width: 300px;
+    width: 280px;
     height: 280px;
     background-color: var(--object);
     color: black;
