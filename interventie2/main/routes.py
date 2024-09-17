@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, timedelta, timezone
 from flask import Blueprint, render_template, redirect, url_for, send_file, request, flash
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, current_user, login_required
@@ -103,7 +103,7 @@ def new_worksession():
 		worksession.name = form.name.data
 		worksession.project_number = form.project_number.data
 		worksession.link_to_page = form.link_to_page.data
-		worksession.date = form.date.data
+		worksession.date = datetime.combine(form.date.data, datetime.min.time())
 		worksession.participants = form.participants.data
 		worksession.question_set_id = form.question_set.data
 		worksession.creator = current_user
@@ -125,8 +125,10 @@ def new_worksession():
 		worksession.presenter_mode_background_color2 = '#FFFFFF'
 		worksession.allowed_users.append(current_user)
 		worksession.archived = False
+		
 		db.session.add(worksession)
 		db.session.commit()
+			
 		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 	elif request.method == 'GET':
 		pass
@@ -287,7 +289,7 @@ def edit_worksession(worksession_id):
 		worksession.project_number = form.project_number.data
 		worksession.link_to_page = form.link_to_page.data
 		worksession.participants = form.participants.data
-		worksession.date = form.date.data
+		worksession.date = datetime.combine(form.date.data, datetime.min.time())
 		worksession.process_id = form.choice_process.data
 		worksession.description = form.description.data
 		worksession.show_instruments = form.show_instruments.data

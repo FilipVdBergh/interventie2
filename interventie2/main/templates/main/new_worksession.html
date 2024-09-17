@@ -31,7 +31,11 @@
         </tr>
         <tr>
             <td>{{ form.date.label }}</td>
-            <td>{{ form.date }}</td>
+            <td>{{ form.date }}<p class="errors">
+                {% for error in form.date.errors %}
+                    <span style="color:var(--alert)">{{ error }}</span>
+                {% endfor %}
+            </p></td>
         </tr>
         <tr>
             <td>{{ form.participants.label }}</td>
@@ -48,6 +52,8 @@
 
     </table>
 </form>
+
+
 
 
 {% endblock %}
