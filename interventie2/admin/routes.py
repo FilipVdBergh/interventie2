@@ -5,7 +5,7 @@ from interventie2.models import User, Role, Process, Message
 from interventie2.forms import RegisterForm, EditUserForm, ChangePasswordForm, SendSystemMessageForm, SendMessageForm
 from interventie2.analysis.routes import search
 from datetime import datetime, timedelta
-from sqlalchemy.sql import func
+# from sqlalchemy.sql import func
 
 admin = Blueprint('admin', __name__,
                   template_folder='templates',
@@ -258,8 +258,6 @@ def new_system_message():
     return render_template('admin/new_system_message.html', form=form)
 
 def send_system_message(subject, body, recipient, sender=current_user, deliver_after=datetime.today()):
-    # deliver_after = deliver_after.strftime('%Y-%m-%d %H:%M%z')
-
     message = Message(subject = subject,
                         body = body,
                         recipient = recipient,
@@ -290,7 +288,7 @@ def new_message(recipient_id):
                         body = form.body.data,
                         recipient = recipient,
                         system = False,
-                        deliver_after=func.now(),
+                        deliver_after=datetime.today(),
                         sender = current_user)
         try:
             db.session.add(message)

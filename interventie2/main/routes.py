@@ -577,7 +577,7 @@ def conclusion(worksession_id):
 		send_system_message(
 			subject = f'Welke interventies zijn uitgevoerd bij de casus {worksession.name}?',
 			body = f'Laat weten welke interventies zijn uitgevoerd bij de casus {worksession.name}. Open de werksessie en voer een nieuw interventieplan in. Selecteer in het interventieplan de daadwerkelijk uitgevoerde interventies. Op basis van deze gegevens kunnen de selectietool en de instrumenten verder worden ontwikkeld.',
-			deliver_after = date.today() + timedelta(90),
+			deliver_after = datetime.today() + timedelta(90),
 			recipient = current_user,
 			sender = None
 		)
