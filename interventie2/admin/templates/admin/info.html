@@ -12,36 +12,45 @@
 
 {% block body %}
 <h1>Informatie over de app</h1>
-    <table>
-        <tr>
-            <th>Kenmerk</th>
-            <th>Toelichting</th>
-            <th>Waarde</th>
-        </tr>
-        <tr>
-            <td>Applicatieversie</td>
-            <td></td>
-            <td>{{ config['APP_VERSION'] }}</td>
-        </tr>
-        <tr>
-            <td>Bestandsindelingsversie</td>
-            <td>De applicatie kan alleen bestanden (instrumenten, tools) importeren met dezelfde bestandindelingsversie.</td>
-            <td>{{ config['FILETYPE_VERSION'] }}</td>
-        </tr>
+    <table class="sortable">
+        <thead>
+            <tr>
+                <th>Kenmerk</th>
+                <th>Waarde</th>
+                <th>Toelichting</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Applicatieversie</td>
+                <td>{{ config['APP_VERSION'] }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Bestandsindelingsversie</td>
+                <td>{{ config['FILETYPE_VERSION'] }}</td>
+                <td>De applicatie kan alleen bestanden (instrumenten, tools) importeren met dezelfde bestandindelingsversie.</td>
+            </tr>
+        </tbody>
     </table>
 
 
-    <h1>Instellingen van de container</h1>
-    <table>
-        <tr>
-            <th>Omgevingsvariabele</th>
-            <th>Waarde</th>
-        </tr>
-        {% for item in config %}
+
+<h1>Instellingen van de container</h1>
+    <table class="sortable">
+        <thead>
             <tr>
-                <td>{{ item }}</td>
-                <td>{{ config[item] }}</td>
+                <th>Omgevingsvariabele</th>
+                <th>Waarde</th>
             </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+            {% for item in config %}
+                <tr>
+                    <td>{{ item }}</td>
+                    <td>{{ config[item] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 {% endblock %}

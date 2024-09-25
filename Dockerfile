@@ -6,7 +6,7 @@
 FROM python:3.8-slim-buster
 
 # build variables.
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 # install Microsoft SQL Server requirements.
 ENV ACCEPT_EULA=Y

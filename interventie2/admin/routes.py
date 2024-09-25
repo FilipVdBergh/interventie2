@@ -13,6 +13,7 @@ admin = Blueprint('admin', __name__,
                   static_url_path='assets')
 
 
+
 @admin.route('/initialize')
 def initialize():
     """Initializes the database. This function creates the necessary roles and a single admin user called root/root.
@@ -208,6 +209,7 @@ def info():
     try:
         if current_user.role.see_app_info:
             return render_template('admin/info.html')
+        
     except Exception as e:
         return f"Failed to display info: {e}"
     return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten voor deze pagina.')        
@@ -242,16 +244,13 @@ def new_system_message():
     form = SendSystemMessageForm()
 
     if form.validate_on_submit():
-        deliver_after = form.deliver_after.data
-
-
         for user in User.query.order_by(User.name):
             send_system_message(
                 subject = form.subject.data,
                 body = form.body.data,
                 recipient = user,
                 sender = current_user,
-                deliver_after = deliver_after
+                deliver_after = datetime.combine(form.deliver_after.data, datetime.min.time())
             )
         return redirect(url_for('admin.user', id=current_user.id))
 
@@ -266,12 +265,8 @@ def send_system_message(subject, body, recipient, sender=current_user, deliver_a
                         deliver_after = deliver_after
                         )
     
-    try:
-        db.session.add(message)
-        db.session.commit()
-    except Exception as e:
-        return f"Failed to send message: {e}"
-
+    db.session.add(message)
+    db.session.commit()
 
 
 @admin.route('/new_message/<int:recipient_id>', methods=['GET', 'POST'])
@@ -290,13 +285,10 @@ def new_message(recipient_id):
                         system = False,
                         deliver_after=datetime.today(),
                         sender = current_user)
-        try:
-            db.session.add(message)
-            db.session.commit()
-        except Exception as e:
-            return f'Failed to send message: {e}'
-        return redirect(url_for('admin.user', user_id=recipient_id))
 
+        db.session.add(message)
+        db.session.commit()
+        return redirect(url_for('admin.user', user_id=recipient_id))
     return render_template('admin/new_message.html', form=form, recipient=recipient)
 
 
