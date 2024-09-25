@@ -55,7 +55,7 @@ h1 {
 h2 {
     font-size: large;
 }
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 845px) {
     h1 {
         font-size: large;
     }
@@ -201,7 +201,7 @@ header {
         grid-area: logo;
 
     }
-    @media only screen and (max-width: 900px) {
+    @media only screen and (max-width: 845px) {
         .logo {
             display:none;
         }
@@ -258,7 +258,7 @@ nav {
         padding: 0 0 1rem 0;
         line-height: 1em;
     }
-    @media only screen and (max-width: 900px) {
+    @media only screen and (max-width: 845px) {
         .title {
             font-size: x-large;
         }
@@ -310,7 +310,7 @@ nav {
         .tabs button.active_tab {
             border-bottom: solid 2px var(--dark-blue);
         }
-        @media only screen and (max-width: 900px) {
+        @media only screen and (max-width: 845px) {
             .tabs {
                 padding-top: 1rem;
             }
@@ -368,7 +368,7 @@ main {
         aside:empty {
             display: none;
         }
-        @media only screen and (max-width: 900px) {
+        @media only screen and (max-width: 845px) {
             aside {
                 border-top: 1px solid var(--mid-grey);
                 margin-left: 1rem;
@@ -396,7 +396,7 @@ footer {
 
 /* Phone changes  */
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 845px) {
     main {
         grid-area: main;
         display: grid;
@@ -407,7 +407,7 @@ footer {
         padding: 0.5rem 0 0 0;
     }
 }
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 845px) {
     header {
         grid-area: header;
         display: grid;
@@ -418,7 +418,7 @@ footer {
         padding: 0.5rem 0.5rem;
     }
 }
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 845px) {
     nav {
         grid-area: nav;
         display: grid;
@@ -443,7 +443,7 @@ footer {
     gap: 1rem;
     padding-bottom: 2rem;    
 }
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 845px) {
     .card_area {
         flex-direction: column;
         flex-grow: 1;
@@ -458,7 +458,7 @@ footer {
     background-color: white;
     border-radius: 3px;
 }
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 845px) {
     .text_area {
         width: 90%;
 
@@ -637,7 +637,7 @@ li.selected {
     .card_area a {
         text-decoration: none;
     }
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 845px) {
     /* .card_description {
         visibility: hidden;
         height: 0;
