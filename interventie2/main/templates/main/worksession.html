@@ -21,9 +21,6 @@
 <div id="ws_main" class="tabcontent text_area">
         <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button type="button">Start de werksessie</button></a>
         <a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}"><button type="button">Bewerken</button></a>
-        {% if not worksession.archived %}
-            <a href="{{ url_for('main.archive_worksession', worksession_id=worksession.id) }}"><button type="button">Archiveren</button></a>
-        {% endif %}
     <h1>Beschrijving</h1>
     {{ worksession.description | escape | markdown }}
     {% if worksession.description | length == 0 %}
@@ -63,17 +60,16 @@
                 <h2 class="question_category">{{ question.name }}</h2>
             </li>
             {% elif not question.is_category %}
-            <div class="collapsible">{{ question.name }} <i>{% for selection in worksession.answers | selectattr('question', '==', question) | map(attribute='selection') %}{% for selected in selection %}{{ selected.option.name }}{{ "; " if not loop.last}}{% endfor %}{% endfor %}</i>
+            <div class="collapsible">{{ question.name }} <span class="selected_options">{% for selection in worksession.answers | selectattr('question', '==', question) | map(attribute='selection') %}{% for selected in selection %}{{ selected.option.name }}{{ "; " if not loop.last}}{% endfor %}{% endfor %}</span>
 
             </div>
-            <div class="collapsible_content">
-                <div>
+            <div class="collapsible_content answer_summary">
+                <div class="factor">
                     Factor {{ worksession.answers | selectattr('question','==', question) | map(attribute='weight') | first }}
                 </div>
-                <div>
+                <div class="motivation">
                     {{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first | truncate(75) }}
                 </div>
-                <br>
             </div>
             
             {% endif %}
@@ -81,23 +77,27 @@
     </ol>
 
     <h1>Instrumenten</h1>
-    <table>
-        <tr>
-            <th>Instrument</th>
-            <th></th>
-            <th>Score</th>
-        </tr>
-        {% for (instrument, score) in advisor.get_sorted_instruments() %}
-        {% if score > 0 %}
-        <tr>
-            <td><a
-                    href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{
-                    instrument.name }}</a></td>
-            <td>{{ instrument.introduction | truncate(250) | escape | markdown }}</td>
-            <td>{{ score | round(2) }}</td>
-        </tr>
-        {% endif %}
-        {% endfor %}
+    <table class="sortable">
+        <thead>
+            <tr>
+                <th>Instrument</th>
+                <th>Beschrijving</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for (instrument, score) in advisor.get_sorted_instruments() %}
+            {% if score > 0 %}
+            <tr>
+                <td><a
+                        href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{
+                        instrument.name }}</a></td>
+                <td>{{ instrument.introduction | truncate(150) | escape | markdown }}</td>
+                <td>{{ score | round(2) }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
     </table>
 
     <h1>Actieve tags</h1>
@@ -199,8 +199,15 @@
 
 <div id="ws_settings" class="tabcontent text_area">
     <div class="text_area">
-        <h1>Sessie verwijderen</h1>
+        <h1>Sessie archiveren of verwijderen</h1>
             <ul>
+                <li>
+                    {% if not worksession.archived %}
+                        <a href="{{ url_for('main.archive_worksession', worksession_id=worksession.id) }}">Sessie is actief - Nu archiveren</a>
+                    {% else %}
+                        <a href="{{ url_for('main.archive_worksession', worksession_id=worksession.id, archive=0) }}">Sessie is gearchiveerd - Maak actief</a>
+                    {% endif %} 
+                </li>
             <li>{{ macro.confirm_redirect( "Sessie verwijderen", "Weet je zeker dat je "+worksession.name+" wilt verwijderen?", url_for('main.delete_worksession', worksession_id=worksession.id) ) }}</li>
             </ul>
         <h1>Sessie delen</h1>

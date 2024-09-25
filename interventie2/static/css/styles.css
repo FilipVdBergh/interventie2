@@ -748,6 +748,31 @@ li.selected {
     font-size: large;
 }
 
+.selected_options {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.answer_summary {
+    width: auto;
+}
+
+.factor {
+    padding-left: 2rem;
+    margin-top: 0.5rem;
+    background-color: var(--object);
+    font-size: smaller;
+    font-weight: bold;
+}
+
+.motivation {
+    padding-left: 2rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    background-color: var(--object);
+
+}
+
 .collapsible_content {
     max-height: 0;
     overflow: hidden;
