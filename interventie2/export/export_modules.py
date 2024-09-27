@@ -12,25 +12,25 @@ def add_remarks(document, remarks):
 def add_worksession_info(document, worksession):
     section = document.sections[0]
     footer = section.footer.paragraphs[0]
-    footer.text = f'Verslag {worksession.name} op {worksession.date}.'
+    footer.text = f'Verslag {worksession.name} op {worksession.date.strftime("%d %B %Y")}.'
 
-    document.add_heading('Informatie over de casus', level=1)
+    document.add_heading(worksession.name, level=1)
+    document.add_paragraph(f'Projectnummer {worksession.project_number}')
 
     document.add_heading('Beschrijving', level=2)
     document.add_paragraph(worksession.description)
-    document.add_heading('Beoogd effect', level=2)
+    document.add_heading('Beoogd doel', level=2)
     document.add_paragraph(worksession.effect)
-    document.add_heading('Definitieve overwegingen', level=2)
-    document.add_paragraph(worksession.conclusion)
 
-    if worksession.link_to_page is not None:
-        document.add_heading('Link naar project', level=2)
-        document.add_paragraph(worksession.link_to_page)
+    # if worksession.link_to_page is not None:
+    ## Commented out: who needs a link in a Word document?
+    #     document.add_heading('Link naar project', level=2)
+    #     document.add_paragraph(worksession.link_to_page)
 
     document.add_heading('Informatie over de sessie', level=1)
 
     document.add_heading('Datum', level=2)
-    document.add_paragraph(worksession.date)
+    document.add_paragraph(worksession.date.strftime("%d %B %Y"))
     document.add_heading('Deelnemers', level=2)
     document.add_paragraph(worksession.participants)
 
@@ -60,48 +60,52 @@ def add_answers(document, worksession):
 
 
 def add_suggestions_table(document, suggestions):
-    document.add_heading('Advies op basis van de werksessie', level=1)
+    document.add_heading('Advies op basis van de antwoorden', level=1)
     document.add_paragraph('Deze lijst van suggesties voor interventies is gebaseerd op de antwoorden gekozen in de sessie. In het volgende hoofdstuk staan de instrumenten verder uitgewerkt.')
     
-    table = document.add_table(rows=1, cols=3, style='interventie.afm.nl')
+    table = document.add_table(rows=1, cols=2, style='interventie.afm.nl')
     
     header = table.rows[0].cells
     header[0].text = 'Instrument'
     header[1].text = 'Score'
-    header[1].width = Cm(1.0)
-    header[2].text = 'Omschrijving'
-    header[2].width = Cm(16.5)
+    header[1].width = Cm(3.0)
     for instrument, score in suggestions:
         row = table.add_row().cells
         row[0].text = instrument.name
-        row[1].text = str(score)
-        row[1].width = Cm(1.0)
-        row[2].text = instrument.introduction
-        row[2].width = Cm(16.5)
-
+        row[1].text = str(round(score,1))
+        
 
 def add_instrument(document, instrument, start_level=2):
     document.add_heading(instrument.name, level=start_level)
     document.add_paragraph(instrument.introduction)
-    document.add_heading('Beschrijving', level=start_level+1)
-    document.add_paragraph(instrument.description)
-    document.add_heading('Overwegingen bij gebruik', level=start_level+1)
-    document.add_paragraph(instrument.considerations)
-    document.add_heading('Voorbeelden', level=start_level+1)
-    document.add_paragraph(instrument.examples)
-    document.add_heading('Links', level=3)
-    document.add_paragraph(instrument.links)
-    document.add_heading('Tags', level=3)
-    plustags = document.add_paragraph('Tags met een factor groter dan 1: ')
-    mintags =  document.add_paragraph('Tags met een factor kleiner dan 1: ')
+
+    table = document.add_table(rows=1, cols=2, style='interventie.afm.nl')
+    
+    header = table.rows[0].cells
+
+    row = table.add_row().cells
+    row[0].text = 'Beschrijving'
+    row[1].text = instrument.description
+    
+    row = table.add_row().cells
+    row[0].text = 'Overwegingen bij gebruik'
+    row[1].text = instrument.considerations
+    
+    row = table.add_row().cells
+    row[0].text = 'Voorbeelden'
+    row[1].text = instrument.examples
+
+    row = table.add_row().cells
+    row[0].text = 'Tags'
+    tags = row[1].add_paragraph()
     for tag_assignment in instrument.tags:
         if tag_assignment.multiplier >= 1:
-            plustags.add_run(f'{tag_assignment.tag.name}: {tag_assignment.multiplier}', style='PlusTag')
-            plustags.add_run(' ')
+            tags.add_run(f'{tag_assignment.tag.name}: {tag_assignment.multiplier}', style='PlusTag')
         else:
-            mintags.add_run(f'{tag_assignment.tag.name}: {tag_assignment.multiplier}', style='MinTag')
-            plustags.add_run(' ')
-    
+            tags.add_run(f'{tag_assignment.tag.name}: {tag_assignment.multiplier}', style='MinTag')
+        tags.add_run(' ')
+
+   
 def add_calculation(document, explanation):
     document.add_heading('Berekening', level=3)
     # if explanation.get 'forbidden_tags_found'] is not None:
@@ -110,3 +114,20 @@ def add_calculation(document, explanation):
     #     pass
     # for tag in explanation.tags:
     #     pass
+
+def add_intervention_plans(document, worksession):
+    document.add_heading('Interventieplannen', level=1)
+    for intervention_plan in worksession.plan:
+        document.add_heading(intervention_plan.description, level=2)
+        document.add_paragraph(f'Interventieplan gemaakt op {intervention_plan.date.strftime("%d %B %Y")}.')
+        document.add_paragraph(intervention_plan.conclusion)
+
+
+        table = document.add_table(rows=1, cols=2, style='interventie.afm.nl')
+        header = table.rows[0].cells
+        header[0].text = 'Instrument'
+        header[1].text = 'Omschrijving'
+        for instrument_choice in intervention_plan.instruments:
+            row = table.add_row().cells
+            row[0].text = instrument_choice.instrument.name
+            row[1].text = instrument_choice.instrument.description

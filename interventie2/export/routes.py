@@ -8,7 +8,7 @@ from interventie2.classes import Advisor
 from docx import Document
 from docx.shared import Cm
 import simplejson as json
-from interventie2.export.export_modules import add_title, add_worksession_info, add_remarks, add_worksession_process, add_suggestions_table, add_answers, add_instrument, add_calculation
+from interventie2.export.export_modules import add_title, add_worksession_info, add_remarks, add_worksession_process, add_suggestions_table, add_answers, add_instrument, add_calculation, add_intervention_plans
 from interventie2.classes import Advisor
 
 
@@ -51,15 +51,17 @@ def worksession(worksession_id):
         result.add_page_break()
 
         add_worksession_info(result, worksession)
+
         if form.export_technical_info.data:
             add_worksession_process(result, worksession)
         if len(form.remarks.data) > 0:
             add_remarks(result, form.remarks.data)
         result.add_page_break()
 
-        add_answers(result, worksession)
+        add_intervention_plans(result, worksession)
         result.add_page_break()
 
+        add_answers(result, worksession)
         add_suggestions_table(result, advisor.get_sorted_instruments())
         result.add_page_break()
 
