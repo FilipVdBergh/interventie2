@@ -10,25 +10,13 @@
     <body>
 
 
-        <div class="divtoolbar">
-            <div class="divlogo">
-                <img src="{{ url_for('static', filename='img/logo.png') }}", height="75px">
-            </div>
-            <div class="page_title">
+        <nav>
+            <div class="title">
                 Opmaken van tekstvelden met Markdown
             </div>
-            <div class="divsteps">
-
-            </div>
-        </div>
-
-        <div class="divmain">
-            <div class="divinstrumenten">
-                {% block instrumenten %}   
-                {% endblock %} 
-            </div>
-
-            <div class="divworkarea">
+        </nav>
+    
+        <main>
                 <form method="POST">
                     {{ form.csrf_token }}
                     <table>
@@ -46,8 +34,7 @@
             
                     </table>
                 </form>
-            </div>
-        </div>
+        </main>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/confirm_redirect.js')}}"></script>
     </body>
