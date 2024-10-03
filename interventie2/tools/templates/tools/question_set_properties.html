@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 
 
-{% block steps %}
-    <a href="{{url_for('tools.design_question_set', question_set_id=question_set.id)}}" class="step">{{ question_set.name }}</a>
-{% endblock %}
-
 {% block page_title %}
     Selectietool ontwerpen
 {% endblock %}
