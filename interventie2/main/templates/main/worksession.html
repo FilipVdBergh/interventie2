@@ -6,7 +6,7 @@
 
 {% block tabs %}
 <div class="tab_bar">
-    <button class="tablinks" onclick="switch_tab(event, 'ws_main')" id="defaultOpen">Informatie</button>
+    <button class="tablinks" onclick="switch_tab(event, 'ws_main')" id="defaultOpen">Beschrijving</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_summary')">Uitkomsten ({{ worksession.completion() }})</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_plans')">Interventieplannen ({{ worksession.plan | count }})</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_details')">Details</button>
@@ -20,8 +20,10 @@
 
 <div id="ws_main" class="tabcontent text_area">
         <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button type="button">Start de werksessie</button></a>
-        <a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}"><button type="button">Bewerken</button></a>
-    <h1>Beschrijving</h1>
+        
+    <h1>Beschrijving
+        <a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}"><button type="button">✎</button></a>
+    </h1>
     {{ worksession.description | escape | markdown }}
     {% if worksession.description | length == 0 %}
         (leeg)

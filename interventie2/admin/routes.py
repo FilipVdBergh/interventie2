@@ -257,6 +257,7 @@ def new_system_message():
     return render_template('admin/new_system_message.html', form=form)
 
 def send_system_message(subject, body, recipient, sender=current_user, deliver_after=datetime.today()):
+    
     message = Message(subject = subject,
                         body = body,
                         recipient = recipient,

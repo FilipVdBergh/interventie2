@@ -15,19 +15,13 @@
 {% block body %}
     <div id="tag_info" class="tabcontent">
         <div class="text_area">
-            <div>
-                <a href="{{ url_for('catalog.edit_tag', tag_id=tag.id) }}"><button type="button">✎ Bewerken</button></a>
-            </div>
+            {% if current_user.role.edit_catalog %}
             <ul>
-                <li>
-                    <span class="tag">{{ tag.name }}</span>
-                </li>
-                <li>
-                    id: {{ tag.id }}
-                </li>
+                <li><a href="{{ url_for('catalog.edit_tag', tag_id=tag.id) }}">Tag hernoemen</a></li>
+                <li>{{ macro.confirm_redirect( "Tag verwijderen", "Tag '"+tag.name+"'' verwijderen? Hiermee worden verwijzingen naar deze tag ook verwijderd.",  url_for('catalog.delete_tag', tag_id=tag.id) ) }}</li>
             </ul>
+            {% endif %}
 
-            
         </div>
     </div>
 

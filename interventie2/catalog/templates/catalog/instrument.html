@@ -51,7 +51,7 @@
         {% endif %}
         <div>
             <br>
-            <a href="{{ url_for('catalog.edit_instrument', id=instrument.id) }}"><button type="button">✎ Bewerken</button></a>
+            <a href="{{ url_for('catalog.edit_instrument', id=instrument.id) }}"><button type="button">✎</button></a>
         </div>
     </div>
 </div>
@@ -72,7 +72,7 @@
         </ul>
         <div>
             <br>
-            <a href="{{ url_for('catalog.instrument_tags', id=instrument.id) }}"><button type="button">✎ Bewerken</button></a>
+            <a href="{{ url_for('catalog.instrument_tags', id=instrument.id) }}"><button type="button">✎</button></a>
         </div>
     </div>
 </div>
@@ -107,7 +107,7 @@
                     <td>
                         {% if remark.edit_allowed() %}
                         <a href="{{ url_for('catalog.edit_remark', instrument_id=instrument.id, remark_id=remark.id) }}">
-                            <button type="button">✎ Bewerken</button>
+                            <button type="button">✎</button>
                         </a>
                         {% endif %}
                     </td>

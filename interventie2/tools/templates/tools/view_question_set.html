@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('tools.index') }}" class="step">Selectietools</a>
+{% endblock %}
+
+{% block page_title %}
+    {{ question_set.name }}
+{% endblock %}
+
+
+
+
+{% block tabs %}
+<div class="tab_bar">
+    <button class="tablinks" onclick="switch_tab(event, 'qs_info')" id="defaultOpen">Beschrijving</button>
+    <button class="tablinks" onclick="switch_tab(event, 'qs_details')">Details</button>
+    <button class="tablinks" onclick="switch_tab(event, 'qs_options')">Toegang</button>
+</div>
+{% endblock %}
+
+{% block body %}
+<div id="qs_info" class="tabcontent">
+    <h1>Beschrijving
+        <a href="{{ url_for('tools.edit_question_set', question_set_id=question_set.id) }}"><button type="button">✎</button></a>
+    </h1>
+        <p>{{ question_set.description | escape | markdown }}</p>
+     <h1>Vragen
+        <a href="{{ url_for('tools.design_question_set', question_set_id=question_set.id) }}"><button type="button">✎</button></a>
+    </h1>
+        <ol>
+            {% for question in question_set.questions | sort(attribute='order') %}
+                {% if question.is_category %}
+                    <li>
+                        <h2 class="question_category">{{ question.name }}</h2>
+                    </li>
+                {% elif not question.is_category %}
+                    <div class="collapsible">{{ question.name }}</div>
+                    <div class="collapsible_content answer_summary">
+                        <ul>
+                            
+                            {% for option in question.options %}
+                                <li>{{ option.name }}</li>
+                            {% endfor %}
+                            
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ol>
+
+</div>
+
+<div id="qs_details" class="tabcontent">
+    <table class="sortable">
+        <thead>
+            <th>Kenmerk</th>
+            <th>Waarde</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Eigenaar</td>
+                <td>
+                    <span class="user"><a href="{{ url_for('admin.user', id=question_set.owner.id) }}">{{ question_set.owner.name }}</a></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Proces</td>
+                <td>{{ question_set.default_process.name }}</td>
+            </tr>
+            <tr>
+                <td>Instellingen</td>
+                <td>
+                    {% if question_set.default_instruments_visible %}<span class="property">Instrumenten weergeven</span>{% endif %}
+                    {% if question_set.default_tags_visible %}<span class="property">Tags weergeven</span>{% endif %}
+                    {% if question_set.default_allow_weights %}<span class="property">Gearchiveerd</span>{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Analyse</td>
+                <td>
+                    <a href="{{ url_for('tools.list_worksessions', question_set_id=question_set.id) }}">Werksessies die deze selectietool gebruiken</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h1>Exporteren</h1>
+    <ul>
+        <li><a href="{{ url_for('export.question_set_to_json', question_set_id=question_set.id) }}">Selectietool exporteren naar JSON</a></li>
+    </ul>
+</div>
+
+<div id="qs_options" class="tabcontent">
+    <h1>Selectietool verwijderen</h1>
+        <ul>
+            {% if question_set.id is not none %}
+                <li>{{ macro.confirm_redirect( "Selectietool verwijderen", question_set.name+" verwijderen? Let op: alle werksessies gebaseerd op deze tool worden ook verwijderd!",  url_for('tools.delete_question_set', question_set_id=question_set.id) ) }}</li>
+            {% endif %}
+        </ul>
+
+</div>
+{% endblock %}

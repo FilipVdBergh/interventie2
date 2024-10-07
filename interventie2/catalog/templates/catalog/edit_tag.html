@@ -16,12 +16,10 @@
     <table>
         <tr>
             <td>{{ form.name.label }}</td>
-            <td>{{ form.name }}</td>
-        </tr>
-        <tr>
+            <td>{{ form.name }}</td>`
             <td>{{ form.submit }}</td>
-            <td style="text-align: right;">{% if current_user.role.edit_catalog %}<a href="{{ url_for('catalog.delete_tag', tag_id=tag.id) }}">Tag verwijderen</a>{% endif %}</td>
         </tr>
+        
     </table>
 </form>
 

@@ -76,7 +76,7 @@ def edit_question_set(question_set_id=None):
         if question_set_id is None: # Nieuwe tool
             db.session.add(question_set)
         db.session.commit()
-        return redirect(url_for('tools.design_question_set', question_set_id=question_set.id))
+        return redirect(url_for('tools.view_question_set', question_set_id=question_set.id))
     elif request.method == 'GET' and question_set_id is not None:
         form.name.data = question_set.name
         form.description.data = question_set.description
@@ -194,6 +194,16 @@ def import_question_set():
             db.session.commit()
             return redirect(url_for('tools.design_question_set', question_set_id=question_set.id))
     return render_template('tools/import_question_set.html')
+
+
+@tools.route('/view_question_set/<int:question_set_id>', methods=['GET', 'POST'])
+@login_required
+def view_question_set(question_set_id):
+    if not current_user.role.edit_questionnaire:
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een tool te ontwerpen.')
+    question_set = QuestionSet.query.get(question_set_id)
+    tags = Tag.query.order_by(Tag.name)
+    return render_template('tools/view_question_set.html', question_set=question_set)
 
 
 @tools.route('/design_question_set/<int:question_set_id>', methods=['GET', 'POST'])

@@ -1,110 +1,94 @@
 {% extends 'base.html' %}
 
 {% block steps %}
-    <a href="{{ url_for('tools.index') }}" class="step">Selectietool ontwerpen</a>
+    <a href="{{ url_for('tools.view_question_set', question_set_id=question_set.id) }}" class="step">{{ question_set.name }}</a>
 {% endblock %}
 
 {% block page_title %}
-    {{ question_set.name }}
+    Ontwerpen
 {% endblock %}
 
 
 
 
 {% block tabs %}
-<div class="tab_bar">
-    <button class="tablinks" onclick="switch_tab(event, 'qs_config')" id="defaultOpen">Aanpassen</button>
-    <button class="tablinks" onclick="switch_tab(event, 'qs_options')">Opties</button>
-</div>
+
 {% endblock %}
 
 {% block body %}
-<div id="qs_config" class="tabcontent">
-    <h1>Beschrijving</h1>
-        <p>{{ question_set.description | escape | markdown }}</p>
-        <br>
-        <div>
-            Eigenaar: <span class="user"><a href="{{ url_for('admin.user', id=question_set.owner.id) }}">{{ question_set.owner.name }}</a></span>
-        </div>
-        <div>
-            Kenmerken: 
-            <span class="property">{{ question_set.default_process.name }}</span>
-            {% if question_set.default_instruments_visible %}<span class="property">Instrumenten zichtbaar</span>{% endif %}
-            {% if question_set.default_tags_visible %}<span class="property">Tags zichtbaar</span>{% endif %}
-            {% if question_set.default_allow_weights %}<span class="property">Vraaggewicht standaard toestaan</span>{% endif %}
-        </div>
-
-    <h1>Vragen</h1>
         <table class="settings">
-            <tr>
-                <th colspan="2"></th>
-                <th>Vraag</th>
-                <th>Kenmerken</th>
-                <th>Acties</th>
-            </tr>
-            {% for question in question_set.questions | sort(attribute='order') %}
+            <thead>
                 <tr>
-                    <td>
-                        {% if not loop.first %}
-                            <a href="{{ url_for('tools.question_move', question_set_id=question_set.id, question_id=question.id, dir=1) }}">	
-                                &#8679;
-                            </a>
-                        {% endif %}
-                    </td>
-                
-                    <td>
-                        {% if not loop.last %}
-                            <a href="{{ url_for('tools.question_move', question_set_id=question_set.id, question_id=question.id, dir=0) }}">	
-                                &#8681;
-                            </a>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{{ url_for('tools.edit_question', question_id=question.id) }}">{{ question.name }}</a>
-                    </td>
-                    <td>
-                        {% if question.is_category %}
-                            <span class="property">Alleen label</span>
-                        {% else %}
-                            {% if question.allow_motivation %}
-                            <span class="property">Open vraag</span>
-                            {% endif %}
-                            {% if question.allow_choice %}
-                                {% if question.allow_multiselect %}
-                                    <span class="property">Meerdere keuzes toestaan</span>
-                                {% else %}
-                                    <span class="property">Één keuze toestaan</span>
-                                {% endif %}
-                                <span class="property" title="{% for option in question.options %}{{ option.name }}{% if not loop.last %}&#013;{% endif %}{% endfor %}">{{ question.options | length }} optie(s)</span>
-                                {% if question.allow_weight %}
-                                    <span class="property">Weging per vraag</span>
-                                {% endif %}
-                            {% endif %}
-                        {% endif %}
-                        {% if question.description | length > 0 %}
-                            <span class="property" title="{{ question.description | escape }}">Omschrijving</span>
-                        {% endif %}
-                        {% if question.required_active_tags | length > 0 %}
-                            <span class="property" title="
-                                {% for tag in question.required_active_tags %}{{ tag.name }}{% if not loop.last %}; {% endif %}{% endfor %}">Routering</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if not question.is_category %}
-                            <a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}"><button>Antwoordopties</button></a>
-                        {% endif %}
-                        <a href="{{ url_for('tools.edit_required_tags', question_id=question.id) }}"><button>Routering</button></a>
-                    </td>
+                    <th colspan="2"></th>
+                    <th>Vraag</th>
+                    <th>Kenmerken</th>
+                    <th>Acties</th>
                 </tr>
-            {% endfor %}
-            <tr>
-                <td colspan="2"></td>
-                <form method="POST">
-                    {{ form.csrf_token }}    
-                    <td colspan="2">{{ form.name }}</td>
-                </form>
-                <td>{{ form.submit }}</td>
-            </tr>
+            </thead>
+            <tbody>
+                {% for question in question_set.questions | sort(attribute='order') %}
+                    <tr>
+                        <td>
+                            {% if not loop.first %}
+                                <a href="{{ url_for('tools.question_move', question_set_id=question_set.id, question_id=question.id, dir=1) }}">	
+                                    &#8679;
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if not loop.last %}
+                                <a href="{{ url_for('tools.question_move', question_set_id=question_set.id, question_id=question.id, dir=0) }}">	
+                                    &#8681;
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('tools.edit_question', question_id=question.id) }}">{{ question.name }}</a>
+                        </td>
+                        <td>
+                            {% if question.is_category %}
+                                <span class="property">Alleen label</span>
+                            {% else %}
+                                {% if question.allow_motivation %}
+                                <span class="property">Open vraag</span>
+                                {% endif %}
+                                {% if question.allow_choice %}
+                                    {% if question.allow_multiselect %}
+                                        <span class="property">Meerdere keuzes toestaan</span>
+                                    {% else %}
+                                        <span class="property">Één keuze toestaan</span>
+                                    {% endif %}
+                                    <span class="property" title="{% for option in question.options %}{{ option.name }}{% if not loop.last %}&#013;{% endif %}{% endfor %}">{{ question.options | length }} optie(s)</span>
+                                    {% if question.allow_weight %}
+                                        <span class="property">Weging per vraag</span>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                            {% if question.description | length > 0 %}
+                                <span class="property" title="{{ question.description | escape }}">Omschrijving</span>
+                            {% endif %}
+                            {% if question.required_active_tags | length > 0 %}
+                                <span class="property" title="
+                                    {% for tag in question.required_active_tags %}{{ tag.name }}{% if not loop.last %}; {% endif %}{% endfor %}">Routering</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if not question.is_category %}
+                                <a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}"><button>Antwoordopties</button></a>
+                            {% endif %}
+                            <a href="{{ url_for('tools.edit_required_tags', question_id=question.id) }}"><button>Routering</button></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2"></td>
+                    <form method="POST">
+                        {{ form.csrf_token }}    
+                        <td colspan="2">{{ form.name }}</td>
+                    </form>
+                    <td>{{ form.submit }}</td>
+                </tr>
+            </tbody>
         </table>
 
     <h1>Instrumentenfilters</h1>
@@ -166,19 +150,5 @@
                 instrumenten selecteren.</div>
             {% endif %}
         {% endfor %}
-</div>
 
-
-<div id="qs_options" class="tabcontent">
-    <h1>Opties</h1>
-        <ul>
-            <li><a href="{{ url_for('tools.list_worksessions', question_set_id=question_set.id) }}">Werksessies die deze selectietool gebruiken</a></li>
-            <li><a href="{{ url_for('tools.edit_question_set', question_set_id=question_set.id) }}">Selectietool aanpassen</a></li>
-            <li><a href="{{ url_for('export.question_set_to_json', question_set_id=question_set.id) }}">Selectietool exporteren naar JSON</a></li>
-
-            {% if question_set.id is not none %}
-                <li>{{ macro.confirm_redirect( "Selectietool verwijderen", question_set.name+" verwijderen? Let op: alle werksessies gebaseerd op deze tool worden ook verwijderd!",  url_for('tools.delete_question_set', question_set_id=question_set.id) ) }}</li>
-            {% endif %}
-        </ul>
-</div>
 {% endblock %}
