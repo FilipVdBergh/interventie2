@@ -26,7 +26,7 @@ def search_database(search_text_all, worksessions=True, catalog=True, tools=True
                     if search_text.lower() in item.name.lower():
                         search_results['tag'].append({'name': item.name,
                                     'context': 'Tag bij antwoordopties en instrumenten.',
-                                    'url': url_for('analysis.tag', tag_id=item.id)})
+                                    'url': url_for('tools.tag', tag_id=item.id)})
 
         # Search users
         if users:

@@ -37,7 +37,7 @@ Tags
     <div class="text_area">
         <ul>
         {% for tag in tags %}
-        <li><a href="{{ url_for('analysis.tag', tag_id=tag.id) }}"><span class="tag">{{ tag.name }}</span></a></li>
+        <li><a href="{{ url_for('tools.tag', tag_id=tag.id) }}"><span class="tag">{{ tag.name }}</span></a></li>
         {% endfor %}
         </ul>
 

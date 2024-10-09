@@ -299,50 +299,6 @@ def delete_remark(instrument_id, remark_id):
     
 
 
-@catalog.route('/tags', methods=['GET', 'POST'])
-@login_required
-def tags():
-    if not current_user.role.edit_questionnaire:
-        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
-    form = TagForm()
-    tags = Tag.query.order_by(Tag.name)
-    if form.validate_on_submit():
-        tag = Tag(name = form.name.data)
-        db.session.add(tag)
-        db.session.commit()
-        return redirect(url_for('catalog.tags'))
-    elif request.method == 'GET':
-        pass
-    return render_template('catalog/tags.html', edit_catalog_allowed=current_user.role.edit_catalog, tags=tags, form=form)
-
-
-@catalog.route('/tag/<int:tag_id>/edit', methods=['GET', 'POST'])
-@login_required
-def edit_tag(tag_id):
-    if not current_user.role.edit_questionnaire:
-        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
-    form = TagForm()
-    tag = Tag.query.get(tag_id)
-    if form.validate_on_submit():
-        tag.name = form.name.data
-        db.session.commit()
-        return redirect(url_for('catalog.tags'))
-    elif request.method == 'GET':
-        form.name.data = tag.name
-    return render_template('catalog/edit_tag.html', form=form, tag=tag)
-
-
-@catalog.route('/tag/<int:tag_id>/delete', methods=['GET', 'POST'])
-@login_required
-def delete_tag(tag_id):
-    if not current_user.role.edit_questionnaire: 
-        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
-    tag = Tag.query.get(tag_id)
-    db.session.delete(tag)
-    db.session.commit()
-    return redirect(url_for('catalog.tags'))
-
-
 @catalog.route('/instrument/<int:id>/tags', methods=['GET', 'POST'])
 @login_required
 def instrument_tags(id):
@@ -360,7 +316,7 @@ def instrument_tags(id):
         tag = Tag.query.get(form.tag.data)
         instrument_tag_assignment = InstrumentTagAssignment.query.filter_by(instrument=instrument, tag=tag).first()
         if instrument_tag_assignment:
-            return redirect(url_for('catalog.edit_tag_assignment_to_instrument', instrument_id=id, tag_assignment_id=instrument_tag_assignment.id))
+            return redirect(url_for('tools.edit_tag_assignment_to_instrument', instrument_id=id, tag_assignment_id=instrument_tag_assignment.id))
         else:
             instrument_tag_assignment = InstrumentTagAssignment(instrument = instrument,
                                                                 tag = tag,

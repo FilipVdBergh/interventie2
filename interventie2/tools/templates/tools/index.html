@@ -80,7 +80,7 @@
             <h1>Alle tags</h1>
                 <ul>
                 {% for tag in tags %}
-                <li><span class="tag"><a href="{{ url_for('analysis.tag', tag_id=tag.id) }}">{{ tag.name }}</a></span></li>
+                <li><span class="tag"><a href="{{ url_for('tools.tag', tag_id=tag.id) }}">{{ tag.name }}</a></span></li>
                 {% endfor %}
                 </ul>
         

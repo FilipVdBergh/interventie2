@@ -1,24 +1,14 @@
 {% extends 'base.html' %}
 
-{% block steps %}
-{% endblock %}
 
 {% block page_title %}
-    Zoeken
+    Analyse
 {% endblock %}
 
-{% block instrumenten %}   
-{% endblock %} 
+
 
 
 {% block body %}
-Doorzoek werksessies, instrumenten, selectietools en gebruikers.<br><br>
-
-<form method="POST">
-{{ form.csrf_token }}    
-{{ form.search_text }}{{ form.submit }}
-</form>
-    
 
 
 {% endblock %}

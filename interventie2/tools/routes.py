@@ -2,7 +2,7 @@ import os
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from interventie2.models import User
-from interventie2.models import db, QuestionSet, Process, User, Question, Option, Tag, Worksession
+from interventie2.models import db, QuestionSet, Process, User, Question, Option, Tag, Worksession, InstrumentTagAssignment
 from interventie2.forms import QuestionSetForm, AddQuestionForm, QuestionForm, OptionForm, AddTagToQuestionSet, AddRequiredTagToQuestionForm, TagForm
 from sqlalchemy.sql import func
 import simplejson as json
@@ -25,7 +25,7 @@ def index():
         tag = Tag(name = form.name.data)
         db.session.add(tag)
         db.session.commit()
-        return redirect(url_for('catalog.tags'))
+        return redirect(url_for('tools.tags'))
     elif request.method == 'GET':
         pass
     return render_template('tools/index.html', question_sets=question_sets, edit_catalog_allowed=current_user.role.edit_catalog, tags=tags, form=form)  
@@ -459,3 +459,61 @@ def toggle_tag(option_id, tag_id):
         option.tags.append(tag)
     db.session.commit()
     return redirect(url_for('tools.edit_tag_assignment', option_id=option.id))
+
+
+
+
+@tools.route('/tag/<int:tag_id>')
+@login_required
+def tag(tag_id):
+    if not current_user.role.edit_questionnaire:
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
+   
+    return render_template('tools/tag_info.html', 
+                           edit_catalog_allowed=current_user.role.edit_catalog, 
+                           tag=Tag.query.get(tag_id),
+                           question_sets=QuestionSet.query.order_by(QuestionSet.name),
+                           instrument_tag_assignments=InstrumentTagAssignment.query.order_by(InstrumentTagAssignment.id))
+
+@tools.route('/tags', methods=['GET', 'POST'])
+@login_required
+def tags():
+    if not current_user.role.edit_questionnaire:
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
+    form = TagForm()
+    tags = Tag.query.order_by(Tag.name)
+    if form.validate_on_submit():
+        tag = Tag(name = form.name.data)
+        db.session.add(tag)
+        db.session.commit()
+        return redirect(url_for('tools.tags'))
+    elif request.method == 'GET':
+        pass
+    return render_template('tools/tags.html', edit_catalog_allowed=current_user.role.edit_catalog, tags=tags, form=form)
+
+
+@tools.route('/tag/<int:tag_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_tag(tag_id):
+    if not current_user.role.edit_questionnaire:
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
+    form = TagForm()
+    tag = Tag.query.get(tag_id)
+    if form.validate_on_submit():
+        tag.name = form.name.data
+        db.session.commit()
+        return redirect(url_for('tools.tags'))
+    elif request.method == 'GET':
+        form.name.data = tag.name
+    return render_template('tools/edit_tag.html', form=form, tag=tag)
+
+
+@tools.route('/tag/<int:tag_id>/delete', methods=['GET', 'POST'])
+@login_required
+def delete_tag(tag_id):
+    if not current_user.role.edit_questionnaire: 
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
+    tag = Tag.query.get(tag_id)
+    db.session.delete(tag)
+    db.session.commit()
+    return redirect(url_for('tools.tags'))

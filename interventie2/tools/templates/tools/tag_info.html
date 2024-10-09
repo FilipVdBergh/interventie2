@@ -17,8 +17,8 @@
         <div class="text_area">
             {% if current_user.role.edit_catalog %}
             <ul>
-                <li><a href="{{ url_for('catalog.edit_tag', tag_id=tag.id) }}">Tag hernoemen</a></li>
-                <li>{{ macro.confirm_redirect( "Tag verwijderen", "Tag '"+tag.name+"'' verwijderen? Hiermee worden verwijzingen naar deze tag ook verwijderd.",  url_for('catalog.delete_tag', tag_id=tag.id) ) }}</li>
+                <li><a href="{{ url_for('tools.edit_tag', tag_id=tag.id) }}">Tag hernoemen</a></li>
+                <li>{{ macro.confirm_redirect( "Tag verwijderen", "Tag '"+tag.name+"'' verwijderen? Hiermee worden verwijzingen naar deze tag ook verwijderd.",  url_for('tools.delete_tag', tag_id=tag.id) ) }}</li>
             </ul>
             {% endif %}
 

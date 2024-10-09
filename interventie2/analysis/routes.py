@@ -29,17 +29,11 @@ analysis = Blueprint('analysis', __name__,
 #     return render_template('analysis/index.html', form=form)
 
 
-@analysis.route('/tag/<int:tag_id>')
+
+@analysis.route('/')
 @login_required
-def tag(tag_id):
-    if not current_user.role.edit_questionnaire:
-        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
-   
-    return render_template('analysis/tag.html', 
-                           edit_catalog_allowed=current_user.role.edit_catalog, 
-                           tag=Tag.query.get(tag_id),
-                           question_sets=QuestionSet.query.order_by(QuestionSet.name),
-                           instrument_tag_assignments=InstrumentTagAssignment.query.order_by(InstrumentTagAssignment.id))
+def index():
+    return render_template('analysis/index.html')
 
 @analysis.route('/search')
 @login_required
