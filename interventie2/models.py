@@ -317,6 +317,26 @@ class Instrument(db.Model):
     tags = relationship('InstrumentTagAssignment', back_populates='instrument', cascade='all, delete-orphan')
     remarks = relationship('Remark', back_populates='instrument', cascade='all, delete-orphan')
 
+    @hybrid_property
+    def taglist(self):
+        result = []
+        for tag_assignment in self.tags:
+            result.append(tag_assignment.tag)
+        return result
+    
+    def get_tag_assignment(self, tag):
+        for tag_assignment in self.tags:
+            if tag == tag_assignment.tag:
+                return tag_assignment
+        return None
+
+    def tag_properties(self, tag):
+        for tag_assignment in self.tags:
+            if tag_assignment.tag == tag:
+                return {'weight': tag_assignment.weight,
+                        'multiplier': tag_assignment.multiplier}
+        return None
+
     def __repr__(self):
         return f'<Instrument {self.name}>'
 

@@ -57,6 +57,12 @@
 
     <div id="st_tags" class="tabcontent">
         <div class="text_area">
+            <h1>Analyse</h1>
+            <ul>
+                <li>
+                    <a href="{{ url_for('analysis.instrument_tag_matrix') }}">Tags per instrument</a>
+                </li>
+            </ul>
             <h1>Tag toevoegen</h1>
                 {% if edit_catalog_allowed %}
                 <table>
@@ -77,14 +83,16 @@
                     </tbody>
                 </table>
                 {% endif %}
-            <h1>Alle tags</h1>
-                <ul>
-                {% for tag in tags %}
-                <li><span class="tag"><a href="{{ url_for('tools.tag', tag_id=tag.id) }}">{{ tag.name }}</a></span></li>
-                {% endfor %}
-                </ul>
+                <h1>Alle tags</h1>
+                    <ul>
+                    {% for tag in tags %}
+                    <li><span class="tag"><a href="{{ url_for('tools.tag', tag_id=tag.id) }}">{{ tag.name }}</a></span></li>
+                    {% endfor %}
+                    </ul>
+
         
             </div>
+
         </div>
     </div>
 

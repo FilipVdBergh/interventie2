@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+<title>Analyse</title>
+
+
+{% block page_title %}
+    Instrument-tag analyse
+{% endblock %}
+
+{% block body %}
+    <table class="matrix">
+        <thead>
+            <tr>
+                <th>Instrument</th>
+                {% for tag in tags %}
+                    <th class="rotate"><div><span><a href="{{ url_for('tools.tag', tag_id=tag.id) }}">{{ tag.name }}</a></span></div></th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for instrument in instruments %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }} ({{ instrument.taglist | count }})</a>
+                    </td>
+                    {% for tag in tags %}
+                        {% if tag in  instrument.taglist %}
+                            <td style="text-align: center;background-color:var(--green)">
+                                <span class="tooltip">
+                                    <a href="{{ url_for('catalog.edit_tag_assignment_to_instrument', instrument_id=instrument.id, tag_assignment_id=instrument.get_tag_assignment(tag).id ) }}">
+                                        ✎
+                                    </a>
+                                    <span class="tooltiptext">{{ tag.name }}<br>Factor:{{instrument.tag_properties(tag)['multiplier'] }} - Gewicht:{{instrument.tag_properties(tag)['weight'] }}</span>
+                                </span>
+                                <span class="tooltip">
+                                    <a href="{{ url_for('catalog.quick_remove_tag', instrument_id=instrument.id, tag_id=tag.id) }}">
+                                        ✖
+                                    </a>
+                                    <span class="tooltiptext">{{ tag.name }}<br>verwijderen</span>
+                                </span>
+                            </td>
+                            {% else %}
+                            <td style="text-align: center">
+                                <div class="tooltip">
+                                    <a href="{{ url_for('catalog.quick_add_tag', instrument_id=instrument.id, tag_id=tag.id) }}">+</a>
+                                    <span class="tooltiptext">{{ tag.name }}<br>toevoegen</span>
+                                </div>
+                            </td>
+                        {% endif %}                               
+                        
+                    {% endfor %}
+
+                </tr>
+
+            {% endfor %}
+        </tbody>     
+
+    </table>
+
+{% endblock %}

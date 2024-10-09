@@ -441,12 +441,14 @@ def delete_option(option_id):
     db.session.commit()
     return redirect(url_for('tools.edit_question_options', question_id=option.question_id))
 
+
 @tools.route('/edit_option/<int:option_id>/edit_tags', methods=['GET', 'POST'])
 @login_required
 def edit_tag_assignment(option_id):
     option = Option.query.get(option_id)
     tags = Tag.query.order_by(Tag.name)
     return render_template('tools/edit_tag_assignment.html', option=option, tags=tags)
+
 
 @tools.route('/edit_option/<int:option_id>/toggle_tag/<int:tag_id>', methods=['GET', 'POST'])
 @login_required
@@ -461,8 +463,6 @@ def toggle_tag(option_id, tag_id):
     return redirect(url_for('tools.edit_tag_assignment', option_id=option.id))
 
 
-
-
 @tools.route('/tag/<int:tag_id>')
 @login_required
 def tag(tag_id):
@@ -474,6 +474,7 @@ def tag(tag_id):
                            tag=Tag.query.get(tag_id),
                            question_sets=QuestionSet.query.order_by(QuestionSet.name),
                            instrument_tag_assignments=InstrumentTagAssignment.query.order_by(InstrumentTagAssignment.id))
+
 
 @tools.route('/tags', methods=['GET', 'POST'])
 @login_required

@@ -340,6 +340,46 @@ def remove_tag_from_instrument(instrument_id, tag_assignment_id):
     return redirect(url_for('catalog.instrument_tags', id=instrument_id))
 
 
+@catalog.route('/instrument/<int:instrument_id>/tag/<int:tag_id>/quick_remove_tag', methods=['GET', 'POST'])
+@login_required
+def quick_remove_tag(instrument_id, tag_id):
+    if not current_user.role.edit_catalog: 
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
+    instrument = Instrument.query.get(instrument_id)
+    tag = Tag.query.get(tag_id)
+
+    # tag_assignment = InstrumentTagAssignment.query.filter_by(tag=tag).first()
+    tag_assignment = instrument.get_tag_assignment(tag)
+    if tag_assignment is not None:
+        # print(f'Deleting tag {tag_assignment.tag.name} from {instrument.name}')
+        db.session.delete(tag_assignment)
+        db.session.commit()
+    return redirect(request.referrer)
+
+
+
+@catalog.route('/instrument/<int:instrument_id>/quick_add_tag/<int:tag_id>', methods=['GET', 'POST'])
+@login_required
+def quick_add_tag(instrument_id, tag_id):
+    if not current_user.role.edit_catalog: 
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
+    instrument = Instrument.query.get(instrument_id)
+    tag = Tag.query.get(tag_id)
+
+    tag_assignment = InstrumentTagAssignment(instrument = instrument,
+                                                    tag = tag,
+                                                    weight = 1,
+                                                    multiplier = 1)
+    db.session.add(tag_assignment)
+    db.session.commit()
+
+
+    return redirect(request.referrer)
+    # return redirect(url_for('catalog.edit_tag_assignment_to_instrument', 
+    #                                             instrument_id=instrument.id,
+    #                                             tag_assignment_id=tag_assignment.id))
+
+
 @catalog.route('/instrument/<int:instrument_id>/tag/<int:tag_assignment_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_tag_assignment_to_instrument(instrument_id, tag_assignment_id):
