@@ -814,21 +814,21 @@ li.selected {
 
 th.rotate {
   /* Something you can count on */
-  height: 140px;
-  white-space: nowrap;
+  height: 110px;
+  /* white-space: nowrap; */
 }
 
 th.rotate > div {
   transform: 
     /* Magic Numbers */
-    translate(25px, 51px)
+    translate(15px, 40px)
     /* 45 is really 360 - 45 */
     rotate(315deg);
   width: 3em;
 }
 
 th.rotate > div > span {
-  border-bottom: solid 2px var(--light-blue);
+  /* border-bottom: solid 2px var(--light-blue); */
   /* padding: 5px 10px 10px 10px; */
 }
 

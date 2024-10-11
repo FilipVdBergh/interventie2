@@ -7,12 +7,21 @@
 {% endblock %}
 
 {% block body %}
-    <table class="matrix">
+    <table class="matrix sortable">
         <thead>
             <tr>
-                <th>Instrument</th>
+                <th rowspan="2" style="vertical-align:bottom;">Instrument</th>
+                <th rowspan="2" style="vertical-align:bottom;">#Tags</th>
                 {% for tag in tags %}
-                    <th class="rotate"><div><span><a href="{{ url_for('tools.tag', tag_id=tag.id) }}">{{ tag.name }}</a></span></div></th>
+                    <th class="rotate"><div><span>{{ tag.name }}</span></div></th>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for tag in tags %}
+                    <th>
+                        <a href="{{ url_for('tools.tag', tag_id=tag.id) }}">🛈</a>
+                        {{ macro.confirm_redirect( "☒", "Tag '"+tag.name+"'' verwijderen? Hiermee worden verwijzingen naar deze tag ook verwijderd.",  url_for('tools.delete_tag', tag_id=tag.id) ) }}
+                    </th>
                 {% endfor %}
             </tr>
         </thead>
@@ -21,11 +30,14 @@
             {% for instrument in instruments %}
                 <tr>
                     <td>
-                        <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }} ({{ instrument.taglist | count }})</a>
+                        <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }}</a>
+                    </td>
+                    <td>
+                        {{ instrument.taglist | count }}
                     </td>
                     {% for tag in tags %}
                         {% if tag in  instrument.taglist %}
-                            <td style="text-align: center;background-color:var(--green)">
+                            <td style="text-align: center;background-color:var(--{% if instrument.tag_properties(tag)['multiplier'] > 0 %}green{% else %}red{% endif %})">
                                 <span class="tooltip">
                                     <a href="{{ url_for('catalog.edit_tag_assignment_to_instrument', instrument_id=instrument.id, tag_assignment_id=instrument.get_tag_assignment(tag).id ) }}">
                                         ✎
