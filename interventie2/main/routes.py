@@ -24,13 +24,13 @@ main = Blueprint('main', __name__,
 @main.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-	information = { "past_worksessions":  Worksession.query.filter(Worksession.date < datetime.today()).order_by(Worksession.name).count(),
-					"current_worksessions":  Worksession.query.filter(Worksession.date == datetime.today()).order_by(Worksession.name).count(),
-				    "next_worksessions":  Worksession.query.filter(Worksession.date > datetime.today()).order_by(Worksession.name).count(),
+	information = { "past_worksessions":  Worksession.query.filter(Worksession.date < datetime.today().date()).order_by(Worksession.name).count(),
+					"current_worksessions":  Worksession.query.filter(Worksession.date == datetime.today().date()).order_by(Worksession.name).count(),
+				    "next_worksessions":  Worksession.query.filter(Worksession.date > datetime.today().date()).order_by(Worksession.name).count(),
 					"instruments": Instrument.query.order_by(Instrument.name).count(),
-					"your_past_worksessions":  Worksession.query.filter(Worksession.date < datetime.today()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
-					"your_current_worksessions": Worksession.query.filter(Worksession.date == datetime.today()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
-				    "your_next_worksessions":  Worksession.query.filter(Worksession.date > datetime.today()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
+					"your_past_worksessions":  Worksession.query.filter(Worksession.date < datetime.today().date()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
+					"your_current_worksessions": Worksession.query.filter(Worksession.date == datetime.today().date()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
+				    "your_next_worksessions":  Worksession.query.filter(Worksession.date > datetime.today().date()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
 					"your_instruments": Instrument.query.filter(Instrument.owner == current_user).order_by(Instrument.name).count() }
 
 	next_worksessions = Worksession.query.filter(Worksession.date >= datetime.today().date()).order_by(Worksession.date)
