@@ -9,7 +9,7 @@
 {% block body %}
     <form method="POST">
         {{ form.csrf_token }}
-        {{ form.submit }}
+
         <table class="settings">
             <tr>
                 <td>{{ form.name.label }}</td>
@@ -55,5 +55,6 @@
                 </td>
             </tr>
         </table>
+        {{ form.submit }}
     </form>
 {% endblock %}

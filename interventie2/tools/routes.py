@@ -61,7 +61,7 @@ def edit_question_set(question_set_id=None):
         question_set = QuestionSet(default_process=Process.query.get(1), default_instruments_visible=True, default_tags_visible=True)
         if current_user.role.edit_questionnaire: # Dit is eigenlijk per definitie zo, anders kan je nooit op deze pagina zijn.]
             form.owner.data = current_user.id
-        form.submit.label.text = 'Vragen toevoegen'
+        form.submit.label.text = 'Selectietool toevoegen'
 
     if form.validate_on_submit():
         question_set.name = form.name.data

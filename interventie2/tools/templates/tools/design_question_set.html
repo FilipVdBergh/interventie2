@@ -85,8 +85,9 @@
                     <form method="POST">
                         {{ form.csrf_token }}    
                         <td colspan="2">{{ form.name }}</td>
+                    
+                        <td>{{ form.submit }}</td>
                     </form>
-                    <td>{{ form.submit }}</td>
                 </tr>
             </tbody>
         </table>

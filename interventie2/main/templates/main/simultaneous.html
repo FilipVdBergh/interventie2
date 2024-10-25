@@ -134,10 +134,10 @@
                                         </div>
                                     {% endfor %}
 
-                                    {% if not question.allow_multiselect %}<a style="font-size: smaller;" onclick="return uncheck_radio('option:{{ question.id }}' );"><button type="button">&#10060;</button> Keuze wissen</a>{% endif %}
-                                    
+                                    {% if (question.options | length > 0) and (question.allow_multiselect == False) %}<a style="font-size: smaller;" onclick="return uncheck_radio('option:{{ question.id }}' );"><button type="button">&#10060;</button> Keuze wissen</a>{% endif %}
+
                                     {% if question.allow_motivation %}
-                                        <br>
+                                        
                                         <textarea name="motivation:{{ question.id }}" rows="5" style="width:95%;">{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
                                     {% endif %}
                                     <input type="submit" value="Opslaan">

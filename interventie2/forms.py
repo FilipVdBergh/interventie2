@@ -100,7 +100,7 @@ class QuestionSetForm(FlaskForm):
     default_allow_weights = BooleanField('Sta vragen met weging standaard toe', validators=[], default=False)
     color              = StringField('Achtergrondkleur', widget=ColorInput(), default='#f5fbff')
     text_color         = StringField('Tekstkleur', widget=ColorInput(), default='#000000')
-    submit             = SubmitField('Tool opslaan')
+    submit             = SubmitField('Selectietool opslaan')
 
 
 class AddQuestionForm(FlaskForm):
