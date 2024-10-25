@@ -108,8 +108,10 @@
 
 <div id="us_info" class="tabcontent">
     <div class="text_area">
-        <h1>Beschrijving</h1>
-        <p>{{ user.description }}</p>
+        {% if user.description | length > 0 %}
+            <h1>Beschrijving</h1>
+            <p>{{ user.description }}</p>
+        {% endif %}
         <h1>Kenmerken</h1>
             <table class="sortable">
                 <thead>

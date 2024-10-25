@@ -189,7 +189,6 @@ header {
     grid-template-rows: auto;
     grid-template-areas: "modes logo";
     color: white;
-    border-radius: 6px 6px 0px 0px;
     align-items: center;
     padding: 0.6rem 4.4rem;
     font-family: "Poppins", sans-serif;
@@ -388,7 +387,6 @@ main {
 footer {
     grid-area: footer;
     background-color: black;
-    border-radius: 0px 0px 6px 6px;
     color: white;
     align-items: center;
     padding: 0.2rem 5rem;

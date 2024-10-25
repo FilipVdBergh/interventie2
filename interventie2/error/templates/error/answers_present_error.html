@@ -21,7 +21,7 @@
         {% for worksession in worksessions  %}
             <tr>
                 <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
-                <td>{{ worksession.description | escape | markdown | truncate(500) }}</td>
+                <td>{{ worksession.description | escape | markdown | truncate(200) }}</td>
                 <td><a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></td>
                 <td>{% if worksession.archived %}Gearchiveerd{% else %}Actief{% endif %}</td>
             </tr>
