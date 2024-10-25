@@ -2,7 +2,7 @@ import os
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from interventie2.models import User
-from interventie2.models import db, QuestionSet, Process, User, Question, Option, Tag, Worksession, InstrumentTagAssignment
+from interventie2.models import db, QuestionSet, Process, User, Question, Answer, Option, Tag, Worksession, InstrumentTagAssignment
 from interventie2.forms import QuestionSetForm, AddQuestionForm, QuestionForm, OptionForm, AddTagToQuestionSet, AddRequiredTagToQuestionForm, TagForm
 from sqlalchemy.sql import func
 import simplejson as json
@@ -359,6 +359,11 @@ def delete_question(question_id):
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een tool te ontwerpen.')
     question = Question.query.get(question_id)
     question_set = QuestionSet.query.get(question.question_set.id)
+
+    # Check to see if answers for this question exist. In that case, deletion is not possible
+    answers = Answer.query.filter_by(question=question).all()
+    if len(answers) > 0:
+        return render_template('error/answers_present_error.html', worksessions=question_set.worksessions)
     db.session.delete(question)
     db.session.commit()
     return redirect(url_for('tools.design_question_set', question_set_id=question_set.id))
