@@ -133,9 +133,6 @@ table {
     background: var(--object);
     border-radius: 3px;
     border-collapse: collapse;
-    animation: fadeInAnimation ease 0.7s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
   }
   table a:hover {
     text-decoration: underline;
@@ -473,7 +470,7 @@ footer {
 
 .login {
     background-color: var(--object);
-    padding: 1rem 3rem 2rem 3rem;
+    padding: 2rem 3rem 1rem 3rem;
     border-radius: 5px;
     animation: fadeInAnimation ease 0.7s;
     animation-iteration-count: 1;
@@ -489,7 +486,7 @@ footer {
     padding: 1rem;
     font-size: small;
     font-weight: bold;
-    color: var(--dark-blue)
+    color: black;
 }
 
 .login .errors {

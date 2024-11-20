@@ -14,7 +14,7 @@
 {% block tabs %}
 <div class="tab_bar">
     <button class="tablinks" onclick="switch_tab(event, 'qs_info')" id="defaultOpen">Beschrijving</button>
-    <button class="tablinks" onclick="switch_tab(event, 'qs_details')">Details</button>
+    <button class="tablinks" onclick="switch_tab(event, 'qs_details')">Opties</button>
     <button class="tablinks" onclick="switch_tab(event, 'qs_options')">Toegang</button>
 </div>
 {% endblock %}
@@ -52,6 +52,7 @@
 </div>
 
 <div id="qs_details" class="tabcontent">
+    <h1>Kenmerken</h1>
     <table class="sortable">
         <thead>
             <th>Kenmerk</th>
@@ -76,16 +77,11 @@
                     {% if question_set.default_allow_weights %}<span class="property">Gearchiveerd</span>{% endif %}
                 </td>
             </tr>
-            <tr>
-                <td>Analyse</td>
-                <td>
-                    <a href="{{ url_for('tools.list_worksessions', question_set_id=question_set.id) }}">Werksessies die deze selectietool gebruiken</a>
-                </td>
-            </tr>
         </tbody>
     </table>
-    <h1>Exporteren</h1>
+    <h1>Opties</h1>
     <ul>
+        <li><a href="{{ url_for('tools.list_worksessions', question_set_id=question_set.id) }}">Werksessies die deze selectietool gebruiken</a></li>
         <li><a href="{{ url_for('export.question_set_to_json', question_set_id=question_set.id) }}">Selectietool exporteren naar JSON</a></li>
     </ul>
 </div>
@@ -94,7 +90,7 @@
     <h1>Selectietool verwijderen</h1>
         <ul>
             {% if question_set.id is not none %}
-                <li>{{ macro.confirm_redirect( "Selectietool verwijderen", question_set.name+" verwijderen? Let op: alle werksessies gebaseerd op deze tool worden ook verwijderd!",  url_for('tools.delete_question_set', question_set_id=question_set.id) ) }}</li>
+                <li>{{ macro.confirm_redirect( "Selectietool verwijderen", question_set.name+" verwijderen? Let op: verwijder eerst all werksessies gebaseerd op deze tool.",  url_for('tools.delete_question_set', question_set_id=question_set.id) ) }}</li>
             {% endif %}
         </ul>
 

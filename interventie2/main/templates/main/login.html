@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 
+{% block page_title %}
+    Inloggen
+{% endblock %}
+
 {% block body %}
 <div class="focus_area">
 
     <div class="login">
-        <h1>Inloggen</h1>
         <form method="POST">
             {{ form.csrf_token }}
             {{ form.name }}<br>
@@ -19,12 +22,12 @@
                 {% endfor %}
             </div>
         {% endif %}
-
         {% if config['ALLOW_SELF_REGISTER'] %}
             <div class="register">
                 <a href="{{ url_for('admin.self_register') }}">Maak een nieuw account aan</a>
             </div>
         {% endif %}
     </div>
+    
 </div>
 {% endblock %}
