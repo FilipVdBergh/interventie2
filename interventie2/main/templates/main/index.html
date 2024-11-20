@@ -6,31 +6,63 @@ Dashboard
 
 {% block body %}
     {% if (information["your_next_worksessions"]+information["your_current_worksessions"]) > 0 %}
-        <h1>Geplande werksessies</h1>
-            <div class="card_area">
-                {% for worksession in next_worksessions %}
-                    <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
-                        <div class="card">
-                            
+        <h1>Komende werksessies</h1>
+        <div class="card_row">
+            {% for worksession in next_worksessions %}
+                
+                <div class="card double">
+                    
+                        <div class="card_titlebar">
                             <div class="card_title">{{ worksession.name }}</div>
-                                {% if worksession.date.strftime('%d-%m-%Y') == today.strftime('%d-%m-%Y') %}
-                                    <div class="card_info card_alert">Vandaag</div>
-                                {% else %}
-                                <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
-                                {% endif %}
-                            <div class="card_description">
-                                {{ worksession.description }}
+                            <div class="card_controls">
+                                <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}"><button>✎</button></a>
+                                <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>▶︎</button></a>
                             </div>
-                        
                         </div>
-                    </a>
-                {% endfor %}
-            </div>
+                            {% if worksession.date.strftime('%d-%m-%Y') == today.strftime('%d-%m-%Y') %}
+                                <div class="card_info card_alert">Vandaag</div>
+                            {% else %}
+                            <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
+                            {% endif %}
+                        <div class="card_description">{{ worksession.description }}</div>
+                        <div class="card_info">Deelnemers: {{ worksession.participants }}</div>
+                        <div class="card_info">Selectietool: {{ worksession.question_set.name }}</div>
+                    
+                </div>
+                
+            {% endfor %}
+        </div>
     {% endif %}
+    <h1>Actieve werksessies</h1>
+    <div class="card_row">
+        {% for worksession in worksessions %}
+            <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
+                <div class="card">
+                    
+                
+                    
+                    <div class="card_title">{{ worksession.name }}</div>
+                        {% if worksession.date.strftime('%d-%m-%Y') == today.strftime('%d-%m-%Y') %}
+                            <div class="card_info card_alert">Vandaag</div>
+                        {% else %}
+                        <div class="card_info">Datum {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
+                        
+                        {% endif %}
+                    <div class="card_description">
+                        {{ worksession.description }}
+                    </div>
+
+                  
+            </div>
+        </a>  
+            
+        {% endfor %}
+    </div>
+
 
 {% if current_user.unread_message_alert() %}
     <h1>Nieuwe berichten</h1>
-        <div class="card_area">
+        <div class="card_row">
             {% for message in current_user.unread_messages_list() %}
             <a href="{{ url_for('admin.message', message_id=message.id) }}">
                 <div class="card">

@@ -52,7 +52,7 @@
     <div class="text_area">
         {% if current_user.role.edit_users %}
             <h1>Systeembericht</h1>
-            <button><a href="{{ url_for('admin.new_system_message') }}">Stuur bericht aan alle gebruikers</a></button>
+            <a href="{{ url_for('admin.new_system_message') }}"><button>Stuur bericht aan alle gebruikers</button></a>
         {% endif %}
         <h1>Alle berichten</h1>
         <table class="sortable">

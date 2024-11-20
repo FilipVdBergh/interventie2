@@ -79,7 +79,9 @@ button {
     color: var(--button-fg);
     min-height: 2.2em;
     border-radius: 3px;
-    min-width: 7rem;
+    min-width: 7em;
+    padding-left: 1em;
+    padding-right: 1em;
     margin-bottom: 2px;
     
 }
@@ -92,7 +94,7 @@ button {
         color: white;
     }
 
-    .button.delete {
+    button.delete {
         background-color: var(--highlight);
     }
 
@@ -268,7 +270,7 @@ nav {
     }
         .search input {
             background-color: white;;
-            border: 1px solid var(--mid-grey);
+            border: 1px solid black;
             border-radius: 3px;
             padding: 5px;
             font-size: smaller;
@@ -350,7 +352,7 @@ main {
     grid-area: main;
     padding: 1rem 5rem;
     display: grid;
-    grid-template-columns: min-content 3fr;
+    grid-template-columns: min-content 100%;
     grid-template-areas: 
         "aside section ";
     overflow-y: scroll;
@@ -431,7 +433,6 @@ footer {
 /* Work area (contains cards or text, and sometimes also a contents bar) */
 .card_area {
     display: flex;
-    /* justify-content: space-between; */
     flex-flow: row wrap;
     gap: 1rem;
     padding-bottom: 2rem;    
@@ -444,6 +445,24 @@ footer {
         
     }
 }
+
+.card_row {
+    display: flex;
+    box-sizing: border-box;
+    flex-flow: row;
+    overflow: scroll;
+    gap: 1rem;
+    padding-bottom: 2rem;    
+}
+@media only screen and (max-width: 845px) {
+    .card_row {
+        flex-direction: column;
+        flex-grow: 0;
+        flex-shrink: 0;
+        
+    }
+}
+
 
 .text_area {
     width: 100%;
@@ -585,6 +604,8 @@ li.selected {
 .card {
     width: 280px;
     height: 220px;
+    flex-grow: 0;
+    flex-shrink: 0;
     background-color: var(--object);
     color: black;
     border-radius: 5px;
@@ -598,16 +619,31 @@ li.selected {
     .card.new {
         border: 1px dashed var(--mid-grey);
     }
+    .card.double {
+        width: 420px;
+        height: 330px;
+    }
     .card:hover {
-        overflow-y: scroll;
+        overflow: scroll;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+    .card_titlebar {
+        display:flex;
+        flex-direction: row;
+        width: 100%;
     }
     .card_title {
         font-family: "Poppins", sans-serif;
         font-weight: bold;
+        flex-grow: 1;
         padding-bottom: 0.4rem;
     }
-    
+    .card_controls {
+
+    }
+    .card_controls button {
+        min-width: 2rem;
+    }
     .card_info {
         font-size: smaller;
         font-weight: bold;
@@ -620,6 +656,7 @@ li.selected {
         scrollbar-width: none;
         font-size: smaller;
         line-height: normal;
+        padding-bottom: 0.4rem;
     }
  
     .card_alert {
@@ -627,16 +664,22 @@ li.selected {
         color: var(--alert);
         font-weight: bold;
     }
+
     .card_area a {
         text-decoration: none;
     }
+   
 @media only screen and (max-width: 845px) {
-    /* .card_description {
-        visibility: hidden;
-        height: 0;
-    } */
     .card {
+        display: flex;
         height: auto;
+        max-height: 200px;
+        width: auto;
+        /* margin-bottom: 0.2em; */
+    
+    }
+    .card.double {
+        height: 200px;
         max-height: 200px;
         width: auto;
         /* margin-bottom: 0.2em; */

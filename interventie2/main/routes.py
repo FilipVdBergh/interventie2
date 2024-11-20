@@ -34,9 +34,11 @@ def index():
 					"your_instruments": Instrument.query.filter(Instrument.owner == current_user).order_by(Instrument.name).count() }
 
 	next_worksessions = Worksession.query.filter(Worksession.date >= datetime.today().date()).order_by(Worksession.date)
+	worksessions = Worksession.query.filter(Worksession.archived==False).order_by(Worksession.date)
 
 	return render_template('main/index.html', 
 						information=information,
+						worksessions=worksessions,
 						next_worksessions=next_worksessions,
 						today=datetime.today().date())
 
