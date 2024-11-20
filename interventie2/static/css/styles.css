@@ -450,7 +450,8 @@ footer {
     display: flex;
     box-sizing: border-box;
     flex-flow: row;
-    overflow: scroll;
+    overflow-x: auto;
+    overflow-y: hidden;
     gap: 1rem;
     padding-bottom: 2rem;    
 }
