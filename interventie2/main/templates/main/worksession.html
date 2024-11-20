@@ -26,15 +26,15 @@
     </h1>
     {{ worksession.description | escape | markdown }}
     {% if worksession.description | length == 0 %}
-        (leeg)
+        (Nog geen beschrijving beschikbaar)
     {% endif %}
     {% if worksession.parent is not none %}
-    <h2>Beschrijving afgeleide sessie</h2>
-    {{ worksession.child_description }}
+        <h2>Beschrijving afgeleide sessie</h2>
+        {{ worksession.child_description }}
     {% endif %}
     <h1>Sessiedatum</h1>
     {{ worksession.date.strftime('%d-%m-%Y') }}
-    {% if worksession.description | length > 0 %}
+    {% if worksession.participants | length > 0 %}
         <h1>Deelnemers</h1>
         {{ worksession.participants | escape | markdown }}
     {% endif %}
