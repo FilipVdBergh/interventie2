@@ -202,7 +202,6 @@ def view_question_set(question_set_id):
     if not current_user.role.edit_questionnaire:
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een tool te ontwerpen.')
     question_set = QuestionSet.query.get(question_set_id)
-    tags = Tag.query.order_by(Tag.name)
     return render_template('tools/view_question_set.html', question_set=question_set)
 
 

@@ -39,7 +39,7 @@
                     <div class="collapsible_content answer_summary">
                         <ul>
                             
-                            {% for option in question.options %}
+                            {% for option in question.options | sort(attribute='order') %}
                                 <li>{{ option.name }}</li>
                             {% endfor %}
                             
