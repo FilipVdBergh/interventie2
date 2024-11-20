@@ -355,7 +355,7 @@ main {
     grid-template-columns: min-content 100%;
     grid-template-areas: 
         "aside section ";
-    overflow-y: scroll;
+    overflow-y: auto;
 }
     aside {
         grid-area: aside;
@@ -643,7 +643,8 @@ li.selected {
 
     }
     .card_controls button {
-        min-width: 2rem;
+        min-width: 2em;
+        height: 2em;
     }
     .card_info {
         font-size: smaller;
