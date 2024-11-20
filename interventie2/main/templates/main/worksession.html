@@ -218,7 +218,7 @@
         <input type="text"
             value="{{ url_for('main.share_link', worksession_id=worksession.id, invitation_string=invitation_string, _external=True) }}"
             id="link" size="80">
-        <button onclick="copy_to_clipboard('link')">Kopieer link</button>
+        <button onclick="copy_to_clipboard('link')">Selecteer link</button>
         <ul>
             <li>
                 <a href="{{ url_for('main.reset_secret_key', worksession_id=worksession.id) }}">Trek alle openstaande uitnodigingen in.</a>
