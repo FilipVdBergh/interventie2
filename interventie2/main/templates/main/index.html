@@ -36,6 +36,7 @@ Dashboard
     <h1>Actieve werksessies</h1>
     <div class="card_row">
         {% for worksession in worksessions %}
+        {% if current_user == worksession.creator %}
             <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
                 <div class="card">
                     
@@ -52,10 +53,10 @@ Dashboard
                         {{ worksession.description }}
                     </div>
 
-                  
-            </div>
-        </a>  
-            
+                    
+                </div>
+            </a>  
+        {% endif %}  
         {% endfor %}
     </div>
 
