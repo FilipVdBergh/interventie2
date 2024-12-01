@@ -9,7 +9,8 @@
     <button class="tablinks" onclick="switch_tab(event, 'ws_main')" id="defaultOpen">Beschrijving</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_summary')">Uitkomsten ({{ worksession.completion() }})</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_plans')">Interventieplannen ({{ worksession.plan | count }})</button>
-    <button class="tablinks" onclick="switch_tab(event, 'ws_details')">Details</button>
+    <button class="tablinks" onclick="switch_tab(event, 'ws_related')">Gerelateerde sessies</button>
+    <!-- <button class="tablinks" onclick="switch_tab(event, 'ws_details')">Opties</button> -->
     <button class="tablinks" onclick="switch_tab(event, 'ws_settings')">Toegang</button>
 </div>
 {% endblock %}
@@ -109,7 +110,7 @@
     </>
 </div>
 
-<div id="ws_plans" class="tabcontent ">
+<div id="ws_plans" class="tabcontent">
     <div class="card_area">
         <a href="{{ url_for('main.new_plan', worksession_id=worksession.id) }}">
         <div class="card new">
@@ -147,8 +148,56 @@
 
 
 
+<div id="ws_related" class="tabcontent text_area">
+    <h1>Vervolgsessie aanmaken</h1>
+    <div class="card_area">
+        {% for question_set in question_sets %}
+            <a href="{{ url_for('main.new_worksession_from_base', base_session_id=worksession.id, question_set_id=question_set.id) }}">
+                <div class="card new">
+                    <div class="card_title">
+                        Nieuw: {{ question_set.name }}
+                    </div>
+                    <div class="card_description">
+                        {{ question_set.description }}
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    <h1>Sessies met projectnummer {{ worksession.project_number }}</h1>
+    <div class="card_area">
+        {% for rws in related_worksessions %}
+            <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
+                <div class="card">
+                    <div class="card_title">
+                        {% if rws == worksession %}
+                            Deze sessie
+                        {% else %}
+                            {{ rws.name}}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card_info">
+                        <p>Datum: {{ rws.date.strftime('%d-%m-%Y') }}</p>
+                        <p>{{ rws.question_set.name }} ({{ rws.completion() }})</p>
+                   </div>
+                    
+                    <div class="card_description">
+                        {{ rws.description | escape | markdown }}
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
 
 <div id="ws_details" class="tabcontent text_area">
+    <h1>Kenmerken</h1>
     <table class="sortable">
         <thead>
             <th>Kenmerk</th>

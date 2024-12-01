@@ -15,25 +15,25 @@ Dashboard
                         <div class="card_titlebar">
                             <div class="card_title">{{ worksession.name }}</div>
                             <div class="card_controls">
-                                <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}"><button>✎</button></a>
+                                <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}"><button>🛈</button></a>
                                 <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>▶︎</button></a>
                             </div>
                         </div>
-                            {% if worksession.date.strftime('%d-%m-%Y') == today.strftime('%d-%m-%Y') %}
-                                <div class="card_info card_alert">Vandaag</div>
-                            {% else %}
-                            <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
-                            {% endif %}
+                        <div class="card_info">{{ worksession.question_set.name }}</div>
+                        <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
                         <div class="card_description">{{ worksession.description }}</div>
-                        <div class="card_info">Deelnemers: {{ worksession.participants }}</div>
-                        <div class="card_info">Selectietool: {{ worksession.question_set.name }}</div>
+                        {% if worksession.participants | count > 0 %}
+                            <div class="card_info">Deelnemers: {{ worksession.participants }}</div>
+                        {% endif %}
+                        
                     
                 </div>
                 
             {% endfor %}
         </div>
     {% endif %}
-    <h1>Actieve werksessies</h1>
+
+    <!-- <h1>Actieve werksessies</h1>
     <div class="card_row">
         {% for worksession in worksessions %}
         {% if current_user == worksession.creator %}
@@ -58,7 +58,7 @@ Dashboard
             </a>  
         {% endif %}  
         {% endfor %}
-    </div>
+    </div> -->
 
 
 {% if current_user.unread_message_alert() %}

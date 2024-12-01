@@ -35,11 +35,13 @@ def index():
 
 	next_worksessions = Worksession.query.filter(Worksession.date >= datetime.today().date()).order_by(Worksession.date)
 	worksessions = Worksession.query.filter(Worksession.archived==False).order_by(Worksession.date)
+	question_sets =  QuestionSet.query.order_by(QuestionSet.name)
 
 	return render_template('main/index.html', 
 						information=information,
 						worksessions=worksessions,
 						next_worksessions=next_worksessions,
+						question_sets=question_sets,
 						today=datetime.today().date())
 
 
@@ -47,8 +49,11 @@ def index():
 @login_required
 def worksessions():
 	worksessions = Worksession.query.order_by(Worksession.date)
+	question_sets =  QuestionSet.query.order_by(QuestionSet.name)
 
-	return render_template('main/worksessions.html', worksessions=worksessions)
+	return render_template('main/worksessions.html', 
+						worksessions=worksessions,
+						question_sets=question_sets,)
 
 
 @main.route('/login', methods=['GET', 'POST'])
@@ -94,11 +99,15 @@ def markdown_help():
 	return render_template('main/markdown_help.html', form=form, playground_text=playground_text)
 
 
+@main.route('/new_worksession/question_set/<int:question_set_id>', methods=['GET', 'POST'])
 @main.route('/new_worksession', methods=['GET', 'POST'])
 @login_required
-def new_worksession():
+def new_worksession(question_set_id=None):
 	form = NewWorksessionForm()
 	form.question_set.choices = [(question_set.id, question_set.name) for question_set in QuestionSet.query.order_by(QuestionSet.name)]
+	if question_set_id is not None:
+		form.question_set.data = question_set_id
+		form.question_set.hidden = True
 
 	if form.validate_on_submit():
 		worksession = Worksession()
@@ -110,7 +119,7 @@ def new_worksession():
 		worksession.question_set_id = form.question_set.data
 		worksession.creator = current_user
 		worksession.show_instruments = QuestionSet.query.get(worksession.question_set_id).default_instruments_visible
-		worksession.show_tags =  QuestionSet.query.get(worksession.question_set_id).default_instruments_visible
+		worksession.show_tags =  QuestionSet.query.get(worksession.question_set_id).default_tags_visible
 		worksession.process_id = QuestionSet.query.get(worksession.question_set_id).default_process_id
 		worksession.presenter_mode_zoom = 1.00
 		worksession.presenter_mode_color_title = '#FFFFFF'
@@ -131,55 +140,51 @@ def new_worksession():
 		db.session.add(worksession)
 		db.session.commit()
 			
-		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
+		return redirect(url_for('main.edit_worksession', worksession_id=worksession.id))
 	elif request.method == 'GET':
 		pass
 	return render_template('main/new_worksession.html', form=form)
 
 
-@main.route('/clone_worksession/<int:worksession_id>', methods=['GET', 'POST'])
-@login_required
-def clone_worksession(worksession_id):
-	parent_worksession = Worksession.query.get(worksession_id)
 
-	if request.method == "POST":
-		worksession = Worksession()
-		worksession.name = parent_worksession.name
-		worksession.project_number = parent_worksession.project_number.data
-		worksession.participants = parent_worksession.participants
-		worksession.date = parent_worksession.date
-		worksession.description = parent_worksession.description
-		worksession.effect = parent_worksession.effect
-		worksession.conclusion == parent_worksession.conclusion
-		worksession.question_set_id = parent_worksession.question_set_id
-		worksession.creator = current_user
-		worksession.show_instruments = parent_worksession.show_instruments
-		worksession.show_tags =parent_worksession.show_tags
-		worksession.process_id = parent_worksession.process_id
-		worksession.presenter_mode_zoom = parent_worksession.presenter_mode_zoom
-		worksession.presenter_mode_color_title = parent_worksession.presenter_mode_color_title
-		worksession.presenter_mode_text_color_title = parent_worksession.presenter_mode_text_color_title
-		worksession.presenter_mode_color_nav = parent_worksession.presenter_mode_color_nav
-		worksession.presenter_mode_text_color_nav = parent_worksession.presenter_mode_text_color_nav
-		worksession.presenter_mode_text_color_heading = parent_worksession.presenter_mode_text_color_heading 
-		worksession.presenter_mode_text_color = parent_worksession.presenter_mode_text_color
-		worksession.presenter_mode_color_coll = parent_worksession.presenter_mode_color_coll
-		worksession.presenter_mode_text_color_coll = parent_worksession.presenter_mode_text_color_coll
-		worksession.presenter_mode_color_highlight = parent_worksession.presenter_mode_color_highlight
-		worksession.presenter_mode_text_color_highlight =parent_worksession.presenter_mode_text_color_highlight
-		worksession.presenter_mode_background_color1 = parent_worksession.presenter_mode_background_color1
-		worksession.presenter_mode_background_color2 = parent_worksession.presenter_mode_background_color2
-		worksession.allowed_users.append(parent_worksession.creator)
-		worksession.archived = False
-		worksession.parent = Worksession.query.get(worksession_id)
-		worksession.child_description = request.form.getlist('child_description')
+@main.route('/new_worksession/base_session/<int:base_session_id>/question_set/<int:question_set_id>')
+@login_required
+def new_worksession_from_base(question_set_id, base_session_id=None):
+	worksession = Worksession()
+
+	if base_session_id is not None:
+		worksession_base = Worksession.query.get(base_session_id)
+		worksession.name = worksession_base.name
+		worksession.description = worksession_base.description
+		worksession.project_number = worksession_base.project_number
+		worksession.link_to_page = worksession_base.link_to_page
+	worksession.date = datetime.today()
+	worksession.participants = ''
+	worksession.question_set_id = question_set_id
+	worksession.creator = current_user
+	worksession.show_instruments = QuestionSet.query.get(question_set_id).default_instruments_visible
+	worksession.show_tags =  QuestionSet.query.get(question_set_id).default_tags_visible
+	worksession.process_id = QuestionSet.query.get(question_set_id).default_process_id
+	worksession.presenter_mode_zoom = 1.00
+	worksession.presenter_mode_color_title = '#FFFFFF'
+	worksession.presenter_mode_text_color_title ='#000061'
+	worksession.presenter_mode_color_nav = '#091e31'
+	worksession.presenter_mode_text_color_nav ='#d7d7d7'
+	worksession.presenter_mode_text_color_heading = '#000061'
+	worksession.presenter_mode_text_color = '#000000'
+	worksession.presenter_mode_color_coll = '#EEEEEE'
+	worksession.presenter_mode_text_color_coll ='#000000'
+	worksession.presenter_mode_color_highlight = '#65C7FF'
+	worksession.presenter_mode_text_color_highlight ='#000000'
+	worksession.presenter_mode_background_color1 = '#FFFFFF'
+	worksession.presenter_mode_background_color2 = '#FFFFFF'
+	worksession.allowed_users.append(current_user)
+	worksession.archived = False
+	
+	db.session.add(worksession)
+	db.session.commit()
 		
-		db.session.add(worksession)
-		db.session.commit()
-		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
-	elif request.method == "GET":
-		pass
-	return render_template('main/clone_worksession.html', worksession=parent_worksession)
+	return redirect(url_for('main.edit_worksession', worksession_id=worksession.id))
 
 
 @main.route('/worksession/<int:worksession_id>', methods=['GET', 'POST'])
@@ -188,7 +193,9 @@ def show_worksession(worksession_id):
 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 	
+	question_sets =  QuestionSet.query.order_by(QuestionSet.name)
 	worksession = Worksession.query.get(worksession_id)
+	related_worksessions = Worksession.query.filter_by(project_number=worksession.project_number).order_by(Worksession.name)
 	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 	to_be_hashed = f'{date.today()}{worksession.secret_key}'
 	invitation_string = hashlib.sha1(to_be_hashed.encode('utf-8')).hexdigest()
@@ -204,7 +211,9 @@ def show_worksession(worksession_id):
 		pass
 
 	return render_template('main/worksession.html', 
+						question_sets=question_sets,
 						worksession=worksession, 
+						related_worksessions=related_worksessions,
 						advisor=advisor,
 						form=form,
 						invitation_string=invitation_string)
@@ -317,6 +326,7 @@ def edit_worksession(worksession_id):
 		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 	elif request.method == 'GET':
 		form.name.data = worksession.name
+		form.project_number.data = worksession.project_number
 		form.link_to_page.data = worksession.link_to_page
 		form.participants.data = worksession.participants
 		form.date.data = worksession.date

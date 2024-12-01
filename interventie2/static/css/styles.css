@@ -640,7 +640,7 @@ li.selected {
         padding-bottom: 0.4rem;
     }
     .card_controls {
-
+        width:fit-content;
     }
     .card_controls button {
         min-width: 2em;
@@ -648,7 +648,7 @@ li.selected {
     }
     .card_info {
         font-size: smaller;
-        font-weight: bold;
+        /* font-weight: bold; */
         line-height: 1rem;
         padding-bottom: 0.4rem;
     }

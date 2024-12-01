@@ -6,27 +6,15 @@ Werksessies
 
 {% block tabs %}
     <button class="tablinks" onclick="switch_tab(event, 'ws_owned')" id="defaultOpen">Mijn sessies</button>
+    <button class="tablinks" onclick="switch_tab(event, 'ws_new')" id="defaultOpen">Nieuwe sessie</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_shared')">Gedeelde sessies</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_all')">Alle sessies</button>
-
 {% endblock %}
 
 
 {% block body %}
 <div id="ws_owned" class="tabcontent">
     <div class="card_area">
-
-        <a href="{{ url_for('main.new_worksession') }}">
-            <div class="card new">
-                <div class="card_title">
-                    Nieuwe werksessie maken
-                </div>
-                <div class="card_description">
-                    Klik hier om een nieuwe werksessie te maken.
-                </div>
-            </div>
-        </a>
-
         {% for worksession in worksessions | selectattr('parent', 'none') %}
             {% if worksession.archived == false %}
                 {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
@@ -57,6 +45,22 @@ Werksessies
     </div>
 </div>
 
+<div id="ws_new" class="tabcontent">
+    <div class="card_area">
+        {% for question_set in question_sets %}
+            <a href="{{ url_for('main.new_worksession', question_set_id=question_set.id) }}">
+                <div class="card new" style="background-color:{{ question_set.color }}; color:{{ question_set.text_color }}">
+                    <div class="card_title">
+                        {{ question_set.name }}
+                    </div>
+                    <div class="card_description">
+                        {{ question_set.description }}
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</div>
 
 <div id="ws_shared" class="tabcontent">
     <div class="card_area">
