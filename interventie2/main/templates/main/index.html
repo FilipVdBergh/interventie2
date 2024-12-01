@@ -5,33 +5,31 @@ Dashboard
 {% endblock %}
 
 {% block body %}
-    {% if (information["your_next_worksessions"]+information["your_current_worksessions"]) > 0 %}
         <h1>Komende werksessies</h1>
         <div class="card_row">
             {% for worksession in next_worksessions %}
-                
-                <div class="card double">
-                    
-                        <div class="card_titlebar">
-                            <div class="card_title">{{ worksession.name }}</div>
-                            <div class="card_controls">
-                                <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}"><button>🛈</button></a>
-                                <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>▶︎</button></a>
-                            </div>
-                        </div>
-                        <div class="card_info">{{ worksession.question_set.name }}</div>
-                        <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
-                        <div class="card_description">{{ worksession.description }}</div>
-                        {% if worksession.participants | count > 0 %}
-                            <div class="card_info">Deelnemers: {{ worksession.participants }}</div>
-                        {% endif %}
+                {% if current_user in worksession.allowed_users %}
+                    <div class="card double">
                         
-                    
-                </div>
-                
+                            <div class="card_titlebar">
+                                <div class="card_title">{{ worksession.name }}</div>
+                                <div class="card_controls">
+                                    <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}"><button>🛈</button></a>
+                                    <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>▶︎</button></a>
+                                </div>
+                            </div>
+                            <div class="card_info">{{ worksession.question_set.name }}</div>
+                            <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
+                            <div class="card_description">{{ worksession.description }}</div>
+                            {% if worksession.participants | count > 0 %}
+                                <div class="card_info">Deelnemers: {{ worksession.participants }}</div>
+                            {% endif %}
+                            
+                        
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
-    {% endif %}
 
     <!-- <h1>Actieve werksessies</h1>
     <div class="card_row">
