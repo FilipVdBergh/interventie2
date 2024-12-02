@@ -54,7 +54,7 @@ Werksessies
                         {{ question_set.name }}
                     </div>
                     <div class="card_description">
-                        {{ question_set.description }}
+                        {{ question_set.description | escape | markdown }}
                     </div>
                 </div>
             </a>

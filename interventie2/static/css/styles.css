@@ -131,7 +131,7 @@ textarea {
 
 table {
     background: var(--object);
-    border-radius: 3px;
+    border-radius: 5px;
     border-collapse: collapse;
   }
   table a:hover {
@@ -611,6 +611,7 @@ li.selected {
     color: black;
     border-radius: 5px;
     padding: 0.2em 15px 0.2em 15px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     overflow: hidden;
     scrollbar-width: none;
     animation: fadeInAnimation ease 0.7s;
@@ -618,7 +619,7 @@ li.selected {
     animation-fill-mode: forwards;
 }
     .card.new {
-        border: 1px dashed var(--mid-grey);
+        /* border: 1px dashed var(--mid-grey); */
     }
     .card.double {
         width: 420px;
@@ -626,7 +627,7 @@ li.selected {
     }
     .card:hover {
         overflow: scroll;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        box-shadow: rgba(0, 0, 0, 0.48) 0px 3px 8px;
     }
     .card_titlebar {
         display:flex;

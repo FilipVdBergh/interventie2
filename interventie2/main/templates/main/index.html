@@ -6,7 +6,7 @@ Dashboard
 
 {% block body %}
         <h1>Komende werksessies</h1>
-        <div class="card_row">
+        <div class="card_area">
             {% for worksession in next_worksessions %}
                 {% if current_user in worksession.allowed_users %}
                     <div class="card double">
