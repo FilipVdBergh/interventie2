@@ -43,7 +43,11 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{{ url_for('tools.edit_question', question_id=question.id) }}">{{ question.name }}</a>
+                            {% if not question.is_category %}
+                                <a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}">{{ question.name }}</a>
+                            {% else %}
+                                <a href="{{ url_for('tools.edit_question', question_id=question.id) }}" class="category">{{ question.name }}</a>
+                            {% endif %}
                         </td>
                         <td>
                             {% if question.is_category %}
@@ -73,6 +77,7 @@
                             {% endif %}
                         </td>
                         <td>
+                            <a href="{{ url_for('tools.edit_question', question_id=question.id) }}"><button>Aanpassen</button></a>
                             {% if not question.is_category %}
                                 <a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}"><button>Antwoordopties</button></a>
                             {% endif %}

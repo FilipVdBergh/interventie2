@@ -730,6 +730,11 @@ li.selected {
     color: black;
 }
 
+.category {
+    font-weight: bold;
+    font-size: larger;
+}
+
 .property {
     font-size: smaller;
     color: black;
