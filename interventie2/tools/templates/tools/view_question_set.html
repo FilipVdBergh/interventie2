@@ -40,7 +40,11 @@
                         <ul>
                             
                             {% for option in question.options | sort(attribute='order') %}
-                                <li>{{ option.name }}</li>
+                                <li>{{ option.name }}
+                                    {% for tag in option.tags %}
+                                        <span class="tag">{{ tag.name }}</span>
+                                    {% endfor %}
+                                </li>
                             {% endfor %}
                             
                         </ul>
