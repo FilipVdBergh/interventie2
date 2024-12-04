@@ -139,7 +139,7 @@ table {
     text-decoration: underline;
   }
   thead {
-    border-bottom: solid 2px var(--light-blue);
+    border-bottom: solid 2px white;
   }
   th {
     border-bottom: 1px solid white;
