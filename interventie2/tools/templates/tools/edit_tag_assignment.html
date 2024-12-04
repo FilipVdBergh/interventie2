@@ -15,31 +15,33 @@
 {% endblock %} 
 
 {% block body %}
-    <table>
-        <tr>
-            <th>Tag</th>
-            <th>Status</th>
-        </tr>
-        
-        {% for tag in tags %}
+    <table class="sortable">
+        <thead>
             <tr>
-                <td>
-                    <a href="{{ url_for('tools.toggle_tag', option_id=option.id, tag_id=tag.id) }}" class="tag 
-                    {% if tag in option.tags %}
-                        plus
-                    {% endif %}">{{ tag.name }}</a>
-                </td>
-                <td>
-                    <a href="{{ url_for('tools.toggle_tag', option_id=option.id, tag_id=tag.id) }}" class="property">
-                        {% if tag in option.tags %}
-                            Actief
-                        {% else %}
-                            Inactief
-                        {% endif %}
-                    </a>
-                </td>
+                <th>Tag</th>
+                <th>Status</th>
             </tr>
-        {% endfor %}
-        
+        </thead>
+        <tbody>
+            {% for tag in tags %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('tools.toggle_tag', option_id=option.id, tag_id=tag.id) }}" class="tag 
+                        {% if tag in option.tags %}
+                            plus
+                        {% endif %}">{{ tag.name }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('tools.toggle_tag', option_id=option.id, tag_id=tag.id) }}" class="property">
+                            {% if tag in option.tags %}
+                                Actief
+                            {% else %}
+                                Inactief
+                            {% endif %}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 {% endblock %}

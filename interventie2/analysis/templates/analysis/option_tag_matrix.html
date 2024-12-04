@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+<title>Analyse</title>
+
+
+{% block page_title %}
+    Analyse gebruik van tags in tools, vragen en antwoordopties
+{% endblock %}
+
+{% block body %}
+    <table class="matrix sortable">
+        <thead>
+            <tr>
+                <th rowspan="2" style="vertical-align:bottom;">Tool</th>
+                <th rowspan="2" style="vertical-align:bottom;">Vraag</th>
+                <th rowspan="2" style="vertical-align:bottom;">#Tags</th>
+                {% for tag in tags %}
+                    <th class="rotate"><div><span>{{ tag.name }}</span></div></th>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for tag in tags %}
+                    <th>
+                        <a href="{{ url_for('tools.tag', tag_id=tag.id) }}">🛈</a>
+                        {{ macro.confirm_redirect( "☒", "Tag '"+tag.name+"'' verwijderen? Hiermee worden verwijzingen naar deze tag ook verwijderd.",  url_for('tools.delete_tag', tag_id=tag.id) ) }}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+
+                {% for question_set in question_sets %}
+                    {% for question in question_set.questions %}
+                    <tr>
+                            <td>{{ question_set.name }}</td>
+                            <td>{{ question.name }}</td>
+                                {% for tag in tags %}
+                                    <td>
+                                        {% for option in question.options %}
+                                            {% if tag in option.tags %}
+                                                <a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}">{{ option.name }}</a>
+                                                
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                {% endfor %}
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+        </tbody>     
+    </table>
+
+{% endblock %}

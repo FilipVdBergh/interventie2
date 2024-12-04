@@ -39,3 +39,26 @@ def instrument_tag_matrix():
     instruments = Instrument.query.order_by(Instrument.name)
 
     return render_template('analysis/instrument_tag_matrix.html', instruments=instruments, tags=tags)
+
+
+@analysis.route('/option_tag_matrix')
+@login_required
+def option_tag_matrix():
+    if not current_user.role.edit_questionnaire:
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
+    tags = Tag.query.order_by(Tag.name)
+    question_sets = QuestionSet.query.order_by()
+
+    tag_uses = []
+    for tag in tags:
+        pass
+
+    # Get count of used tags per option, question, tool
+    for question_set in question_sets:
+        for question in question_set.questions:
+            for option in question.options:
+                if tag in option.tags:
+                    pass
+
+    return render_template('analysis/option_tag_matrix.html', question_sets=question_sets, tags=tags)
+

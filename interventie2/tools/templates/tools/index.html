@@ -57,10 +57,13 @@
 
     <div id="st_tags" class="tabcontent">
         <div class="text_area">
-            <h1>Analyse</h1>
+            <h1>Analyse gebruik van tags</h1>
             <ul>
                 <li>
-                    <a href="{{ url_for('analysis.instrument_tag_matrix') }}">Tags per instrument</a>
+                    <a href="{{ url_for('analysis.instrument_tag_matrix') }}">Instrument</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('analysis.option_tag_matrix') }}">Tools</a>
                 </li>
             </ul>
             {% if edit_catalog_allowed %}
@@ -85,13 +88,28 @@
                 </table>
             {% endif %}
                 <h1>Alle tags</h1>
-                    <ul>
-                    {% for tag in tags %}
-                    <li><span class="tag"><a href="{{ url_for('tools.tag', tag_id=tag.id) }}">{{ tag.name }}</a></span></li>
-                    {% endfor %}
-                    </ul>
-
-        
+                <table class="sortable">
+                    <thead>
+                        <tr>
+                            <th>Tag</th>
+                            <th>Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tag in tags %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('tools.tag', tag_id=tag.id) }}" class="tag">{{ tag.name }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('tools.edit_tag', tag_id=tag.id) }}"><button>Hernoemen</button></a>
+                                    <button>{{ macro.confirm_redirect( "Verwijderen", "Tag '"+tag.name+"'' verwijderen? Hiermee worden verwijzingen naar deze tag ook verwijderd.",  url_for('tools.delete_tag', tag_id=tag.id) ) }}</button>
+                                </td>
+                                
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
 
         </div>

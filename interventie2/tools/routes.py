@@ -22,7 +22,7 @@ def index():
     form = TagForm()
     tags = Tag.query.order_by(Tag.name)
     if form.validate_on_submit():
-        if Tag.query.filter_by(name=form.name.data).first():
+        if Tag.query.filter_by(Tag.name==form.name.data).first():
             return render_template('error/index.html', title='Tag bestaat al', message='Er bestaat al een tag met deze naam.')
 
         tag = Tag(name = form.name.data)
