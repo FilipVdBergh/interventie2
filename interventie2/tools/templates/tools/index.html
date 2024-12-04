@@ -63,8 +63,9 @@
                     <a href="{{ url_for('analysis.instrument_tag_matrix') }}">Tags per instrument</a>
                 </li>
             </ul>
-            <h1>Tag toevoegen</h1>
-                {% if edit_catalog_allowed %}
+            {% if edit_catalog_allowed %}
+                <h1>Tag toevoegen</h1>
+                
                 <table>
                     <thead>
                         <tr>
@@ -82,7 +83,7 @@
                         </form>
                     </tbody>
                 </table>
-                {% endif %}
+            {% endif %}
                 <h1>Alle tags</h1>
                     <ul>
                     {% for tag in tags %}
