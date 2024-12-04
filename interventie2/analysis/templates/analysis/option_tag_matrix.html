@@ -37,7 +37,12 @@
                                     <td>
                                         {% for option in question.options %}
                                             {% if tag in option.tags %}
-                                                <a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}">{{ option.name }}</a>
+                                                <span class="tooltip">
+                                                    <a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}">✎</a>
+                                                    <span class="tooltiptext">
+                                                        <span>{{ option.name }} </span> <span class="tag">{{ tag.name }}</span>
+                                                    </span>
+                                                </span>
                                                 
                                             {% endif %}
                                         {% endfor %}
