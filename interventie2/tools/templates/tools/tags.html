@@ -4,44 +4,10 @@
 Tags
 {% endblock %}
 
-{% block tabs %}
-<div class="tab_bar">
-    <button class="tablinks" onclick="switch_tab(event, 'tag_analysis')" id="defaultOpen">Tags</button>
-    <button class="tablinks" onclick="switch_tab(event, 'tag_new')">Toevoegen</button>
-
-</div>
-{% endblock %}
 
 {% block body %}
-<div id="tag_new" class="tabcontent">
-    <div class="text_area">
-        <h1>Tag toevoegen</h1>
-        {% if edit_catalog_allowed %}
-        <table>
-            <tr>
-                <th>Naam</th>
-                <th colspan="2">Acties</th>
-            </tr>
-            <form method="POST">
-                {{ form.csrf_token }}
-                <tr>
-                    <td>{{ form.name }}</td>
-                    <td>{{ form.submit }}</td>
-                </tr>
-            </form>
-        </table>
-        {% endif %}
-    </div>
-</div>
-<div id="tag_analysis" class="tabcontent">
-    <div class="text_area">
-        <ul>
-        {% for tag in tags %}
-        <li><a href="{{ url_for('tools.tag', tag_id=tag.id) }}"><span class="tag">{{ tag.name }}</span></a></li>
-        {% endfor %}
-        </ul>
-
-    </div>
+<div>
+    {% include 'tag_table.html' %}
 </div>
 
 {% endblock %}

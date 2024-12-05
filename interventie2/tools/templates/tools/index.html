@@ -66,52 +66,7 @@
                     <a href="{{ url_for('analysis.option_tag_matrix') }}">Tools</a>
                 </li>
             </ul>
-            {% if edit_catalog_allowed %}
-                <h1>Tag toevoegen</h1>
-                
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Naam</th>
-                            <th colspan="2">Acties</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <form method="POST">
-                            {{ form.csrf_token }}
-                            <tr>
-                                <td>{{ form.name }}</td>
-                                <td>{{ form.submit }}</td>
-                            </tr>
-                        </form>
-                    </tbody>
-                </table>
-            {% endif %}
-                <h1>Alle tags</h1>
-                <table class="sortable">
-                    <thead>
-                        <tr>
-                            <th>Tag</th>
-                            <th>Acties</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for tag in tags %}
-                            <tr>
-                                <td>
-                                    <a href="{{ url_for('tools.tag', tag_id=tag.id) }}" class="tag">{{ tag.name }}</a>
-                                </td>
-                                <td>
-                                    <a href="{{ url_for('tools.edit_tag', tag_id=tag.id) }}"><button>Hernoemen</button></a>
-                                    <button>{{ macro.confirm_redirect( "Verwijderen", "Tag '"+tag.name+"'' verwijderen? Hiermee worden verwijzingen naar deze tag ook verwijderd.",  url_for('tools.delete_tag', tag_id=tag.id) ) }}</button>
-                                </td>
-                                
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
+            {% include 'tag_table.html' %}
         </div>
     </div>
 

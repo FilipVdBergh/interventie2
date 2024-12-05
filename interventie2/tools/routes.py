@@ -21,16 +21,18 @@ def index():
     question_sets = QuestionSet.query.order_by()
     form = TagForm()
     tags = Tag.query.order_by(Tag.name)
-    if form.validate_on_submit():
-        if Tag.query.filter_by(Tag.name==form.name.data).first():
+
+    if request.method == 'POST':
+        if Tag.query.filter(Tag.name==form.name.data).first() is not None:
             return render_template('error/index.html', title='Tag bestaat al', message='Er bestaat al een tag met deze naam.')
 
+    if form.validate_on_submit():
         tag = Tag(name = form.name.data)
         db.session.add(tag)
         db.session.commit()
         return redirect(url_for('tools.tags'))
-    elif request.method == 'GET':
-        pass
+
+    
     return render_template('tools/index.html', question_sets=question_sets, edit_catalog_allowed=current_user.role.edit_catalog, tags=tags, form=form)  
 
 
@@ -507,6 +509,11 @@ def edit_tag(tag_id):
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om tags te wijzigen.')
     form = TagForm()
     tag = Tag.query.get(tag_id)
+
+    if request.method == 'POST':
+        if Tag.query.filter(Tag.name==form.name.data).first() is not None:
+            return render_template('error/index.html', title='Tag bestaat al', message='Er bestaat al een tag met deze naam.')
+
     if form.validate_on_submit():
         tag.name = form.name.data
         db.session.commit()
