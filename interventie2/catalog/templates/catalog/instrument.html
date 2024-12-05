@@ -33,11 +33,15 @@
         <a href="http://{{ instrument.reference_link }}"><button>Link naar de beschrijving van dit
                 instrument</button></a>
         <br>
-        {% else %}
-        <h1>Beschrijving</h1>
-        <div class="instrument_body">{{ instrument.description | escape | markdown }}</div>
-        <h1>Overwegingen bij gebruik</h1>
-        <div class="instrument_body">{{ instrument.considerations | escape | markdown }}</div>
+        {% endif %}
+        {% if instrument.description | length > 0 %}
+            <h1>Beschrijving</h1>
+            <div class="instrument_body">{{ instrument.description | escape | markdown }}</div>
+        {% endif %}
+        {% if instrument.considerations | length > 0 %}
+            <h1>Overwegingen bij gebruik</h1>
+            <div class="instrument_body">{{ instrument.considerations | escape | markdown }}</div>
+        {% endif %}
         {% if instrument.examples | length > 0 %}
             <h1>Voorbeelden</h1>
             <div class="instrument_body">{{ instrument.examples | escape | markdown }}</div>
@@ -48,7 +52,7 @@
         {% endif %}
         <h1>Eigenaar</h1>
         <span class="user"><a href="{{ url_for('admin.user', id=instrument.owner.id) }}">{{ instrument.owner.name }}</a></span>
-        {% endif %}
+        
         <div>
             <br>
             <a href="{{ url_for('catalog.edit_instrument', id=instrument.id) }}"><button type="button">✎</button></a>

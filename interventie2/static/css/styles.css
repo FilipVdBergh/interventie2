@@ -78,7 +78,7 @@ button {
     background-color: var(--button-bg);
     color: var(--button-fg);
     min-height: 2.2em;
-    border-radius: 3px;
+    border-radius: 2px;
     min-width: 7em;
     padding-left: 1em;
     padding-right: 1em;
@@ -104,7 +104,7 @@ input[type=submit] {
     color: var(--button-fg);
     font-size: smaller;
     min-height: 2.2em;
-    border-radius: 3px;
+    border-radius: 2px;
     min-width: 10rem;
     margin-bottom: 2px;
     
@@ -131,7 +131,7 @@ textarea {
 
 table {
     background: var(--object);
-    border-radius: 5px;
+    border-radius: 2px;
     border-collapse: collapse;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 8px;
   }
@@ -272,7 +272,7 @@ nav {
         .search input {
             background-color: white;;
             border: 1px solid black;
-            border-radius: 3px;
+            border-radius: 2px;
             padding: 5px;
             font-size: smaller;
             height: 1.7rem;
@@ -353,7 +353,7 @@ main {
     grid-area: main;
     padding: 1rem 5rem;
     display: grid;
-    grid-template-columns: min-content 100%;
+    grid-template-columns: min-content 1fr;
     grid-template-areas: 
         "aside section ";
     overflow-y: auto;
@@ -467,16 +467,9 @@ footer {
 
 
 .text_area {
-    width: 100%;
     padding: 0 1em 1em 1em;
     background-color: white;
-    border-radius: 3px;
-}
-@media only screen and (max-width: 845px) {
-    .text_area {
-        width: 90%;
-
-    }
+    border-radius: 2px;
 }
 
 .focus_area {
@@ -489,7 +482,7 @@ footer {
 .login {
     background-color: var(--object);
     padding: 2rem 3rem 1rem 3rem;
-    border-radius: 5px;
+    border-radius: 2px;
     animation: fadeInAnimation ease 0.7s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
@@ -610,7 +603,7 @@ li.selected {
     flex-shrink: 0;
     background-color: var(--object);
     color: black;
-    border-radius: 5px;
+    border-radius: 2px;
     padding: 0.2em 15px 0.2em 15px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 8px;
     overflow: hidden;
@@ -699,7 +692,7 @@ li.selected {
     width: 100%;
     background-color: white;
     border: solid 1px transparent;
-    border-radius: 5px;
+    border-radius: 2px;
     overflow: hidden;
     scrollbar-width: none;
 }
