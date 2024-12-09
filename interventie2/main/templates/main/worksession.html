@@ -155,7 +155,7 @@
             <a href="{{ url_for('main.new_worksession_from_base', base_session_id=worksession.id, question_set_id=question_set.id) }}">
                 <div class="card new">
                     <div class="card_title">
-                        Nieuw: {{ question_set.name }}
+                        Op basis van {{ question_set.name }}
                     </div>
                     <div class="card_description">
                         {{ question_set.description }}
@@ -172,7 +172,7 @@
                 <div class="card">
                     <div class="card_title">
                         {% if rws == worksession %}
-                            Deze sessie
+                            Deze sessie ({{ rws.name }})
                         {% else %}
                             {{ rws.name}}
                         {% endif %}
