@@ -5,63 +5,36 @@ Dashboard
 {% endblock %}
 
 {% block body %}
-        <h1>Komende werksessies</h1>
-        <div class="card_area">
-            {% for worksession in next_worksessions %}
-                {% if current_user in worksession.allowed_users %}
-                    <div class="card double">
-                        
-                            <div class="card_titlebar">
-                                <div class="card_title">{{ worksession.name }}</div>
-                                <div class="card_controls">
-                                    <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}"><button>🛈</button></a>
-                                    <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>▶︎</button></a>
-                                </div>
+    <h1>Komende werksessies</h1>
+    <div class="card_area">
+        {% for worksession in next_worksessions %}
+            {% if current_user in worksession.allowed_users %}
+                <div class="card double">
+                    
+                        <div class="card_titlebar">
+                            <div class="card_title">{{ worksession.name }}</div>
+                            <div class="card_controls">
+                                <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}"><button>🛈</button></a>
+                                <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>▶︎</button></a>
                             </div>
-                            <div class="card_info">{{ worksession.question_set.name }}</div>
-                            <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
-                            <div class="card_description">{{ worksession.description }}</div>
-                            {% if worksession.participants | count > 0 %}
-                                <div class="card_info">Deelnemers: {{ worksession.participants }}</div>
-                            {% endif %}
-                            
-                        
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-
-    <!-- <h1>Actieve werksessies</h1>
-    <div class="card_row">
-        {% for worksession in worksessions %}
-        {% if current_user == worksession.creator %}
-            <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
-                <div class="card">
-                    
-                
-                    
-                    <div class="card_title">{{ worksession.name }}</div>
-                        {% if worksession.date.strftime('%d-%m-%Y') == today.strftime('%d-%m-%Y') %}
-                            <div class="card_info card_alert">Vandaag</div>
-                        {% else %}
-                        <div class="card_info">Datum {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
-                        
+                        </div>
+                        <div class="card_info">{{ worksession.question_set.name }}</div>
+                        <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
+                        <div class="card_description">{{ worksession.description }}</div>
+                        {% if worksession.participants | count > 0 %}
+                            <div class="card_info">Deelnemers: {{ worksession.participants }}</div>
                         {% endif %}
-                    <div class="card_description">
-                        {{ worksession.description }}
-                    </div>
-
+                        
                     
                 </div>
-            </a>  
-        {% endif %}  
+            {% endif %}
         {% endfor %}
-    </div> -->
+    </div>
 
 
-{% if current_user.unread_message_alert() %}
-    <h1>Nieuwe berichten</h1>
-        <div class="card_row">
+    {% if current_user.unread_message_alert() %}
+        <h1>Nieuwe berichten</h1>
+        <div class="card_area">
             {% for message in current_user.unread_messages_list() %}
             <a href="{{ url_for('admin.message', message_id=message.id) }}">
                 <div class="card">
@@ -82,37 +55,6 @@ Dashboard
             {% endfor %}
         
         </div>
-{% endif %}
-
-<!-- <h1>Statistieken</h1>
-    <div class="card_area">
-        <div class="card">
-
-                <div class="card_title">Over {{ current_user.name }}</div>
-                <div class="card_description">
-                    <ul>
-                        <li><a href="{{url_for('main.worksessions')}}">Je hebt {{ information["your_next_worksessions"]}} werksessies gepland.</a></li>
-                        <li><a href="{{url_for('main.worksessions')}}">Je hebt {{ information["your_past_worksessions"] }} werksessies gedaan.</a></li>
-                        <li><a href="{{ url_for('catalog.instruments_current_user') }}">Je beheert {{information["your_instruments"] }} instrumenten.</a></li>
-                    </ul>
-                </div>
-
-        </div>
-        <div class="card">
-
-                <div class="card_title">Over de database</div>
-                <div class="card_description">
-                    <ul>
-                        <li>Er zijn {{ information["your_next_worksessions"]}} werksessies gepland.</li>
-                        <li>Er zijn {{ information["your_past_worksessions"] }} werksessies uitgevoerd.</li>
-                        <li><a href="{{ url_for('catalog.index') }}">In de database staan {{information["instruments"] }} instrumenten.</a></li>
-                    </ul>
-                </div>
-
-        </div>
-    </div> -->
-
-
-
+    {% endif %}
 
 {% endblock %}
