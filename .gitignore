@@ -35,6 +35,7 @@ TODO
 archive/
 documentation/
 instruments_tools/*
+static/import/
 venv/
 examples/
 compose copy.yaml
