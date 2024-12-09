@@ -2,21 +2,25 @@
 De Autoriteit Financiële Markten (AFM) heeft een werkwijze ontwikkeld voor de selectie van informele interventieinstrumenten. Deze werkwijze bestaat uit een gefaciliteerde sessie, software, een vragenlijst en een catalogus van instrumenten. Door al deze materialen vrij beschikbaar te maken en te delen met andere toezichthouders, willen wij een uitwisseling van methoden op gang brengen waarvan alle toezichthouders profiteren.
 
 # Opties om de app te installeren
-In deze handleiding staan twee opties om de app te instaalleren. De eerste optie is om de app aan te sluiten op een databaseserver (in dit geval MariaDB). Het voordeel is dat je gebruik kan maken van alle gemakken van een databaseserver, zoals het maken van goede backups, en de interface met de tool phpMyAdmin. Het nadeel is dat je een extra service draait. De tweede optie is om alles met sqlite bij te houden in een enkel bestand dat als database dient. Dit is makkelijker in te stellen.
+Er zijn veel manieren om de app in gebruik te nemen. Welke optie je kiest hangt af van de infrastructuur die je wilt gebruiken. De voornaamste keuzes zijn:
+
+- **Linux of Windows.** Als je de app gebruikt op een Windows-machine, dan lijkt het erop dat de variabelen in seetings.cfg (zie onder) tussen aanhalingstekens moeten.
+- **De broncode direct uitvoeren, of in een Docker container** Het grootste deel van deze handleiding gaat over de installatie op een webserver, maar het is ook mogeijk om de app direct te draaien.
+```git clone https://github.com/FilipVdBergh/interventie2.git```
+Zorg daarna voor een goede settings.cfg (zie ook onder). Als je python hebt geïnstalleerd, dan kan je de app direct draaien. 
+- **Met een databaseserver (MariaDB, MS SQL) of met een lokaal bestand (SQLite).** De eerste optie is om de app aan te sluiten op een databaseserver (zoals MSSQL of MariaDB). Het voordeel is dat je gebruik kan maken van alle gemakken van een databaseserver, zoals het maken van goede backups, en de interface met de tool phpMyAdmin. Het nadeel is dat je een extra service draait. De tweede optie is om alles met sqlite bij te houden in een enkel bestand dat als database dient. Dit is makkelijker in te stellen, maar zorg er wel voor dat het SQLite bestand buiten de Docker container staat! Dan blijft de database behouden na een update, en kan jeen backup maken van alle gegevens.
+
+# Voorbeelinstallatie
+De snelste manier is om de app te draaien is om hem binnen te halen op Windows, en de app te configureren met sqlite. De meeste gebruikers zullen de app draaien op een Linux webserver. In deze handleiding gaan we er daarom vanuit je de app draait op een Linux server. Installeer Linux op een machine, en installeer vervolgens Docker. Daarna kan je de volgende stappen volgen om de app te installeren als webserver. 
 
 - Installeer een operating systeem met docker.
-- Als je de app als webserver draait, installeer dan certificaten voor veilige verbindingen.
-- Als je MariaDB wilt gebruiken: installeer MariaDB en phpMyAdmin.Creeer een database en een gebruiker met toegangsrechten.
+- Als je de app als secure webserver wilt draaien, installeer dan certificaten voor veilige verbindingen.
+- Als je MariaDB wilt gebruiken: installeer MariaDB en phpMyAdmin. Creeer een database en een gebruiker met toegangsrechten.
 - Download de app van github.
 - Configureer settings.cfg.
 - Check de dockerfile of je de app runt met of zonder certificaten.
 - Bouw en run de app
 - Maak extra bestanden voor eenvoudige updates en het vernieuwen van de certificaten.
-
-
-# Installatie met Docker op een Linux server
-Welke optie je ook kiest, in deze handleiding gaan we er vanuit je de app draait op een Linux server. Installeer Linux op een machine, en installer vervolgens Docker. Daarna kan je de volgende stappen volgen om de app te installeren als webserver. Er is geen enkel probleem om de app op Windows te draaien. Ook dan is Docker nodig. De snelste manier om de app te draaien is om hem binnen te halen op Windows, en de app te configurerenb met sqlite.
-
 
 ## Verkrijgen van certificaten
 Deze certificaten zijn nodig vor het tot stand brengen van een versleutelde (https) verbinding. We maken hier gebruik van Let's Encrypt. Deze certificaten zijn specifiek voor het webadres dat je gebruikt. In de code hieronder moet je daarom <url> vervangen door je eigen webadres.
@@ -72,10 +76,10 @@ SQLALCHEMY_DATABASE_URI=mysql://interventie2_user:<your-user-password>@mariadb:3
 ```
 
 ## Bouw en run de app
-Vervang <url> door je eigen domein.
+Vervang `<url>` door je eigen domein.
 ```
 docker build -t interventie2 .
-docker run --name interventie2 --env-file /root/settings.cfg -p 443:443 --network my_network --link mariadb --mount type=bind,source=/etc/letsencrypt/live/<url>>/fullchain.pem,target=/etc/letsencrypt/certificates/fullchain.pem --mount type=bind,source=/etc/letsencrypt/live/<url>/privkey.pem,target=/etc/letsencrypt/certificates/privkey.pem -d interventie2
+docker run --name interventie2 --env-file /root/settings.cfg -p 443:443 --network my_network --link mariadb --mount type=bind,source=/etc/letsencrypt/live/<url>/fullchain.pem,target=/etc/letsencrypt/certificates/fullchain.pem --mount type=bind,source=/etc/letsencrypt/live/<url>/privkey.pem,target=/etc/letsencrypt/certificates/privkey.pem -d interventie2
 ```
 
 # Stappen bij het gebruik van sqlite
@@ -96,7 +100,7 @@ SQLALCHEMY_DATABASE_URI=sqlite:///interventie2.db
 ```
 
 ## Bouw en run de app
-Vervang <url> door je eigen domein.
+Vervang `<url>` door je eigen domein.
 ```
 docker build -t interventie2 .
 docker run --name interventie2 --env-file /root/settings.cfg -p 443:443 --network my_network --mount type=bind,source=/root/interventie2.db,target=/app/instance/interventie2.db --mount type=bind,source=/etc/letsencrypt/live/<url>>/fullchain.pem,target=/etc/letsencrypt/certificates/fullchain.pem --mount type=bind,source=/etc/letsencrypt/live/<url>/privkey.pem,target=/etc/letsencrypt/certificates/privkey.pem -d interventie2
@@ -105,10 +109,11 @@ docker run --name interventie2 --env-file /root/settings.cfg -p 443:443 --networ
 # Eerste gebruik van de app
 Ga naar <url>/admin/initialize. Dit zorgt ervoor dat de gehele database wordt gemaakt.
 - Login:             root:root
-Verander het root wachtwooprd direct, en maak een nieuwe gebruiker aan waarvanuit je voortaan werkt.
+  
+Verander het root wachtwoord direct, en maak een nieuwe gebruiker aan waarvanuit je voortaan werkt.
 
 # Onderhoud
-Onm de app eenvoudig te updaten kan je onderstaand bash-script gebruiken. 
+Onm de app eenvoudig te updaten kan je onderstaand bash-script gebruiken. Vervang `<url>` door je eigen domein.
 ```
 docker stop interventie2
 docker rm interventie2
@@ -116,5 +121,5 @@ rm -rf interventie2
 git clone https://github.com/FilipVdBergh/interventie2.git
 cd interventie2
 docker build -t interventie2 .
-docker run --name interventie2 --env-file /root/settings.cfg -p 443:443 --network my_network --link mariadb --mount type=bind,source=/etc/letsencrypt/live/<url>>/fullchain.pem,target=/etc/letsencrypt/certificates/fullchain.pem --mount type=bind,source=/etc/letsencrypt/live/<url>/privkey.pem,target=/etc/letsencrypt/certificates/privkey.pem -d interventie2
+docker run --name interventie2 --env-file /root/settings.cfg -p 443:443 --network my_network --link mariadb --mount type=bind,source=/etc/letsencrypt/live/<url>/fullchain.pem,target=/etc/letsencrypt/certificates/fullchain.pem --mount type=bind,source=/etc/letsencrypt/live/<url>/privkey.pem,target=/etc/letsencrypt/certificates/privkey.pem -d interventie2
 ```
