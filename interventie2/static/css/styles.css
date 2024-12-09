@@ -97,6 +97,12 @@ button {
     button.delete {
         background-color: var(--highlight);
     }
+    button.small {
+        padding: 0em;
+        margin: 0cm;
+        min-width: 6em;
+        font-size: x-small;
+    }
 
 input[type=submit] {
     border: 1px solid var(--mid-grey);

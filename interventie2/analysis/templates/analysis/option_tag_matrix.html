@@ -3,14 +3,13 @@
 
 
 {% block page_title %}
-    Analyse gebruik van tags in tools, vragen en antwoordopties
+    Analyse gebruik van tags {{ question_set.name }}
 {% endblock %}
 
 {% block body %}
     <table class="matrix sortable">
         <thead>
             <tr>
-                <th rowspan="2" style="vertical-align:bottom;">Tool</th>
                 <th rowspan="2" style="vertical-align:bottom;">Vraag</th>
                 <th rowspan="2" style="vertical-align:bottom;">#Tags</th>
                 {% for tag in tags %}
@@ -28,17 +27,15 @@
         </thead>
         <tbody>
 
-                {% for question_set in question_sets %}
                     {% for question in question_set.questions %}
                     <tr>
-                            <td>{{ question_set.name }}</td>
                             <td>{{ question.name }}</td>
                                 {% for tag in tags %}
                                     <td>
                                         {% for option in question.options %}
                                             {% if tag in option.tags %}
                                                 <span class="tooltip">
-                                                    <a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}">✎</a>
+                                                    <a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}"><button class="small">{{ loop.index }}. {{ option.name | truncate(10) }}</button></a>
                                                     <span class="tooltiptext">
                                                         <span>{{ option.name }} </span> <span class="tag">{{ tag.name }}</span>
                                                     </span>
@@ -50,7 +47,6 @@
                                 {% endfor %}
                     </tr>
                     {% endfor %}
-                {% endfor %}
         </tbody>     
     </table>
 

@@ -60,11 +60,13 @@
             <h1>Analyse gebruik van tags</h1>
             <ul>
                 <li>
-                    <a href="{{ url_for('analysis.instrument_tag_matrix') }}">Instrument</a>
+                    <a href="{{ url_for('analysis.instrument_tag_matrix') }}">In instrumenten</a>
                 </li>
-                <li>
-                    <a href="{{ url_for('analysis.option_tag_matrix') }}">Tools</a>
-                </li>
+                {% for question_set in question_sets %}
+                    <li>
+                        <a href="{{ url_for('analysis.option_tag_matrix', question_set_id=question_set.id) }}">In {{ question_set.name }}</a>
+                    </li>
+                {% endfor %}
             </ul>
             {% include 'tag_table.html' %}
         </div>
