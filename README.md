@@ -83,8 +83,9 @@ docker run --name interventie2 --env-file /root/settings.cfg -p 443:443 --networ
 ```
 
 # Stappen bij het gebruik van sqlite
-Als je sqlite wilt gebruiken moet je er voor zorgen dat het databestand op de host servwer staat, zodat de database niet gewist wordt als je de container herstart. Daarvoor kopieren we een bestaande database naar een hogergelegen directoryniveau:
-```cp interventie2/instande/interventie2.db /root```
+Als je sqlite wilt gebruiken moet je er voor zorgen dat het databestand op de host server staat, zodat de database niet gewist wordt als je de container herstart. Maak een leeg databasebestand in een hogergelegen directoryniveau:
+```interventie2/instance/interventie2.db```
+Dit is hetzelfde directoryniveau als waarop ```settings.cfg``` te vinden is.
 
 ## settings.cfg aanpassen voor gebruik van sqlite
 ```
