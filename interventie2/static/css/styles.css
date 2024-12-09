@@ -7,6 +7,7 @@
     --highlight: #195fa6;
     --mid-grey: #0e9ed5;
     --object: #f0f9ff;
+    --object-text: black;
     --alert: red;
     --button-bg: #176cc2;
     --button-fg: white;
@@ -137,6 +138,7 @@ textarea {
 
 table {
     background: var(--object);
+    color: var(--object-text);
     border-radius: 2px;
     border-collapse: collapse;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 8px;
@@ -367,6 +369,7 @@ main {
     aside {
         grid-area: aside;
         background-color: var(--object);
+        color: var(--object-text);
         margin-left: 1rem;
     }
         aside:empty {
@@ -488,6 +491,7 @@ footer {
 
 .login {
     background-color: var(--object);
+    color: var(--object-text);
     padding: 2rem 3rem 1rem 3rem;
     border-radius: 2px;
     animation: fadeInAnimation ease 0.7s;
@@ -609,7 +613,7 @@ li.selected {
     flex-grow: 0;
     flex-shrink: 0;
     background-color: var(--object);
-    color: black;
+    color: var(--object-text);
     border-radius: 2px;
     padding: 0.2em 15px 0.2em 15px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 8px;
@@ -806,6 +810,7 @@ li.selected {
     padding-left: 2rem;
     margin-top: 0.5rem;
     background-color: var(--object);
+    color: var(--object-text);
     font-size: smaller;
     font-weight: bold;
 }
@@ -815,6 +820,7 @@ li.selected {
     padding-bottom: 0.5rem;
     margin-bottom: 0.5rem;
     background-color: var(--object);
+    color: var(--object-text);
 
 }
 
