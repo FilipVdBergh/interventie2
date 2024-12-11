@@ -9,10 +9,9 @@
 {% endblock %}
 
 {% block body %}
+    <h1>Informatie over de werksessie</h1>
     <form method="POST">
         {{ form.csrf_token }}
-        {{ form.submit }}
-        <h1>Informatie over de werksessie</h1>
         <table class="settings">
             <tbody>
                 <tr>
@@ -48,9 +47,10 @@
                 </tr>
             </tbody>
         </table>
+        {{ form.submit }}
 
         <br><br>
-        <h1 class="collapsible">Geavanceerde instellingen</h1>
+        <h1 class="collapsible">Geavanceerd</h1>
         <div class="collapsible_content">
             <h2>Instellingen</h2>            
             <table class="settings">
@@ -128,6 +128,8 @@
                     <td>{{ form.presenter_mode_color_highlight }}</td>
                 </tr>
             </table>
+            {{ form.submit }}
         </div>
+        
     </form>
 {% endblock %}

@@ -9,9 +9,10 @@
 {% endblock %}
 
 {% block body %}
-
+<h1>Informatie over de werksessie</h1>
 <form method="POST">
     {{ form.csrf_token }}
+    
     <table>
         <tr>
             <td>{{ form.name.label }}</td>
@@ -25,10 +26,7 @@
             <td>{{ form.link_to_page.label }}</td>
             <td>{{ form.link_to_page }}</td>
         </tr>
-        <tr>
-            <td>{{ form.question_set.label }}</td>
-            <td>{{ form.question_set }}</td>
-        </tr>
+        
         <tr>
             <td>{{ form.date.label }}</td>
             <td>{{ form.date }}<p class="errors">
@@ -41,16 +39,31 @@
             <td>{{ form.participants.label }}</td>
             <td>{{ form.participants }}</td>
         </tr>
+
         <tr>
-            <td>Eigenaar</td>
-            <td>{{ current_user.name }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.submit }}</td>
+            <td></td>
             <td></td>
         </tr>
 
     </table>
+    {{ form.submit }}
+
+    <br><br>
+    <h1 class="collapsible">Geavanceerd</h1>
+    <div class="collapsible_content">
+        <h2>Kenmerken</h2>
+        <table class="settings">
+            <tr>
+                <td>{{ form.question_set.label }}</td>
+                <td>{{ form.question_set }}</td>
+            </tr>
+            <tr>
+                <td>Eigenaar</td>
+                <td>{{ current_user.name }}</td>
+            </tr>
+        </table>
+    </div>
+
 </form>
 
 
