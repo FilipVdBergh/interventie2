@@ -140,7 +140,7 @@ def new_worksession(question_set_id=None):
 		db.session.add(worksession)
 		db.session.commit()
 			
-		return redirect(url_for('main.edit_worksession', worksession_id=worksession.id))
+		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 	elif request.method == 'GET':
 		pass
 	return render_template('main/new_worksession.html', form=form)

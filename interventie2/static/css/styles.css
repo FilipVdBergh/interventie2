@@ -143,12 +143,14 @@ table {
     border-collapse: collapse;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 8px;
   }
+  
   table a:hover {
     text-decoration: underline;
   }
   thead {
     border-bottom: solid 2px white;
   }
+  
   th {
     border-bottom: 1px solid white;
     color: black;

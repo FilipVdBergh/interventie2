@@ -12,132 +12,120 @@
     <form method="POST">
         {{ form.csrf_token }}
         {{ form.submit }}
+        <h1>Informatie over de werksessie</h1>
         <table class="settings">
-            <tr>
-                <td colspan="2">
-                    <h1>Informatie</h1>
-                </td>
-            </tr>
-            <tr>
-                <td>{{ form.name.label }}</td>
-                <td>{{ form.name }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.project_number.label }}</td>
-                <td>{{ form.project_number }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.link_to_page.label }}</td>
-                <td>{{ form.link_to_page }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.date.label }}</td>
-                <td>{{ form.date }}</td>
-            </tr>
-            <tr>
-                <td>
-                    {{ form.participants.label }}
-                    {{ macro.markdown_help() }}
-                </td>
-                <td>{{ form.participants }}</td>
-            </tr>
-            <tr>
-                <td>
-                    {{ form.description.label }}
-                    {{ macro.markdown_help() }}
-                </td>
-                <td>{{ form.description }}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>{{ form.archived }}{{ form.archived.label }}</td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <h1>Keuzeproces</h1>
-                </td>
-            </tr>
-
-            <tr>
-                <td>Tool</td>
-                <td>{{ worksession.question_set.name }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.choice_process.label }}</td>
-                <td>{{ form.choice_process }}</td>
-            </tr>
-
-            <tr>
-                <td colspan="2">
-                    <h1>Werksessiemodus</h1>
-                </td>
-            </tr>
-            <tr>
-                <td>Weergave</td>
-                <td>
-                    <p>{{ form.show_tags }}{{ form.show_tags.label }}</p>
-                    <p>{{ form.show_instruments }}{{ form.show_instruments.label }}</p>
-                    <p>{{ form.show_rest_instruments }}{{ form.show_rest_instruments.label }}</p>
-                </td>
-            </tr>
-            <tr>
-                <td>{{ form.mark_top_instruments.label }}</td>
-                <td>{{ form.mark_top_instruments }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.presenter_mode_zoom.label }}</td>
-                <td>{{ form.presenter_mode_zoom }}</td>
-            </tr>
-            <tr>
-                <td>Tekstkleur</td>
-                <td>
-                    {{ form.presenter_mode_text_color_heading }} Kopteksten<br>
-                    {{ form.presenter_mode_text_color }} Standaardtekst
-                </td>
-            </tr>
-            <tr>
-                <td>Achtergrondkleur</td>
-                <td>
-                    {{ form.presenter_mode_background_color1 }} Boven<br>
-                    {{ form.presenter_mode_background_color2 }} Beneden
-                </td>
-            </tr>
+            <tbody>
+                <tr>
+                    <td>{{ form.name.label }}</td>
+                    <td>{{ form.name }}</td>
+                </tr>
+            
+                <tr>
+                    <td>{{ form.project_number.label }}</td>
+                    <td>{{ form.project_number }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.link_to_page.label }}</td>
+                    <td>{{ form.link_to_page }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.date.label }}</td>
+                    <td>{{ form.date }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.participants.label }}
+                        {{ macro.markdown_help() }}
+                    </td>
+                    <td>{{ form.participants }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.description.label }}
+                        {{ macro.markdown_help() }}
+                    </td>
+                    <td>{{ form.description }}</td>
+                </tr>
+            </tbody>
         </table>
 
         <br><br>
-        <h1 class="collapsible">Overige kleuren</h1>
+        <h1 class="collapsible">Geavanceerde instellingen</h1>
         <div class="collapsible_content">
-            <table>
+            <h2>Instellingen</h2>            
+            <table class="settings">
                 <tr>
-                    <th>
-                        
-                    </th>
-                    <th>
-                        Navigatiebalk
-                    </th>
-                    <th>
-                        Titelbalk
-                    </th>
-                    <th>
-                        Uitklapveld
-                    </th>
-                    <th>
-                        Selectie
-                    </th>
+                    <td>Tool</td>
+                    <td>{{ worksession.question_set.name }}</td>
                 </tr>
                 <tr>
-                    <td>Achtergrond</td>
-                    <td>{{ form.presenter_mode_color_nav }}</td>
-                    <td>{{ form.presenter_mode_color_title }}</td>
-                    <td>{{ form.presenter_mode_color_coll }}</td>
-                    <td>{{ form.presenter_mode_color_highlight }}</td>
+                    <td>{{ form.choice_process.label }}</td>
+                    <td>{{ form.choice_process }}</td>
                 </tr>
                 <tr>
+                    <td>Weergave</td>
+                    <td>
+                        <p>{{ form.show_tags }}{{ form.show_tags.label }}</p>
+                        <p>{{ form.show_instruments }}{{ form.show_instruments.label }}</p>
+                        <p>{{ form.show_rest_instruments }}{{ form.show_rest_instruments.label }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{ form.mark_top_instruments.label }}</td>
+                    <td>{{ form.mark_top_instruments }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.presenter_mode_zoom.label }}</td>
+                    <td>{{ form.presenter_mode_zoom }}</td>
+                </tr>
+                </table>
+
+                <h2>Kleuren</h2>
+                <table>
+                <tr>
+                    <td>Koppen</td>
+                    <td>{{ form.presenter_mode_text_color_heading }}</td>
+                </tr>
                     <td>Tekst</td>
+                    <td>{{ form.presenter_mode_text_color }}</td>
+                <tr>
+                    <td>Achtergrondkleur (gradiënt)</td>
+                    <td>
+                        {{ form.presenter_mode_background_color1 }}<br>
+                        {{ form.presenter_mode_background_color2 }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Navigatie tekst</td>
                     <td>{{ form.presenter_mode_text_color_nav }}</td>
+                </tr>
+                <tr>
+                    <td>Navigatiebalk achtergrond</td>
+                    <td>{{ form.presenter_mode_color_nav }}</td>
+                </tr>
+                <tr>
+                    <td>Titelbalk tekst</td>
                     <td>{{ form.presenter_mode_text_color_title }}</td>
+                </tr>
+                <tr>
+                    <td>Titelbalk achtergrond</td>
+                    <td>{{ form.presenter_mode_color_title }}</td>
+                </tr>
+                <tr>
+                    <td>Uitklapveld tekst</td>
                     <td>{{ form.presenter_mode_text_color_coll }}</td>
+                </tr>
+                <tr>
+                    <td>Uitklapveld achtergrond</td>
+                    <td>{{ form.presenter_mode_color_coll }}</td>
+                </tr>
+                <tr>
+                    <td>Selectie tekst</td>
                     <td>{{ form.presenter_mode_text_color_highlight }}</td>
+                </tr>
+                <tr>
+                    <td>Selectie achtergrond</td>
+                    <td>{{ form.presenter_mode_color_highlight }}</td>
                 </tr>
             </table>
         </div>
