@@ -7,10 +7,9 @@
 {% block body %}
 <div class="card_area">
 
-    {% for worksession in question_set.worksessions  %}
+    {% for worksession in question_set.worksessions %}
         {% if worksession.archived == false %}
             {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
-                {% if current_user != worksession.creator %}
                 <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
                     <div class="card" style="background-color:{{ worksession.question_set.color }}; color:{{ worksession.question_set.text_color }}">
                         <div class="card_title">
@@ -31,7 +30,7 @@
                         </div>
                     </div>
                 </a>
-                {% endif %}
+                
             {% endif %}
         {% endif %}
     {% endfor %}
