@@ -100,7 +100,7 @@
                                                         {{ selected.option.name }}{{ "; " if not loop.last else "" }}
                                                     {% endfor %}
                                                 {% endfor %}
-                                                {{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first | truncate(75) }}
+                                                <!-- {{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first | truncate(75) }} -->
                                                 {% if question.allow_weight %}
                                                     (x{{ worksession.answers | selectattr('question', '==', question) | map(attribute='weight') | first }})
                                                 {% endif %}
