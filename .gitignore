@@ -26,6 +26,7 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Specific
+import/
 instance/
 interventie.tar
 notes.txt

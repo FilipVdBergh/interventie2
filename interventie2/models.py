@@ -154,7 +154,7 @@ class Worksession(db.Model):
     # conclusion    = db.Column(db.String(2000), nullable=False, default="") # This is legacy. Conclusions are now stored as part of a Plan.
     link_to_page  = db.Column(db.String(1000), nullable=False, default="")
     show_instruments = db.Column(db.Boolean, default=True)
-    mark_top_instruments = db.Column(db.Integer, nullable=False, default=1)
+    mark_top_instruments = db.Column(db.Integer, nullable=False, default=5)
     show_rest_instruments = db.Column(db.Boolean, default=True)
     show_tags     = db.Column(db.Boolean, default=True)
     presenter_mode_zoom = db.Column(db.Numeric(3,2), nullable=False, default=1.25)

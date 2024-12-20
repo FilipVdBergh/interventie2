@@ -58,7 +58,7 @@
     <body>
         <div class="divsteps">
             <a href="{{ url_for('main.case', worksession_id=worksession.id) }}" class="step">1. Casus</a>
-            <a href="{{ url_for('main.process_single', worksession_id=worksession.id) }}" class="step">2. {{ worksession.question_set.name }}</a>
+            <a href="{{ url_for('main.process_simultaneous', worksession_id=worksession.id) }}" class="step">2. {{ worksession.question_set.name }}</a>
             <a href="{{ url_for('main.conclusion', worksession_id=worksession.id) }}" class="step">3. Conclusie</a>
             <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">Afsluiten</a>
         </div>
@@ -151,33 +151,7 @@
 
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/uncheck_radio.js')}}"></script>
-        <script>
-            var zoom_level = {{ worksession.presenter_mode_zoom }};
-            function update_scale() {
-                var divmain = document.getElementById('main');
-                divmain.style.transform = "scale(" + zoom_level + ")";
-            }
-            function zoom_in() {
-                zoom_level += 0.05;
-                fetch( "{{ url_for('main.zoom', worksession_id=worksession.id, change=3) }}" );
-                update_scale();
-            }
-            function zoom_out() {
-                zoom_level -= 0.05
-                fetch( "{{ url_for('main.zoom', worksession_id=worksession.id, change=2) }}" );
-                update_scale();
-            }
-            function zoom_reset() {
-                zoom_level = 1.00
-                fetch( "{{ url_for('main.zoom', worksession_id=worksession.id, change=1) }}" );
-                update_scale()
-            }
-            
-            function full_screen() {
-                var w = document.documentElement;
-                w.requestFullscreen()
-            }
-        </script>
+
     </body>
 </html>
 

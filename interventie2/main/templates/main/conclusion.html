@@ -36,7 +36,6 @@
             <th>Interventieplan</th>
         </tr>
         {% for (instrument, score) in advisor.get_sorted_instruments() %}
-            {% if score >= (advisor.get_highest_score() - worksession.mark_top_instruments) %}
                 <tr>
                     <td>
                         <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }} ({{ score | round(1) }})</a>
@@ -49,8 +48,6 @@
                         >
                     </td>
                 </tr>
-            {% endif %}
-
         {% endfor %}
     </form>
     </table>

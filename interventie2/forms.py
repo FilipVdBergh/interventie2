@@ -149,7 +149,7 @@ class EditWorksessionForm(FlaskForm):
     choice_process     = SelectField('Keuzeproces', coerce=int)
     description        = TextAreaField('Beschrijving', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100})
     show_instruments   = BooleanField('Laat de instrumentenlijst zien', validators=[], default=True)
-    mark_top_instruments = IntegerField('Aanbeveling verschilscore', validators=[NumberRange(min=0)], default=1)
+    mark_top_instruments = IntegerField('Aantal aanbevolen instrumenten', validators=[NumberRange(min=0)], default=5)
     show_rest_instruments = BooleanField('Laat instrumenten onder de top ook zien', validators=[], default=True)
     show_tags          = BooleanField('Laat de actieve tags zien', validators=[], default=True)
     presenter_mode_zoom                 = DecimalField('Zoomfactor', validators=[NumberRange(min=1, max=2.5)], places=2)
