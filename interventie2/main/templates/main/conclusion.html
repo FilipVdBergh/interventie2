@@ -27,28 +27,33 @@
 
     <h1>Instrumenten</h1>
     <div>
-        Vink de instrumenten aan die je van plan bent in te zetten. Deze informatie kan 
-        worden gebruikt om de selectietool te verbeteren.
+        Maak een interventieplan door aan te geven welke  instrumenten je van plan bent in te zetten.
     </div>
     <table>
-        <tr>
-            <th>Instrument</th>
-            <th>Interventieplan</th>
-        </tr>
-        {% for (instrument, score) in advisor.get_sorted_instruments() %}
-                <tr>
-                    <td>
-                        <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }} ({{ score | round(1) }})</a>
-                    </td>
-                    <td>
-                        <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
-                            {% for chosen_instrument in plan.instruments %}
-                                {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
-                            {% endfor %}
-                        >
-                    </td>
-                </tr>
-        {% endfor %}
+        <thead>
+            <tr>
+                <th>Instrument</th>
+                <th>Interventieplan</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for (instrument, score) in advisor.get_sorted_instruments() %}
+                {% if score > 0 %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }} ({{ score | round(1) }})</a>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
+                                {% for chosen_instrument in plan.instruments %}
+                                    {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
+                                {% endfor %}
+                            >
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
     </form>
     </table>
 

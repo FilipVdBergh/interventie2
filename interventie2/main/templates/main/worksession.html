@@ -71,7 +71,7 @@
                     Factor {{ worksession.answers | selectattr('question','==', question) | map(attribute='weight') | first }}
                 </div>
                 <div class="motivation">
-                    {{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first | truncate(75) }}
+                    {{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first  }}
                 </div>
             </div>
             
