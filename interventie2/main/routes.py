@@ -307,7 +307,7 @@ def edit_worksession(worksession_id):
 		worksession.mark_top_instruments = form.mark_top_instruments.data
 		worksession.show_rest_instruments = form.show_rest_instruments.data
 		worksession.show_tags = form.show_tags.data
-		worksession.presenter_mode_zoom = form.presenter_mode_zoom.data
+		worksession.presenter_mode_zoom = 1.00
 		worksession.presenter_mode_color_title = form.presenter_mode_color_title.data
 		worksession.presenter_mode_text_color_title = form.presenter_mode_text_color_title.data
 		worksession.presenter_mode_color_nav = form.presenter_mode_color_nav.data
@@ -336,7 +336,6 @@ def edit_worksession(worksession_id):
 		form.mark_top_instruments.data = worksession.mark_top_instruments 
 		form.show_rest_instruments.data = worksession.show_rest_instruments
 		form.show_tags.data = worksession.show_tags 
-		form.presenter_mode_zoom.data = worksession.presenter_mode_zoom 
 		form.presenter_mode_color_title.data = worksession.presenter_mode_color_title
 		form.presenter_mode_text_color_title.data = worksession.presenter_mode_text_color_title
 		form.presenter_mode_color_nav.data = worksession.presenter_mode_color_nav
@@ -623,23 +622,6 @@ def show_instrument(worksession_id, instrument_id):
 	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 	instrument = Instrument.query.get(instrument_id)
 	return render_template('main/instrument.html', worksession=worksession, instrument=instrument, advisor=advisor)
-
-
-@main.route('/worksession/<int:worksession_id>/zoom/<int:change>')
-@login_required
-def zoom(worksession_id, change):
-	worksession = Worksession.query.get(worksession_id)
-	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
-		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
-
-	if change == 1:
-		worksession.presenter_mode_zoom = Decimal(1.00)
-	elif change == 2:
-		worksession.presenter_mode_zoom -= Decimal(0.05)
-	elif change == 3:
-		worksession.presenter_mode_zoom += Decimal(0.05)
-	db.session.commit()
-	return 'Zoom changed'
 
 
 # @main.route('/worksession/<int:worksession_id>/share', methods=['GET', 'POST'])

@@ -152,7 +152,6 @@ class EditWorksessionForm(FlaskForm):
     mark_top_instruments = IntegerField('Aantal aanbevolen instrumenten', validators=[NumberRange(min=0)], default=5)
     show_rest_instruments = BooleanField('Laat instrumenten onder de top ook zien', validators=[], default=True)
     show_tags          = BooleanField('Laat de actieve tags zien', validators=[], default=True)
-    presenter_mode_zoom                 = DecimalField('Zoomfactor', validators=[NumberRange(min=1, max=2.5)], places=2)
     presenter_mode_color_title          = StringField('Kleur titelbalkbalk', widget=ColorInput(), default='#000000')
     presenter_mode_text_color_title     = StringField('Kleur titelbalktekst', widget=ColorInput(), default='#DDDDDD')
     presenter_mode_color_nav            = StringField('Kleur navigatiebalk', widget=ColorInput(), default='#BBBBBB')
