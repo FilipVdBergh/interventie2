@@ -1,198 +1,109 @@
 {
-  "filetype": "question_set",
+  "filetype": "instrument",
   "filetype_version": "1.0",
-  "name": "Tafel van Elf",
-  "default_process": 1,
-  "description": "Interventiekeuze op basis van de Tafel van Elf. Formele interventie is in scope van deze keuzehulp, maar dan moet ook nog apart een Handhavingskompas worden doorlopen.",
-  "color": "#199294",
-  "text_color": "#ffffff",
-  "forbidden_tags": [],
-  "mandatory_tags": [],
-  "questions": [
+  "name": "Aanwijzing",
+  "introduction": "Een aanwijzing is een formeel besluit waarin de toezichthouder een overtreder[1] voorschrijft om binnen een door de toezichthouder bepaalde (1) (redelijke) termijn een (2) gedragslijn te volgen, met als doel dat de overtreder zich aan de wettelijke regels houdt. Voor deze wiki wordt voor het gemak de algemene aanwijzing in de Wft (Artikel 1:75 Wft[2]) als uitgangspunt genomen. De aanwijzing is de lichtste formele maatregel, in die zin dat er geen dwangsom(men) aan verbonden zijn?.",
+  "description": "",
+  "referenced_elsewhere": true,
+  "reference_link": "wiki.stelan.nl/aanwijzing/Pages/Home.aspx",
+  "considerations": "",
+  "examples": "",
+  "links": "",
+  "tags": [
     {
-      "name": "De dimensies voor spontane naleving",
-      "description": "",
-      "allow_motivation": false,
-      "allow_choice": false,
-      "allow_multiselect": false,
-      "allow_weight": false,
-      "required_active_tags": [],
-      "options": []
+      "name": "[type handhaving",
+      "weight": 1.0,
+      "multiplier": 1.0
     },
     {
-      "name": "Kennis van de regels",
-      "description": "**De bekendheid met en duidelijkheid van wet- en regelgeving bij de doelgroep.**\r\n\r\nOnbekendheid met de regels kan tot (onbewuste) overtreding leiden. Door\r\nonduidelijkheid of ingewikkeldheid van de wetgeving kunnen (per ongeluk) fouten met\r\nnaleving gemaakt worden. Een aantal aspecten kunnen onderscheiden worden;\r\n\r\n- Omvang van de regelgeving.\r\n- Vaagheid van regelgeving.\r\n- Complexiteit van de regelgeving.\r\n\r\nGebrek aan kennis daarentegen leidt ook niet altijd tot overtreding. Soms kan men toch de\r\nregels (per ongeluk) naleven door zich bijvoorbeeld aan te passen aan de omgeving (zoals bij\r\nverkeersregels).\r\n",
-      "allow_motivation": true,
-      "allow_choice": true,
-      "allow_multiselect": true,
-      "allow_weight": false,
-      "required_active_tags": [],
-      "options": [
-        {
-          "name": "De doelgroep is (goed) bekend met de regels",
-          "tags": []
-        },
-        {
-          "name": "De regels zijn voldoende duidelijk",
-          "tags": []
-        }
-      ]
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
     },
     {
-      "name": "Kosten/baten van niet-naleving",
-      "description": "**De (im)materi\u00eble voor- en nadelen die uit overtreden of naleven van de regel(s)\r\nvolgen, uitgedrukt in tijd, geld en moeite.**\r\n\r\nHet gaat hier om alle financieel-economische en immateri\u00eble kosten en baten van\r\n(niet-) nalevingsgedrag. Deze kunnen worden uitgedrukt in tijd, geld en moeite. Er kunnen 4\r\ncategorie\u00ebn worden onderscheiden:\r\n- kosten van naleving\r\n- kosten van overtreding (overtredingsdrempel)\r\n- baten van naleving\r\n- baten van overtreding\r\n\r\nImmateri\u00eble kosten en baten, zoals het behoud van een goed imago, zijn ook onder deze\r\ndimensie begrepen. Kosten of nadelen door controle, opsporing en sanctionering, zowel\r\nmaterieel als immaterieel, horen hier niet bij. Vaak komen de baten van overtreding overeen met een nadeel van naleving en komt een\r\novertredingsdrempel overeen met een nalevingsvoordeel.\r\n",
-      "allow_motivation": true,
-      "allow_choice": true,
-      "allow_multiselect": true,
-      "allow_weight": false,
-      "required_active_tags": [],
-      "options": [
-        {
-          "name": "De doelgroep accepteert het beleidsdoel",
-          "tags": []
-        },
-        {
-          "name": "De doelgroep accepteert de uitwerking van het beleid",
-          "tags": []
-        }
-      ]
+      "name": "geen financieel voordeel",
+      "weight": 1.0,
+      "multiplier": 1.0
     },
     {
-      "name": "Normgetrouwheid van de doelgroep",
-      "description": "**De mate van bereidheid van de doelgroep om zich te conformeren aan het gezag van\r\nde overheid.**\r\n\r\nSommige mensen doen gewoon wat de overheid opdraagt of wat in de wet staat.\r\nHet gaat bij deze subdimensie om het bij de doelgroep levende respect voor de overheid in\r\nhet algemeen. Deze gezagsgetrouwheid wordt soms ook gerelateerd aan het gezag van de\r\nuitvoerings- of handhavingsinstanties. In de subdimensie Concurrerend gezag gaat het niet om\r\nde houding van de doelgroep jegens het overheidsgezag, maar om het gezag van de eigen\r\nnormen en waarden die bijvoorbeeld samenhangen met geloof of gewoonte. Deze kunnen\r\nconflicteren met de bedoelingen van de overheid.\r\nIn het algemeen geldt dat deze dimensie een meer basaal en continu karakter heeft dan de\r\nacceptatie van beleid. Het heeft betrekking op de min of meer constante houding van de\r\ndoelgroep ten opzichte van de overheid. ",
-      "allow_motivation": true,
-      "allow_choice": true,
-      "allow_multiselect": true,
-      "allow_weight": false,
-      "required_active_tags": [],
-      "options": [
-        {
-          "name": "De doelgroep accepteert het overheidsgezag",
-          "tags": []
-        },
-        {
-          "name": "De doelgroep accepteert concurrerend gezag (conflicterend met overheidsgezag)",
-          "tags": []
-        }
-      ]
+      "name": "geen overtreding",
+      "weight": 1.0,
+      "multiplier": 0.0
     },
     {
-      "name": "Niet-overheidscontrole (maatschappelijke controle)",
-      "description": "**De door de doelgroep ingeschatte kans op positieve of negatieve sanctionering van\r\nhun gedrag door anderen dan de overheid.**\r\n\r\nToelichting: Niet-overheidscontrole kan bestaan uit informele controle t.a.v. de gestelde\r\nnormen of uit een formele vorm van controle door de doelgroep of beroepsgroep op haar\r\neigen leden. In dat laatste geval spreken we van horizontaal toezicht.\r\nSociale controle vindt plaats door de omgeving binnen of buiten de doelgroep: familie,\r\nvrienden, collega's, interne of externe accountants, bedrijven in de buurt, concurrenten. De\r\nvolgende aspecten spelen hierbij een rol:\r\n\r\n- de gepercipieerde kans dat een overtreding gezien wordt;\r\n- de mate waarin de omgeving dat overtredingsgedrag af- of goedkeurt;\r\n- de mate waarin de omgeving zich vervolgens verantwoordelijk voelt en actie onderneemt\r\n(sociale sanctie).\r\n\r\nHorizontaal toezicht is een vorm van formele sociale controle: niet-overheidscontrole gericht\r\nop de verbetering van kwaliteit van producten en diensten binnen bepaalde beroepsgroepen\r\nof bedrijfstakken. Denk hierbij aan beroepscodes, certificering en keurmerken.\r\n",
-      "allow_motivation": true,
-      "allow_choice": true,
-      "allow_multiselect": true,
-      "allow_weight": false,
-      "required_active_tags": [],
-      "options": []
+      "name": "individueel persoon",
+      "weight": 1.0,
+      "multiplier": 1.0
     },
     {
-      "name": "De handhavingsdimensies",
-      "description": "",
-      "allow_motivation": false,
-      "allow_choice": false,
-      "allow_multiselect": false,
-      "allow_weight": false,
-      "required_active_tags": [],
-      "options": []
+      "name": "overtreding",
+      "weight": 1.0,
+      "multiplier": 1.0
     },
     {
-      "name": "Meldingskans",
-      "description": "**De door de doelgroep ingeschatte kans dat een overtreding die is geconstateerd door\r\nanderen dan de overheid wordt gemeld aan overheidsinstanties.**\r\n\r\nHet gaat hierbij om de gepercipieerde kans dat een overtreding zonder\r\noverheidscontrole toch aan het licht komt. Men kan denken aan tippen, toeval en klachten.\r\nDiverse aspecten die bij de niet-overheidscontrole (T5) werden genoemd, spelen hier ook een\r\nrol.\r\n",
-      "allow_motivation": true,
-      "allow_choice": true,
-      "allow_multiselect": true,
-      "allow_weight": false,
-      "required_active_tags": [],
-      "options": [
-        {
-          "name": "De doelgroep schat de meldingskans hoog in",
-          "tags": []
-        }
-      ]
+      "name": "onvolwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
     },
     {
-      "name": "Controlekans",
-      "description": "**De door de doelgroep ingeschatte kans dat men door de overheid gecontroleerd\r\nwordt op het begaan van een overtreding.**\r\n\r\nToelichting: De controlekans wordt bepaald door de controledichtheid: het aantal controles\r\nper bijvoorbeeld 100 doelgroepleden per jaar. De objectieve controlekans zal door diverse\r\noorzaken in de praktijk afwijken van de subjectieve controlekans, bijvoorbeeld door de\r\nbekendheid met het controlebeleid en de zichtbaarheid van controles. De subjectieve\r\ncontrolekans is doorslaggevend voor de mate van naleving. Er kan vaak onderscheid gemaakt\r\nworden in verschillende soorten controles (bijvoorbeeld administratief en fysiek).",
-      "allow_motivation": true,
-      "allow_choice": true,
-      "allow_multiselect": true,
-      "allow_weight": false,
-      "required_active_tags": [],
-      "options": [
-        {
-          "name": "De doelgroep schat de kans op administratieve controle hoog in",
-          "tags": []
-        },
-        {
-          "name": "De doelgroep schat de kans op fysieke controle hoog in",
-          "tags": []
-        }
-      ]
+      "name": "niet-nalevingscultuur",
+      "weight": 1.0,
+      "multiplier": 1.0
     },
     {
-      "name": "Detectiekans",
-      "description": "**De door de doelgroep ingeschatte kans op constatering van de overtreding indien\r\ndoor de overheid gecontroleerd wordt.**\r\n\r\nDe overtreding zal bij de verschillende vormen van controle ook echt gevonden\r\nmoeten worden. Een en ander zal afhangen van de soort overtreding die gepleegd is en de\r\nExpertisecentrum Rechtspleging en Rechtshandhaving, 2006 15\r\ndiepgang van de controles. In sommige gevallen is de overtreding gemakkelijk te constateren\r\nmaar is het moeilijk de overtreder op te sporen. De objectieve detectiekans bestaat uit de\r\nverhouding tussen het aantal geconstateerde overtredingen en het (meestal onbekende)\r\naantal feitelijke overtredingen. Het gaat dus om een inschatting van de doeltreffendheid van\r\nhet controlemiddel",
-      "allow_motivation": true,
-      "allow_choice": true,
-      "allow_multiselect": true,
-      "allow_weight": false,
-      "required_active_tags": [],
-      "options": [
-        {
-          "name": "De doelgroep schat de kans op detectie bij administratieve controle hoog in",
-          "tags": []
-        },
-        {
-          "name": "De doelgroep schat de kans op detectie bij fysieke controle hoog in",
-          "tags": []
-        }
-      ]
+      "name": "scepsis",
+      "weight": 1.0,
+      "multiplier": 1.0
     },
     {
-      "name": "Selectiviteit",
-      "description": "**De (verhoogde) gepercipieerde kans op controle en detectie in het geval van een\r\novertreding door selectie van te controleren bedrijven, personen, handelingen of gebieden.**\r\n\r\nDit heeft betrekking op de mate waarin controleurs erin slagen om overtreders\r\nvaker te controleren dan degenen die naleven. In principe kan de kwaliteit of effectiviteit van\r\ndeze vorm van selectieve controle (mogelijk gebaseerd op risicoanalyse of misdaadanalyse)\r\ngemeten worden door de verhouding van het aantal overtreders bij selecte controles en bij aselecte controles. De selectie verhoogt de pakkans voor overtreders. Deze dimensie is vooral\r\nvan belang voor analyses van de handhaving, de doelgroep verrekent dit effect waarschijnlijk\r\nal in T7 en T8.\r\n",
-      "allow_motivation": true,
-      "allow_choice": true,
-      "allow_multiselect": true,
-      "allow_weight": false,
-      "required_active_tags": [],
-      "options": [
-        {
-          "name": "De doelgroep schat de kans dat overtreders vaker worden gecontroleerd hoog in",
-          "tags": []
-        }
-      ]
+      "name": "inertie",
+      "weight": 1.0,
+      "multiplier": 1.0
     },
     {
-      "name": "Sanctiekans",
-      "description": "**De door de doelgroep ingeschatte kans op een sanctie indien na controle een\r\novertreding is geconstateerd.**\r\n\r\nNa constatering van een overtreding kan een sanctie door bijzondere\r\nopsporingsdienst, politie, bestuur of rechter worden opgelegd. Niet alle geconstateerde\r\novertredingen komen echter zover. Van belang is het sepotbeleid, de bewijsbaarheid van\r\novertredingen en het gedoogbeleid van bestuurders. Het gaat dus om de door de doelgroep\r\nverwachte kans op \u00e9\u00e9n of andere straf. ",
-      "allow_motivation": true,
-      "allow_choice": true,
-      "allow_multiselect": true,
-      "allow_weight": false,
-      "required_active_tags": [],
-      "options": [
-        {
-          "name": "De doelgroep schat de kans op een sanctie hoog in",
-          "tags": []
-        }
-      ]
+      "name": "afwachtend",
+      "weight": 1.0,
+      "multiplier": 1.0
     },
     {
-      "name": "Sanctie-ernst",
-      "description": "**De hoogte en soort van de aan de overtreding gekoppelde sanctie en bijkomende\r\nnadelen van sanctieoplegging.**\r\n\r\nDe hoogte van de sancties betreffen de duur van vrijheidsontneming, de hoogte\r\nvan een geldboete of de moeite die men moet doen in geval van herstellen van de aangerichte\r\nschade. Ook kosten voor rechtsbijstand kunnen een rol spelen. Het proces van\r\nsanctieoplegging kan ook bijkomende, immateri\u00eble nadelen hebben zoals het verlies van\r\naanzien/reputatie als gevolg van het in aanraking komen met Justitie. De hoogte en ernst van\r\nde verschillende soorten straffen zal niet voor alle daders/doelgroepen dezelfde impact\r\nhebben. De snelheid en zekerheid van sanctieoplegging kan die impact vergroten (lik op stuk)\r\nen wordt mogelijk ook al verdisconteerd in T10.\r\n",
-      "allow_motivation": true,
-      "allow_choice": true,
-      "allow_multiselect": true,
-      "allow_weight": false,
-      "required_active_tags": [],
-      "options": [
-        {
-          "name": "De doelgroep schat de sanctie-ernst hoog in",
-          "tags": []
-        }
-      ]
+      "name": "vergelijkbare normoverdracht",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "lange duur",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "patroon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "schade",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "informatie-asymmetrie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "marktverstoring",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "geen herstel",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "wel weten",
+      "weight": 1.0,
+      "multiplier": 1.0
     }
   ]
 }

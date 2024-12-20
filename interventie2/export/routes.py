@@ -122,7 +122,7 @@ def instrument_to_json(instrument_id):
     instrument_json = {
         "filetype": "instrument",
         "filetype_version": current_app.config["FILETYPE_VERSION"],
-        "name": instrument.name,
+        "name": (instrument.name).replace(':',''),
         "introduction": instrument.introduction,
         "description": instrument. description,
         "referenced_elsewhere": instrument.referenced_elsewhere,
@@ -134,7 +134,7 @@ def instrument_to_json(instrument_id):
     tags = []
     for tag in instrument.tags:
         tag_json = {
-            "name": tag.tag.name,
+            "name": (tag.tag.name).replace(':',''),
             "weight": tag.weight,
             "multiplier": tag.multiplier}
         tags.append(tag_json)
@@ -192,13 +192,13 @@ def question_set_to_json(question_set_id):
         required_active_tags = []
         for tag in question.required_active_tags:
             required_active_tags_json = {
-                "name": tag.name,
+                "name": (tag.name).replace(':',''),
             }
             required_active_tags.append(required_active_tags_json)
         options = []
         for option in sorted(question.options, key=lambda order: getattr(order, 'order')):
             option_json = {
-                "name": option.name
+                "name": (option.name).replace(':','')
             }
             tags_json = []
             for tag in option.tags:
