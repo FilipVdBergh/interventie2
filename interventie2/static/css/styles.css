@@ -54,6 +54,10 @@ h1, h2, h3 {
 h1 {
     font-size: x-large;
 }
+    h1 button {
+        min-width: 2em;
+        height: 2em;
+    }
 h2 {
     font-size: large;
 }
@@ -162,6 +166,10 @@ table {
   td {
     padding: 0.15em 1em;
   }
+    td button {
+        min-width: 2em;
+        height: 2em;
+    }
   .disabled td {
     color: var(--mid-grey);
   }

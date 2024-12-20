@@ -77,11 +77,12 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{{ url_for('tools.edit_question', question_id=question.id) }}"><button>Aanpassen</button></a>
+                            <a href="{{ url_for('tools.edit_question', question_id=question.id) }}" class="tooltip"><button>✎</button><div class="tooltiptext">Vraag aanpassen</div></a>
+                            <a href="{{ url_for('tools.edit_required_tags', question_id=question.id) }}" class="tooltip"><button>⌥</button><div class="tooltiptext">Routering</div></a>
                             {% if not question.is_category %}
-                                <a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}"><button>Antwoordopties</button></a>
+                                <a href="{{ url_for('tools.edit_question_options', question_id=question.id) }}" class="tooltip"><button>◉</button><div class="tooltiptext">Antwoordopties</div></a>
                             {% endif %}
-                            <a href="{{ url_for('tools.edit_required_tags', question_id=question.id) }}"><button>Routering</button></a>
+                            
                         </td>
                     </tr>
                 {% endfor %}
