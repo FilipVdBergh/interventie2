@@ -72,8 +72,7 @@ h3 {
     }
 
 .divquestionnaire {
-    /* justify-self: center; */
-    /* flex-grow: 4; */
+
 }
     .divquestionnaire:empty {
         display: none;

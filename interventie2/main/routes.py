@@ -450,15 +450,23 @@ def process_simultaneous(worksession_id):
 		selected_options = []
 		weights = {}
 		for item, value in request.form.items():
-			# De name-attribute van de textarea bevat het soort vraag (motivation, option), een :, en dan het vraagnummer of het optienummer.
+			# De name-attribute van de textarea bevat het soort vraag (motivation, option, weight), een :::, en dan het vraagnummer of het optienummer.
 			if 'motivation' in item:
-				_, question_id = item.split(':', 1)
+				_, question_id = item.split(':::', 1)
 				motivations[int(question_id)] = value
 			if 'option' in item:
 				selected_options.append(int(value))
 			if 'weight' in item:
-				_, question_id = item.split(':', 1)
+				_, question_id = item.split(':::', 1)
 				weights[int(question_id)] = value
+		
+		### Sometimes a form input seems to be missing from the requests. This code was meant to help find the problem.
+		# for r in request.form.items():
+		# 	print(r)
+		# for o in selected_options:
+		# 	o1=Option.query.get(o)
+		# 	print(f'{o1.id}: {o1.name}')
+
 
 		for question in worksession.question_set.questions:
 		# Alleen de vragen in de huidige question set
@@ -466,7 +474,7 @@ def process_simultaneous(worksession_id):
 				new_answer = Answer(worksession=worksession, question=question, motivation=motivations.get(question.id), weight=weights.get(question.id))
 				for option in question.options:
 					if option.id in selected_options: 
-						# De vraag zit in de huidige question set en moet aangevinkt worden.
+						# De vraag zit in de huidige question en moet aangevinkt worden.
 						new_answer.selection.append(Selection(option=option))
 				db.session.add(new_answer)
 		db.session.commit()

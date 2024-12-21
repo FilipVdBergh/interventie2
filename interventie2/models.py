@@ -21,16 +21,6 @@ def generate_secret_key(n=20):
         return ''.join((random.choice('QWERTYUIOPASDFGHJKLZXCVBNM1234567890') for i in range(n)))
 
 
-def clone(obj, worksession):
-    # remove the object from the worksession (set its state to detached)
-    worksession.expunge(obj)
-    # make it transient (set its state to transient)
-    make_transient(obj)
-    # now set all primary keys to None so there are no conflicts later
-    for pk in inspect(obj).mapper.primary_key:
-        setattr(obj, pk.name, None)
-    return obj
-
 class Role(db.Model):
     __tablename__  = 'roles'
     id             = db.Column(db.Integer, primary_key=True) #1=root 2=admin, 3=maintainer, 4=user, 5=demo
