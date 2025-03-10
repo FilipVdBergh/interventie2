@@ -168,7 +168,7 @@
     <h1>Sessies met projectnummer {{ worksession.project_number }}</h1>
     <div class="card_area">
         {% for rws in related_worksessions %}
-            <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
+            <a href="{{url_for('main.show_worksession', worksession_id=rws.id)}}">
                 <div class="card">
                     <div class="card_title">
                         {% if rws == worksession %}
