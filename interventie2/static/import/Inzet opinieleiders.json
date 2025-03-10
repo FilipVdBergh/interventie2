@@ -1,0 +1,114 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Inzet opinieleiders",
+  "introduction": "Lenen van de naamsbekendheid en reputatie van opinieleiders zodat een breed publiek onze boodschap kan horen. ",
+  "description": "- Wanneer we consumenten willen waarschuwen. \r\n- Wanneer be\u00efnvloeden via reguliere ondernemingen ontoereikendheid is.  \r\n\r\n",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- Inzet van opinieleiders heeft een groter potentieel uitstralingseffect dan die van AFM-collega\u2019s. \r\n- De AFM vereenzelvigt zich met de integriteit en deskundigheid van deze opinieleider. Selecteer ze dus verstandig. Zie voorbeeld M. Borsato die later onder vuur kwam te liggen in de media vanwege misstanden rondom programma The Voice.  \r\n\r\nDe kracht van Inzet opinieleiders hangt af van: \r\n\r\n- De geloofwaardigheid van de BN\u2019ers, gegeven de boodschap die ze verkondigen\r\n- De timing van de boodschap (boodschap komt beter aan indien het de consument bereikt op het moment dat die zich buigt over dienst of product)\r\n- Het medium dat we gebruiken om het publiek te bereiken",
+  "examples": "- De AFM en de Fraudehelpdesk hebben in het kader van de World Investor Week in 2021 via social media iedere dag waarschuwingen en tips voor verstandig beleggen gedeeld. Onderdeel daarvan was een video waarin Jort Kelder en Marco Borsato werden ge\u00efnterviewd over nepadvertenties met hun naam en portret. ",
+  "links": "",
+  "tags": [
+    {
+      "name": "afwachtend",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "andersoortig risico",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "belangrijke norm",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "beweegt onder druk",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "inertie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "consumenten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "wel kunnen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "marktsegment",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet willen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ongewenst gedrag",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "scepsis",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "wel weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "aangrijpingspunt",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "momentum",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "uitstralingseffect",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "beperkte toezichtcapaciteit",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "onvolwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[type] informele interventie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individueel persoon",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 0.0
+    }
+  ]
+}

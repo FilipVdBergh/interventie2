@@ -1,0 +1,104 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Toezichtgesprek",
+  "introduction": "Voeren van een (informeel) gesprek met vertegenwoordiging van de AFM en vertegenwoordiging van een onderneming, bijvoorbeeld over de bevindingen van thematisch onderzoek. Als het ongewenste gedrag ernstig van aard is, dan kan dit gesprek worden gevoerd met een AFM-bestuurder.",
+  "description": "* Als je bevindingen wilt overbrengen.\r\n* Als je je wilt verzekeren dat de onderneming de boodschap begrijpt. Een gesprek geeft de gelegenheid begrip te checken, wat bij schriftelijke communicatie minder goed mogelijk is. \r\n* Als je aan hoor- en wederhoor wilt doen, dat helpt ook bij het draagvlak. \r\n",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "* Dit is net als bellen, of een individuele rapportage, een vrij generiek instrument. Wie nodig je uit bij dit gesprek, aan wie moet de boodschap overgebracht worden? \r\n* Het toezichtgesprek is indringend maar heeft beperkt bereik of uitstralingseffect. \r\n* Als escalatie is dit een zwaarder instrument dan bellen, en lichter dan bijvoorbeeld een normoverdragend gesprek. \r\n* Als de ernst van de situatie heel groot is, dan kan worden overwogen het gesprek te laten voeren door een bestuurder van de AFM. \r\n\r\n#De kracht van een toezichtsgesprek\r\n\r\n* Hi\u00ebrarchie (gesprek tussen de juiste mensen?); en \r\n* Inhoud (hebben we feiten helder en brengen we boodschap bondig?).\r\n* Inzet van de juiste gesprekstechnieken.\r\n* Als er nog schriftelijke communicatie volgt, dit echt aansluit bij (de toon en inhoud van) het gesprek. Anders heeft het een averechts effect. \r\n",
+  "examples": "",
+  "links": "",
+  "tags": [
+    {
+      "name": "afwachtend",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "andersoortig risico",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "consumenten",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "geen overtreding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individueel persoon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "inertie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "marktsegment",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "niet kunnen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet willen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet-nalevingscultuur",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "onduidelijke norm",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ongewenst gedrag",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "overtreding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "reactantie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "scepsis",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[type] informele interventie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

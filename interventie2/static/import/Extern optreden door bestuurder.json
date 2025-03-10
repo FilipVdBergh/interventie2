@@ -1,0 +1,69 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Extern optreden door bestuurder",
+  "introduction": "Vergroten van de maatschappelijke urgentie voor een onderbelicht probleem door met stevige uitspraken reactie uit te lokken. ",
+  "description": "- Wanneer miststanden/ongewenste gedragingen door politiek/sector (nog) niet als belangrijk en/of urgent worden gezien.",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- Het is een effici\u00ebnte maar risicovolle manier om aandacht te generen. Negatieve aandacht kan op de AFM kunnen komen te liggen, in plaats van op het onderwerp. \r\n- Het leent zich vooral voor situaties waarin formele handhaving (nog) niet mogelijk is vanwege ontbreken instrumentarium.\r\n- Het kan ingezet worden naast Wensen in wetgevingsbrief.\r\n\r\nDe kracht van Steen in de vijver door bestuurder hangt af van\r\n\r\n- Scherpte van de analyse, tegenstanders zullen gaten in het betoog willen schieten.\r\n- De bereidheid om de wind van voren te krijgen, en de rug recht te houden.\r\n- De bereidheid van de AFM om mee te denken over oplossingen voor het gesignaleerde probleem. Anders bestaat het gevaar dat de AFM buiten het publieke debat komt te staan. ",
+  "examples": "- Voormalig AFM-bestuurder Theodor Kockelkoren pleit in 2009 in een interview in het FD voor meer toezichtsbevoegdheden (met name op productontwikkelingsproces) omdat hij meent dat financi\u00eble ondernemingen consumenten nog te vaak ''knollen voor citroenen verkopen''.\r\n- Voormalig AFM-voorzitter Hans Hoogervorst pleit ervoor om zogenoemde tophypotheken af te schaffen. Dit leidde tot veel ophef in de media en in de politiek. Het heeft uiteindelijk wel tot een verschuiving in het beleid rondom hypotheekfinanciering geleid.\r\n\r\n",
+  "links": "",
+  "tags": [
+    {
+      "name": "andersoortig risico",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "belangrijke norm",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "consumenten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "invloed consumenten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "marktsegment",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "meer ondernemingen/personen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet-nalevingscultuur",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "momentum",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "uitstralingseffect",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[type] informele interventie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

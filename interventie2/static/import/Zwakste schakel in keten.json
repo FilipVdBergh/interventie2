@@ -1,0 +1,64 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Zwakste schakel in keten",
+  "introduction": "Be\u00efnvloeden van een zwakke of reputatiegevoelige schakel in de keten, bijvoorbeeld in geval van een hardnekkig probleem. De schakel hoeft niet een onder toezicht staande onderneming te zijn, maar kan juist een toeleverancier zijn of een faciliterende rol vervullen. De zwakste schakel in de keten is zowel een manier van kijken en analyseren, als een mogelijkheid om op alternatieve wijze te be\u00efnvloeden.  ",
+  "description": "- Wanneer ondernemingen ongewenst gedrag vertonen en lastig direct te be\u00efnvloeden zijn. \r\n\r\n",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- Dit instrument (perspectief) is nuttig bij hardnekkige problemen waarbij een meer directe be\u00efnvloeding van de onderneming weinig effectief blijkt. Idee is om dan partijen waarvan die onderneming afhankelijk is te be\u00efnvloeden. Vaak is er geen wettelijke grondslag om die andere partijen in de keten te bewegen en moet er dus gezocht worden naar een andere prikkel, zoals intrinsieke motivatie (moreel appel) of reputatiegevoeligheid.\r\n- Het kan gelijktijdig ingezet worden met andere instrumenten.\r\n\r\nDe kracht van Schakel in de keten hangt af van: \r\n\r\n- De gevoeligheid voor informele druk vanuit de AFM.\r\n- De mate waarin de eigenlijke onderneming afhankelijk is van die partij\r\n",
+  "examples": "- Voorbeeld van andere toezichtorganisatie: de Kansspelautoriteit die illegale loterijen aanpakt door samen te werken met Facebook, een belangrijke schakel in deze keten. \r\n- Marktplaats die op ons verzoek vrijwillig illegale leenadvertenties verwijdert. \r\n\r\n",
+  "links": "",
+  "tags": [
+    {
+      "name": "marktsegment",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "meer ondernemingen/personen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ongewenst gedrag",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet kunnen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet willen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "beperkte toezichtcapaciteit",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "consumenten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "inactief sinds 2025",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[type] informele interventie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

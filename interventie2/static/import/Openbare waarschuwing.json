@@ -1,0 +1,114 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Openbare waarschuwing",
+  "introduction": "De AFM kan een openbare waarschuwing uitvaardigen als waarschuwing voor het publiek. Een waarschuwing moet bijdragen aan de bescherming en/of voorlichting van consumenten of andere partijen op de financi\u00eble markten. Over het algemeen waarschuwt de AFM voor zeer ernstige doorlopende overtredingen, waar consumenten mogelijk door worden benadeeld.\r\n\r\nEen waarschuwing staat los van de bevoegdheid om handhavend op te treden. In principe is het niet de bedoeling om alleen een waarschuwing te publiceren zonder verdere handhavingsmaatregelen te nemen.",
+  "description": "",
+  "referenced_elsewhere": true,
+  "reference_link": "connect.stelan.nl/sites/servicepunt/HE/Paginas/7.%20Formele%20maatregelen/a%20Maatregelen/j-Openbare-waarschuwing.aspx",
+  "considerations": "",
+  "examples": "",
+  "links": "",
+  "tags": [
+    {
+      "name": "[type] handhaving",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "geen overtreding",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individueel persoon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "Wwft/Sw",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "onvolwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "lange duur",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "vergelijkbare normoverdracht",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "scepsis",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet-nalevingscultuur",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "inertie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "financieel voordeel",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "afwachtend",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "patroon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "schade",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "geen benadeling",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "marktverstoring",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "misleiding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "geen herstel",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "wel weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

@@ -39,6 +39,7 @@ from interventie2.tools.routes import tools
 from interventie2.export.routes import export
 from interventie2.analysis.routes import analysis
 from interventie2.error.routes import error
+from interventie2.present.routes import present
 from interventie2.models import User
 
 app.register_blueprint(main, url_prefix='/')
@@ -48,3 +49,4 @@ app.register_blueprint(tools, url_prefix='/tools/')
 app.register_blueprint(export, url_prefix='/export/')
 app.register_blueprint(analysis, url_prefix='/analysis/')
 app.register_blueprint(error, url_prefix='/error/')
+app.register_blueprint(present, url_prefix='/present/')

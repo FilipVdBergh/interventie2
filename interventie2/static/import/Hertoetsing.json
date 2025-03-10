@@ -1,0 +1,89 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Hertoetsing",
+  "introduction": "",
+  "description": "",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "",
+  "examples": "",
+  "links": "",
+  "tags": [
+    {
+      "name": "[type] handhaving",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individueel persoon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "Whc",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "onvolwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet-nalevingscultuur",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "scepsis",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "inertie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "afwachtend",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "lange duur",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "patroon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "schade",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "misleiding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "marktverstoring",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "financieel voordeel",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "wel weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Sectorbrief",
+  "introduction": "Schriftelijk communiceren aan de sector van toezichtbevindingen en aanbevelingen, geadresseerd aan de directies van de individuele ondernemingen. ",
+  "description": "- Wanneer je groepen ondernemingen wilt confronteren met hoe de sector ervoor staat, bijvoorbeeld over de beheersing van een bepaald risico, of over de adoptie van een recent ge\u00efntroduceerde norm. \r\n- Wanneer je directies wilt aanspreken op de resultaten en aansporen verbetering te realiseren. ",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- De Sectorbrief is een stap indringender dan de publicatie van een generieke rapportage en een stap minder confronterend dan een 1:1 gesprek met ondernemingen.  \r\n- De Sectorbrief is een stap formeler dan een Ronde Tafel met marktpartijen, maar mist de mogelijkheid van sociale druk van een ronde tafel sessie. \r\n- De Sectorbrief balanceert tussen efficiency (gericht aan vele partijen) en effectiviteit (aanspreken van individuele directies).\r\n\r\nDe kracht van Sectorbrief hangt af van: \r\n\r\n- De acceptatie van directies van het Waarom (waarom AFM dit heeft onderzocht)\r\n- De mate waarin een Directie zich aangesproken voelt (\u201cZo gaat het bij ons niet\u201d); \r\n- Het aantal en de scherpte van de boodschappen (meer is niet beter); en \r\n- Hun beeld over de professionaliteit (geloofwaardigheid) van de AFM.  ",
+  "examples": "- Alternatieve beleggingsinstellingen. De AFM heeft in voorjaar 2021 met een brief alle geregistreerde beheerders van alternatieve beleggingsinstellingen (light-beheerders) die onder het registratieregime vallen, ge\u00efnformeerd over de wet- en regelgeving die op hen van toepassing is. Tevens kondigde de AFM aan later in 2021 onderzoek te gaan doen naar naleving van de wet- en regelgeving door light-beheerders.\r\n\r\n",
+  "links": "- https://www.afm.nl/nl-nl/nieuws/2021/april/sectorbrief-relevante-regelgeving-light-beheerders\r\n- https://www.fca.org.uk/publication/correspondence/dear-ceo-supervisory-review-global-equity-finance-businesses.pdf\r\n\r\n\r\n",
+  "tags": [
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "individueel persoon",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "accepterend",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "belangrijke norm",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "consumenten",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "invloed brancheverenigingen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "invloed peers",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "marktsegment",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "onduidelijke norm",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "reactantie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "beperkte toezichtcapaciteit",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "momentum",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "uitstralingseffect",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[type] informele interventie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

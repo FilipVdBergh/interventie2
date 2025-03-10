@@ -1,0 +1,84 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Boete",
+  "introduction": "Een groot aantal overtredingen is beboetbaar. Voor een snel overzicht kun je het Besluit bestuurlijke boetes financi\u00eble sector raadplegen (waarin o.a. de boetecategorie\u00ebn zijn opgenomen ter bepaling van de boetehoogte). Het Handhavingskompas geeft aan in welke gevallen een overtreding beboetbaar is.\r\n\r\nUit ons handhavingsbeleid volgt dat de AFM altijd eerst moet zorgen voor herstel alvorens een boete kan worden opgelegd. N.a.v. hetzelfde feitencomplex kan een herstelmaatregel (volgtijdelijk) worden gecombineerd met een boete, \u00f3\u00f3k wanneer er een dwangsom is verbeurd. Dat komt omdat de boete een wezenlijk andere functie heeft: bestraffing voor gedrag uit het verleden. Een boete kan daarom alleen worden opgelegd als de overtreding aan de overtreder kan worden verweten (art. 5:41 Awb). Dat we ons eerst moeten richten op herstel neemt niet weg dat je beboeting met afwachten tot de termijn uit bijvoorbeeld een last onder dwangsom is afgelopen, al helemaal als het gaat om een lange termijn. Het gaat erom dat er concreet zicht is op herstel.",
+  "description": "",
+  "referenced_elsewhere": true,
+  "reference_link": "connect.stelan.nl/sites/servicepunt/HE/Paginas/7.%20Formele%20maatregelen/a%20Maatregelen/g%20-%20Boete-.aspx",
+  "considerations": "",
+  "examples": "",
+  "links": "",
+  "tags": [
+    {
+      "name": "[type] handhaving",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "belangrijke norm",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "geen overtreding",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individueel persoon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "scepsis",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "inertie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "vergelijkbare normoverdracht",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "lange duur",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "patroon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "schade",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "misleiding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "marktverstoring",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "geen herstel",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

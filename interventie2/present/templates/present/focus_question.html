@@ -1,0 +1,28 @@
+<div class="focus_question">
+    <div class="question">
+        {{ question.name }}
+    </div>
+    <div class="description">
+        {{ question.description }}
+    </div>
+    <div class="options">
+        {% for option in question.options | sort(attribute='order')%}
+            <div class="option">
+                <label>
+                    {% if question.allow_multiselect %}
+                        <input type="checkbox" name="option:::{{ option.id }}" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>
+                    {% else %} 
+                        <input type="radio" name="option:::{{ question.id }}" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>
+                    {% endif %}
+                    {{ option.name }}
+                </label>
+            </div>
+        {% endfor %}
+
+        {% if (question.options | length > 0) and (question.allow_multiselect == False) %}<a style="font-size: smaller;" onclick="return uncheck_radio('option:{{ question.id }}' );"><button type="button">&#10060;</button> Keuze wissen</a>{% endif %}
+
+        {% if question.allow_motivation %}
+            <textarea name="motivation:::{{ question.id }}" rows="5" style="width:95%;">{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
+        {% endif %}
+    </div>
+</div>

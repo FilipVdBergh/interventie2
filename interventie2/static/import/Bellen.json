@@ -1,0 +1,74 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Bellen",
+  "introduction": "Bellen met de onderneming om een (mogelijk) ongewenste situatie aan te kaarten. ",
+  "description": "- Wanneer snel opheldering nodig is over een incident of vermeend incident. \r\n- Wanneer urgent de ernst van een situatie overgebracht moet worden. \r\n- Wanneer we willen laten zien dat we nauwlettend monitoren. \r\n",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- Bellen is snel, direct, confronterend, vrij informeel en effici\u00ebnt. \r\n- Bellen lijkt een licht instrument, maar kan zwaar ingezet worden (bijv. door een bestuurder te laten bellen om ernst en urgentie van de situatie over te brengen, zie instrument Chefsache). \r\n- Wie belt met wie? Is het een AFM-projectmedewerker die met een compliance officer belt? De accounttoezichthouder die met zijn/haar contactpersoon belt? Of een senior/manager/hoofd/bestuurder die met beleidsbepaler belt? \r\n- Bel je aangekondigd met afspraak of onaangekondigd? Wil je wel/geen compliance toehoorders van de onderneming erbij hebben? \r\n\r\n# De kracht van Bellen hangt af van: \r\n\r\n- Timing (bel je op goed moment?), \r\n- Hi\u00ebrarchie (gesprek tussen de juiste mensen?); en \r\n- Inhoud (hebben we feiten helder en brengen we boodschap bondig?).\r\n",
+  "examples": "- Bij monitoring van de beurshandel is het gebruikelijk om te bellen bij opvallende transacties. \r\n- Marktplaats had in het verleden advertenties op haar website van illegale aanbieders van dure leningen. Na een paar telefoontjes met marktplaats hebben ze die op ons verzoek verwijderd. Ook omdat het in hun eigen belang was niet de verkeerder uitstraling te hebben naar de markt. Weinig werk, groot resultaat. \r\n",
+  "links": "",
+  "tags": [
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individueel persoon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "andersoortig risico",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "consumenten",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "marktsegment",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "meer ondernemingen/personen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet willen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "onduidelijke norm",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ongewenst gedrag",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "proactief",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[type] informele interventie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

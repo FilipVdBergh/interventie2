@@ -1,0 +1,109 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Aanwijzing",
+  "introduction": "Een aanwijzing is een formeel besluit waarin de toezichthouder een overtreder[1] voorschrijft om binnen een door de toezichthouder bepaalde (1) (redelijke) termijn een (2) gedragslijn te volgen, met als doel dat de overtreder zich aan de wettelijke regels houdt. Voor deze wiki wordt voor het gemak de algemene aanwijzing in de Wft (Artikel 1:75 Wft[2]) als uitgangspunt genomen. De aanwijzing is de lichtste formele maatregel, in die zin dat er geen dwangsom(men) aan verbonden zijn?.",
+  "description": "",
+  "referenced_elsewhere": true,
+  "reference_link": "wiki.stelan.nl/aanwijzing/Pages/Home.aspx",
+  "considerations": "",
+  "examples": "",
+  "links": "",
+  "tags": [
+    {
+      "name": "[type] handhaving",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "geen financieel voordeel",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "geen overtreding",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "individueel persoon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "overtreding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "onvolwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet-nalevingscultuur",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "scepsis",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "inertie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "afwachtend",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "vergelijkbare normoverdracht",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "lange duur",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "patroon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "schade",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "informatie-asymmetrie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "marktverstoring",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "geen herstel",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "wel weten",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

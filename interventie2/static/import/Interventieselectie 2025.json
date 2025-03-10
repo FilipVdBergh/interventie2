@@ -1,0 +1,734 @@
+{
+  "filetype": "question_set",
+  "filetype_version": "1.0",
+  "name": "Interventieselectie 2025",
+  "default_process": 1,
+  "description": "Deze vragenlijst helpt toezichthouders bij de keuze voor \u00e9\u00e9n of meer interventies. Op basis van de antwoorden krijgen toezichthouders advies over mogelijke informele interventies, maatregelen en communicatiestijlen. \r\n\r\nDeze vragenlijst is van toepassing op verschillende doelgroepen (van individuele personen tot een heel marktsegment) en alle vormen van ongewenst gedrag (schadelijk en illegaal gedrag).",
+  "color": "#f0f9ff",
+  "text_color": "#000000",
+  "forbidden_tags": [
+    {
+      "name": "inactief sinds 2025"
+    }
+  ],
+  "mandatory_tags": [],
+  "questions": [
+    {
+      "name": "Algemene vragen",
+      "description": "",
+      "allow_motivation": false,
+      "allow_choice": false,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": []
+    },
+    {
+      "name": "Wie is de doelgroep?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Individueel persoon",
+          "tags": [
+            "individueel persoon"
+          ]
+        },
+        {
+          "name": "Individuele onderneming",
+          "tags": [
+            "individuele onderneming"
+          ]
+        },
+        {
+          "name": "Meerdere personen/ondernemingen",
+          "tags": [
+            "meer ondernemingen/personen"
+          ]
+        },
+        {
+          "name": "Marktsegment",
+          "tags": [
+            "marktsegment"
+          ]
+        },
+        {
+          "name": "Consumenten",
+          "tags": [
+            "consumenten"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Gaat het om ongewenst gedrag, een (vermoedelijke) overtreding, of een andersoortig risico?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Overtreding",
+          "tags": [
+            "overtreding"
+          ]
+        },
+        {
+          "name": "Ongewenst gedrag",
+          "tags": [
+            "ongewenst gedrag",
+            "geen overtreding"
+          ]
+        },
+        {
+          "name": "Overtreding en ongewenst gedrag",
+          "tags": [
+            "overtreding",
+            "ongewenst gedrag"
+          ]
+        },
+        {
+          "name": "Andersoortig risico",
+          "tags": [
+            "andersoortig risico",
+            "geen overtreding"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hoe belangrijk is het onderwerp voor de strategie van de AFM?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": true,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Het is een maatschappelijk relevant en actueel thema",
+          "tags": [
+            "belangrijke norm"
+          ]
+        },
+        {
+          "name": "Het is een door de AFM aangekondigd speerpunt",
+          "tags": [
+            "belangrijke norm"
+          ]
+        },
+        {
+          "name": "Het is een breder probleem, waarbij meerdere partijen hetzelfde gedrag vertonen",
+          "tags": [
+            "belangrijke norm"
+          ]
+        },
+        {
+          "name": "Ander strategisch belang",
+          "tags": [
+            "belangrijke norm"
+          ]
+        },
+        {
+          "name": "Geen strategisch thema",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "Welk wettelijk kader is van toepassing?",
+      "description": "Kies de wet die het stevigste mandaat biedt om te interveni\u00ebren, of anders het meeste aan het onderwerp van het gedrag raakt. Bij overtreding van onderliggende regelgeving kies je de overkoepelende wet, bijvoorbeeld de Wft voor het Bgfo. ",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [
+        {
+          "name": "overtreding"
+        }
+      ],
+      "options": [
+        {
+          "name": "Pw",
+          "tags": [
+            "Pw"
+          ]
+        },
+        {
+          "name": "Wft",
+          "tags": [
+            "Wft"
+          ]
+        },
+        {
+          "name": "Whc",
+          "tags": [
+            "Whc"
+          ]
+        },
+        {
+          "name": "Wta",
+          "tags": [
+            "Wta"
+          ]
+        },
+        {
+          "name": "Wwft/SW",
+          "tags": [
+            "Wwft/Sw"
+          ]
+        },
+        {
+          "name": "Wfm BES",
+          "tags": [
+            "Wfm BES"
+          ]
+        },
+        {
+          "name": "Wwft BES",
+          "tags": [
+            "Wwft BES"
+          ]
+        },
+        {
+          "name": "Geen",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "Competenties van de doelgroep",
+      "description": "",
+      "allow_motivation": false,
+      "allow_choice": false,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": []
+    },
+    {
+      "name": "Weet de doelgroep wat het gewenste gedrag is?",
+      "description": "Het gaat om kennis van het gewenste gedrag en/of de norm. ",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Ja",
+          "tags": [
+            "wel weten"
+          ]
+        },
+        {
+          "name": "Nee",
+          "tags": [
+            "niet weten"
+          ]
+        },
+        {
+          "name": "Nee, en de norm is onduidelijk",
+          "tags": [
+            "niet weten",
+            "onduidelijke norm"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Kan de doelgroep het gewenste gedrag vertonen?",
+      "description": "Denk bij een onderneming aan het hebben van toereikende systemen en processen, en mensen met de benodigde vaardigheden.",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Ja",
+          "tags": [
+            "wel kunnen"
+          ]
+        },
+        {
+          "name": "Nee",
+          "tags": [
+            "niet kunnen"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Motivatie van de doelgroep",
+      "description": "",
+      "allow_motivation": false,
+      "allow_choice": false,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": []
+    },
+    {
+      "name": "Is de doelgroep al aan het bewegen richting het gewenste gedrag?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Ja, uit eigen beweging",
+          "tags": [
+            "eigen initiatief",
+            "wel willen"
+          ]
+        },
+        {
+          "name": "Ja, maar door - of na het onderzoek of andere recente acties van de toezichthouder",
+          "tags": [
+            "beweegt onder druk"
+          ]
+        },
+        {
+          "name": "Nee",
+          "tags": [
+            "niet willen"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Heeft de doelgroep weerstand tegen het gewenste gedrag?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Ja, ervaart geen of weinig keuzevrijheid",
+          "tags": [
+            "reactantie"
+          ]
+        },
+        {
+          "name": "Ja, twijfelt aan het nut of is wantrouwend",
+          "tags": [
+            "scepsis"
+          ]
+        },
+        {
+          "name": "Ja, is niet ge\u00efnteresseerd",
+          "tags": [
+            "inertie"
+          ]
+        },
+        {
+          "name": "Nee",
+          "tags": [
+            "accepterend"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Invloed van de omgeving op de doelgroep",
+      "description": "",
+      "allow_motivation": false,
+      "allow_choice": false,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": []
+    },
+    {
+      "name": "Wie of wat kan de doelgroep be\u00efnvloeden?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": true,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Vergelijkbare personen/ondernemingen (peers)",
+          "tags": [
+            "invloed peers"
+          ]
+        },
+        {
+          "name": "Branchevereniging",
+          "tags": [
+            "invloed brancheverenigingen"
+          ]
+        },
+        {
+          "name": "Consumenten",
+          "tags": [
+            "invloed consumenten"
+          ]
+        },
+        {
+          "name": "Andere toezichthouders",
+          "tags": [
+            "invloed andere toezichthouders"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Is de organisatiecultuur/de sociale omgeving gericht op het gewenste gedrag?",
+      "description": "Bij het naleven van normen kun je hierbij denken aan de mate van compliancegerichtheid, maar ook of men ethisch handelen in het algemeen belangrijk vindt. ",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Ja",
+          "tags": [
+            "nalevingscultuur"
+          ]
+        },
+        {
+          "name": "Nee",
+          "tags": [
+            "niet-nalevingscultuur"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ernst en duur van het ongewenste gedrag",
+      "description": "",
+      "allow_motivation": false,
+      "allow_choice": false,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": []
+    },
+    {
+      "name": "Wat is de (relatieve) omvang van het ongewenst gedrag?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Lange duur, \u00e9\u00e9nmalige overtreding/gedraging",
+          "tags": [
+            "lange duur",
+            "incident"
+          ]
+        },
+        {
+          "name": "Lange duur, meermalige overtredingen/gedragingen",
+          "tags": [
+            "lange duur",
+            "patroon"
+          ]
+        },
+        {
+          "name": "Korte duur, \u00e9\u00e9nmalige overtreding/gedraging",
+          "tags": [
+            "korte duur",
+            "incident"
+          ]
+        },
+        {
+          "name": "Korte duur, meermalige overtredingen/gedragingen",
+          "tags": [
+            "korte duur",
+            "patroon"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Geniet de persoon/onderneming significant financieel voordeel van het ongewenste gedrag?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Ja, ook in de priv\u00e9sfeer",
+          "tags": [
+            "financieel voordeel",
+            "financieel voordeel in priv\u00e9sfeer"
+          ]
+        },
+        {
+          "name": "Ja, maar niet in de priv\u00e9sfeer",
+          "tags": [
+            "financieel voordeel"
+          ]
+        },
+        {
+          "name": "Nee",
+          "tags": [
+            "geen financieel voordeel"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Zijn consumenten, cli\u00ebnten, beleggers of andere marktpartijen benadeeld (geweest)?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": true,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "(Financi\u00eble) schade",
+          "tags": [
+            "schade"
+          ]
+        },
+        {
+          "name": "Misleidende informatie",
+          "tags": [
+            "misleiding"
+          ]
+        },
+        {
+          "name": "Onjuiste/onvolledige informatie",
+          "tags": [
+            "informatie-asymmetrie"
+          ]
+        },
+        {
+          "name": "Significante verstoring van de werking van de markt",
+          "tags": [
+            "marktverstoring"
+          ]
+        },
+        {
+          "name": "Andersoortige benadeling",
+          "tags": [
+            "benadeling"
+          ]
+        },
+        {
+          "name": "Nee",
+          "tags": [
+            "geen benadeling"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Heeft de persoon/onderneming de nadelige gevolgen van de benadeling volledig rechtgezet?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Ja",
+          "tags": [
+            "herstel"
+          ]
+        },
+        {
+          "name": "Nee, maar heeft wel een geloofwaardig plan hiertoe",
+          "tags": [
+            "gepland herstel"
+          ]
+        },
+        {
+          "name": "Nee",
+          "tags": [
+            "geen herstel"
+          ]
+        },
+        {
+          "name": "Niet van toepassing",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "Compliancegerichtheid van de doelgroep",
+      "description": "",
+      "allow_motivation": false,
+      "allow_choice": false,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": []
+    },
+    {
+      "name": "Wat is de houding van de doelgroep ten aanzien van de toezichthouder in de afgelopen vijf jaar?",
+      "description": "De houding leid je bijvoorbeeld af uit het zelf melden en oplossen van incidenten, het meewerken aan onderzoeken en de openheid gedurende gesprekken. ",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Overwegend proactief/constructief/vertrouwend",
+          "tags": [
+            "proactief"
+          ]
+        },
+        {
+          "name": "Overwegend afwachtend/destructief/wantrouwend",
+          "tags": [
+            "afwachtend"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Heeft de overtreder zelf aan de AFM gemeld dat er (een) overtreding(en) is/zijn begaan?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [
+        {
+          "name": "overtreding"
+        }
+      ],
+      "options": [
+        {
+          "name": "Ja",
+          "tags": [
+            "zelf melden"
+          ]
+        },
+        {
+          "name": "Nee",
+          "tags": [
+            "niet melden"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Heeft de overtreder volledig en tijdig meegewerkt aan het huidige onderzoek van de AFM?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [
+        {
+          "name": "overtreding"
+        }
+      ],
+      "options": [
+        {
+          "name": "Ja, zowel volledig als tijdig",
+          "tags": [
+            "meewerken"
+          ]
+        },
+        {
+          "name": "Nee, niet volledig en/of niet tijdig",
+          "tags": [
+            "niet meewerken"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Is de doelgroep in de afgelopen vijf jaar op overtredingen aangesproken?",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [
+        {
+          "name": "overtreding"
+        }
+      ],
+      "options": [
+        {
+          "name": "Ja, dezelfde normen",
+          "tags": [
+            "recidive"
+          ]
+        },
+        {
+          "name": "Ja, vergelijkbare normen",
+          "tags": [
+            "vergelijkbare normoverdracht"
+          ]
+        },
+        {
+          "name": "Ja, andere normen",
+          "tags": [
+            "andere normoverdracht"
+          ]
+        },
+        {
+          "name": "Nee",
+          "tags": [
+            "eerste overtreding"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Filter",
+      "description": "",
+      "allow_motivation": false,
+      "allow_choice": false,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": []
+    },
+    {
+      "name": "Filter de instrumentenlijst",
+      "description": "",
+      "allow_motivation": true,
+      "allow_choice": true,
+      "allow_multiselect": false,
+      "allow_weight": false,
+      "required_active_tags": [],
+      "options": [
+        {
+          "name": "Communicatiestijlen",
+          "tags": [
+            "[type] stijladvies"
+          ]
+        },
+        {
+          "name": "Maatregelen",
+          "tags": [
+            "[type] handhaving"
+          ]
+        },
+        {
+          "name": "Informele interventies",
+          "tags": []
+        }
+      ]
+    }
+  ]
+}

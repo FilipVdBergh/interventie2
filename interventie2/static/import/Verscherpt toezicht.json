@@ -1,0 +1,89 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Verscherpt toezicht",
+  "introduction": "Toelichting volgt.",
+  "description": "",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "",
+  "examples": "- KAV",
+  "links": "",
+  "tags": [
+    {
+      "name": "afwachtend",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "beweegt onder druk",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "consumenten",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "eigen initiatief",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "individueel persoon",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "marktsegment",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "meer ondernemingen/personen",
+      "weight": 1.0,
+      "multiplier": 0.0
+    },
+    {
+      "name": "niet kunnen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "niet willen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ongewenst gedrag",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "overtreding",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "onvolwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ruime toezichtscapaciteit",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[type] informele interventie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "filetype": "instrument",
+  "filetype_version": "1.0",
+  "name": "Dialoog op het kleed",
+  "introduction": "Voeren van een open gesprek tussen toezichthouders en mensen van de onderneming die onder ons toezicht valt aan de hand van positiebepaling op een kleed. Het is een actieve dialoogvorm met een fysieke component om snel verschillende invalshoeken boven water te krijgen en iedereen actief in het gesprek te betrekken. Op basis van de vragen: \u201cWat gaat er goed?\u201d en \u201cWat kan er beter?\u201d nemen deelnemers positie in op het kleed, lichten hun positie toe en ontstaat er een actieve dialoog. ",
+  "description": "- Wanneer je een open gesprek/ dialoog wilt hebben met een grotere groep mensen over een bepaald onderwerp, dat te maken heeft met verandering\r\n- Wanneer je alle aanwezigen actief wilt betrekken in het gesprek en hen kleur wilt laten bekennen. \r\n\r\n",
+  "referenced_elsewhere": false,
+  "reference_link": "",
+  "considerations": "- Effectief middel als je ge\u00efnteresseerd bent in de denkwijze en standpunt van de ander en je bereid bent om je hierin te verdiepen. Niet geschikt als je je eigen standpunt aan de ander wilt overbrengen.\r\n- Om deze interventie in te zetten, is het nodig dat er \u00e9\u00e9n of meerdere toezichthouders bij zijn met kennis en inzicht in de onderneming die uitgenodigd is. Alle aanwezigen nemen positie in op het kleed op basis van eigen kennis en ervaring. Vraagt dus enige kennis, vaardigheid en senioriteit van de toezichthouder.\r\n- Vooraf is het wat onwennig. Het is belangrijk als toezichthouder om duidelijk te zijn over wat de verwachtingen zijn en wat we gaan doen met wat er besproken wordt in zo\u2019n sessie.\r\n- De kracht van het instrument hangt af van de facilitator. Het is belangrijk dat de facilitator onafhankelijk/neutraal is en het gesprek in goede banen kan leiden. Indien er discussie ontstaat vraagt de facilitator door, vat samen en benoemd wat er gemeenschappelijk gedeeld wordt en waar deel\r\n",
+  "examples": "- KAV-veranderkleed: In gesprek met bestuurders en medewerkers van accountantsorganisaties over hun verandertraject.\r\n\r\n",
+  "links": "- [ZieTV](https://dms.stelan.nl/Media/assetlibrary/Forms/Video/videoplayerpage.aspx?ID=223&FolderCTID=0x0120D520A80800E2ACCFC66AE833499C1913A1C695FF5F&List=0d146100-1720-4125-8820-8d55041aa425&RootFolder=/Media/assetlibrary/ZIEtv%20juli%202018/Additional%20Content&RecSrc=/Media/assetlibrary/ZIEtv%20juli%202018)",
+  "tags": [
+    {
+      "name": "individuele onderneming",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "volwassen",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "proactief",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "patroon",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "ongewenst gedrag",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "momentum",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "beperkte toezichtcapaciteit",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "inactief sinds 2025",
+      "weight": 1.0,
+      "multiplier": 1.0
+    },
+    {
+      "name": "[type] informele interventie",
+      "weight": 1.0,
+      "multiplier": 1.0
+    }
+  ]
+}
