@@ -262,8 +262,9 @@
             <li>{{ macro.confirm_redirect( "Sessie verwijderen", "Weet je zeker dat je "+worksession.name+" wilt verwijderen?", url_for('main.delete_worksession', worksession_id=worksession.id) ) }}</li>
             </ul>
         <h1>Sessie delen</h1>
-        <p>Om toegangsrechten tot deze sessie te krijgen klikt de nieuwe gebruiker op de link. De link is zeven dagen
-            geldig.</p>
+        <p>
+            De eigenaar van deze sessie is <a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a>, en heeft altijd toegang.
+        Deel deze link om andere gebruikers toegangsrechten tot deze sessie te geven. De link is zeven dagen geldig.</p>
         <input type="text"
             value="{{ url_for('main.share_link', worksession_id=worksession.id, invitation_string=invitation_string, _external=True) }}"
             id="link" size="80">
@@ -273,7 +274,7 @@
                 <a href="{{ url_for('main.reset_secret_key', worksession_id=worksession.id) }}">Trek alle openstaande uitnodigingen in.</a>
             </li>
         </ul>
-        {% if current_user.role.edit_users %}
+
         <h2>Gebruikers die de sessie mogen zien</h2>
         <table>
             <tr>
@@ -286,14 +287,21 @@
                     <span class="user"><a href="{{ url_for('admin.user', id=user.id) }}">{{ user.name }}</a></span>
                 </td>
                 <td>
-                    <a href="{{ url_for('main.stop_share', worksession_id=worksession.id, user_id=user.id) }}"><button>Verwijderen</button></a>
+                    {% if user != worksession.creator %}
+                    <button>
+                        {{ macro.confirm_redirect( "Maak eigenaar", "Weet je zeker dat je "+user.name+" eigenaar wilt maken van "+worksession.name+"?", url_for('main.make_owner', worksession_id=worksession.id, user_id=user.id) ) }}
+                    </button>
+                    {% endif %}
+                    <button>
+                        {{ macro.confirm_redirect( "Toegang ontnemen", "Weet je zeker dat je "+user.name+" toegang wilt ontnemen tot "+worksession.name+"?", url_for('main.stop_share', worksession_id=worksession.id, user_id=user.id) ) }}
+                    </button>
                 </td>
             </tr>
             {% endfor %}
 
         </table>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/copy_to_clipboard.js')}}"></script>
-        {% endif %}
+
     </div>
 </div>
 

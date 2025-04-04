@@ -647,3 +647,16 @@ def stop_share(worksession_id, user_id):
 	worksession.allowed_users.remove(user)
 	db.session.commit()
 	return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
+
+
+@main.route('/worksession/<int:worksession_id>/make_owner/<int:user_id>')
+@login_required
+def make_owner(worksession_id, user_id):
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
+		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+
+	user = User.query.get(user_id)
+	worksession.creator = user
+	db.session.commit()
+	return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
