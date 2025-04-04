@@ -23,45 +23,27 @@
             <div class="logo">{{ config['APP_NAME'] }}</div>
             <div class="modes">
                 {% if current_user.is_authenticated %}
-                    <button>
                         <a href="{{ url_for('main.index') }}">Dashboard</a>
-                    </button>
-                    <button>
                         <a href="{{ url_for('main.worksessions') }}">Sessies</a>
-                    </button>
-                    <button>
                         <a href="{{ url_for('catalog.index') }}">Catalogus</a>
-                    </button>
                     {% if current_user.role.edit_questionnaire %}
-                        <button>
                             <a href="{{ url_for('tools.index') }}">Ontwerpen</a> 
-                        </button>
                     {% endif %}
                     {% if current_user.role.edit_users %}
-                        <button>
                             <a href="{{ url_for('admin.index') }}">Gebruikers</a> 
-                        </button>
                     {% endif %}
                     {% if config['ALLOW_CONTACT'] %}
-                        <button>
                             <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}"><i class='bx bxs-envelope'></i></a>
-                        </button>
                     {% endif %}
                     {% if current_user.role.see_app_info %}
-                        <button>
                             <a href="{{ url_for('admin.info') }}"><i class='bx bxs-info-circle'></i></a>
-                        </button>
                     {% endif %}
-                    <button>
                         <a href="{{ url_for('admin.user', id=current_user.id) }}"><i class='bx bxs-user-circle'></i>
                             {{ current_user.name }} 
                             <!-- {% if current_user.unread_message_alert() %}(&#128489; {{ current_user.unread_messages() }}){% endif %} -->
                         </a>
-                    </button>
                 {% else %}
-                    <button>
                         <a href="{{ url_for('main.login') }}">Login</a>
-                    </button>
                 {% endif %}
 
             </div>

@@ -206,7 +206,7 @@ header {
     grid-template-areas: "modes logo";
     color: white;
     align-items: center;
-    padding: 0.6rem 4.4rem;
+    padding: 0.4rem 4.4rem;
     font-family: "Poppins", sans-serif;
 }
     header a {
@@ -225,30 +225,25 @@ header {
 
     .modes {
         grid-area: modes;
-        padding: 0px;
-        margin: 0px;
-    }
-    .modes button {
-        background: inherit;
-        outline: none;
-        cursor: pointer;
-        padding: 0.4rem 0.4rem;
-        margin: 0 0.5rem 0 0;
-        border: none;
-        border-radius: 0px;
-        color: white;
-        font-family: "Poppins", sans-serif;
-        font-size: smaller;
-        min-width: 0;
-    }     
-    .modes a{
-        text-decoration: none;
-    }   
-    .modes button:hover {
-        color: white;
-        background-color: var(--highlight);
-        text-decoration: none;
-    }       
+        }
+        .modes a{
+            background: inherit;
+            outline: none;
+            cursor: pointer;
+            border: none;
+            border-radius: 0px;
+            color: white;
+            font-family: "Poppins", sans-serif;
+            font-size: smaller;
+            min-width: 0;
+            padding: 0.4rem 0.6rem;
+            text-decoration: none;
+        }   
+        .modes a:hover {
+            color: white;
+            background-color: var(--highlight);
+            text-decoration: none;
+        }       
 
 
 nav {
