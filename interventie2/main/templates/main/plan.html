@@ -21,7 +21,6 @@ Interventieplan bij {{ plan.worksession.name }}
 <p>
     {{ plan.conclusion | escape | markdown }}
 </p>
-{{ plan.date.strftime('%Y-%m-%d') }}
 <h1>Instrumenten in het interventieplan</h1>
 
 <table class="sortable">
@@ -45,6 +44,8 @@ Interventieplan bij {{ plan.worksession.name }}
     </tbody>
 </table>
 
+<h1>Datum</h1>
+{{ plan.date.strftime('%Y-%m-%d') }}
 
 
 
