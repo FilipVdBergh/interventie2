@@ -10,7 +10,6 @@
     <button class="tablinks" onclick="switch_tab(event, 'ws_summary')">Uitkomsten ({{ worksession.completion() }})</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_plans')">Interventieplannen ({{ worksession.plan | count }})</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_related')">Gerelateerde sessies</button>
-    <!-- <button class="tablinks" onclick="switch_tab(event, 'ws_details')">Opties</button> -->
     <button class="tablinks" onclick="switch_tab(event, 'ws_settings')">Toegang</button>
 </div>
 {% endblock %}
@@ -50,7 +49,6 @@
 </div>
 
 <div id="ws_summary" class="tabcontent text_area">
-    <a href="{{ url_for('export.worksession', worksession_id=worksession.id) }}"><button>Exporteren naar Word</button></a><br>
     <h1>Samenvatting casus</h1>
     <div>{{ worksession.description | escape | markdown }}</div>
     <div>{{ worksession.effect | escape | markdown }}</div>
@@ -262,20 +260,24 @@
             <li>{{ macro.confirm_redirect( "Sessie verwijderen", "Weet je zeker dat je "+worksession.name+" wilt verwijderen?", url_for('main.delete_worksession', worksession_id=worksession.id) ) }}</li>
             </ul>
         <h1>Sessie delen</h1>
-        <p>
-            De eigenaar van deze sessie is <a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a>, en heeft altijd toegang.
-        Deel deze link om andere gebruikers toegangsrechten tot deze sessie te geven. De link is zeven dagen geldig.</p>
-        <input type="text"
-            value="{{ url_for('main.share_link', worksession_id=worksession.id, invitation_string=invitation_string, _external=True) }}"
-            id="link" size="80">
-        <button onclick="copy_to_clipboard('link')">Selecteer link</button>
         <ul>
             <li>
-                <a href="{{ url_for('main.reset_secret_key', worksession_id=worksession.id) }}">Trek alle openstaande uitnodigingen in.</a>
+                <a href="{{ url_for('export.worksession', worksession_id=worksession.id) }}">Exporteren naar Word</a><br>
+            </li>
+            <li>
+                <a onclick="copy_to_clipboard('link')">Delen met link:</a> <input type="text" value="{{ url_for('main.share_link', worksession_id=worksession.id, invitation_string=invitation_string, _external=True) }}" id="link" size="80">
+
+            </li>
+            <li>
+                <a href="{{ url_for('main.reset_secret_key', worksession_id=worksession.id) }}">Openstaande uitnodigingen intrekken</a>
             </li>
         </ul>
-
+        
+            
         <h2>Gebruikers die de sessie mogen zien</h2>
+        <p>
+            De eigenaar van deze sessie is <a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a>, en heeft altijd toegang.
+        </p>
         <table>
             <tr>
                 <th>Gebruiker</th>

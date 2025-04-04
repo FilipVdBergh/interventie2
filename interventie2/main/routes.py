@@ -220,9 +220,20 @@ def show_worksession(worksession_id):
 						invitation_string=invitation_string)
 
 
+
 @main.route('/worksession/<int:worksession_id>/plan/<int:plan_id>', methods=['GET', 'POST'])
 @login_required
 def show_plan(worksession_id, plan_id):
+	plan = Plan.query.get(plan_id)
+	worksession = plan.worksession
+	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+	if not current_user.role.see_all_worksessions and current_user not in worksession.allowed_users:
+		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+	return render_template('main/plan.html', worksession=worksession, plan=plan, advisor=advisor)
+
+@main.route('/worksession/<int:worksession_id>/plan/<int:plan_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_plan(worksession_id, plan_id):
 	plan = Plan.query.get(plan_id)
 	worksession = plan.worksession
 	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
@@ -243,9 +254,9 @@ def show_plan(worksession_id, plan_id):
 
 		db.session.add(plan)
 		db.session.commit()
-		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
+		return redirect(url_for('main.show_plan', worksession_id=worksession.id, plan_id=plan.id))
 
-	return render_template('main/plan.html', worksession=worksession, plan=plan, advisor=advisor)
+	return render_template('main/edit_plan.html', worksession=worksession, plan=plan, advisor=advisor)
 
 
 @main.route('/worksession/<int:worksession_id>/new_plan', methods=['GET', 'POST'])
@@ -271,7 +282,7 @@ def new_plan(worksession_id):
 		db.session.commit()
 		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 
-	return render_template('main/plan.html', worksession=worksession, plan=plan, advisor=advisor)
+	return render_template('main/edit_plan.html', worksession=worksession, plan=plan, advisor=advisor)
 
 
 @main.route('/worksession/delete_plan/<int:plan_id>')

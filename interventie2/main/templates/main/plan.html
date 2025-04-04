@@ -4,96 +4,47 @@
 <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">{{ worksession.name}}</a>
 {% endblock %}
 
-{% block tabs %}
-<div class="tab_bar">
-    <button class="tablinks" onclick="switch_tab(event, 'plan_main')" id="defaultOpen">Informatie</button>
-    <button class="tablinks" onclick="switch_tab(event, 'plan_ins')">Instrumenten</button>
-</div>
-{% endblock %}
-
 {% block page_title %}
-Interventieplan bij {{ worksession.name }}
+Interventieplan bij {{ plan.worksession.name }}
 {% endblock %}
 
 {% block body %}
-<form method="POST">
-    <div id="plan_main" class="tabcontent">
-        <div class="text_area">
 
-            <table>
-                <tr>
-                    <td>
-                        Beschrijving
-                    </td>
-                    <td>
-                        <textarea name="plan_description" rows="5"
-                            cols="100">{% if plan.description is not none %}{{ plan.description }}{% endif %}</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Datum
-                    </td>
-                    <td>
-                        {{ plan.date.strftime('%Y-%m-%d') }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Overwegingen
-                    </td>
-                    <td>
-                        <textarea name="plan_motivation" rows="5"
-                            cols="100">{% if plan.conclusion is not none %}{{ plan.conclusion }}{% endif %}</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button>Opslaan</button>
-                    </td>
-                    <td style="text-align: right;">
-                        {% if plan.id is not none %}
-                            <button type="button" id="delete">
-                            
-                            {{ macro.confirm_redirect( "Plan verwijderen", "Weet je zeker dat je dit interventieplan wilt
-                            verwijderen?", url_for('main.delete_plan', plan_id=plan.id) ) }}
-                            
-                            </button>
-                        {% endif %}
+<a href="{{ url_for('main.edit_plan', worksession_id=worksession.id, plan_id=plan.id) }}"><button type="button">✎ Interventieplan aanpassen</button></a>
 
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
 
-    <div id="plan_ins" class="tabcontent">
-        <div class="text_area">
+<h1>Beschrijving</h1>
+<p>
+    {{ plan.description | escape | markdown }}
+</p>
+<h1>Overwegingen</h1>
+<p>
+    {{ plan.conclusion | escape | markdown }}
+</p>
+{{ plan.date.strftime('%Y-%m-%d') }}
+<h1>Instrumenten in het interventieplan</h1>
 
-            <table>
-                <tr>
-                    <th>Instrument</th>
-                    <th>Interventieplan</th>
-                </tr>
-                {% for (instrument, score) in advisor.get_sorted_instruments() %}
-                <tr>
-                    <td>
-                        <a
-                            href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{
-                            instrument.name }} (score {{ score | round(1) }})</a>
-                    </td>
-                    <td>
-                        <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}" {% for
-                            chosen_instrument in plan.instruments %} {% if
-                            instrument.id==chosen_instrument.instrument.id %}checked{% endif %} {% endfor %}>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-            <button>Opslaan</button>
-        </div>
-    </div>
-</form>
+<table class="sortable">
+    <thead>
+        <tr>
+            <th>Instrument</th>
+            <th>Beschrijving</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for chosen in plan.instruments %}
+        
+        <tr>
+            <td>
+                <a href="{{ url_for('main.show_instrument', instrument_id=chosen.instrument.id, worksession_id=worksession.id) }}">{{ chosen.instrument.name }} </a>
+            </td>
+            <td>{{ chosen.instrument.introduction | truncate(150) | escape | markdown }}</td>
+        </tr>
+        
+        {% endfor %}
+    </tbody>
+</table>
+
 
 
 
