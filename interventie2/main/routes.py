@@ -665,7 +665,7 @@ def stop_share(worksession_id, user_id):
 def make_owner(worksession_id, user_id):
 	worksession = Worksession.query.get(worksession_id)
 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
-		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om de eigenaar te veranderen.')
 
 	user = User.query.get(user_id)
 	worksession.creator = user
