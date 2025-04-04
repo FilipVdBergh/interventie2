@@ -24,6 +24,18 @@ main = Blueprint('main', __name__,
 @main.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
+	next_worksessions = Worksession.query.filter(Worksession.date >= datetime.today().date()).order_by(Worksession.date)
+	worksessions = Worksession.query.filter(Worksession.archived==False).order_by(Worksession.date)
+
+	return render_template('main/index.html', 
+						worksessions=worksessions,
+						next_worksessions=next_worksessions)
+
+
+
+@main.route('/dashboard', methods=['GET', 'POST'])
+@login_required
+def dashboard():
 	information = { "past_worksessions":  Worksession.query.filter(Worksession.date < datetime.today().date()).order_by(Worksession.name).count(),
 					"current_worksessions":  Worksession.query.filter(Worksession.date == datetime.today().date()).order_by(Worksession.name).count(),
 				    "next_worksessions":  Worksession.query.filter(Worksession.date > datetime.today().date()).order_by(Worksession.name).count(),
@@ -37,7 +49,7 @@ def index():
 	worksessions = Worksession.query.filter(Worksession.archived==False).order_by(Worksession.date)
 	question_sets =  QuestionSet.query.order_by(QuestionSet.name)
 
-	return render_template('main/index.html', 
+	return render_template('main/dashboard.html', 
 						information=information,
 						worksessions=worksessions,
 						next_worksessions=next_worksessions,

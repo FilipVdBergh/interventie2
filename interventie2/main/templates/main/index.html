@@ -1,79 +1,15 @@
 {% extends 'base.html' %}
 
+
 {% block page_title %}
-Dashboard
+    Dashboard
 {% endblock %}
 
 {% block body %}
-{% if next_worksessions | list | length > 0 %}
-    <h1>Komende werksessies</h1>
-    <div class="card_area">
-        {% for worksession in next_worksessions %}
-            {% if current_user in worksession.allowed_users %}
-                <div class="card double">
-                    
-                        <div class="card_titlebar">
-                            <div class="card_title">{{ worksession.name }}</div>
-                            <div class="card_controls">
-                                <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}"><button>🛈</button></a>
-                                <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>▶︎</button></a>
-                            </div>
-                        </div>
-                        <div class="card_info">{{ worksession.question_set.name }}</div>
-                        <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
-                        <div class="card_description">{{ worksession.description }}</div>
-                        {% if worksession.participants | count > 0 %}
-                            <div class="card_info">Deelnemers: {{ worksession.participants }}</div>
-                        {% endif %}
-                        
-                    
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-    </div>
-
-    <h1>Nieuwe werksessie</h1>
-    <div class="card_area">
-        
-        {% for question_set in question_sets %}
-            <a href="{{ url_for('main.new_worksession', question_set_id=question_set.id) }}">
-                <div class="card new" style="background-color:{{ question_set.color }}; color:{{ question_set.text_color }}">
-                    <div class="card_title">
-                        {{ question_set.name }}
-                    </div>
-                    <div class="card_description">
-                        {{ question_set.description | escape | markdown }}
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
-    </div>
-
-
-    {% if current_user.unread_message_alert() %}
-        <h1>Nieuwe berichten</h1>
-        <div class="card_area">
-            {% for message in current_user.unread_messages_list() %}
-            <a href="{{ url_for('admin.message', message_id=message.id) }}">
-                <div class="card">
-                
-                    <div class="card_title">{{ message.subject }}</div>
-                    <div class="card_info">
-                        {% if message.sender.name|length >0 %}
-                        Van {{ message.sender.name }} op
-                        {% endif %}
-                        {{ message.deliver_after.strftime('%d-%m-%Y') }}
-                    </div>
-                    <div class="card_description">
-                        {{ message.body | escape | markdown}}
-                    </div>
-            
-                </div>
-            </a>
-            {% endfor %}
-        
-        </div>
-    {% endif %}
+<ul>
+    <li>
+        <a href="{{ url_for('analysis.instrument_tag_matrix') }}">Instrument-tag analyse</a>
+    </li>
+</ul>
 
 {% endblock %}

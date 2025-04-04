@@ -1,7 +1,11 @@
 /* Standard */
 :root {
-
+    --dark-blue: #0f2841;
+    --light-blue: #0e9ed5;
+    --green: #3b7d23;
+    --red: red;
     --highlight: #195fa6;
+    --mid-grey: #0e9ed5;
     --object: #f0f9ff;
     --object-text: black;
     --alert: red;
@@ -47,24 +51,40 @@ a:hover {
 h1, h2, h3 {
     font-family: "Poppins", sans-serif;
 }
-    h1 {
-        font-size: x-large;
+h1 {
+    font-size: x-large;
+}
+    h1 button {
+        min-width: 2em;
+        height: 2em;
     }
-        h1 button {
-            min-width: 2em;
-            height: 2em;
-        }
-    h2 {
+h2 {
+    font-size: large;
+}
+@media only screen and (max-width: 845px) {
+    h1 {
         font-size: large;
     }
+    h2 {
+        font-size: medium;
+    }
+}
 
+
+ul {
+    /* list-style-type: none; */
+    margin: 0;
+    padding-left: 1.5em;
+
+}
 
 button {
-    border: 1px solid;
+    border: 1px solid var(--mid-grey);
     background-color: var(--button-bg);
     color: var(--button-fg);
     min-height: 2.2em;
     border-radius: 2px;
+    min-width: 7em;
     padding-left: 1em;
     padding-right: 1em;
     margin-bottom: 2px;
@@ -81,6 +101,12 @@ button {
 
     button.delete {
         background-color: var(--highlight);
+    }
+    button.small {
+        padding: 0em;
+        margin: 0cm;
+        min-width: 6em;
+        font-size: x-small;
     }
 
 input[type=submit] {
@@ -163,8 +189,8 @@ table {
 body {
     display: grid;
     height: 100vh;
-    grid-template-rows: 100vh auto min-content;
-    grid-template-columns: minmax(20%,350px) auto;
+    grid-template-rows: min-content auto min-content;
+    grid-template-columns: min-content auto;
     grid-template-areas:
     "nav    header"
     "nav    main"
@@ -172,6 +198,7 @@ body {
 }
 
 header {
+
     color: white;
     align-items: center;
     padding: 0.6rem 4.4rem;
@@ -179,46 +206,54 @@ header {
 }
 
 nav {
-    display:flex;
-    flex-direction: column;
     background-color: #12172d;
     color: white;
-    padding: 2rem 0 2rem 0;
 }
-    nav div {
-        flex-grow: 1;
+    nav hr {
+        background-color: #1e243e;
+        height: 1px; 
+        border: 0;
     }
-    nav p {
+
+    nav .navigation_element {
         background: inherit;
         outline: none;
         cursor: pointer;
-        padding: 3em 2rem 3em 2rem;
-        margin: 0.7rem 0 0.7rem 0;
+        padding: 0.4rem 0.4rem;
+        margin: 0 0 0 0;
         border: none;
         border-radius: 0px;
         font-family: "Poppins", sans-serif;
-        font-weight: bold;
-        color: #707588;
+        font-size: smaller;
+        color: white;
         min-width: 0;
     }
-        nav .highlight {
-            color: white;
-        }
-        nav p:hover {
+        nav .navigation_element:hover {
             background-color: #1e243e;
-            color: rgb(255, 255, 255);
-            text-decoration: none;
+            color: white;
+            text-decoration: none;;
         }
-    nav .upcoming {
-        flex-shrink: 1;
-    }
-    nav .upcoming p {
+        nav .navigation_element .category {
+            font-style: bold;
+        }
+        nav .navigation_element .collapsible :hover {
+            margin: 0 0 0 0;
+        }
+        
+   
+    .title {
+        grid-area: title;
+        font-family: "Poppins", sans-serif;
+        color: black;
+        font-size: xx-large;
         font-weight: bold;
-        color: white;
+        padding: 0 0 1rem 0;
+        line-height: 1em;
     }
-    nav .upcoming .session  {
-        font-weight: normal;
-        color: #707588;
+    @media only screen and (max-width: 845px) {
+        .title {
+            font-size: x-large;
+        }
     }
 
     .search {

@@ -13,81 +13,93 @@
         <!-- Icons -->
         <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
         <!-- HTMX -->
-        <!-- <script src="https://unpkg.com/htmx.org@2.0.0"></script> -->
+        <script src="https://unpkg.com/htmx.org@2.0.0"></script>
         <title>{{ config['APP_NAME'] }}</title>
     </head>
     <body>
         {% import 'jinja_macros.html' as macro %}
-
-        <header>
-            <div class="logo">{{ config['APP_NAME'] }}</div>
-            <div class="modes">
-                {% if current_user.is_authenticated %}
-                    <button>
-                        <a href="{{ url_for('main.index') }}">Dashboard</a>
-                    </button>
-                    <button>
-                        <a href="{{ url_for('main.worksessions') }}">Sessies</a>
-                    </button>
-                    <button>
-                        <a href="{{ url_for('catalog.index') }}">Catalogus</a>
-                    </button>
-                    {% if current_user.role.edit_questionnaire %}
-                        <button>
-                            <a href="{{ url_for('tools.index') }}">Ontwerpen</a> 
-                        </button>
-                    {% endif %}
-                    {% if current_user.role.edit_users %}
-                        <button>
-                            <a href="{{ url_for('admin.index') }}">Gebruikers</a> 
-                        </button>
-                    {% endif %}
-                    {% if config['ALLOW_CONTACT'] %}
-                        <button>
-                            <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}"><i class='bx bxs-envelope'></i></a>
-                        </button>
-                    {% endif %}
-                    {% if current_user.role.see_app_info %}
-                        <button>
-                            <a href="{{ url_for('admin.info') }}"><i class='bx bxs-info-circle'></i></a>
-                        </button>
-                    {% endif %}
-                    <button>
-                        <a href="{{ url_for('admin.user', id=current_user.id) }}"><i class='bx bxs-user-circle'></i>
-                            {{ current_user.name }} 
-                            <!-- {% if current_user.unread_message_alert() %}(&#128489; {{ current_user.unread_messages() }}){% endif %} -->
-                        </a>
-                    </button>
-                {% else %}
-                    <button>
-                        <a href="{{ url_for('main.login') }}">Login</a>
-                    </button>
+        <nav>
+            <div>
+            {% if current_user.is_authenticated %}
+                <p class="highlight"
+                    hx-get="{{ url_for('main.dashboard') }}"
+                    hx-trigger="click"
+                    hx-target="#main_area"
+                    hx-swap="innerHTML">
+                    Dashboard
+                </p>
+                <p
+                    hx-get="{{ url_for('main.worksessions') }}"
+                    hx-trigger="click"
+                    hx-target="#main_area"
+                    hx-swap="innerHTML">
+                    Sessies
+                </p>
+                <p>
+                    <a href="{{ url_for('catalog.index') }}">Catalogus</a>
+                </p>
+                
+                {% if current_user.role.edit_questionnaire %}
+                    <p>
+                        <a href="{{ url_for('tools.index') }}">Ontwerpen</a> 
+                    </p>
+                {% endif %}
+                {% if current_user.role.edit_users %}
+                    <p>
+                        <a href="{{ url_for('admin.index') }}">Gebruikers</a> 
+                    </p>
+                {% endif %}
+                {% if current_user.role.see_app_info %}
+                    <p>
+                        <a href="{{ url_for('admin.info') }}"><i class='bx bxs-info-circle'></i></a>
+                    </p>      
                 {% endif %}
 
+                <p>
+                    <a href="{{ url_for('admin.user', id=current_user.id) }}"><i class='bx bxs-user-circle'></i>
+                        {{ current_user.name }} 
+                        <!-- {% if current_user.unread_message_alert() %}(&#128489; {{ current_user.unread_messages() }}){% endif %} -->
+                    </a>
+                </p>
             </div>
-        </header>    
-
-        <nav>
-            <div class="title">{% block page_title %}{% endblock %}</div>
-            {% if current_user.is_authenticated %}
+            <div class="upcoming">
+                <p>Komende sessies</p>
+                {% for worksession in worksessions %}
+                    <p class="session"
+                    hx-get="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}"
+                    hx-trigger="click"
+                    hx-target="#main_area"              
+                    hx-swap="innerHTML">
+                        {{ worksession.name }}
+                    </p>
+                {% endfor %}
+            </div>        
+            {% else %}
+                <p>
+                    <a href="{{ url_for('main.login') }}">Login</a>
+                </p>
+            {% endif %}
+            </div>
+        </nav>
+            <search>
                 <form action="/analysis/search" method="get" class="search">
                     <input id="search" type="search"  name="q" value="{{ request.args.get('q') or '' }}" placeholder="Zoeken...">
                 </form>
-            {% endif %}
+            </search>
+        <div id="main_area">
+        </div>
+            
+        
+        
+        
             <div class="steps">{% block steps %}{% endblock %}</div>
             <div class="tabs">{% block tabs %}{% endblock %}</div>
-        </nav>
 
 
-
-        <main>
-            <aside>{% block contents %}{% endblock %}</aside>
-            <section>{% block body %}{% endblock %}</section>
-        </main>
 
               
 
-        <footer>{{ config['MAINTAINER'] }} (<a href="mailto:{{ config['MAINTAINER_EMAIL'] }}">{{ config['MAINTAINER_EMAIL'] }}</a>)</footer>
+
         
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/confirm_redirect.js')}}"></script>
