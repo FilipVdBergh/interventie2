@@ -1,7 +1,7 @@
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from interventie2.models import User
-from interventie2.models import db, QuestionSet, Process, User, Question, Answer, Option, Tag, Worksession, Instrument, InstrumentTagAssignment
+from interventie2.models import db, QuestionSet, Process, User, Question, Answer, Selection, Option, Tag, Worksession, Instrument, InstrumentTagAssignment
 from interventie2.classes import Advisor
 
 present = Blueprint('present', __name__,
@@ -15,7 +15,17 @@ present = Blueprint('present', __name__,
 def index():
     return render_template('error/index.html', title='Werksessie ontbreekt', message='Deze pagina hoort niet toegankelijk te zijn.')
 
+@present.route('/create_new_process')
+@login_required
+def create_beta_process():
+    # This function is opnly used to update the live database to add the new processes.
+    if not (Process.query.filter_by(name='Dynamisch').first()):
+        new_process = Process(name='Dynamisch')
+        db.session.add(new_process)
+        db.session.commit()
+        print('Created new process')
 
+    return redirect(url_for('main.index'))
 
 @present.route('/<int:worksession_id>', methods=['GET', 'POST'])
 @login_required
@@ -36,55 +46,116 @@ def show_question(worksession_id, question_id):
     return render_template('present/focus_question.html', question=question, worksession=worksession)
 
 
+@present.route('/<int:worksession_id>/update', methods=['GET', 'POST'])
+@login_required
+def update(worksession_id):
+    if request.method == "POST":
+        worksession = Worksession.query.get(worksession_id)
+        if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+            return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+        
+        advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+        current_question = None 
 
-# @main.route('/worksession/<int:worksession_id>/present', methods=['GET', 'POST'])
-# @main.route('/worksession/<int:worksession_id>/present/<int:question_id>', methods=['GET', 'POST'])
-# @login_required
-# def present(worksession_id, question_id=None):
-# 	worksession = Worksession.query.get(worksession_id)
-# 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
-# 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
-	
-# 	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
-# 	if question_id is None:
-# 		question = Question.query.filter_by(question_set=worksession.question_set).order_by(Question.order).first()
-# 	else:	
-# 		question = Question.query.get(question_id)
-# 	answer = Answer.query.filter_by(worksession=worksession, question=question).first()
-	
-# 	if request.method == "POST":
-# 		for answer in Answer.query.filter_by(worksession=worksession):
-# 			# Delete all answers to replace them below.
-# 			for selection in answer.selection:
-# 				db.session.delete(selection)
-# 			db.session.delete(answer)
+        # Each for contains options for a single question, but which question?
+        for item, value in request.form.items():
+            if 'question_id' in item:
+                current_question = Question.query.get ( int(value) )
+                break
 
-# 		motivations = {}
-# 		selected_options = []
-# 		weights = {}
-# 		for item, value in request.form.items():
-# 			# De name-attribute van de textarea bevat het soort vraag (motivation, option), een :, en dan het vraagnummer of het optienummer.
-# 			if 'motivation' in item:
-# 				_, question_id = item.split(':', 1)
-# 				motivations[int(question_id)] = value
-# 			if 'option' in item:
-# 				selected_options.append(int(value))
-# 			if 'weight' in item:
-# 				_, question_id = item.split(':', 1)
-# 				weights[int(question_id)] = value
+        motivation = ''
+        answer = Answer.query.filter_by(worksession=worksession, question=current_question).first()
+        if answer:
+            motivation = answer.motivation
+            db.session.delete(answer)
+        
+        answer = Answer(worksession=worksession, question=current_question, motivation=motivation)
 
-# 		for question in worksession.question_set.questions:
-# 		# Alleen de vragen in de huidige question set
-# 			if not question.is_category:
-# 				new_answer = Answer(worksession=worksession, question=question, motivation=motivations.get(question.id), weight=weights.get(question.id))
-# 				for option in question.options:
-# 					if option.id in selected_options: 
-# 						# De vraag zit in de huidige question set en moet aangevinkt worden.
-# 						new_answer.selection.append(Selection(option=option))
-# 				db.session.add(new_answer)
-# 		db.session.commit()
-# 		return redirect(url_for('main.present', worksession_id=worksession.id))
-# 	return render_template('main/present.html', 
-# 						worksession=worksession,
-# 						current_question=question,
-# 						advisor=advisor)
+        # Add new selection
+        weights = {}
+        for item, value in request.form.items():
+			# De name-attribute van de textarea bevat het soort vraag (motivation, option), een :::, en dan het vraagnummer of het optienummer.
+            if 'option' in item:
+                answer.selection.append( Selection(answer=answer, option=Option.query.get(value) ))
+            if 'weight' in item:
+                _, question_id = item.split(':::', 1)
+                weights[int(question_id)] = value
+
+        db.session.add(answer) 
+        db.session.commit()
+
+        return render_template('present/instruments.html', worksession=worksession, advisor=advisor)
+
+
+
+@present.route('/present/<int:worksession_id>/update_motivation', methods=['GET', 'POST'])
+@login_required
+def update_motivation(worksession_id):
+     if request.method == "POST":
+        worksession = Worksession.query.get(worksession_id)
+        if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+            return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+
+        current_question = None 
+
+        # Each for contains options for a single question, but which question?
+        for item, value in request.form.items():
+            if 'question_id' in item:
+                current_question = Question.query.get ( int(value) )
+                break
+
+        answer = Answer.query.filter_by(worksession=worksession, question=current_question).first()
+
+        for item, value in request.form.items():
+			# De name-attribute van de textarea bevat het soort vraag (motivation, option), een :::, en dan het vraagnummer of het optienummer.
+            if 'motivation' in item:
+                answer.motivation = value
+        
+        db.session.commit()
+
+        return ""
+     
+     
+@present.route('/present/<int:worksession_id>/uncheck_options', methods=['GET', 'POST'])
+@login_required
+def uncheck_options(worksession_id):
+     if request.method == "POST":
+        worksession = Worksession.query.get(worksession_id)
+        if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+            return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+
+        advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+        current_question = None 
+
+        # Each for contains options for a single question, but which question?
+        for item, value in request.form.items():
+            if 'question_id' in item:
+                current_question = Question.query.get ( int(value) )
+                break
+
+        answer = Answer.query.filter_by(worksession=worksession, question=current_question).first()
+
+        motivation = ''
+        answer = Answer.query.filter_by(worksession=worksession, question=current_question).first()
+        
+        if answer:
+            motivation = answer.motivation
+            db.session.delete(answer)
+        
+        answer = Answer(worksession=worksession, question=current_question, motivation=motivation)
+        db.session.add(answer) 
+        db.session.commit()
+
+        return render_template('present/instruments.html', worksession=worksession, advisor=advisor)
+     
+@present.route('/present/<int:worksession_id>/summarize_answer/<int:question_id>')
+@login_required
+def summarize_answer(worksession_id, question_id):
+    worksession = Worksession.query.get(worksession_id)
+    question = Question.query.get(question_id)
+    answer = Answer.query.filter_by(worksession=worksession).filter_by(question=question).first()
+
+    if answer is None:
+        return ""
+
+    return render_template('present/answer_summary.html', answer=answer)

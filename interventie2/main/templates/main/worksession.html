@@ -151,7 +151,7 @@
     <div class="card_area">
         {% for question_set in question_sets %}
             <a href="{{ url_for('main.new_worksession_from_base', base_session_id=worksession.id, question_set_id=question_set.id) }}">
-                <div class="card new">
+                <div class="card new" style="background-color:{{ question_set.color }}; color:{{ question_set.text_color }}">
                     <div class="card_title">
                         Op basis van {{ question_set.name }}
                     </div>
@@ -167,7 +167,7 @@
     <div class="card_area">
         {% for rws in related_worksessions %}
             <a href="{{url_for('main.show_worksession', worksession_id=rws.id)}}">
-                <div class="card">
+                <div class="card" style="background-color:{{ worksession.question_set.color }}; color:{{ worksession.question_set.text_color }}">
                     <div class="card_title">
                         {% if rws == worksession %}
                             Deze sessie ({{ rws.name }})

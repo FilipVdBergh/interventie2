@@ -481,12 +481,12 @@ class Process(db.Model):
 
 
 class Answer(db.Model):
-    __tablename__ = 'answers'
-    id            = db.Column(db.Integer, primary_key=True)
-    worksession_id    = db.Column(db.Integer, db.ForeignKey('worksessions.id'), nullable=False) #references worksessions.id
-    question_id   = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False) #references questions.id
-    motivation    = db.Column(db.String(2000), nullable=False, default="")
-    weight        = db.Column(db.Numeric(2,1), nullable=False, default=1.0)
+    __tablename__   = 'answers'
+    id              = db.Column(db.Integer, primary_key=True)
+    worksession_id  = db.Column(db.Integer, db.ForeignKey('worksessions.id'), nullable=False) #references worksessions.id
+    question_id     = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False) #references questions.id
+    motivation      = db.Column(db.String(2000), nullable=False, default="")
+    weight          = db.Column(db.Numeric(2,1), nullable=False, default=1.0)
     inherit_answers = db.Column(db.Boolean, nullable=False, default=False)
 
     worksession = relationship('Worksession')
@@ -515,7 +515,7 @@ class Selection(db.Model):
     option = relationship('Option')
 
     def __repr__(self):
-        return f'<Selection Answer {self.answer}-Option{self.option}>'
+        return f'<Selection {self.answer.question} -> {self.option}>'
 
 class Votes(db.Model):
     __tablename__  = 'votes'

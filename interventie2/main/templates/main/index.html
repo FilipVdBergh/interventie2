@@ -10,7 +10,7 @@ Dashboard
     <div class="card_area">
         {% for worksession in next_worksessions %}
             {% if current_user in worksession.allowed_users %}
-                <div class="card double">
+                <div class="card double" style="background-color:{{ worksession.question_set.color }}; color:{{ worksession.question_set.text_color }}">
                     
                         <div class="card_titlebar">
                             <div class="card_title">{{ worksession.name }}</div>

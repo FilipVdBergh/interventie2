@@ -1,160 +1,199 @@
-#focus_question.htmx-added {
-    opacity: 0;
-  }
-#focus_question {
-opacity: 1;
-transition: opacity 1s ease-out;
+html,
+body {
+    font-family: sans-serif;
+    line-height: 1.5em;
+    padding: 0px;
+    margin: 0px;
 }
 
 body {
     display: grid;
-    /* grid-template-rows: min-content min-content auto min-content; */
+    overflow:hidden;
+    width: 100%;
+    height: 100vh;
+    grid-template-columns: 20rem auto;
+    grid-template-rows: 1.8rem 10rem auto;
     grid-template-areas:
-    "header"
-    "nav"
-    "main";
+    "nav         nav         "
+    "header      header      "
+    "instruments main        ";
 }
 
-header {
-    grid-area: header;
+p {
+    padding: 0px;
+    margin: 0px;
+}
+
+h1, h2, h3 {
+    font-family: "Poppins", sans-serif;
+    color: rgb(25, 36, 88);
+}
+h1 {
+    font-size: x-large;
+}
+h2 {
+    font-size: large;
+}
+
+.nav {
+    grid-area: nav;
     background-color: black;
     color: white;
-    align-items: center;
     padding: 0.2rem 2rem;
-    font-family: "Poppins", sans-serif;
-    font-size: small;
-}
-
-nav {
-    grid-area: nav;
-    display: grid;
-    grid-template-areas:
-        "title"
-        "description";
-    align-items: center;
-    margin: 0;
-    padding: 1rem 2rem 1rem 2rem;
-    /* padding: 1rem 2rem 1rem 2rem; */
-
-}
-
-    .title {
-        grid-area: title;
-        font-family: "Poppins", sans-serif;
-        color: black;
-        font-size: xx-large;
-        font-weight: bold;
-    }
-    .description {
-        grid-area: description;
-        color: black;
-        font-size: small;
-    }
-    
-main {
-    grid-area: main;
-    padding: 1rem 3rem 1rem 0;
-    display: grid;
-    grid-template-columns: 1fr 6fr 1fr;
-    grid-template-areas: 
-        "question_set   focus_area     instruments"
-        "tags   tags                   tags";
-    justify-content: space-between;
-}
-
-    .question_set {
-        grid-area: question_set;
-        padding: 0 0 0 2rem;
-    }
-    .question_set ul {
-        background-color: inherit;
-        padding: 0 1rem 0 0rem;
-        font-size: small;
-        list-style-type: none;
-    }
-    .question_set button {
-        background-color: inherit;
-        cursor: pointer;
-        color: inherit;
-        border: none;
-        text-align: left;
-        padding: 0;
-        margin: 0;
-    }
-    .question_set .question {
-        font-size: large;
-    }
-    
-    .question_set .category {
-        font-size: large;
-        font-weight: bold;
-        padding: 0.8rem 0 0.2rem 0;
-    }
-    
-
-    .focus_area {
-        grid-area: focus_area;
-        width: 50vw;
-        align-self: baseline;
-        justify-self: center;
-    }
-
-    .instruments {
-        grid-area: instruments;
-        padding: 0 2rem 0 2rem;
-        margin: 0;
-    }
-    .instruments ul {
-        background-color: inherit;
-        padding: 0 0rem 0 1rem;
-        font-size: small;
-        list-style-type: none;
-    }
-    .instruments button {
-        background-color: inherit;
-        cursor: pointer;
-        color: inherit;
-        border: none;
-        text-align: left;
-        padding: 0;
-        margin: 0;
-    }
-
-    .tags {
-        grid-area: tags
-    }
-
-.focus_question {
-    background-color: var(--object);
-    color: var(--object-text);
-    border-radius: 2px;
-    margin: 3rem;
-    padding: 1rem;
-    width: 100%;
-    text-align: left;
-}
-    .focus_question .question {
-        font-size: large;
-        font-weight: bold;
-    }
-    .focus_question .description {
-        font-style: italic;
-    }
-
-
-
-.instrument {
     display: block;
-    color: black;
-    text-decoration: none;
-    font-size: small;
+    text-transform: uppercase;
+    font-size: x-small;
+}
+    .nav .element a {
+        color: inherit;
+        text-decoration: none;
+    }
+    .nav .element {
+        display: inline;
+        color: white;
+        padding: 0.4rem 2rem 0.4rem 2rem;
+    }
+    .nav .element:hover {
+        color: white;
+        background-color: rgb(0, 81, 168);
+        text-decoration: none;
+    }
+
+.header {
+    grid-area: header;
+    padding: 1rem;
+}
+    .header .title {
+        font-size:xx-large;
+        font-weight: bold;
+    }
+    .header .description {
+        font-size: small;
+        padding-bottom: 1rem;
+        line-height: 1.1em;
+    }
+
+.instruments {
+    grid-area: instruments;
+    padding: 0rem 1rem 0rem 1rem;
+    overflow-y:hidden;
+    overflow-x:hidden;
+}
+    .instruments:hover {
+        overflow-y: auto;
+    }
+    .instrument {
+        font-size: smaller;;
+    }
+
+.main {
+    grid-area: main;
+    padding: 0rem 1rem 0rem 1rem;
+    overflow-y:hidden;
+    width: 80%;
+}
+    .main:hover {
+        overflow-y: auto;
+    }
+    .main .question {
+        display: block;
+        font-family: "Poppins", sans-serif;
+        font-weight: bold;
+        font-size: large;
+        background-color: rgb(233, 233, 233);
+    }
+    .main .question .answer_summary {
+        display: inline;
+        font-weight: normal;
+        font-style: italic;
+        font-size: smaller;
+    }
+    .main .description {
+        font-family: "Poppins", sans-serif;
+        padding: 0.1rem 0.1rem 0.4rem 0.1rem;
+        font-weight: bold;
+    }
+
+.collapsible_content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.collapsible {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    display: inline;
+    border-top: white;
+    border-left: none;
+    border-right: none;
+    border-bottom: white;;
+    text-align: left;
+    outline: none;
+    width:100%;
+}
+
+.active, .collapsible:hover {
+    background-color: #65c7ff;
+    }
+
+.collapsible:before {
+    content: "🡢";     
+    float: left;
+    margin-right: 5px;
+    }
+
+    .active:before {
+    content: "🡣"; 
+    }
+
+.instrument .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+    .instrument a {
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    .instrument .tooltip .tooltiptext {
+        visibility: hidden;
+        background-color: #65c7ff;
+        color: white;
+        text-align: left;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        /* bottom: -50%; */
+        margin-left: 50px;
+        width: 15rem;
+      }
+          
+      .instrument .tooltip:hover .tooltiptext {
+        visibility: visible;
+      }
+    
+.tag {   
+    font-weight: bold;
+    font-size: smaller;
+    color: grey;
+    padding-left: 10px;
+    padding-right: 10px;
+    border:1px solid lightgrey;
+    white-space:nowrap;
 }
 
 .prio_high {
-    font-weight: bold;
+    font-weight: bold;;
 }
+
 .prio_medium {
+
 }
-  .prio_low {
-    color: rgb(199, 199, 199);
+
+.prio_low {
+    color: lightgray;
 }

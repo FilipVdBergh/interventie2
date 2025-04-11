@@ -24,21 +24,11 @@ main = Blueprint('main', __name__,
 @main.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-	information = { "past_worksessions":  Worksession.query.filter(Worksession.date < datetime.today().date()).order_by(Worksession.name).count(),
-					"current_worksessions":  Worksession.query.filter(Worksession.date == datetime.today().date()).order_by(Worksession.name).count(),
-				    "next_worksessions":  Worksession.query.filter(Worksession.date > datetime.today().date()).order_by(Worksession.name).count(),
-					"instruments": Instrument.query.order_by(Instrument.name).count(),
-					"your_past_worksessions":  Worksession.query.filter(Worksession.date < datetime.today().date()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
-					"your_current_worksessions": Worksession.query.filter(Worksession.date == datetime.today().date()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
-				    "your_next_worksessions":  Worksession.query.filter(Worksession.date > datetime.today().date()).filter(Worksession.creator == current_user).order_by(Worksession.name).count(),
-					"your_instruments": Instrument.query.filter(Instrument.owner == current_user).order_by(Instrument.name).count() }
-
 	next_worksessions = Worksession.query.filter(Worksession.date >= datetime.today().date()).order_by(Worksession.date)
 	worksessions = Worksession.query.filter(Worksession.archived==False).order_by(Worksession.date)
 	question_sets =  QuestionSet.query.order_by(QuestionSet.name)
 
 	return render_template('main/index.html', 
-						information=information,
 						worksessions=worksessions,
 						next_worksessions=next_worksessions,
 						question_sets=question_sets,
@@ -418,13 +408,6 @@ def process_simultaneous(worksession_id):
 			if 'weight' in item:
 				_, question_id = item.split(':::', 1)
 				weights[int(question_id)] = value
-		
-		### Sometimes a form input seems to be missing from the requests. This code was meant to help find the problem.
-		# for r in request.form.items():
-		# 	print(r)
-		# for o in selected_options:
-		# 	o1=Option.query.get(o)
-		# 	print(f'{o1.id}: {o1.name}')
 
 
 		for question in worksession.question_set.questions:
@@ -506,6 +489,9 @@ def case(worksession_id):
 			return redirect(url_for('main.process_simultaneous', worksession_id=worksession.id))
 		elif worksession.process_id == 2:
 			return redirect(url_for('main.process_single', worksession_id=worksession.id))
+		elif worksession.process.name == 'Dynamisch':
+			# This is temporary, until this mode replaces all the other modes.
+			return redirect(url_for('present.present_session', worksession_id=worksession.id))
 	elif request.method == "GET":
 		form.description.data = worksession.description 
 		form.effect.data = worksession.effect

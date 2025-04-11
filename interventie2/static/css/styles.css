@@ -685,6 +685,7 @@ li.selected {
 @media only screen and (max-width: 845px) {
     .card {
         display: flex;
+        flex-direction:column;
         height: auto;
         max-height: 200px;
         width: auto;
