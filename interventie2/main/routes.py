@@ -456,7 +456,7 @@ def process_single(worksession_id, question_id=None):
 			db.session.commit()
 
 		next_question = None
-		# Move to the next question. The next question is selected by taking all questiopns in the current set, taking only those with a order number higher than the current one, and sorting by order.
+		# Move to the next question. The next question is selected by taking all questions in the current set, taking only those with a order number higher than the current one, and sorting by order.
 		for question in Question.query.filter_by(question_set=worksession.question_set).filter(Question.order > Question.query.get(question.id).order).order_by(Question.order): 
 			if not worksession.is_question_hidden(question):
 				next_question = question

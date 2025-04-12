@@ -1,0 +1,23 @@
+<div class="explanation">
+    <h1 class="title"
+        hx-get="{{ url_for('present.show_question_set', worksession_id=worksession.id) }}"
+        hx-trigger="click"
+        hx-target="#main"
+        hx-swap="innerHTML">{{ instrument.name }}</h1>
+    <div class="instrument_introduction">{{ instrument.introduction | escape | markdown }}</div>
+    {% if instrument.referenced_elsewhere %}
+    <div>
+        <a href="http://{{ instrument.reference_link }}"><button>Link naar de beschrijving van dit instrument</button></a>
+    </div>
+    {% else %}
+        <h1>Beschrijving</h1>
+        <div class="instrument_body">{{ instrument.description | escape | markdown }}</div>
+        <h1>Overwegingen bij gebruik</h1>
+        <div class="instrument_body">{{ instrument.considerations | escape | markdown }}</div>
+        <h1>Voorbeelden</h1>
+        <div class="instrument_body">{{ instrument.examples | escape | markdown }}</div>
+        <h1>Links</h1>
+        <div class="instrument_body">{{ instrument.links | escape | markdown }}</div>
+    {% endif %}
+</div>
+

@@ -1,6 +1,5 @@
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
-from interventie2.models import User
 from interventie2.models import db, QuestionSet, Process, User, Question, Answer, Selection, Option, Tag, Worksession, Instrument, InstrumentTagAssignment
 from interventie2.classes import Advisor
 
@@ -88,7 +87,7 @@ def update(worksession_id):
 
 
 
-@present.route('/present/<int:worksession_id>/update_motivation', methods=['GET', 'POST'])
+@present.route('/<int:worksession_id>/update_motivation', methods=['GET', 'POST'])
 @login_required
 def update_motivation(worksession_id):
      if request.method == "POST":
@@ -116,7 +115,7 @@ def update_motivation(worksession_id):
         return ""
      
      
-@present.route('/present/<int:worksession_id>/uncheck_options', methods=['GET', 'POST'])
+@present.route('/<int:worksession_id>/uncheck_options', methods=['GET', 'POST'])
 @login_required
 def uncheck_options(worksession_id):
      if request.method == "POST":
@@ -148,7 +147,8 @@ def uncheck_options(worksession_id):
 
         return render_template('present/instruments.html', worksession=worksession, advisor=advisor)
      
-@present.route('/present/<int:worksession_id>/summarize_answer/<int:question_id>')
+
+@present.route('/<int:worksession_id>/summarize_answer/<int:question_id>')
 @login_required
 def summarize_answer(worksession_id, question_id):
     worksession = Worksession.query.get(worksession_id)
@@ -159,3 +159,22 @@ def summarize_answer(worksession_id, question_id):
         return ""
 
     return render_template('present/answer_summary.html', answer=answer)
+
+
+@present.route('/<int:worksession_id>/question_set')
+@login_required
+def show_question_set(worksession_id):
+    worksession = Worksession.query.get(worksession_id)
+    return render_template('present/questionnaire.html', worksession=worksession)
+
+
+@present.route('/<int:worksession_id>/instrument/<int:instrument_id>')
+@login_required
+def show_instrument(worksession_id, instrument_id):
+    worksession = Worksession.query.get(worksession_id)
+    if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+
+    advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+    instrument = Instrument.query.get(instrument_id)
+    return render_template('present/explanation.html', worksession=worksession, instrument=instrument, advisor=advisor)
