@@ -74,6 +74,7 @@ MAINTAINER=interventieteam
 MAINTAINER_EMAIL=interventie@afm.nl
 SQLALCHEMY_DATABASE_URI=mysql://interventie2_user:<your-user-password>@mariadb:3306/interventie2
 ```
+Op een Windows-machine moeten de waarden tussen aanhalingstekens staan.
 
 ## Bouw en run de app
 Vervang `<url>` door je eigen domein.
