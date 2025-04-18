@@ -33,7 +33,7 @@ ufw allow 443
 
 ## Maak docker network
 Dit netwerk wordt gebruik voor communicatie met de app.
-```docker network create -d bridge my-network```
+```docker network create -d bridge my_network```
 
 # Binnenhalen van de app
 ```git clone https://github.com/FilipVdBergh/interventie2.git```
