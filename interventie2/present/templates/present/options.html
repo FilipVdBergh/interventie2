@@ -1,0 +1,100 @@
+<form method="POST" id="{{ question }}_form">
+    <input type="hidden" id="question_id" name="question_id" value="{{ question.id }}">
+    <div class="description">{{ question.description | escape | markdown}}</div>
+    <table class="option_and_votes">
+        <colgroup>
+            <col style="width:70%">
+            <col style="width:30%">
+        </colgroup>  
+        <tbody>
+            {% for option in question.options | sort(attribute='order')%}
+            <tr>
+                <td>
+                    <div class="option">
+                        <label>
+                            {% if question.allow_multiselect %}
+                                <input type="checkbox" name="option:::{{ option.id }}" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}
+                                    hx-post="{{ url_for('present.update', worksession_id=worksession.id) }}"
+                                    hx-trigger="click"
+                                    hx-target="#instruments"
+                                    hx-swap="innerHTML">
+                            {% else %} 
+                                <input type="radio" name="option:::{{ question.id }}" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}
+                                    hx-post="{{ url_for('present.update', worksession_id=worksession.id) }}"
+                                    hx-trigger="click"
+                                    hx-target="#instruments"
+                                    hx-swap="innerHTML">
+                            {% endif %}
+                            {{ option.name }}
+                        </label>
+                    </div>
+                </td>
+                {% if worksession.enable_voting %}
+                    <td>
+                        <div class="votes tooltip" style="width:20rem;">
+                            {% if votes | selectattr('option', 'eq', option) | list | count > 0 %}
+                                <div class="tooltiptext">
+                                    {% for vote in votes | selectattr('option', 'eq', option) | list %}
+                                            {{ vote.user.name }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="count">
+                                {{ worksession.count_votes( option ) }}
+                            </div>
+                            <div class="bar_graph" style="width: {{ worksession.count_votes(option, perc=True) / 5}}rem;">
+
+                            </div>
+
+                        </div>
+                    </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <td>
+                    {% if (question.options | length > 0) and (question.allow_multiselect == False) %}
+                        <a style="font-size: smaller;" onclick="return uncheck_radio('option:::{{ question.id }}' );"
+                            hx-post="{{ url_for('present.uncheck_options', worksession_id=worksession.id) }}"
+                                            hx-trigger="click"
+                                            hx-target="#instruments"
+                                            hx-swap="innerHTML">
+                            <button type="button">
+                                &#10060;
+                            </button>
+                            Keuze wissen
+                        </a><br>
+                    {% endif %}
+                </td>
+                {% if worksession.enable_voting %}
+                    <td>
+                        <div style="font-size: smaller; float:right;"
+                            hx-get="{{ url_for('present.show_options', question_id=question.id, worksession_id=worksession.id) }}"
+                            hx-trigger="click"
+                            hx-target="#options_{{ question_id }}"
+                            hx-swap="innerHTML">
+                            Stemmen verversen
+                            <button type="button">
+                                🗘
+                            </button>
+                        </div>
+                    </td>
+                {% endif %}
+            </tr>
+
+
+        </tbody>
+    </table>
+
+    
+
+
+
+    {% if question.allow_motivation %}
+        <textarea name="motivation:::{{ question.id }}" rows="5" style="width:95%;"
+                hx-post="{{ url_for('present.update_motivation', worksession_id=worksession.id) }}"
+                hx-trigger="input changed delay:5000ms">{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
+    {% endif %}
+
+</form>

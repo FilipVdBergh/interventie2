@@ -309,6 +309,8 @@ def edit_worksession(worksession_id):
 		worksession.mark_top_instruments = form.mark_top_instruments.data
 		worksession.show_rest_instruments = form.show_rest_instruments.data
 		worksession.show_tags = form.show_tags.data
+		worksession.enable_voting = form.enable_voting.data
+		worksession.voting_key = generate_secret_key(6)
 		worksession.presenter_mode_zoom = 1.00
 		worksession.presenter_mode_color_title = form.presenter_mode_color_title.data
 		worksession.presenter_mode_text_color_title = form.presenter_mode_text_color_title.data
@@ -338,6 +340,7 @@ def edit_worksession(worksession_id):
 		form.mark_top_instruments.data = worksession.mark_top_instruments 
 		form.show_rest_instruments.data = worksession.show_rest_instruments
 		form.show_tags.data = worksession.show_tags 
+		form.enable_voting.data = worksession.enable_voting
 		form.presenter_mode_color_title.data = worksession.presenter_mode_color_title
 		form.presenter_mode_text_color_title.data = worksession.presenter_mode_text_color_title
 		form.presenter_mode_color_nav.data = worksession.presenter_mode_color_nav
@@ -353,6 +356,7 @@ def edit_worksession(worksession_id):
 		form.archived.data = worksession.archived
 		
 	return render_template('main/edit_worksession.html', worksession=worksession, form=form)
+
 
 @main.route('/worksession/<int:worksession_id>/archive/<int:archive>')
 @main.route('/worksession/<int:worksession_id>/archive')
@@ -602,10 +606,21 @@ def show_instrument(worksession_id, instrument_id):
 # 	return render_template('main/share_worksession.html', worksession=worksession, form=form, invitation_string=invitation_string)
 
 
+
+@main.route('/worksession/<int:worksession_id>/reset_voting_key')
+@login_required
+def reset_voting_key(worksession_id):
+	worksession = Worksession.query.get(worksession_id)
+	worksession.voting_key = generate_secret_key(6)
+	db.session.commit()
+	return ""
+
+
+
 @main.route('/worksession/<int:worksession_id>/reset_secret_key')
 @login_required
 def reset_secret_key(worksession_id):
-	"""By resetting teh secret key, all invitations are invalidated."""
+	"""By resetting the secret key, all invitations are invalidated."""
 	worksession = Worksession.query.get(worksession_id)
 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')

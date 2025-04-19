@@ -1,4 +1,9 @@
-<h1>&nbsp</h1>
+
+<h1
+hx-get="{{ url_for('present.show_active_tags', worksession_id=worksession.id) }}"
+hx-trigger="load"
+hx-target="#tags"
+hx-swap="innerHTML">&nbsp</h1>
 
 {% set ns = namespace (lowest_top_score = 0) %}
 {% for (instrument, score) in advisor.get_sorted_instruments() %} 

@@ -4,6 +4,7 @@ from flask_talisman import Talisman
 from flask_login import LoginManager
 from interventie2 import config
 from flaskext.markdown import Markdown
+from flask_qrcode import QRcode
 
 app = Flask(__name__)
 
@@ -30,6 +31,7 @@ def load_user(user_id):
 
 Talisman(app, content_security_policy=None)
 Markdown(app)
+QRcode(app)
 
 # Project imports
 from interventie2.main.routes import main
@@ -40,6 +42,8 @@ from interventie2.export.routes import export
 from interventie2.analysis.routes import analysis
 from interventie2.error.routes import error
 from interventie2.present.routes import present
+from interventie2.vote.routes import vote
+
 from interventie2.models import User
 
 app.register_blueprint(main, url_prefix='/')
@@ -50,3 +54,4 @@ app.register_blueprint(export, url_prefix='/export/')
 app.register_blueprint(analysis, url_prefix='/analysis/')
 app.register_blueprint(error, url_prefix='/error/')
 app.register_blueprint(present, url_prefix='/present/')
+app.register_blueprint(vote, url_prefix='/vote/')

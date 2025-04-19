@@ -18,7 +18,10 @@
                     <td>{{ form.name.label }}</td>
                     <td>{{ form.name }}</td>
                 </tr>
-            
+                <tr>
+                    <td>Tool</td>
+                    <td>{{ worksession.question_set.name }}</td>
+                </tr>
                 <tr>
                     <td>{{ form.project_number.label }}</td>
                     <td>{{ form.project_number }}</td>
@@ -55,8 +58,8 @@
             <h2>Instellingen</h2>            
             <table class="settings">
                 <tr>
-                    <td>Tool</td>
-                    <td>{{ worksession.question_set.name }}</td>
+                    <td>{{ form.enable_voting.label }}</td>
+                    <td>{{ form.enable_voting }}</td>
                 </tr>
                 <tr>
                     <td>{{ form.choice_process.label }}</td>
@@ -74,9 +77,11 @@
                     <td>{{ form.mark_top_instruments.label }}</td>
                     <td>{{ form.mark_top_instruments }}</td>
                 </tr>
-                </table>
-
-                <h2>Kleuren</h2>
+            </table>
+        </div><br>
+        <h1 class="collapsible">Kleuren</h1>
+        <div class="collapsible_content">
+            <h2>Sessiekleuren</h2>
                 <table>
                 <tr>
                     <td>Koppen</td>

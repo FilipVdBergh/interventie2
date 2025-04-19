@@ -1,0 +1,19 @@
+{% for question in worksession.question_set.questions | sort(attribute='order') %}
+    {% if not worksession.is_question_hidden(question) %}
+        {% if question.is_category %}
+            <div class="category">
+                <h1>{{ question.name }}</h1>
+            </div>
+        {% elif not question.is_category %}         
+            <div class="qname"
+                hx-get="{{ url_for('vote.show_question', question_id=question.id, worksession_id=worksession.id) }}"
+                hx-trigger="click"
+                hx-target="#question"
+                >{{ question.name }}
+            </div>
+
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+

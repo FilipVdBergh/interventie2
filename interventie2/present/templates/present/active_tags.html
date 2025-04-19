@@ -1,0 +1,5 @@
+<h1>Tags</h1>
+{% for active_tag in advisor.get_active_tags() %}
+    <span class="tag">{{ active_tag.tag.name }}
+    </span>
+{% endfor %}

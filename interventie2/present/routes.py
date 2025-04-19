@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
-from interventie2.models import db, QuestionSet, Process, User, Question, Answer, Selection, Option, Tag, Worksession, Instrument, InstrumentTagAssignment
+from interventie2.models import db, generate_secret_key, Question, Answer, Selection, Option, Worksession, Instrument, Votes
 from interventie2.classes import Advisor
 
 present = Blueprint('present', __name__,
@@ -14,17 +14,6 @@ present = Blueprint('present', __name__,
 def index():
     return render_template('error/index.html', title='Werksessie ontbreekt', message='Deze pagina hoort niet toegankelijk te zijn.')
 
-@present.route('/create_new_process')
-@login_required
-def create_beta_process():
-    # This function is opnly used to update the live database to add the new processes.
-    if not (Process.query.filter_by(name='Dynamisch').first()):
-        new_process = Process(name='Dynamisch')
-        db.session.add(new_process)
-        db.session.commit()
-        print('Created new process')
-
-    return redirect(url_for('main.index'))
 
 @present.route('/<int:worksession_id>', methods=['GET', 'POST'])
 @login_required
@@ -37,12 +26,17 @@ def present_session(worksession_id):
     
     return render_template('present/present.html', worksession=worksession, advisor=advisor)  
 
-@present.route('/<int:worksession_id>/<int:question_id>', methods=['GET', 'POST'])
+
+
+@present.route('/<int:worksession_id>/<int:question_id>/options', methods=['GET', 'POST'])
 @login_required
-def show_question(worksession_id, question_id):
+def show_options(worksession_id, question_id):
     question = Question.query.get(question_id)
     worksession = Worksession.query.get(worksession_id)
-    return render_template('present/focus_question.html', question=question, worksession=worksession)
+    votes = Votes.query.filter_by(worksession=worksession, question=question).all()
+    
+    return render_template('present/options.html', question=question, worksession=worksession, votes=votes)
+
 
 
 @present.route('/<int:worksession_id>/update', methods=['GET', 'POST'])
@@ -166,6 +160,18 @@ def summarize_answer(worksession_id, question_id):
 def show_question_set(worksession_id):
     worksession = Worksession.query.get(worksession_id)
     return render_template('present/questionnaire.html', worksession=worksession)
+
+
+@present.route('/<int:worksession_id>/active_tags')
+@login_required
+def show_active_tags(worksession_id):
+    worksession = Worksession.query.get(worksession_id)
+    if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+    advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+
+    return render_template('present/active_tags.html', worksession=worksession, advisor=advisor)
+
 
 
 @present.route('/<int:worksession_id>/instrument/<int:instrument_id>')

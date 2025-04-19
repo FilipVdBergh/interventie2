@@ -1,0 +1,102 @@
+:root {
+    --dark-blue: #0f2841;
+    --light-blue: #0e9ed5;
+    --green: #3b7d23;
+    --red: red;
+    --highlight: #195fa6;
+    --mid-grey: #0e9ed5;
+    --object: #f0f9ff;
+    --object-text: black;
+    --alert: red;
+    --button-bg: rgb(0, 81, 168);
+    --button-fg: white;
+}
+
+html,
+body {
+    font-family: sans-serif;
+    line-height: 1.5em;
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    display: grid;
+    overflow-y: hidden;
+    width: 100%;
+    height: 95vh;
+    grid-template-rows: min-content 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+    "header         header "
+    "questionnaire  question ";
+}
+
+p {
+    padding: 0px;
+    margin: 0px;
+}
+
+h1, h2, h3 {
+    font-family: "Poppins", sans-serif;
+    color: rgb(24, 50, 103);
+}
+h1 {
+    font-size:100%;
+}
+h2 {
+    font-size: 90%;
+}
+
+.header {
+    grid-area: header;
+    padding: 0.2rem 1rem 0.2rem 1rem;
+    margin-bottom: 0.2rem;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 8px;
+    font-family: "Poppins", sans-serif;
+    color: white;
+    background-color: rgb(24, 50, 103);
+    font-size: large;
+    font-weight: bold;
+    overflow: hidden;
+}
+
+.questionnaire {
+    grid-area: questionnaire;
+    padding: 0 0.2rem 0.8rem 0.2rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+    .questionnaire .category {
+        font-family: "Poppins", sans-serif;
+        color: rgb(24, 50, 103);
+        padding-left: 0.5rem;
+    }
+
+    .questionnaire .qname {
+        margin: 0.5rem;
+        padding: 0.5rem;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 8px;
+        cursor: pointer;
+    }
+
+.question {
+    overflow-y:scroll;
+    padding: 0 0.5rem 0 0.5rem;
+}
+    .question .description {
+        font-style: italic;
+        padding-bottom: 0.2rem;
+    }
+    .question .option {
+   
+        cursor: pointer;
+        border: 1px solid var(--mid-grey);
+        background-color: var(--button-bg);
+        color: var(--button-fg);
+        border-radius: 4px;
+        min-width: 4em;
+        padding: 0.6rem 0.4rem 0.6rem 0.4rem;
+        margin-bottom: 2px;
+    }

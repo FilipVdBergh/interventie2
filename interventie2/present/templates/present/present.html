@@ -4,6 +4,7 @@
         <meta charset="URF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,6 +42,22 @@
                 {{ worksession.effect | escape | markdown }}
             </div>
         </div>
+        
+        {% if worksession.show_tags %}
+            <div class="tags" id="tags">
+                
+            </div>
+        {% endif %}
+        
+        {% if worksession.enable_voting %}
+            <div class="qr">
+                <h1 class="title">Scan en stem</h1>
+                <a href="{{ url_for('vote.touch_vote', worksession_id=worksession.id, voting_key=worksession.voting_key, _external=True) }}">
+                    <img src="{{ qrcode(url_for('vote.touch_vote', worksession_id=worksession.id, voting_key=worksession.voting_key, _external=True)) }}" height="50%">
+                </a>
+            </div>
+        {% endif %}
+        
 
         <div class="main" id="main">
             {% include 'present/questionnaire.html' %}

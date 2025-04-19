@@ -5,10 +5,10 @@
                 <h1>{{ question.name }}</h1>
                 {% if question.description | length > 0 %}<div class="question_category_description">{{ question.description | escape | markdown }}</div><br>{% endif %}
             {% elif not question.is_category %}         
-                <div class="collapsible question"
+                <div class="collapsible question" id="{{ question }}"
                             hx-get="{{ url_for('present.summarize_answer', question_id=question.id, worksession_id=worksession.id) }}"
                             hx-trigger="click"
-                            hx-target="find .answer_summary"
+                            hx-target="find #answer_summary_{{ question_id }}"
                             hx-swap="innerHTML"
                             >{{ question.name }}
 
@@ -18,51 +18,15 @@
                             hx-target="this"
                             hx-swap="innerHTML">
                     </div>
+
                 </div>
-                <form class="collapsible_content" method="POST">
-                    <input type="hidden" id="question_id" name="question_id" value="{{ question.id }}">
-                    <div class="description">{{ question.description | escape | markdown}}</div>
-                    {% for option in question.options | sort(attribute='order')%}
-                        <div class="option">
-                            <label>
-                                {% if question.allow_multiselect %}
-                                    <input type="checkbox" name="option:::{{ option.id }}" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}
-                                        hx-post="{{ url_for('present.update', worksession_id=worksession.id) }}"
-                                        hx-trigger="click"
-                                        hx-target="#instruments"
-                                        hx-swap="innerHTML">
-                                {% else %} 
-                                    <input type="radio" name="option:::{{ question.id }}" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}
-                                        hx-post="{{ url_for('present.update', worksession_id=worksession.id) }}"
-                                        hx-trigger="click"
-                                        hx-target="#instruments"
-                                        hx-swap="innerHTML">
-                                {% endif %}
-                                {{ option.name }}
-                            </label>
-                        </div>
-                    {% endfor %}
+                <div class="collapsible_content" id="options_{{ question_id }}"
+                            hx-get="{{ url_for('present.show_options', question_id=question.id, worksession_id=worksession.id) }}"
+                            hx-trigger="load"
+                            hx-target="this"
+                            hx-swap="innerHTML">
 
-                    {% if (question.options | length > 0) and (question.allow_multiselect == False) %}
-                        <a style="font-size: smaller;" onclick="return uncheck_radio('option:::{{ question.id }}' );"
-                            hx-post="{{ url_for('present.uncheck_options', worksession_id=worksession.id) }}"
-                                            hx-trigger="click"
-                                            hx-target="#instruments"
-                                            hx-swap="innerHTML">
-                            <button type="button" >
-                                &#10060;
-                            </button>
-                            Keuze wissen
-                        </a><br>
-                    {% endif %}
-
-                    {% if question.allow_motivation %}
-                        <textarea name="motivation:::{{ question.id }}" rows="5" style="width:95%;"
-                                hx-post="{{ url_for('present.update_motivation', worksession_id=worksession.id) }}"
-                                hx-trigger="input changed delay:5000ms">{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
-                    {% endif %}
-
-                </form>
+                </div>
             {% endif %}
         {% endif %}
     {% endfor %}

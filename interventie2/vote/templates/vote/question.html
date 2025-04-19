@@ -1,0 +1,37 @@
+<h1>
+    {{ question.name }}
+</h1>
+
+<form method="POST">
+    <input type="hidden" id="question_id" name="question_id" value="{{ question.id }}">
+    <div class="description">{{ question.description | escape | markdown}}</div>
+    {% for option in question.options | sort(attribute='order')%}
+        <label>
+            <div class="option">
+                {% if question.allow_multiselect %}
+                    <input type="checkbox" name="option:::{{ option.id }}" value="{{ option.id }}" {% if option in votes | map(attribute='option' ) %}checked{% endif %}
+                        hx-post="{{ url_for('vote.update', worksession_id=worksession.id) }}"
+                        hx-trigger="click">
+                {% else %} 
+                    <input type="radio" name="option:::{{ question.id }}" value="{{ option.id }}" {% if option in votes | map(attribute='option' ) %}checked{% endif %}
+                        hx-post="{{ url_for('vote.update', worksession_id=worksession.id) }}"
+                        hx-trigger="click">
+                {% endif %}
+                {{ option.name }}
+            </div>
+        </label>
+        
+    {% endfor %}
+
+    {% if (question.options | length > 0) and (question.allow_multiselect == False) %}
+    <div class="option">
+        <a style="font-size: smaller;" onclick="return uncheck_radio('option:::{{ question.id }}' );"
+            hx-post="{{ url_for('vote.update', worksession_id=worksession.id) }}"
+            hx-trigger="click"
+            hx-target="#">         
+                &#10060; Keuze wissen
+        </a>
+    </div>    
+    {% endif %}
+
+</form>

@@ -242,6 +242,27 @@ class Worksession(db.Model):
         for answer in self.answers:
             if answer.question == question:
                 return answer.weight
+            
+
+    def count_votes(self, option, perc=False):
+        """This function returns the number of votes for a given option in the worksession."""
+        votes = 0
+        for vote in self.votes:
+            if vote.option == option:
+                votes  += 1
+        if perc:
+            options = 0
+            for vote in self.votes:
+                if vote.option.question == option.question:
+                    options += 1
+            if options == 0:
+                return 0
+            return int(votes/options*100)
+        else: 
+            return votes
+    
+
+
 
     def __repr__(self):
         return f'<Worksession {self.name}>'
