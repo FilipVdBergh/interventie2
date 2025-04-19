@@ -3,7 +3,7 @@
 #RUN apk update
 #RUN apk add build-base gcc libffi-dev musl-dev mariadb-connector-c-dev unixodbc-dev unixodbc
 
-FROM python:3.8-slim-buster
+FROM python:3.9-slim-buster
 
 # build variables.
 ENV DEBIAN_FRONTEND=noninteractive
