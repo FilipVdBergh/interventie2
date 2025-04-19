@@ -628,13 +628,6 @@ li.selected {
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
-    .card.new {
-        /* border: 1px dashed var(--mid-grey); */
-    }
-    .card.double {
-        width: 420px;
-        height: 330px;
-    }
     .card:hover {
         overflow: scroll;
         box-shadow: rgba(0, 0, 0, 0.48) 0px 3px 8px;
@@ -692,14 +685,6 @@ li.selected {
         /* margin-bottom: 0.2em; */
     
     }
-    .card.double {
-        height: 200px;
-        max-height: 200px;
-        width: auto;
-        /* margin-bottom: 0.2em; */
-    
-    }
-
 }
 
 /* Messages */

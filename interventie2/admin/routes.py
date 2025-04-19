@@ -51,7 +51,8 @@ def initialize():
             print('Finsihing touches...')
             standard_process = Process(name='Presenteer alle vragen tegelijk')
             wizard_process = Process(name='Presenteer één vraag tegelijk')
-            for new_process in [standard_process, wizard_process]:
+            new_standard_process = Process(name='Nieuw standaardproces (met gebruikersstemmen)')
+            for new_process in [standard_process, wizard_process, new_standard_process]:
                 db.session.add(new_process)
 
             db.session.commit()
