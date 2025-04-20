@@ -39,7 +39,22 @@ Dit netwerk wordt gebruik voor communicatie met de app.
 ```git clone https://github.com/FilipVdBergh/interventie2.git```
 
 ## Pas de dockerfile aan
-Er zijn een paar manieren om de app op te starten, en die hangen af van of er certificaten worden gebruikt. Open de dockerfile en (un)comment de juiste regels onderin het bestand.
+Er zijn een paar manieren om de app op te starten, en die hangen af van of er certificaten worden gebruikt. Open de dockerfile en (un)comment de juiste regels onderin het bestand. Als je bij het starten van de container problemen hebt met de encryptie, dan komt dat waarschijnlijk omdat je hier nog aanpassingen moet doen. 
+```# OPTION 1: Voor gebruik van de Flask webserver
+#ENTRYPOINT [ "python" ] 
+#CMD ["app.py" ]
+
+# OPTION 2: gunicorn, standaard workers
+#CMD ["gunicorn", "--timeout", "600", "--workers", "5", "--bind", "0.0.0.0:443", "app:app"]
+
+# OPTION 3: gunicorn met gevent
+CMD ["gunicorn", "--timeout", "600", "--worker-class", "gevent", "--workers", "5", "--bind", "0.0.0.0:443", "patched:app"]
+
+# OPTION 4: gunicorn met Letsencrypt certificates
+#CMD ["gunicorn", "--timeout", "600", "--worker-class", "gevent", "--workers", "5", "--bind", "0.0.0.0:443", "--certfile", "/etc/letsencrypt/certificates/fullchain.pem", "--keyfile", "/etc/letsencrypt/certificates/privkey.pem", "patched:app"]
+```
+Als je de app start in een container op een lokale machine, dan is Optie 3 goed. Voor een app met certificaten buiten de container selecteer je Optie 4.
+
 
 ## settings.cfg kopieren
 Maak eerst een kopie van het settings.cfg bestand dat je zojuist hebt binnengehaald vanuit github, en zet het één directoryniveau hoger:
