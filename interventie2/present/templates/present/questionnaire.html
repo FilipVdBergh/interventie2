@@ -8,11 +8,11 @@
                 <div class="collapsible question" id="{{ question }}"
                             hx-get="{{ url_for('present.summarize_answer', question_id=question.id, worksession_id=worksession.id) }}"
                             hx-trigger="click"
-                            hx-target="find #answer_summary_{{ question_id }}"
+                            hx-target="find #answer_summary_{{ question.id }}"
                             hx-swap="innerHTML"
                             >{{ question.name }}
 
-                    <div class="answer_summary" id="answer_summary_{{ question_id }}"
+                    <div class="answer_summary" id="answer_summary_{{ question.id }}"
                             hx-get="{{ url_for('present.summarize_answer', question_id=question.id, worksession_id=worksession.id) }}"
                             hx-trigger="load"
                             hx-target="this"
@@ -20,7 +20,7 @@
                     </div>
 
                 </div>
-                <div class="collapsible_content" id="options_{{ question_id }}"
+                <div class="collapsible_content" id="options_{{ question.id }}"
                             hx-get="{{ url_for('present.show_options', question_id=question.id, worksession_id=worksession.id) }}"
                             hx-trigger="load"
                             hx-target="this"

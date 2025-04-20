@@ -1,4 +1,4 @@
-<form method="POST" id="{{ question }}_form">
+<form method="POST" id="{{ question.id }}_form">
     <input type="hidden" id="question_id" name="question_id" value="{{ question.id }}">
     <div class="description">{{ question.description | escape | markdown}}</div>
     <table class="option_and_votes">
@@ -72,7 +72,7 @@
                         <div style="font-size: smaller; float:right;"
                             hx-get="{{ url_for('present.show_options', question_id=question.id, worksession_id=worksession.id) }}"
                             hx-trigger="click"
-                            hx-target="#options_{{ question_id }}"
+                            hx-target="#options_{{ question.id }}"
                             hx-swap="innerHTML">
                             Stemmen verversen
                             <button type="button">

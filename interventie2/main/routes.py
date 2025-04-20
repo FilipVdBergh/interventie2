@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, send_file, requ
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, current_user, login_required
 from interventie2.forms import LoginForm, NewWorksessionForm, EditWorksessionForm, EditCaseForm, EditConclusionForm, MarkdownPlaygroundForm, EditWorksessionAccessForm
-from interventie2.models import User, Worksession, QuestionSet, Instrument, Option, Answer, Selection, Question, Process, InstrumentChoice, Plan, Message
+from interventie2.models import User, Worksession, QuestionSet, Instrument, Option, Answer, Selection, Question, Process, InstrumentChoice, Plan, Message, Votes
 from interventie2.models import db, generate_secret_key
 from interventie2.classes import Advisor
 from sqlalchemy.sql import func
@@ -614,6 +614,23 @@ def reset_voting_key(worksession_id):
 	worksession.voting_key = generate_secret_key(6)
 	db.session.commit()
 	return ""
+
+
+@main.route('/worksession/<int:worksession_id>/erase_votes')
+@login_required
+def erase_votes(worksession_id):
+	worksession = Worksession.query.get(worksession_id)
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+	
+	worksession.voting_key = generate_secret_key(6)
+	
+	votes = Votes.query.filter_by(worksession=worksession).all()
+	for vote in votes:
+		db.session.delete(vote)
+	db.session.commit()
+
+	return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 
 
 

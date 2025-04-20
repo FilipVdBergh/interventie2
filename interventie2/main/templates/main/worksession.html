@@ -20,6 +20,9 @@
 
 <div id="ws_main" class="tabcontent text_area">
         <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button type="button">▶︎ Start de werksessie</button></a>
+        {% if worksession.enable_voting %}
+            <a href="{{ url_for('main.erase_votes', worksession_id=worksession.id) }}"><button type="button">🗨 Wis alle stemmen van deelnemers</button></a>
+        {% endif %}
         <a href="{{ url_for('main.edit_worksession', worksession_id=worksession.id) }}"><button type="button">✎ Werksessie aanpassen</button></a>
     <h1>Beschrijving
         
