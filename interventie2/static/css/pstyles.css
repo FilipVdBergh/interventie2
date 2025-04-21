@@ -14,7 +14,7 @@
 
 html,
 body {
-    font-family: sans-serif;
+    font-family: "Special Gothic", sans-serif;
     line-height: 1.5em;
     padding: 0px;
     margin: 0px;
@@ -49,6 +49,15 @@ h1 {
 }
 h2 {
     font-size: large;
+}
+
+textarea {
+    border: 1px solid var(--mid-grey);
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: inherit;
+    margin-bottom: 2px;
+    padding: 0.5rem;
 }
 
 .nav {
