@@ -355,7 +355,7 @@ nav {
         }
         .steps {
             background: inherit;
-            color: var(--mid-grey);
+            color: lightgrey;
             outline: none;
             cursor: pointer;
             border: none;
