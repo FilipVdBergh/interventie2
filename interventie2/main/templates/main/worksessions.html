@@ -109,7 +109,6 @@ Werksessies
                 <th>Interventieplannen</th>
                 <th>Datum</th>
                 <th>Selectietool</th>
-                <!-- <th>Beschrijving</th> -->
                 <th>Eigenaar</th>
                 <th>Status</th>
             </tr>
@@ -124,7 +123,6 @@ Werksessies
                     <td>{{ worksession.plan | count }}</td>
                     <td>{{ worksession.date.strftime('%d-%m-%Y') }}</td>
                     <td>{{ worksession.question_set.name }}</td>
-                    <!-- <td>{{ worksession.description | escape | markdown | truncate(500) }}</td> -->
                     <td><a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></td>
                     <td>{% if worksession.archived == true %}Archief{% endif %}</td>
                 </tr>

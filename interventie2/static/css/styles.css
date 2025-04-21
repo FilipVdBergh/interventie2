@@ -187,7 +187,6 @@ table {
   }
   tbody tr {
     border-left: 4px solid var(--object);
-    border-bottom: 2px solid white;
     transition:all  0.25s ease;
   }
   tbody tr:hover {

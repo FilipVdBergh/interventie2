@@ -5,13 +5,11 @@
 {% endblock %}
 
 {% block tabs %}
-<div class="tab_bar">
     <button class="tablinks" onclick="switch_tab(event, 'ws_main')" id="defaultOpen">Beschrijving</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_summary')">Uitkomsten ({{ worksession.completion() }})</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_plans')">Interventieplannen ({{ worksession.plan | count }})</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_related')">Gerelateerde sessies</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_settings')">Toegang</button>
-</div>
 {% endblock %}
 
 
