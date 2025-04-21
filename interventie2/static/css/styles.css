@@ -130,6 +130,7 @@ input {
     background-color: white;;
     border: 1px solid var(--mid-grey);
     border-radius: 2px;
+    font-family: inherit;
     font-size: inherit;
     /* min-height: 1.7rem; */
     margin-bottom: 2px;
@@ -310,7 +311,7 @@ nav {
         padding-top: 3rem;
         overflow: hidden;
         font-size: inherit;
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid rgb(182, 182, 182);
     }
 
         .tabs button {
@@ -331,7 +332,7 @@ nav {
             
         }       
         .tabs button.active_tab {
-            border-bottom: solid 2px var(--dark-blue);
+            border-bottom: solid 4px var(--dark-blue);
         }
         @media only screen and (max-width: 845px) {
             .tabs {
