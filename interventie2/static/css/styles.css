@@ -510,7 +510,7 @@ footer {
 .login {
     background-color: var(--object);
     color: var(--object-text);
-    padding: 2rem 3rem 1rem 3rem;
+    padding: 1rem;
     border-radius: 2px;
     animation: fadeInAnimation ease 0.7s;
     animation-iteration-count: 1;
@@ -523,7 +523,7 @@ footer {
 
 .login .register {
     text-align: center;
-    padding: 1rem;
+    padding-bottom: 1rem;
     font-size: small;
     font-weight: bold;
     color: black;
