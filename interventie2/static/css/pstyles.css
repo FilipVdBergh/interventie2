@@ -145,8 +145,13 @@ textarea {
     grid-area: qr;
     padding: 1rem 1rem 0rem 1rem;
     margin: 0;
-    
+    opacity: 10%;
+    transition: ease 1s;
 }
+    .qr:hover {
+        opacity: 100%;
+        transition: ease 1s;
+    }
     
 
 .main {
