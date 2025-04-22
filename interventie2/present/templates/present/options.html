@@ -35,14 +35,14 @@
                             {% if votes | selectattr('option', 'eq', option) | list | count > 0 %}
                                 <div class="tooltiptext">
                                     {% for vote in votes | selectattr('option', 'eq', option) | list %}
-                                            {{ vote.user.name }}
+                                            {{ vote.user.name }}{% if not loop.last %}, {% endif %}
                                     {% endfor %}
                                 </div>
                             {% endif %}
                             <div class="count">
                                 {{ worksession.count_votes( option ) }}
                             </div>
-                            <div class="bar_graph" style="width: {{ worksession.count_votes(option, perc=True) / 5}}rem;">
+                            <div class="bar_graph" style="width: {{ worksession.count_votes(option, perc=True) / 5.1}}rem;">
 
                             </div>
 

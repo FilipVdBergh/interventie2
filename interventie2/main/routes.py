@@ -11,6 +11,7 @@ from decimal import Decimal
 from datetime import datetime
 from interventie2.admin.routes import send_system_message
 import hashlib
+from urllib.parse import urlsplit
 
 
 main = Blueprint('main', __name__,
@@ -58,8 +59,14 @@ def login():
 			flash("Gebruikersnaam of wachtwoord onjuist", "login_error")
 			return redirect(url_for('main.login'))
 		login_user(user)
-		current_user.last_seen = func.now()
-		return redirect(url_for('main.index'))
+		user.last_seen = func.now()
+		db.session.commit()
+
+		next_page = request.args.get('next')
+		if not next_page or urlsplit(next_page).netloc != '':
+			next_page = url_for('main.index')
+		return redirect(next_page)
+		
 
 	return render_template('main/login.html', form=form)
 

@@ -20,13 +20,25 @@ body {
     margin: 0px;
 }
 
+::-webkit-scrollbar {
+    width: 2px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(155, 155, 155, 0.5);
+    border-radius: 20px;
+    border: transparent;
+  }
+
 body {
     display: grid;
     overflow:hidden;
     width: 100%;
     height: 100vh;
     grid-template-columns: 20vw auto;
-    grid-template-rows: min-content min-content 1fr auto 18rem;
+    grid-template-rows: min-content min-content 1fr min-content 12rem;
     grid-template-areas:
     "nav         nav         "
     "header      header      "
@@ -152,6 +164,7 @@ textarea {
         font-weight: bold;
         font-size: large;
         background-color: rgb(233, 233, 233);
+        border-radius: 4px;
     }
     .main .question .answer_summary {
         display: inline;
@@ -171,6 +184,7 @@ textarea {
 .votes {
     display: flex;
     align-items: center;
+    float: right;
     background-color: #f0f9ff;
     width: 25rem;
 }
@@ -178,13 +192,15 @@ textarea {
         font-size: small;
         font-weight: bold;
         width: 1.7rem;
+        padding-left: 0.4rem;
     }
     .votes .bar_graph {
-        padding: 0;
         background-color: #13518f;
         height: 1.1rem;
+        padding-right: 0.4rem;
         margin-left: 5px;
-        margin-right: none;
+        margin-right: 0.4rem;
+        border-radius: 5px;
     }
 
 .explanation {

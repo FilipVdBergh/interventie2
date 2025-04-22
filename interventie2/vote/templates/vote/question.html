@@ -24,14 +24,12 @@
     {% endfor %}
 
     {% if (question.options | length > 0) and (question.allow_multiselect == False) %}
-    <div class="option">
-        <a style="font-size: smaller;" onclick="return uncheck_radio('option:::{{ question.id }}' );"
-            hx-post="{{ url_for('vote.update', worksession_id=worksession.id) }}"
-            hx-trigger="click"
-            hx-target="#">         
-                &#10060; Keuze wissen
-        </a>
-    </div>    
+        <div class="option" onclick="return uncheck_radio('option:::{{ question.id }}' );"
+                hx-post="{{ url_for('vote.update', worksession_id=worksession.id) }}"
+                hx-trigger="click"
+                hx-swap="none">         
+                    &#10060; Keuze wissen
+        </div>    
     {% endif %}
 
 </form>

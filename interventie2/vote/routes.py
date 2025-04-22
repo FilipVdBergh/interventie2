@@ -14,6 +14,7 @@ vote = Blueprint('vote', __name__,
 def index():
     return render_template('error/index.html', title='Werksessie ontbreekt', message='Deze pagina hoort niet toegankelijk te zijn.')
 
+
 @vote.route('/<int:worksession_id>/<voting_key>', methods=['GET', 'POST'])
 @login_required
 def touch_vote(worksession_id, voting_key):
@@ -29,6 +30,7 @@ def touch_vote(worksession_id, voting_key):
    
     return render_template('vote/vote.html', worksession=worksession)
 
+
 @vote.route('/<int:worksession_id>show_question/<int:question_id>')
 @login_required
 def show_question(worksession_id, question_id):
@@ -38,6 +40,7 @@ def show_question(worksession_id, question_id):
 
     return render_template('vote/question.html', worksession=worksession, question=question, votes=votes)
 
+
 @vote.route('/<int:worksession_id>/update', methods=['GET', 'POST'])
 @login_required
 def update(worksession_id):
@@ -46,6 +49,7 @@ def update(worksession_id):
 
     # Each for contains options for a single question, but which question?
     for item, value in request.form.items():
+        print(f'Item {item}, value {value}')
         if 'question_id' in item:
             current_question = Question.query.get ( int(value) )
             break
@@ -65,9 +69,3 @@ def update(worksession_id):
     db.session.commit()
 
     return ""
-
-
-@vote.route('/<int:worksession_id>/uncheck_options', methods=['GET', 'POST'])
-@login_required
-def uncheck_options():
-    pass
