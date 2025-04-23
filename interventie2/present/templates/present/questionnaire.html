@@ -30,4 +30,9 @@
             {% endif %}
         {% endif %}
     {% endfor %}
+    
+    <br><a href="{{ url_for('present.conclusion', worksession_id=worksession.id) }}">
+        <button>Doorgaan</button>
+    </a>
+
     <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
