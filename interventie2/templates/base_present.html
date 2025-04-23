@@ -22,13 +22,13 @@
     <body class="presenter_view">
         <div class="nav">
             <div class="element">
-                <a href="{{ url_for('present.frontpage', worksession_id=worksession.id) }}">1. Casus</a>
+                <a href="{{ url_for('present.frontpage', worksession_id=worksession.id) }}">Beschrijving en doel</a>
             </div>
             <div class="element">
-                <a href="{{ url_for('present.present_session', worksession_id=worksession.id) }}">2. {{ worksession.question_set.name }}</a>
+                <a href="{{ url_for('present.present_session', worksession_id=worksession.id) }}">{{ worksession.question_set.name }}</a>
             </div>
             <div class="element">
-                <a href="{{ url_for('present.conclusion', worksession_id=worksession.id) }}">3. Conclusie</a>
+                <a href="{{ url_for('present.conclusion', worksession_id=worksession.id) }}">Conclusie en interventieplan</a>
             </div>
             <div class="element">
                 <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}">Afsluiten</a>

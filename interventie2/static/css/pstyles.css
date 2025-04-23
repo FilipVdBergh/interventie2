@@ -80,8 +80,8 @@ textarea {
     color: white;
     padding: 0.1rem 2rem;
     display: block;
-    text-transform: uppercase;
-    font-size: x-small;
+    /* text-transform: uppercase; */
+    font-size: small;
     font-family: "Poppins", sans-serif;
 }
     .nav .element a {
@@ -97,6 +97,7 @@ textarea {
         color: white;
         background-color: rgb(0, 81, 168);
         text-decoration: none;
+        padding: 0.2rem 2rem 0.2rem 2rem;
     }
 
 .header {
