@@ -310,6 +310,7 @@ nav {
         padding-top: 3rem;
         overflow: hidden;
         font-size: inherit;
+        font-family: "Poppins", sans-serif;
         border-bottom: 1px solid rgb(182, 182, 182);
     }
 
@@ -323,6 +324,7 @@ nav {
             border: none;
             border-radius: 0px;
             font-size: inherit;
+            font-family: "Poppins", sans-serif;
             width: auto;
             border-bottom: solid 2px white;
         }        

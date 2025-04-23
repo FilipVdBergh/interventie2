@@ -1,0 +1,26 @@
+{% extends 'base_present.html' %}
+
+{% block main %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        <h1>Beschrijving</h1>
+        <div>
+            Geef een korte beschrijving van de casus. 
+        </div>
+        
+        {{ form.description }}
+
+        <h1>Beoogd doel</h1>
+        <div>
+            Wat is het doel dat je wilt bereiken? Welk gedrag is onwenselijk en moet gestopt of verminderd worden? Of welk nieuw gedrag moet gestart worden?
+            <ul>
+                <li>Wie moet wat doen?</li>
+                <li>Wanneer moet de verandering zichtbaar zijn?</li>
+                <li>Wat is het huidige gedrag, en welk verschil moet overbrugd worden?</li>
+            </ul>        
+            {{ form.effect }}
+        </div>
+        <button>Opslaan en doorgaan</button>
+    </form>
+{% endblock %}
+

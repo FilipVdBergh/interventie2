@@ -1,7 +1,10 @@
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
-from interventie2.models import db, generate_secret_key, Question, Answer, Selection, Option, Worksession, Instrument, Votes
+from interventie2.models import db, generate_secret_key, Question, Answer, Selection, Option, Worksession, Instrument, Votes, Plan, InstrumentChoice
+from interventie2.forms import EditCaseForm
 from interventie2.classes import Advisor
+from datetime import datetime, timedelta
+from interventie2.admin.routes import send_system_message
 
 present = Blueprint('present', __name__,
                  template_folder='templates',
@@ -13,6 +16,78 @@ present = Blueprint('present', __name__,
 @login_required
 def index():
     return render_template('error/index.html', title='Werksessie ontbreekt', message='Deze pagina hoort niet toegankelijk te zijn.')
+
+
+@present.route('/<int:worksession_id>/frontpage', methods=['GET', 'POST'])
+@login_required
+def frontpage(worksession_id):
+    if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+
+    worksession = Worksession.query.get(worksession_id)
+    form = EditCaseForm()
+
+    if form.validate_on_submit():
+        worksession.description = form.description.data
+        worksession.effect = form.effect.data
+        db.session.commit()
+        return redirect(url_for('present.present_session', worksession_id=worksession.id))
+    elif request.method == "GET":
+        form.description.data = worksession.description 
+        form.effect.data = worksession.effect
+    
+    return render_template('present/frontpage.html', worksession=worksession, form=form)  
+
+
+@present.route('/<int:worksession_id>/conclusion', methods=['GET', 'POST'])
+@login_required
+def conclusion(worksession_id):
+    worksession = Worksession.query.get(worksession_id)
+    advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+
+    if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+	
+	# Create an interventionplan based on the finished worksession if one doesn't exist
+	# A plan is a selection of instruments relevant to a worksession, with some motivation.
+	# A worksession can have multiple plans, but plan 0 os always the one made immediately after
+	# the session. This way, the actually executed plan can also be stored in the database.
+
+    plan = Plan.query.filter_by(worksession_id=worksession.id).filter_by(stage=0).first()
+		# Stage = 0 is always the primary conclusion after finishing a worksession
+    if  plan is None:
+        plan = Plan(worksession=worksession,
+			  stage=0,
+			  description="Interventieplan aangemaakt na de werksessie",
+			  conclusion="") # I actually don't understand why the value can ever be None, but it is.
+
+    if request.method == "POST":
+		#Store the conclusion with the new plan.
+        plan.conclusion = chosen_instruments = request.form.get("motivation")
+		#Erase previously selected instruments
+        for instrument_choice in plan.instruments:
+            db.session.delete(instrument_choice)
+		#Store all checked instruments
+        chosen_instruments = request.form.getlist('choose_instrument')
+        for instrument_id in chosen_instruments:
+            new_instrument_choice = InstrumentChoice(plan=plan, instrument_id=instrument_id)
+            db.session.add(new_instrument_choice)	
+
+        db.session.add(plan)
+        db.session.commit()
+
+		# Remind the user in 90 days to enter the final intervention plan
+        send_system_message(
+			subject = f'Welke interventies zijn uitgevoerd bij de casus {worksession.name}?',
+			body = f'Laat weten welke interventies zijn uitgevoerd bij de casus {worksession.name}. Open de werksessie en voer een nieuw interventieplan in. Selecteer in het interventieplan de daadwerkelijk uitgevoerde interventies. Op basis van deze gegevens kunnen de selectietool en de instrumenten verder worden ontwikkeld.',
+			deliver_after = datetime.today() + timedelta(90),
+			recipient = current_user,
+			sender = None
+		)
+
+        return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
+
+    return render_template('/present/conclusion.html', worksession=worksession, advisor=advisor, plan=plan)
 
 
 @present.route('/<int:worksession_id>', methods=['GET', 'POST'])

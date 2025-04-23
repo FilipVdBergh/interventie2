@@ -506,6 +506,10 @@ def case(worksession_id):
 	elif request.method == "GET":
 		form.description.data = worksession.description 
 		form.effect.data = worksession.effect
+	
+	if worksession.process_id == 3:
+		return redirect(url_for('present.frontpage', worksession_id=worksession.id))
+
 	return render_template('/main/case.html', worksession=worksession, form=form)
 
 

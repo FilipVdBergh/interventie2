@@ -1,0 +1,92 @@
+{% extends 'base_present.html' %}
+
+{% block description %}
+    {{ worksession.effect | escape | markdown }}
+{% endblock %}
+
+{% block tags %}
+    {% if worksession.show_tags %}
+        <div class="tags" id="tags">
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <form method="POST">
+
+        <h1>Instrumenten</h1>
+        <div>
+            Maak een interventieplan door aan te geven welke combinatie van instrumenten je van plan bent in te zetten. Kruis de instrumenten aan in de lijst links.
+        </div>
+
+        <h1>Definitieve overwegingen</h1>
+        <div>
+            Beschrijf hieronder welke instrumenten relevant zijn voor deze casus en welke 
+            overwegingen daarbij een rol spelen. De aanpak kan gebaseerd zijn op de instrumenten die door de keuzehulp zijn 
+            geprioriteerd, maar dat hoeft niet. Als meerdere instrumenten zijn geselecteerd, beschrijf dan hoe deze gecombineerd worden ingezet.
+        </div>
+        <br><textarea name="motivation" rows="5" cols="100">{{ plan.conclusion }}</textarea>
+        <br><button>Opslaan</button>
+{% endblock %}
+
+{% block instruments %}
+<h1
+hx-get="{{ url_for('present.show_active_tags', worksession_id=worksession.id) }}"
+hx-trigger="load"
+hx-target="#tags"
+hx-swap="innerHTML">&nbsp</h1>
+
+        {% set ns = namespace (lowest_top_score = 0) %}
+        {% for (instrument, score) in advisor.get_sorted_instruments() %} 
+            <div class="instrument selection">
+                {% if score <= 0 %}
+                <!-- If no questions are answered, catch that all instruments are 0 -->
+                    {% if worksession.show_rest_instruments %}
+                        <div class="prio_low">
+                            <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">
+                                <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
+                                    {% for chosen_instrument in plan.instruments %}
+                                        {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
+                                    {% endfor %}>
+                            {{ instrument.name }} ({{ score | round }})</a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    
+                    {% if loop.index <= worksession.mark_top_instruments %}
+                        {% set ns.lowest_top_score = score %}
+                        <div class="prio_high">
+                            <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">
+                                <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
+                                    {% for chosen_instrument in plan.instruments %}
+                                        {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
+                                    {% endfor %}>
+                                {{ instrument.name }} (Score: {{ score | round }})</a>
+                        </div>
+                    {% else %}
+                        {% if score == ns.lowest_top_score %}            
+                            <div class="prio_high">
+                                <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">
+                                    <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
+                                        {% for chosen_instrument in plan.instruments %}
+                                            {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
+                                        {% endfor %}>{{ instrument.name }} ({{ score | round }})</a>
+                            </div>
+                        {% else %}
+                            {% if worksession.show_rest_instruments %}
+                                <div class="prio_medium">
+                                    <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">
+                                        <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
+                                            {% for chosen_instrument in plan.instruments %}
+                                                {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
+                                            {% endfor %}>
+                                        {{ instrument.name }} ({{ score | round }})</a>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </form>
+{% endblock %}
