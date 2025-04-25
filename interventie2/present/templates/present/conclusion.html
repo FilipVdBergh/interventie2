@@ -22,8 +22,10 @@
             geprioriteerd, maar dat hoeft niet. Als meerdere instrumenten zijn geselecteerd, beschrijf dan hoe deze gecombineerd worden ingezet.
         </p>
         <form method="POST">
-            <textarea name="motivation" rows="5" cols="100">{{ plan.conclusion }}</textarea>
-            <br><button>Opslaan en afronden</button>
+            <textarea name="motivation" rows="5" cols="100"
+                hx-post="{{ url_for('present.update_conclusion', worksession_id=worksession.id) }}"
+                hx-trigger="input changed delay:5000ms">{{ plan.conclusion }}</textarea>
+            <br><button>Opslaan</button>
         </form>
 {% endblock %}
 

@@ -39,48 +39,6 @@ def frontpage(worksession_id):
     return render_template('present/frontpage.html', worksession=worksession, form=form)  
 
 
-@present.route('/<int:worksession_id>/conclusion', methods=['GET', 'POST'])
-@login_required
-def conclusion(worksession_id):
-    worksession = Worksession.query.get(worksession_id)
-    advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
-
-    if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
-        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
-	
-	# Create an interventionplan based on the finished worksession if one doesn't exist
-	# A plan is a selection of instruments relevant to a worksession, with some motivation.
-	# A worksession can have multiple plans, but plan 0 os always the one made immediately after
-	# the session. This way, the actually executed plan can also be stored in the database.
-
-    plan = Plan.query.filter_by(worksession_id=worksession.id).filter_by(stage=0).first()
-		# Stage = 0 is always the primary conclusion after finishing a worksession
-    if  plan is None:
-        plan = Plan(worksession=worksession,
-			  stage=0,
-			  description="Interventieplan aangemaakt na de werksessie",
-			  conclusion="") # I actually don't understand why the value can ever be None, but it is.
-
-    if request.method == "POST":
-		#Store the conclusion with the new plan.
-        plan.conclusion = request.form.get("motivation")
-
-        db.session.add(plan)
-        db.session.commit()
-
-		# Remind the user in 90 days to enter the final intervention plan
-        send_system_message(
-			subject = f'Welke interventies zijn uitgevoerd bij de casus {worksession.name}?',
-			body = f'Laat weten welke interventies zijn uitgevoerd bij de casus {worksession.name}. Open de werksessie en voer een nieuw interventieplan in. Selecteer in het interventieplan de daadwerkelijk uitgevoerde interventies. Op basis van deze gegevens kunnen de selectietool en de instrumenten verder worden ontwikkeld.',
-			deliver_after = datetime.today() + timedelta(90),
-			recipient = current_user,
-			sender = None
-		)
-
-        return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
-
-    return render_template('/present/conclusion.html', worksession=worksession, advisor=advisor, plan=plan)
-
 
 @present.route('/<int:worksession_id>', methods=['GET', 'POST'])
 @login_required
@@ -251,6 +209,66 @@ def show_instrument(worksession_id, instrument_id):
     advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
     instrument = Instrument.query.get(instrument_id)
     return render_template('present/explanation.html', worksession=worksession, instrument=instrument, advisor=advisor)
+
+
+@present.route('/<int:worksession_id>/conclusion', methods=['GET', 'POST'])
+@login_required
+def conclusion(worksession_id):
+    worksession = Worksession.query.get(worksession_id)
+    advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+
+    if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+	
+	# Create an interventionplan based on the finished worksession if one doesn't exist
+	# A plan is a selection of instruments relevant to a worksession, with some motivation.
+	# A worksession can have multiple plans, but plan 0 os always the one made immediately after
+	# the session. This way, the actually executed plan can also be stored in the database.
+
+    plan = Plan.query.filter_by(worksession_id=worksession.id).filter_by(stage=0).first()
+		# Stage = 0 is always the primary conclusion after finishing a worksession
+    if  plan is None:
+        plan = Plan(worksession=worksession,
+			  stage=0,
+			  description="Interventieplan aangemaakt na de werksessie",
+			  conclusion="") # I actually don't understand why the value can ever be None, but it is.
+
+    if request.method == "POST":
+		#Store the conclusion with the plan.
+        plan.conclusion = request.form.get("motivation")
+
+        db.session.add(plan)
+        db.session.commit()
+
+        # return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
+
+    return render_template('/present/conclusion.html', worksession=worksession, advisor=advisor, plan=plan)
+
+
+@present.route('/<int:worksession_id>/update_conclusion', methods=['GET', 'POST'])
+@login_required
+def update_conclusion(worksession_id):
+    if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+    
+    worksession = Worksession.query.get(worksession_id)
+    plan = Plan.query.filter_by(worksession_id=worksession.id).filter_by(stage=0).first()
+            # Stage = 0 is always the primary conclusion after finishing a worksession
+    if  plan is None:
+        plan = Plan(worksession=worksession,
+            stage=0,
+            description="Interventieplan aangemaakt na de werksessie",
+            conclusion=request.form.get("motivation"))
+    else:
+        plan.conclusion = request.form.get("motivation")
+
+        db.session.add(plan)
+        db.session.commit()
+    
+    return plan.conclusion
+
+
+
 
 
 @present.route('/<int:worksession_id>/instrument/<int:instrument_id>/<int:score>', methods=['GET', 'POST'])
