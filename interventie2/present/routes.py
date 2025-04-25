@@ -63,15 +63,7 @@ def conclusion(worksession_id):
 
     if request.method == "POST":
 		#Store the conclusion with the new plan.
-        plan.conclusion = chosen_instruments = request.form.get("motivation")
-		#Erase previously selected instruments
-        for instrument_choice in plan.instruments:
-            db.session.delete(instrument_choice)
-		#Store all checked instruments
-        chosen_instruments = request.form.getlist('choose_instrument')
-        for instrument_id in chosen_instruments:
-            new_instrument_choice = InstrumentChoice(plan=plan, instrument_id=instrument_id)
-            db.session.add(new_instrument_choice)	
+        plan.conclusion = request.form.get("motivation")
 
         db.session.add(plan)
         db.session.commit()
@@ -259,3 +251,40 @@ def show_instrument(worksession_id, instrument_id):
     advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
     instrument = Instrument.query.get(instrument_id)
     return render_template('present/explanation.html', worksession=worksession, instrument=instrument, advisor=advisor)
+
+
+@present.route('/<int:worksession_id>/instrument/<int:instrument_id>/<int:score>', methods=['GET', 'POST'])
+@login_required
+def update_instrument_checkbox(worksession_id, instrument_id, score):
+    if request.method == "POST":
+        worksession = Worksession.query.get(worksession_id)
+        if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+            return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+
+        current_instrument = Instrument.query.get(instrument_id)
+        plan = Plan.query.filter_by(worksession_id=worksession.id).filter_by(stage=0).first()
+            # Stage = 0 is always the primary conclusion after finishing a worksession
+        if  plan is None:
+            plan = Plan(worksession=worksession,
+                stage=0,
+                description="Interventieplan aangemaakt na de werksessie",
+                conclusion="") # I actually don't understand why the value can ever be None, but it is.
+            db.session.add(plan)
+        
+        
+        for item, value in request.form.items():
+            if 'instrument_id' in item:
+                instrument = Instrument.query.get(value)
+        if request.form.getlist('choose_instrument'):
+            # Write instrument to intervention plan
+            instrument_choice = InstrumentChoice(plan=plan, instrument=instrument)
+            db.session.add(instrument_choice)
+        else:
+            # Delete instrument from intervention plan if present
+            # There is only one possibible hit, I hope
+            instrument_choice = InstrumentChoice.query.filter_by(plan=plan, instrument=instrument).first() 
+            db.session.delete(instrument_choice)
+
+        db.session.commit()
+
+        return current_instrument.name
