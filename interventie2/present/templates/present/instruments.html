@@ -1,53 +1,43 @@
 
-<h1
-hx-get="{{ url_for('present.show_active_tags', worksession_id=worksession.id) }}"
-hx-trigger="load"
-hx-target="#tags"
-hx-swap="innerHTML">&nbsp</h1>
+    <h1
+    hx-get="{{ url_for('present.show_active_tags', worksession_id=worksession.id) }}"
+    hx-trigger="load"
+    hx-target="#tags"
+    hx-swap="innerHTML">&nbsp</h1>
 
-{% set ns = namespace (lowest_top_score = 0) %}
-{% for (instrument, score) in advisor.get_sorted_instruments() %} 
-    <div class="instrument">
-        {% if score <= 0 %}
-        <!-- If no questions are answered, catch that all instruments are 0 -->
-            {% if worksession.show_rest_instruments %}
-                <div class="tooltip prio_low">
-                    <p
-                        hx-get="{{ url_for('present.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}"
-                        hx-trigger="click"
-                        hx-target="#main"
-                        hx-swap="innerHTML">
-                    {{ instrument.name }}</p>
-                    <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
-                </div>
-            {% endif %}
-        {% else %}
-            
-            {% if loop.index <= worksession.mark_top_instruments %}
-                {% set ns.lowest_top_score = score %}
-                <div class="tooltip prio_high">
-                    <p 
-                        hx-get="{{ url_for('present.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}"
-                        hx-trigger="click"
-                        hx-target="#main"
-                        hx-swap="innerHTML"
-                        >{{ instrument.name }}</p>
-                    <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
-                </div>
-            {% else %}
-                {% if score == ns.lowest_top_score %}            
-                    <div class="tooltip prio_high">
+{% if worksession.show_instruments %}
+    {% set ns = namespace (lowest_top_score = 0) %}
+    {% for (instrument, score) in advisor.get_sorted_instruments() %} 
+        <div class="instrument">
+            {% if score <= 0 %}
+            <!-- If no questions are answered, catch that all instruments are 0 -->
+                {% if worksession.show_rest_instruments %}
+                    <div class="tooltip prio_low">
                         <p
                             hx-get="{{ url_for('present.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}"
                             hx-trigger="click"
                             hx-target="#main"
                             hx-swap="innerHTML">
-                            {{ instrument.name }}</p>
+                        {{ instrument.name }}</p>
+                        <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
+                    </div>
+                {% endif %}
+            {% else %}
+                
+                {% if loop.index <= worksession.mark_top_instruments %}
+                    {% set ns.lowest_top_score = score %}
+                    <div class="tooltip prio_high">
+                        <p 
+                            hx-get="{{ url_for('present.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}"
+                            hx-trigger="click"
+                            hx-target="#main"
+                            hx-swap="innerHTML"
+                            >{{ instrument.name }}</p>
                         <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
                     </div>
                 {% else %}
-                    {% if worksession.show_rest_instruments %}
-                        <div class="tooltip prio_medium">
+                    {% if score == ns.lowest_top_score %}            
+                        <div class="tooltip prio_high">
                             <p
                                 hx-get="{{ url_for('present.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}"
                                 hx-trigger="click"
@@ -56,9 +46,21 @@ hx-swap="innerHTML">&nbsp</h1>
                                 {{ instrument.name }}</p>
                             <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
                         </div>
+                    {% else %}
+                        {% if worksession.show_rest_instruments %}
+                            <div class="tooltip prio_medium">
+                                <p
+                                    hx-get="{{ url_for('present.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}"
+                                    hx-trigger="click"
+                                    hx-target="#main"
+                                    hx-swap="innerHTML">
+                                    {{ instrument.name }}</p>
+                                <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
+                            </div>
+                        {% endif %}
                     {% endif %}
                 {% endif %}
             {% endif %}
-        {% endif %}
-    </div>
-{% endfor %}
+        </div>
+    {% endfor %}
+{% endif %}
