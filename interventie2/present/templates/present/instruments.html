@@ -10,8 +10,9 @@
 <!-- Script to change visiblity of questions as a result of tags and routing -->
 <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/toggle_question_visibility.js')}}"></script>
 <script>
-    fetchAndApplyStyles ( "{{ url_for('present.question_visibility', worksession_id=worksession.id) }}" )
-    console.log("{{ url_for('present.question_visibility', worksession_id=worksession.id) }}")
+    const url = "{{ url_for('present.question_visibility', worksession_id=worksession.id) }}"
+    fetchAndApplyStyles ( url )
+    console.log( url )
 </script>
 
 {% if worksession.show_instruments %}
