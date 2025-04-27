@@ -1,9 +1,17 @@
-
-    <h1
+<!-- This htmx is bound to the h1-tag tpo chain-load the tags-gridarea -->
+<h1
     hx-get="{{ url_for('present.show_active_tags', worksession_id=worksession.id) }}"
     hx-trigger="load"
     hx-target="#tags"
-    hx-swap="innerHTML">&nbsp</h1>
+    hx-swap="innerHTML">
+    &nbsp
+</h1>
+
+<!-- Script to change visiblity of questions as a result of tags and routing -->
+<script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/toggle_question_visibility.js')}}"></script>
+<script>
+    fetchAndApplyStyles( '/present/'+ {{ worksession.id }} + '/question_visibility' );
+</script>
 
 {% if worksession.show_instruments %}
     {% set ns = namespace (lowest_top_score = 0) %}
@@ -64,3 +72,4 @@
         </div>
     {% endfor %}
 {% endif %}
+

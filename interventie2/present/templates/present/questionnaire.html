@@ -1,38 +1,38 @@
+{% for question in worksession.question_set.questions | sort(attribute='order') %}
+    <!-- <div id="question_container:::{{ question.id }}" {% if worksession.is_question_hidden(question) %}style="display:none"{% endif %}> -->
+    <div class="question_container" id="question_container_{{ question.id }}" style="display: block;">
+        {% if question.is_category %}
+            <h1>{{ question.name }}</h1>
+            {% if question.description | length > 0 %}<div class="question_category_description">{{ question.description | escape | markdown }}</div><br>{% endif %}
+        {% elif not question.is_category %}         
+            <div class="collapsible question" id="question_{{ question.id }}"
+                        hx-get="{{ url_for('present.summarize_answer', question_id=question.id, worksession_id=worksession.id) }}"
+                        hx-trigger="click"
+                        hx-target="find #answer_summary_{{ question.id }}"
+                        hx-swap="innerHTML"
+                        >{{ question.name }}
 
-    {% for question in worksession.question_set.questions | sort(attribute='order') %}
-        {% if not worksession.is_question_hidden(question) %}
-            {% if question.is_category %}
-                <h1>{{ question.name }}</h1>
-                {% if question.description | length > 0 %}<div class="question_category_description">{{ question.description | escape | markdown }}</div><br>{% endif %}
-            {% elif not question.is_category %}         
-                <div class="collapsible question" id="{{ question }}"
-                            hx-get="{{ url_for('present.summarize_answer', question_id=question.id, worksession_id=worksession.id) }}"
-                            hx-trigger="click"
-                            hx-target="find #answer_summary_{{ question.id }}"
-                            hx-swap="innerHTML"
-                            >{{ question.name }}
+            <div class="answer_summary" id="answer_summary_{{ question.id }}"
+                    hx-get="{{ url_for('present.summarize_answer', question_id=question.id, worksession_id=worksession.id) }}"
+                    hx-trigger="load"
+                    hx-target="this"
+                    hx-swap="innerHTML">
+            </div>
 
-                    <div class="answer_summary" id="answer_summary_{{ question.id }}"
-                            hx-get="{{ url_for('present.summarize_answer', question_id=question.id, worksession_id=worksession.id) }}"
-                            hx-trigger="load"
-                            hx-target="this"
-                            hx-swap="innerHTML">
-                    </div>
+            </div>
+            <div class="collapsible_content" id="options_{{ question.id }}"
+                        hx-get="{{ url_for('present.show_options', question_id=question.id, worksession_id=worksession.id) }}"
+                        hx-trigger="load"
+                        hx-target="this"
+                        hx-swap="innerHTML">
 
-                </div>
-                <div class="collapsible_content" id="options_{{ question.id }}"
-                            hx-get="{{ url_for('present.show_options', question_id=question.id, worksession_id=worksession.id) }}"
-                            hx-trigger="load"
-                            hx-target="this"
-                            hx-swap="innerHTML">
-
-                </div>
-            {% endif %}
+            </div>
         {% endif %}
-    {% endfor %}
-    
-    <br><a href="{{ url_for('present.conclusion', worksession_id=worksession.id) }}">
-        <button>Doorgaan</button>
-    </a>
+    </div>
+{% endfor %}
 
-    <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
+<br><a href="{{ url_for('present.conclusion', worksession_id=worksession.id) }}">
+    <button>Doorgaan</button>
+</a>
+
+<script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>

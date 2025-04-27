@@ -233,9 +233,9 @@ class Worksession(db.Model):
             if tag in self.active_tags():
                 return False # Not hidden: required tag was found to be active
             else:
-                pass
+                return True
                        
-        return True
+        
 
     
     def get_weight(self, question):

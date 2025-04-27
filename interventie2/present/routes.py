@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app, render_template, redirect, url_for, request
+from flask import Blueprint, current_app, render_template, redirect, url_for, request, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from interventie2.models import db, generate_secret_key, Question, Answer, Selection, Option, Worksession, Instrument, Votes, Plan, InstrumentChoice
 from interventie2.forms import EditCaseForm
@@ -17,6 +17,22 @@ present = Blueprint('present', __name__,
 def index():
     return render_template('error/index.html', title='Werksessie ontbreekt', message='Deze pagina hoort niet toegankelijk te zijn.')
 
+
+@present.route('/<int:worksession_id>/question_visibility')
+@login_required
+def question_visibility(worksession_id):
+    """This function returns a JOSN-object of the question_id and the display-tag based on the visibility of the question."""
+    if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+        return None
+    
+    resp = { }
+
+    worksession = Worksession.query.get(worksession_id)
+    for question in worksession.question_set.questions:
+        display = "none" if worksession.is_question_hidden(question) else "block"
+        resp.update({ f'question_container_{question.id}': {'display': display } })
+
+    return resp
 
 @present.route('/<int:worksession_id>/frontpage', methods=['GET', 'POST'])
 @login_required
