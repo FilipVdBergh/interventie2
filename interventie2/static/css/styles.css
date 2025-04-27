@@ -636,8 +636,8 @@ li.selected {
     flex-shrink: 0;
     background-color: var(--object);
     color: var(--object-text);
-    border-radius: 2px;
-    padding: 0.2em 15px 0.2em 15px;
+    border-radius: 3px;
+    padding: 0.5rem 0.8rem 0.5rem 0.8rem;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 8px;
     overflow: hidden;
     scrollbar-width: none;
@@ -653,21 +653,23 @@ li.selected {
         display:flex;
         flex-direction: row;
         width: 100%;
+        padding-bottom: 0.2rem;
     }
     .card_title {
         font-family: "Poppins", sans-serif;
         font-weight: bold;
         flex-grow: 1;
-        padding-bottom: 0.4rem;
     }
     .card_controls {
-        width:fit-content;
+        display:inline;
+        white-space: nowrap;
     }
     .card_controls button {
         background-color: inherit;
         border: solid 2px white;
-        min-width: 2em;
-        height: 2em;
+        min-width: 2rem;
+        height: 2rem;
+        margin: 0;
     }
     .card_info {
         font-size: smaller;

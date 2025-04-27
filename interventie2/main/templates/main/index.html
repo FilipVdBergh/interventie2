@@ -15,8 +15,9 @@ Dashboard
                         <div class="card_titlebar">
                             <div class="card_title">{{ worksession.name }}</div>
                             <div class="card_controls">
-                                <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}"><button>🛈</button></a>
                                 <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>▶︎</button></a>
+                                <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}"><button>✎</button></a>
+                                
                             </div>
                         </div>
                         <div class="card_info">{{ worksession.question_set.name }}</div>

@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-<h1>Informatie over de werksessie</h1>
+<h1>Project</h1>
 <form method="POST">
     {{ form.csrf_token }}
     
@@ -35,10 +35,6 @@
                 {% endfor %}
             </p></td>
         </tr>
-        <tr>
-            <td>{{ form.participants.label }}</td>
-            <td>{{ form.participants }}</td>
-        </tr>
 
         <tr>
             <td></td>
@@ -46,9 +42,30 @@
         </tr>
 
     </table>
+    <h1>Instellingen</h1>
+    <table class="settings">
+        <tbody>
+            <tr>
+                <td>{{ form.enable_voting.label }}</td>
+                <td>{{ form.enable_voting }}</td>
+            <tr>
+                <td>{{ form.show_instruments.label }}</td>
+                <td>{{ form.show_instruments }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.show_rest_instruments.label }}</td>
+                <td>{{ form.show_rest_instruments }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.show_tags.label }}</td>
+                <td>{{ form.show_tags }}</td>                
+            </tr>
+        </tbody>
+    </table>
+    <br>
     {{ form.submit }}
 
-    <br><br>
+    <!-- <br><br>
     <h1 class="collapsible">Geavanceerd</h1>
     <div class="collapsible_content">
         <h2>Kenmerken</h2>
@@ -62,7 +79,7 @@
                 <td>{{ current_user.name }}</td>
             </tr>
         </table>
-    </div>
+    </div> -->
 
 </form>
 

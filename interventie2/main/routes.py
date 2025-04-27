@@ -97,11 +97,12 @@ def markdown_help():
 
 
 @main.route('/new_worksession/question_set/<int:question_set_id>', methods=['GET', 'POST'])
-@main.route('/new_worksession', methods=['GET', 'POST'])
+# @main.route('/new_worksession', methods=['GET', 'POST'])
 @login_required
 def new_worksession(question_set_id=None):
 	form = NewWorksessionForm()
 	form.question_set.choices = [(question_set.id, question_set.name) for question_set in QuestionSet.query.order_by(QuestionSet.name)]
+
 	if question_set_id is not None:
 		form.question_set.data = question_set_id
 		form.question_set.hidden = True
@@ -112,12 +113,14 @@ def new_worksession(question_set_id=None):
 		worksession.project_number = form.project_number.data
 		worksession.link_to_page = form.link_to_page.data
 		worksession.date = datetime.combine(form.date.data, datetime.min.time())
-		worksession.participants = form.participants.data
+		# worksession.participants = form.participants.data
 		worksession.question_set_id = form.question_set.data
 		worksession.creator = current_user
-		worksession.show_instruments = QuestionSet.query.get(worksession.question_set_id).default_instruments_visible
-		worksession.show_tags =  QuestionSet.query.get(worksession.question_set_id).default_tags_visible
-		worksession.process_id = QuestionSet.query.get(worksession.question_set_id).default_process_id
+		worksession.show_instruments = form.show_instruments.data
+		worksession.show_rest_instruments = form.show_rest_instruments.data
+		worksession.show_tags = form.show_tags.data
+		worksession.enable_voting = form.enable_voting.data
+		worksession.voting_key = generate_secret_key(6)
 		worksession.presenter_mode_zoom = 1.00
 		worksession.presenter_mode_color_title = '#FFFFFF'
 		worksession.presenter_mode_text_color_title ='#000061'
@@ -139,7 +142,8 @@ def new_worksession(question_set_id=None):
 			
 		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 	elif request.method == 'GET':
-		pass
+		form.show_instruments.data = QuestionSet.query.get(question_set_id).default_instruments_visible
+		form.show_tags.data =  QuestionSet.query.get(question_set_id).default_tags_visible
 	return render_template('main/new_worksession.html', form=form)
 
 

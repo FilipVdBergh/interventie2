@@ -11,31 +11,14 @@
 {% block body %}
     <form method="POST">
         {{ form.csrf_token }}
-        <h1>Instellingen</h1>
+ 
+        <h1>Project</h1>
         <table class="settings">
             <tbody>
                 <tr>
                     <td>{{ form.name.label }}</td>
                     <td>{{ form.name }}</td>
                 </tr>
-                <tr>
-                    <td>Tool</td>
-                    <td><strong>{{ worksession.question_set.name }}</strong></td>
-                </tr>
-                <tr>
-                    <td>Opties</td>
-                    <td>
-                        <p>{{ form.enable_voting }}{{ form.enable_voting.label }}</p>
-                        <p>{{ form.show_instruments }}{{ form.show_instruments.label }}</p>
-                        <p>{{ form.show_rest_instruments }}{{ form.show_rest_instruments.label }}</p>
-                        <p>{{ form.show_tags }}{{ form.show_tags.label }}</p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <h1>Project</h1>
-        <table class="settings">
-            <tbody>
                 <tr>
                     <td>{{ form.project_number.label }}</td>
                     <td>{{ form.project_number }}</td>
@@ -61,6 +44,33 @@
                         {{ macro.markdown_help() }}
                     </td>
                     <td>{{ form.description }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <h1>Instellingen</h1>
+        <table class="settings">
+            <tbody>
+
+                <tr>
+                    <td>Tool</td>
+                    <td><strong>{{ worksession.question_set.name }}</strong></td>
+                </tr>
+                <tr>
+                    <tr>
+                        <td>{{ form.enable_voting.label }}</td>
+                        <td>{{ form.enable_voting }}</td>
+                    <tr>
+                        <td>{{ form.show_instruments.label }}</td>
+                        <td>{{ form.show_instruments }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.show_rest_instruments.label }}</td>
+                        <td>{{ form.show_rest_instruments }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.show_tags.label }}</td>
+                        <td>{{ form.show_tags }}</td>                
+                    </tr>
                 </tr>
             </tbody>
         </table>
