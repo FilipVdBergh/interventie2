@@ -1,6 +1,5 @@
 {% for question in worksession.question_set.questions | sort(attribute='order') %}
-    <!-- <div id="question_container:::{{ question.id }}" {% if worksession.is_question_hidden(question) %}style="display:none"{% endif %}> -->
-    <div class="question_container" id="question_container_{{ question.id }}" style="display: block;">
+    <div class="question_container" id="question_container_{{ question.id }}">
         {% if question.is_category %}
             <h1>{{ question.name }}</h1>
             {% if question.description | length > 0 %}<div class="question_category_description">{{ question.description | escape | markdown }}</div><br>{% endif %}
