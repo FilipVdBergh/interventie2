@@ -31,6 +31,7 @@ def question_visibility(worksession_id):
     for question in worksession.question_set.questions:
         # attribute = 'display'
         # value = "none" if worksession.is_question_hidden(question) else "block"
+        
         attribute = 'opacity'
         value = "20%" if worksession.is_question_hidden(question) else "100%"
 
