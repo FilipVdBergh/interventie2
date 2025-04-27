@@ -484,7 +484,11 @@ def process_single(worksession_id, question_id=None):
 @main.route('/worksession/<int:worksession_id>/case', methods=['GET', 'POST'])
 @login_required
 def case(worksession_id):
+	# This function is provided for legacy reasons and will disappear later. If the new presenter mode is used, this function is entirely skipped.
 	worksession = Worksession.query.get(worksession_id)
+	if worksession.process_id == 1:
+		return redirect(url_for('present.frontpage', worksession_id=worksession.id))
+	
 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
@@ -496,19 +500,16 @@ def case(worksession_id):
 		db.session.commit()
 		
 		# Redirect tot the first question in the set
-		if worksession.process_id == 1:
+
+		if worksession.process_id == 3:
 			return redirect(url_for('main.process_simultaneous', worksession_id=worksession.id))
 		elif worksession.process_id == 2:
 			return redirect(url_for('main.process_single', worksession_id=worksession.id))
-		elif worksession.process.name == 'Dynamisch':
-			# This is temporary, until this mode replaces all the other modes.
-			return redirect(url_for('present.present_session', worksession_id=worksession.id))
 	elif request.method == "GET":
 		form.description.data = worksession.description 
 		form.effect.data = worksession.effect
 	
-	if worksession.process_id == 3:
-		return redirect(url_for('present.frontpage', worksession_id=worksession.id))
+
 
 	return render_template('/main/case.html', worksession=worksession, form=form)
 

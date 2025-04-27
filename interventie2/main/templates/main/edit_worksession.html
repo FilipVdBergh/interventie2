@@ -9,9 +9,9 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Informatie over de werksessie</h1>
     <form method="POST">
         {{ form.csrf_token }}
+        <h1>Instellingen</h1>
         <table class="settings">
             <tbody>
                 <tr>
@@ -20,8 +20,22 @@
                 </tr>
                 <tr>
                     <td>Tool</td>
-                    <td>{{ worksession.question_set.name }}</td>
+                    <td><strong>{{ worksession.question_set.name }}</strong></td>
                 </tr>
+                <tr>
+                    <td>Opties</td>
+                    <td>
+                        <p>{{ form.enable_voting }}{{ form.enable_voting.label }}</p>
+                        <p>{{ form.show_instruments }}{{ form.show_instruments.label }}</p>
+                        <p>{{ form.show_rest_instruments }}{{ form.show_rest_instruments.label }}</p>
+                        <p>{{ form.show_tags }}{{ form.show_tags.label }}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h1>Project</h1>
+        <table class="settings">
+            <tbody>
                 <tr>
                     <td>{{ form.project_number.label }}</td>
                     <td>{{ form.project_number }}</td>
@@ -57,21 +71,10 @@
         <div class="collapsible_content">
             <h2>Instellingen</h2>            
             <table class="settings">
-                <tr>
-                    <td>{{ form.enable_voting.label }}</td>
-                    <td>{{ form.enable_voting }} (Kies Experimenteel keuzeproces; de laatste optie)</td>
-                </tr>
+                
                 <tr>
                     <td>{{ form.choice_process.label }}</td>
                     <td>{{ form.choice_process }}</td>
-                </tr>
-                <tr>
-                    <td>Weergave</td>
-                    <td>
-                        <p>{{ form.show_tags }}{{ form.show_tags.label }}</p>
-                        <p>{{ form.show_instruments }}{{ form.show_instruments.label }}</p>
-                        <p>{{ form.show_rest_instruments }}{{ form.show_rest_instruments.label }}</p>
-                    </td>
                 </tr>
                 <tr>
                     <td>{{ form.mark_top_instruments.label }}</td>
@@ -79,7 +82,8 @@
                 </tr>
             </table>
         </div><br>
-        <h1 class="collapsible">Kleuren</h1>
+
+        <!-- <h1 class="collapsible">Kleuren</h1>
         <div class="collapsible_content">
             <h2>Sessiekleuren</h2>
                 <table>
@@ -130,7 +134,7 @@
                 </tr>
             </table>
             {{ form.submit }}
-        </div>
+        </div> -->
         
     </form>
 {% endblock %}

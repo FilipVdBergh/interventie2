@@ -150,7 +150,6 @@ textarea {
 table {
     color: var(--object-text);
     border-collapse: collapse;
-    border-bottom: solid 1px rgb(0, 0, 0);
   }
   th button {
     border: 0;
@@ -165,7 +164,6 @@ table {
     text-decoration: underline;
   }
   thead {
-    border-bottom: solid 1px rgb(0, 0, 0);
     color: black;
     font-weight: bold;
     font-family: "Poppins", sans-serif;
@@ -184,6 +182,10 @@ table {
     }
   .disabled td {
     color: var(--mid-grey);
+  }
+  tbody {
+    border-top: solid 1px rgb(0, 0, 0);
+    border-bottom: solid 1px rgb(0, 0, 0);
   }
   tbody tr {
     border-left: 4px solid var(--object);

@@ -29,8 +29,13 @@ def question_visibility(worksession_id):
 
     worksession = Worksession.query.get(worksession_id)
     for question in worksession.question_set.questions:
-        display = "none" if worksession.is_question_hidden(question) else "block"
-        resp.update({ f'question_container_{question.id}': {'display': display } })
+        # attribute = 'display'
+        # value = "none" if worksession.is_question_hidden(question) else "block"
+        attribute = 'opacity'
+        value = "20%" if worksession.is_question_hidden(question) else "100%"
+
+
+        resp.update({ f'question_container_{question.id}': {attribute: value } })
 
     return resp
 
