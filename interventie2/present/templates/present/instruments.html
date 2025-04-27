@@ -10,7 +10,7 @@
 <!-- Script to change visiblity of questions as a result of tags and routing -->
 <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/toggle_question_visibility.js')}}"></script>
 <script>
-    var url = "{{ url_for('present.question_visibility', worksession_id=worksession.id) }}"
+    var url = "{{ url_for('present.question_visibility', worksession_id=worksession.id, _external=True) }}"
     fetchAndApplyStyles ( url )
     console.log( url )
 </script>
