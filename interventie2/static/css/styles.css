@@ -747,6 +747,7 @@ li.selected {
 }
 
 .category {
+    font-family: "Poppins", sans-serif;
     font-weight: bold;
     font-size: larger;
 }
