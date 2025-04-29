@@ -49,7 +49,6 @@
         
         {% if worksession.enable_voting %}
             <div class="qr">
-                <!-- <h1 class="title">Scan en stem</h1> -->
                 <a href="{{ url_for('vote.touch_vote', worksession_id=worksession.id, voting_key=worksession.voting_key, _external=True) }}">
                     <img src="{{ qrcode(url_for('vote.touch_vote', worksession_id=worksession.id, voting_key=worksession.voting_key, _external=True)) }}" height="90%">
                 </a>

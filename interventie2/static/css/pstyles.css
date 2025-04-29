@@ -155,15 +155,20 @@ textarea {
     grid-area: qr;
     padding: 1rem 1rem 0rem 1rem;
     margin: 0;
+
 }
     .qr img {
         opacity: 10%;
         transition: ease 1s;
     }
     .qr img:hover {
+        cursor: none;
+        z-index: 1;
+        position: relative;
         opacity: 100%;
         transition: ease 1s;
-        
+        height: 20rem;
+        margin-top: -12rem;
     }
     
 
