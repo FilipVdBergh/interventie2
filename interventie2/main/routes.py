@@ -113,11 +113,14 @@ def new_worksession(question_set_id=None):
 		worksession.project_number = form.project_number.data
 		worksession.link_to_page = form.link_to_page.data
 		worksession.date = datetime.combine(form.date.data, datetime.min.time())
-		# worksession.participants = form.participants.data
+		worksession.participants = form.participants.data
+		worksession.description = form.description.data
+		worksession.effect = form.effect.data
 		worksession.question_set_id = form.question_set.data
 		worksession.creator = current_user
 		worksession.show_instruments = form.show_instruments.data
 		worksession.show_rest_instruments = form.show_rest_instruments.data
+		worksession.mark_top_instruments = form.mark_top_instruments.data
 		worksession.show_tags = form.show_tags.data
 		worksession.enable_voting = form.enable_voting.data
 		worksession.voting_key = generate_secret_key(6)
@@ -144,7 +147,7 @@ def new_worksession(question_set_id=None):
 	elif request.method == 'GET':
 		form.show_instruments.data = QuestionSet.query.get(question_set_id).default_instruments_visible
 		form.show_tags.data =  QuestionSet.query.get(question_set_id).default_tags_visible
-	return render_template('main/new_worksession.html', form=form)
+	return render_template('main/edit_worksession.html', form=form)
 
 
 
@@ -306,16 +309,21 @@ def edit_worksession(worksession_id):
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
 	form = EditWorksessionForm()
-	form.choice_process.choices = [(process.id, process.name) for process in Process.query.order_by(Process.id)]
+	# form.choice_process.choices = [(process.id, process.name) for process in Process.query.order_by(Process.id)]
+
+	if request.method == "POST":
+		print('POST')
 
 	if form.validate_on_submit():
+		print ('Validation')
 		worksession.name = form.name.data
 		worksession.project_number = form.project_number.data
 		worksession.link_to_page = form.link_to_page.data
 		worksession.participants = form.participants.data
 		worksession.date = datetime.combine(form.date.data, datetime.min.time())
-		worksession.process_id = form.choice_process.data
+		# worksession.process_id = form.choice_process.data
 		worksession.description = form.description.data
+		worksession.effect = form.effect.data
 		worksession.show_instruments = form.show_instruments.data
 		worksession.mark_top_instruments = form.mark_top_instruments.data
 		worksession.show_rest_instruments = form.show_rest_instruments.data
@@ -345,8 +353,9 @@ def edit_worksession(worksession_id):
 		form.link_to_page.data = worksession.link_to_page
 		form.participants.data = worksession.participants
 		form.date.data = worksession.date
-		form.choice_process.data = worksession.process_id
+		# form.choice_process.data = worksession.process_id
 		form.description.data = worksession.description
+		form.effect.data = worksession.effect
 		form.show_instruments.data = worksession.show_instruments
 		form.mark_top_instruments.data = worksession.mark_top_instruments 
 		form.show_rest_instruments.data = worksession.show_rest_instruments

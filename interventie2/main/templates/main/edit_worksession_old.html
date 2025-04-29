@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+    <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">{{ worksession.name }}</a>
+{% endblock %}
+
+{% block page_title %}
+    {{ worksession.name }}
+{% endblock %}
+
+{% block body %}
+    <form method="POST">
+        {{ form.csrf_token }}
+ 
+        <h1>Project</h1>
+        <table class="settings">
+            <tbody>
+                <tr>
+                    <td>{{ form.name.label }}</td>
+                    <td>{{ form.name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.project_number.label }}</td>
+                    <td>{{ form.project_number }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.link_to_page.label }}</td>
+                    <td>{{ form.link_to_page }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.date.label }}</td>
+                    <td>{{ form.date }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.participants.label }}
+                        {{ macro.markdown_help() }}
+                    </td>
+                    <td>{{ form.participants }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.description.label }}
+                        {{ macro.markdown_help() }}
+                    </td>
+                    <td>{{ form.description }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <h1>Instellingen</h1>
+        <table class="settings">
+            <tbody>
+
+                <tr>
+                    <td>Tool</td>
+                    <td><strong>{{ worksession.question_set.name }}</strong></td>
+                </tr>
+                <tr>
+                    <tr>
+                        <td>{{ form.enable_voting.label }}</td>
+                        <td>{{ form.enable_voting }}</td>
+                    <tr>
+                        <td>{{ form.show_instruments.label }}</td>
+                        <td>{{ form.show_instruments }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.show_rest_instruments.label }}</td>
+                        <td>{{ form.show_rest_instruments }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.show_tags.label }}</td>
+                        <td>{{ form.show_tags }}</td>                
+                    </tr>
+                </tr>
+            </tbody>
+        </table>
+        {{ form.submit }}
+
+        <br><br>
+        <h1 class="collapsible">Geavanceerd</h1>
+        <div class="collapsible_content">
+            <h2>Instellingen</h2>            
+            <table class="settings">
+                
+                <tr>
+                    <td>{{ form.choice_process.label }}</td>
+                    <td>{{ form.choice_process }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.mark_top_instruments.label }}</td>
+                    <td>{{ form.mark_top_instruments }}</td>
+                </tr>
+            </table>
+        </div><br>
+
+        <!-- <h1 class="collapsible">Kleuren</h1>
+        <div class="collapsible_content">
+            <h2>Sessiekleuren</h2>
+                <table>
+                <tr>
+                    <td>Koppen</td>
+                    <td>{{ form.presenter_mode_text_color_heading }}</td>
+                </tr>
+                    <td>Tekst</td>
+                    <td>{{ form.presenter_mode_text_color }}</td>
+                <tr>
+                    <td>Achtergrondkleur (gradiënt)</td>
+                    <td>
+                        {{ form.presenter_mode_background_color1 }}<br>
+                        {{ form.presenter_mode_background_color2 }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Navigatie tekst</td>
+                    <td>{{ form.presenter_mode_text_color_nav }}</td>
+                </tr>
+                <tr>
+                    <td>Navigatiebalk achtergrond</td>
+                    <td>{{ form.presenter_mode_color_nav }}</td>
+                </tr>
+                <tr>
+                    <td>Titelbalk tekst</td>
+                    <td>{{ form.presenter_mode_text_color_title }}</td>
+                </tr>
+                <tr>
+                    <td>Titelbalk achtergrond</td>
+                    <td>{{ form.presenter_mode_color_title }}</td>
+                </tr>
+                <tr>
+                    <td>Uitklapveld tekst</td>
+                    <td>{{ form.presenter_mode_text_color_coll }}</td>
+                </tr>
+                <tr>
+                    <td>Uitklapveld achtergrond</td>
+                    <td>{{ form.presenter_mode_color_coll }}</td>
+                </tr>
+                <tr>
+                    <td>Selectie tekst</td>
+                    <td>{{ form.presenter_mode_text_color_highlight }}</td>
+                </tr>
+                <tr>
+                    <td>Selectie achtergrond</td>
+                    <td>{{ form.presenter_mode_color_highlight }}</td>
+                </tr>
+            </table>
+            {{ form.submit }}
+        </div> -->
+        
+    </form>
+{% endblock %}

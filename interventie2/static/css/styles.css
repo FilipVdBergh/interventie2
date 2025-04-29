@@ -302,7 +302,7 @@ nav {
         display: flex;
         padding-top: 3rem;
         overflow: hidden;
-        font-size: inherit;
+        font-size: small;
         font-family: "Poppins", sans-serif;
         border-bottom: 1px solid rgb(182, 182, 182);
     }
