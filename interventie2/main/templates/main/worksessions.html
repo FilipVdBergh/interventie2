@@ -126,9 +126,9 @@ Werksessies
                     {% if worksession.date is not none %}
                         <td>{{ worksession.date.strftime('%d-%m-%Y') }}</td>
                     {% endif %}
-                    <td>{{ worksession.question_set.name }}</td>
+                    <td style="background-color:{{ worksession.question_set.color }}; color:{{ worksession.question_set.text_color }}">{{ worksession.question_set.name }}</td>
                     <td><a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></td>
-                    <td>{% if worksession.archived == true %}Archief{% endif %}</td>
+                    <td>{% if worksession.archived == true %}Archief{% else %}Actief{% endif %}</td>
                 </tr>
                 {% endif %}
             {% endfor %}

@@ -36,6 +36,7 @@ class EditUserForm(FlaskForm):
     email       = EmailField('E-mail', validators=[Optional(), Length(max=254), Email()], render_kw={'size': 100})
     description = TextAreaField('Omschrijving', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100}) 
     link        = StringField('Link naar persoonlijke pagina', validators=[Optional(), Length(max=1000)], render_kw={'size': 100})
+    active      = BooleanField('Inloggen toegestaan', default=True)
     submit      = SubmitField('Opslaan')
 
 

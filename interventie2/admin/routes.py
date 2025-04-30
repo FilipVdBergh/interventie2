@@ -169,6 +169,7 @@ def edit_user(user_id):
         user.email = form.email.data
         user.description = form.description.data
         user.link = form.link.data
+        user.active = form.active.data
         db.session.commit()
         return redirect(url_for('admin.user', id=user.id))
     elif request.method == 'GET':
@@ -177,6 +178,7 @@ def edit_user(user_id):
         form.email.data = user.email
         form.description.data = user.description
         form.link.data = user.link
+        form.active.data = user.active
     return render_template('admin/edit_user.html', form=form, user=user)
 
 

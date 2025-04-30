@@ -58,6 +58,9 @@ def login():
 		if user is None or not user.check_password(form.password.data):
 			flash("Gebruikersnaam of wachtwoord onjuist", "login_error")
 			return redirect(url_for('main.login'))
+		if not user.active:
+			flash("Inloggen voor deze gebruiker niet toegestaan", "login_error")
+			return redirect(url_for('main.login'))
 		login_user(user)
 		user.last_seen = func.now()
 		db.session.commit()

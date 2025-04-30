@@ -12,7 +12,7 @@
 {% block body %}
     <form method="POST">
         {{ form.csrf_token }}
-        {{ form.submit }}
+        
         <table class="settings">
             <tr>
                 <td>{{ form.name.label }}</td>
@@ -38,11 +38,17 @@
                 <td>{{ form.description }}</td>
             </tr>
             <tr>
+                <td>{{ form.active.label }}</td>
+                <td>{{ form.active }}</td>
+            </tr>
+            <tr>
                 <td>{{ form.link.label }}</td>
                 <td>{{ form.link }}</td>
             </tr>
 
         </table>
-        
+        <br>
+
+        {{ form.submit }}
     </form>
 {% endblock %}
