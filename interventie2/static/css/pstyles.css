@@ -159,14 +159,14 @@ textarea {
 }
     .qr img {
         opacity: 10%;
-        transition: ease 1s;
+        transition: ease 0.25s;
     }
     .qr img:hover {
         cursor: none;
         z-index: 1;
         position: relative;
         opacity: 100%;
-        transition: ease 1s;
+        transition: ease 0.5s;
         height: 20rem;
         margin-top: -12rem;
     }
