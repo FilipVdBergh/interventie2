@@ -16,18 +16,19 @@ Dashboard
                             <div class="card_title">{{ worksession.name }}</div>
                             <div class="card_controls">
                                 <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>▶︎</button></a>
-                                <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}"><button>✎</button></a>
+                                <a href="{{url_for('main.edit_worksession', worksession_id=worksession.id)}}"><button>✎</button></a>
                                 
                             </div>
                         </div>
-                        <div class="card_info">{{ worksession.question_set.name }}</div>
-                        <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
-                        <div class="card_description">{{ worksession.description | escape | markdown }}</div>
-                        {% if worksession.participants | count > 0 %}
-                            <div class="card_info">Deelnemers: {{ worksession.participants }}</div>
-                        {% endif %}
+                        <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
+                            <div class="card_info">{{ worksession.question_set.name }}</div>
+                            <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
+                            <div class="card_description">{{ worksession.description | escape | markdown }}</div>
+                            {% if worksession.participants | count > 0 %}
+                                <div class="card_info">Deelnemers: {{ worksession.participants }}</div>
+                            {% endif %}
                         
-                    
+                        </a>
                 </div>
             {% endif %}
         {% endfor %}
