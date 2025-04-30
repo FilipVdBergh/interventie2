@@ -26,7 +26,9 @@ Werksessies
                             </div>
                             
                             <div class="card_info">
-                                <p>Datum: {{ worksession.date.strftime('%d-%m-%Y') }}</p>
+                                {% if worksession.date is not none %}
+                                    <p>Datum: {{ worksession.date.strftime('%d-%m-%Y') }}</p>
+                                {% endif %}
                                 <p>{{ worksession.question_set.name }} ({{ worksession.completion() }})</p>
                                 {% if worksession.plan | count > 0 %}
                                     <p>Interventieplannen: {{ worksession.plan | count }}</p>
@@ -121,7 +123,9 @@ Werksessies
                     <td>{{ worksession.project_number }}</td>
                     <td>{{ worksession.completion() }}</td>
                     <td>{{ worksession.plan | count }}</td>
-                    <td>{{ worksession.date.strftime('%d-%m-%Y') }}</td>
+                    {% if worksession.date is not none %}
+                        <td>{{ worksession.date.strftime('%d-%m-%Y') }}</td>
+                    {% endif %}
                     <td>{{ worksession.question_set.name }}</td>
                     <td><a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></td>
                     <td>{% if worksession.archived == true %}Archief{% endif %}</td>

@@ -33,8 +33,10 @@
         <h2>Beschrijving afgeleide sessie</h2>
         {{ worksession.child_description }}
     {% endif %}
-    <h1>Sessiedatum</h1>
-    {{ worksession.date.strftime('%d-%m-%Y') }}
+    {% if worksession.date is not none %}
+        <h1>Sessiedatum</h1>
+        {{ worksession.date.strftime('%d-%m-%Y') }}
+    {% endif %}
     {% if worksession.participants | length > 0 %}
         <h1>Deelnemers</h1>
         {{ worksession.participants | escape | markdown }}
@@ -178,7 +180,9 @@
                     </div>
                     
                     <div class="card_info">
-                        <p>Datum: {{ rws.date.strftime('%d-%m-%Y') }}</p>
+                        {% if worksession.date is not none %}
+                            <p>Datum: {{ rws.date.strftime('%d-%m-%Y') }}</p>
+                        {% endif %}
                         <p>{{ rws.question_set.name }} ({{ rws.completion() }})</p>
                    </div>
                     

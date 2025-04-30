@@ -2,8 +2,8 @@ from datetime import date, timedelta, timezone
 from flask import Blueprint, render_template, redirect, url_for, send_file, request, flash
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, current_user, login_required
-from interventie2.forms import LoginForm, NewWorksessionForm, EditWorksessionForm, EditCaseForm, EditConclusionForm, MarkdownPlaygroundForm, EditWorksessionAccessForm
-from interventie2.models import User, Worksession, QuestionSet, Instrument, Option, Answer, Selection, Question, Process, InstrumentChoice, Plan, Message, Votes
+from interventie2.forms import LoginForm, EditWorksessionForm, EditCaseForm, MarkdownPlaygroundForm, EditWorksessionAccessForm
+from interventie2.models import User, Worksession, QuestionSet, Instrument, Answer, Selection, Question, InstrumentChoice, Plan, Votes
 from interventie2.models import db, generate_secret_key
 from interventie2.classes import Advisor
 from sqlalchemy.sql import func
@@ -100,12 +100,13 @@ def markdown_help():
 # @main.route('/new_worksession', methods=['GET', 'POST'])
 @login_required
 def new_worksession(question_set_id=None):
-	form = NewWorksessionForm()
-	form.question_set.choices = [(question_set.id, question_set.name) for question_set in QuestionSet.query.order_by(QuestionSet.name)]
+	"""New worksession based on a question set."""
+	form = EditWorksessionForm()
+	# form.question_set.choices = [(question_set.id, question_set.name) for question_set in QuestionSet.query.order_by(QuestionSet.name)]
 
-	if question_set_id is not None:
-		form.question_set.data = question_set_id
-		form.question_set.hidden = True
+	# if question_set_id is not None:
+	# 	form.question_set.data = question_set_id
+	# 	form.question_set.hidden = True
 
 	if form.validate_on_submit():
 		worksession = Worksession()
@@ -113,10 +114,11 @@ def new_worksession(question_set_id=None):
 		worksession.project_number = form.project_number.data
 		worksession.link_to_page = form.link_to_page.data
 		worksession.date = datetime.combine(form.date.data, datetime.min.time())
+		worksession.date_modified = datetime.today()
 		worksession.participants = form.participants.data
 		worksession.description = form.description.data
 		worksession.effect = form.effect.data
-		worksession.question_set_id = form.question_set.data
+		# worksession.question_set_id = form.question_set.data
 		worksession.creator = current_user
 		worksession.show_instruments = form.show_instruments.data
 		worksession.show_rest_instruments = form.show_rest_instruments.data
@@ -139,6 +141,8 @@ def new_worksession(question_set_id=None):
 		worksession.presenter_mode_background_color2 = '#FFFFFF'
 		worksession.allowed_users.append(current_user)
 		worksession.archived = False
+
+		worksession.question_set = QuestionSet.query.get(question_set_id)
 		
 		db.session.add(worksession)
 		db.session.commit()
@@ -147,6 +151,8 @@ def new_worksession(question_set_id=None):
 	elif request.method == 'GET':
 		form.show_instruments.data = QuestionSet.query.get(question_set_id).default_instruments_visible
 		form.show_tags.data =  QuestionSet.query.get(question_set_id).default_tags_visible
+		# The default session date is 14 days after creationg a new session.
+		form.date.data = datetime.today()+ timedelta(14)
 	return render_template('main/edit_worksession.html', form=form)
 
 
@@ -154,6 +160,7 @@ def new_worksession(question_set_id=None):
 @main.route('/new_worksession/base_session/<int:base_session_id>/question_set/<int:question_set_id>')
 @login_required
 def new_worksession_from_base(question_set_id, base_session_id=None):
+	"""New worksession based on a previous session."""
 	worksession = Worksession()
 
 	if base_session_id is not None:
