@@ -1,0 +1,15 @@
+<h1>Nieuwe werksessie</h1>
+<div class="card_area" >
+    {% for question_set in question_sets %}
+        <a href="{{ url_for('main.new_worksession', question_set_id=question_set.id) }}">
+            <div class="card new" style="background-color:{{ question_set.color }}; color:{{ question_set.text_color }}">
+                <div class="card_title">
+                    {{ question_set.name }}
+                </div>
+                <div class="card_description">
+                    {{ question_set.description | escape | markdown }}
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+</div>

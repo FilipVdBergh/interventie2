@@ -216,7 +216,7 @@ header {
     grid-area: header;
     background-color: black;
     display: grid;
-    grid-template-columns: auto min-content;
+    /* grid-template-columns: auto auto; */
     grid-template-rows: auto;
     grid-template-areas: "modes logo";
     color: white;
@@ -225,10 +225,22 @@ header {
     font-family: "Poppins", sans-serif;
     font-size: smaller;
 }
-    header a {
-        text-decoration: none;
+    .mode {
+        display: inline;
     }
+    .mode a {
+        text-decoration: none;
+        outline: none;
+        cursor: pointer;
+        padding: 0.3rem 2rem;
+    }
+    .mode a:hover {
+        color: white;
+        background-color: var(--highlight);
+        text-decoration: none;
+    }     
     .logo {
+        justify-self: end;
         grid-area: logo;
     }
     @media only screen and (max-width: 845px) {
@@ -236,21 +248,10 @@ header {
             display:none;
         }
     }
-
     .modes {
         grid-area: modes;
         }
-        .modes a{
-            outline: none;
-            cursor: pointer;
-            padding: 0.3rem 2rem;
-            text-decoration: none;
-        }   
-        .modes a:hover {
-            color: white;
-            background-color: var(--highlight);
-            text-decoration: none;
-        }       
+  
 
 nav {
     grid-area: nav;

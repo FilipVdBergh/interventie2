@@ -14,39 +14,46 @@
         <!-- Icons -->
         <!-- <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"> -->
         <!-- HTMX -->
-        <!-- <script src="https://unpkg.com/htmx.org@2.0.0"></script> -->
+        <script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.js" integrity="sha384-oeUn82QNXPuVkGCkcrInrS1twIxKhkZiFfr2TdiuObZ3n3yIeMiqcRzkIcguaof1" crossorigin="anonymous"></script>
+
         <title>{{ config['APP_NAME'] }}</title>
     </head>
     <body>
         {% import 'jinja_macros.html' as macro %}
 
         <header>
-            <div class="logo">{{ config['APP_NAME'] }}</div>
             <div class="modes">
                 {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('main.index') }}">Dashboard</a>
-                        <a href="{{ url_for('main.worksessions') }}">Sessies</a>
+                    <div class="mode">
+                        <a href="{{ url_for('main.index') }}">Sessies</a>
+                    </div>
+                    <div class="mode">
                         <a href="{{ url_for('catalog.index') }}">Catalogus</a>
+                    </div>
                     {% if current_user.role.edit_questionnaire %}
+                        <div class="mode">
                             <a href="{{ url_for('tools.index') }}">Ontwerpen</a> 
+                        </div>
                     {% endif %}
                     {% if current_user.role.edit_users %}
+                        <div class="mode">
                             <a href="{{ url_for('admin.index') }}">Gebruikers</a> 
-                    {% endif %}
-                    {% if config['ALLOW_CONTACT'] %}
-                            <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}"><i class='bx bxs-envelope'></i></a>
+                        </div>
                     {% endif %}
                     {% if current_user.role.see_app_info %}
-                            <a href="{{ url_for('admin.info') }}"><i class='bx bxs-info-circle'></i></a>
+                        <a href="{{ url_for('admin.info') }}"><i class='bx bxs-info-circle'></i></a>
                     {% endif %}
-                        <a href="{{ url_for('admin.user', id=current_user.id) }}"><i class='bx bxs-user-circle'></i>
-                            {{ current_user.name }} 
-                            <!-- {% if current_user.unread_message_alert() %}(&#128489; {{ current_user.unread_messages() }}){% endif %} -->
-                        </a>
                 {% else %}
-                        <a href="{{ url_for('main.login') }}">Login</a>
+                    <a href="{{ url_for('main.login') }}">Login</a>
                 {% endif %}
 
+            </div>
+            <div class="logo">
+                <div class="mode">
+                    <a href="{{ url_for('admin.user', id=current_user.id) }}">
+                        {{ current_user.name }} {% if current_user.unread_message_alert() %}(✉ {{ current_user.unread_messages() }}){% endif %}
+                    </a>
+                </div>
             </div>
         </header>    
 
@@ -70,7 +77,14 @@
 
               
 
-        <footer>{{ config['MAINTAINER'] }} (<a href="mailto:{{ config['MAINTAINER_EMAIL'] }}">{{ config['MAINTAINER_EMAIL'] }}</a>)</footer>
+        <footer>
+            <div class="mode">
+                {{ config['APP_NAME'] }}
+            </div>
+            <div class="mode">
+                <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}">Mail {{ config['MAINTAINER'] }}</a>
+            </div>
+        </footer>
         
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/confirm_redirect.js')}}"></script>

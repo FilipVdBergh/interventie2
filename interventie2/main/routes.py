@@ -3,10 +3,10 @@ from flask import Blueprint, render_template, redirect, url_for, send_file, requ
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, current_user, login_required
 from interventie2.forms import LoginForm, EditWorksessionForm, EditCaseForm, MarkdownPlaygroundForm, EditWorksessionAccessForm
-from interventie2.models import User, Worksession, QuestionSet, Instrument, Answer, Selection, Question, InstrumentChoice, Plan, Votes
+from interventie2.models import User, Role, Worksession, QuestionSet, Instrument, Answer, Selection, Question, InstrumentChoice, Plan, Votes
 from interventie2.models import db, generate_secret_key
 from interventie2.classes import Advisor
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, or_
 from decimal import Decimal
 from datetime import datetime
 from interventie2.admin.routes import send_system_message
@@ -25,14 +25,12 @@ main = Blueprint('main', __name__,
 @main.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-	next_worksessions = Worksession.query.filter(Worksession.date >= datetime.today().date()).order_by(Worksession.date)
+	
 	worksessions = Worksession.query.filter(Worksession.archived==False).order_by(Worksession.date)
 	question_sets =  QuestionSet.query.order_by(QuestionSet.name)
 
 	return render_template('main/index.html', 
 						worksessions=worksessions,
-						next_worksessions=next_worksessions,
-						question_sets=question_sets,
 						today=datetime.today().date())
 
 
@@ -81,6 +79,74 @@ def logout():
 	db.session.commit()
 	logout_user()
 	return redirect(url_for('main.index'))
+
+
+@main.route('/worksessions/ws_owned')
+@login_required
+def ws_owned():	
+	"""This view returns all worksessions that are active and that are owned by the user."""
+	worksessions = Worksession.query.filter(Worksession.archived==False, Worksession.creator==current_user).order_by(Worksession.date)
+
+	return render_template('main/ws_owned_cards.html', worksessions=worksessions)
+
+
+@main.route('/worksessions/ws_new')
+@login_required
+def ws_new():	
+	"""This view returns cards for all question_sets"""
+	question_sets = QuestionSet.query.all()
+
+	return render_template('main/ws_new_cards.html', question_sets=question_sets)
+
+
+@main.route('/worksessions/ws_shared')
+@login_required
+def ws_shared():	
+	"""This view returns all worksessions that are active and that are shared with the user."""
+	# I'm sure I could have done this in a single line.
+	worksessions_ll = Worksession.query.filter(Worksession.archived==False, Worksession.creator!=current_user).order_by(Worksession.date).all()
+	worksessions = []
+	for ws in worksessions_ll:
+		if current_user in ws.allowed_users:
+			worksessions.append(ws)
+
+	return render_template('main/ws_shared_cards.html', worksessions=worksessions)
+
+
+@main.route('/worksessions/ws_all')
+@login_required
+def ws_all():	
+	"""This view returns alle questions sets that the user is allowed to see."""
+	worksessions_ll = Worksession.query.order_by(Worksession.date)
+	worksessions = []
+	for ws in worksessions_ll:
+		if current_user.role.see_all_worksessions:
+			worksessions = worksessions_ll
+			break
+		elif ws.creator == current_user:
+			worksessions.append(ws)
+		elif current_user in ws.allowed_users:
+			worksessions.append(ws)
+
+	return render_template('main/ws_all_table.html', worksessions=worksessions)
+
+
+@main.route('/worksessions/ws_upcoming')
+@login_required
+def ws_upcoming():	
+	"""This view returns all worksessions that are active and that are owned by the user."""
+	worksessions_ll = Worksession.query.filter(Worksession.archived==False, Worksession.date >= datetime.today().date()).order_by(Worksession.date)
+	worksessions = []
+	for ws in worksessions_ll:
+		if ws.creator == current_user:
+			worksessions.append(ws)
+		elif current_user in ws.allowed_users:
+			worksessions.append(ws)
+	
+	if len(worksessions): 
+		return render_template('main/ws_upcoming_cards.html', worksessions=worksessions)
+	else:
+		return ""
 
 
 @main.route('/markdown_help', methods=['GET', 'POST'])
@@ -577,13 +643,15 @@ def conclusion(worksession_id):
 		db.session.commit()
 
 		# Remind the user in 90 days to enter the final intervention plan
-		send_system_message(
-			subject = f'Welke interventies zijn uitgevoerd bij de casus {worksession.name}?',
-			body = f'Laat weten welke interventies zijn uitgevoerd bij de casus {worksession.name}. Open de werksessie en voer een nieuw interventieplan in. Selecteer in het interventieplan de daadwerkelijk uitgevoerde interventies. Op basis van deze gegevens kunnen de selectietool en de instrumenten verder worden ontwikkeld.',
-			deliver_after = datetime.today() + timedelta(90),
-			recipient = current_user,
-			sender = None
-		)
+		# I have removed this function to implement it better than I did here.
+
+		# send_system_message(
+		# 	subject = f'Welke interventies zijn uitgevoerd bij de casus {worksession.name}?',
+		# 	body = f'Laat weten welke interventies zijn uitgevoerd bij de casus {worksession.name}. Open de werksessie en voer een nieuw interventieplan in. Selecteer in het interventieplan de daadwerkelijk uitgevoerde interventies. Op basis van deze gegevens kunnen de selectietool en de instrumenten verder worden ontwikkeld.',
+		# 	deliver_after = datetime.today() + timedelta(90),
+		# 	recipient = current_user,
+		# 	sender = None
+		# )
 
 		return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 

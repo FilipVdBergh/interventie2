@@ -1,0 +1,27 @@
+<h1>Komende werksessies</h1>
+<div class="card_area">
+    {% for worksession in worksessions %}
+        <div class="card_area">
+            <div class="card double" style="background-color:{{ worksession.question_set.color }}; color:{{ worksession.question_set.text_color }}">
+                <div class="card_titlebar">
+                    <div class="card_title">
+                        <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a>
+                    </div>
+                    <div class="card_controls">
+                        <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>▶︎</button></a>
+                        <a href="{{url_for('main.edit_worksession', worksession_id=worksession.id)}}"><button>✎</button></a>
+                        
+                    </div>
+                </div>
+                <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}
+                    <div class="card_info">{{ worksession.question_set.name }}</div>
+                    <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
+                    <div class="card_description">{{ worksession.description | escape | markdown }}</div>
+                    {% if worksession.participants | count > 0 %}
+                        <div class="card_info">Deelnemers: {{ worksession.participants }}</div>
+                    {% endif %}
+                </a>                      
+            </div>            
+        </div>
+    {% endfor %}
+</div>
