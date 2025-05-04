@@ -221,7 +221,7 @@ header {
     grid-template-areas: "modes logo";
     color: white;
     align-items: center;
-    padding: 0.4rem 2rem 0.4rem 2rem;
+    padding: 0.4rem 2rem 0.4rem 3rem;
     font-family: "Poppins", sans-serif;
     font-size: smaller;
 }
