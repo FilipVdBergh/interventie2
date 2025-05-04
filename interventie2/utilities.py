@@ -61,7 +61,7 @@ def search_database(search_text_all, worksessions=True, catalog=True, tools=True
                 for item in Question.query.order_by(Question.name):
                     if search_text.lower() in item.name.lower() or search_text in item.description.lower():
                         search_results['vraag'].append({'name': item.name,
-                                    'context': f'Vraag in  in {item.question_set.name}. {item.description}',
+                                    'context': f'Vraag in {item.question_set.name}. {item.description}',
                                     'url': url_for('tools.edit_question', question_id=item.id)})
 
         # Search options in selection tools
