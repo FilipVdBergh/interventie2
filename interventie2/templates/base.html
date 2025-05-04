@@ -58,10 +58,14 @@
         </header>    
 
         <nav>
-            <div class="title">{% block page_title %}{% endblock %}</div>
+            <div class="title" id="title">{% block page_title %}{% endblock %}</div>
             {% if current_user.is_authenticated %}
-                <form action="/analysis/search" method="get" class="search">
-                    <input id="search" type="search"  name="q" value="{{ request.args.get('q') or '' }}" placeholder="Zoeken...">
+                <form method="get" class="search">
+                    <input id="search" type="search"  name="q" value="{{ request.args.get('q') or '' }}" placeholder="Zoeken..."
+                        hx-get="{{ url_for('analysis.search') }}"
+                        hx-target="#main"
+                        hx-swap="innerHTML"
+                        hx-trigger="input changed delay:500ms">
                 </form>
             {% endif %}
             <div class="steps">{% block steps %}{% endblock %}</div>
@@ -70,9 +74,9 @@
 
 
 
-        <main>
+        <main >
             <aside>{% block contents %}{% endblock %}</aside>
-            <section>{% block body %}{% endblock %}</section>
+            <section id="main">{% block body %}{% endblock %}</section>
         </main>
 
               
