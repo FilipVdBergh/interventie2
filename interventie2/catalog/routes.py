@@ -400,8 +400,8 @@ def edit_tag_assignment_to_instrument(instrument_id, tag_assignment_id):
         tag_assignment.multiplier = form.multiplier.data
         db.session.commit()
         return redirect(url_for('catalog.instrument_tags', id=instrument_id))
-    elif request.method == 'POST':
-        print(form.errors)
+    # elif request.method == 'POST':
+    #     print(form.errors)
         #TODO What is this doing here?
     elif request.method == 'GET':
         form.weight.data = tag_assignment.weight

@@ -385,13 +385,8 @@ def edit_worksession(worksession_id):
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
 	form = EditWorksessionForm()
-	# form.choice_process.choices = [(process.id, process.name) for process in Process.query.order_by(Process.id)]
-
-	if request.method == "POST":
-		print('POST')
 
 	if form.validate_on_submit():
-		print ('Validation')
 		worksession.name = form.name.data
 		worksession.project_number = form.project_number.data
 		worksession.link_to_page = form.link_to_page.data

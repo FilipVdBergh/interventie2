@@ -49,7 +49,6 @@ def update(worksession_id):
 
     # Each for contains options for a single question, but which question?
     for item, value in request.form.items():
-        print(f'Item {item}, value {value}')
         if 'question_id' in item:
             current_question = Question.query.get ( int(value) )
             break

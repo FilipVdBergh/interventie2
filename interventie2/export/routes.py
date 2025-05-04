@@ -42,7 +42,7 @@ def worksession(worksession_id):
     form = ExportWorksessionForm()
     advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 
-    print(current_app.static_folder)
+    # print(current_app.static_folder)
     if form.validate_on_submit():
         result = Document(os.path.join(current_app.static_folder, 'export', 'Template.docx'))
         output_file = os.path.join(current_app.static_folder, 'export', 'Temp.docx')
