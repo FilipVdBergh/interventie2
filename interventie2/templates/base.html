@@ -50,9 +50,11 @@
             </div>
             <div class="logo">
                 <div class="mode">
-                    <a href="{{ url_for('admin.user', id=current_user.id) }}">
-                        {{ current_user.name }} {% if current_user.unread_message_alert() %}(✉ {{ current_user.unread_messages() }}){% endif %}
-                    </a>
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('admin.user', id=current_user.id) }}">
+                            {{ current_user.name }} {% if current_user.unread_message_alert() %}(✉ {{ current_user.unread_messages() }}){% endif %}
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </header>    
