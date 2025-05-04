@@ -85,9 +85,12 @@ def logout():
 @login_required
 def ws_owned():	
 	"""This view returns all worksessions that are active and that are owned by the user."""
-	worksessions = Worksession.query.filter(Worksession.archived==False, Worksession.creator==current_user).order_by(Worksession.date)
+	worksessions = Worksession.query.filter(Worksession.archived==False, Worksession.creator==current_user).order_by(Worksession.date).all()
 
-	return render_template('main/ws_owned_cards.html', worksessions=worksessions)
+	if len(worksessions): 
+		return render_template('main/ws_owned_cards.html', worksessions=worksessions)
+
+	return ""
 
 
 @main.route('/worksessions/ws_new')
@@ -96,7 +99,10 @@ def ws_new():
 	"""This view returns cards for all question_sets"""
 	question_sets = QuestionSet.query.all()
 
-	return render_template('main/ws_new_cards.html', question_sets=question_sets)
+	if len(question_sets):
+		return render_template('main/ws_new_cards.html', question_sets=question_sets)
+	
+	return ""
 
 
 @main.route('/worksessions/ws_shared')
@@ -109,15 +115,18 @@ def ws_shared():
 	for ws in worksessions_ll:
 		if current_user in ws.allowed_users:
 			worksessions.append(ws)
-
-	return render_template('main/ws_shared_cards.html', worksessions=worksessions)
+	
+	if len(worksessions): 
+		return render_template('main/ws_shared_cards.html', worksessions=worksessions)
+	
+	return ""
 
 
 @main.route('/worksessions/ws_all')
 @login_required
 def ws_all():	
 	"""This view returns alle questions sets that the user is allowed to see."""
-	worksessions_ll = Worksession.query.order_by(Worksession.date)
+	worksessions_ll = Worksession.query.order_by(Worksession.date).all()
 	worksessions = []
 	for ws in worksessions_ll:
 		if current_user.role.see_all_worksessions:
@@ -127,15 +136,18 @@ def ws_all():
 			worksessions.append(ws)
 		elif current_user in ws.allowed_users:
 			worksessions.append(ws)
-
-	return render_template('main/ws_all_table.html', worksessions=worksessions)
+	
+	if len(worksessions): 
+		return render_template('main/ws_all_table.html', worksessions=worksessions)
+	
+	return ""
 
 
 @main.route('/worksessions/ws_upcoming')
 @login_required
 def ws_upcoming():	
 	"""This view returns all worksessions that are active and that are owned by the user."""
-	worksessions_ll = Worksession.query.filter(Worksession.archived==False, Worksession.date >= datetime.today().date()).order_by(Worksession.date)
+	worksessions_ll = Worksession.query.filter(Worksession.archived==False, Worksession.date >= datetime.today().date()).order_by(Worksession.date).all()
 	worksessions = []
 	for ws in worksessions_ll:
 		if ws.creator == current_user:
@@ -145,8 +157,8 @@ def ws_upcoming():
 	
 	if len(worksessions): 
 		return render_template('main/ws_upcoming_cards.html', worksessions=worksessions)
-	else:
-		return ""
+	
+	return ""
 
 
 @main.route('/markdown_help', methods=['GET', 'POST'])
