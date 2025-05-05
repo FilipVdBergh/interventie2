@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block steps %}
-<a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">{{ worksession.name}}</a>
+    <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">{{ worksession.name}}</a>
 {% endblock %}
 
 {% block page_title %}
@@ -35,7 +35,7 @@ Interventieplan bij {{ plan.worksession.name }}
         
         <tr>
             <td>
-                <a href="{{ url_for('main.show_instrument', instrument_id=chosen.instrument.id, worksession_id=worksession.id) }}">{{ chosen.instrument.name }} </a>
+                <a href="{{ url_for('catalog.show_instrument', id=chosen.instrument.id) }}">{{ chosen.instrument.name }} </a>
             </td>
             <td>{{ chosen.instrument.introduction | truncate(150) | escape | markdown }}</td>
         </tr>

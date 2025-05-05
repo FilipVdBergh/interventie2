@@ -94,7 +94,7 @@
             {% if score > 0 %}
             <tr>
                 <td><a
-                        href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{
+                        href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{
                         instrument.name }}</a></td>
                 <td>{{ instrument.introduction | truncate(150) | escape | markdown }}</td>
                 <td>{{ score | round(2) }}</td>

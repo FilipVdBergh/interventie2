@@ -65,23 +65,19 @@ Interventieplan bij {{ worksession.name }}
 
     <div id="plan_ins" class="tabcontent">
         <div class="text_area">
-
+            <h1>Instrumenten</h1>
             <table>
-                <tr>
-                    <th>Instrument</th>
-                    <th>Interventieplan</th>
-                </tr>
                 {% for (instrument, score) in advisor.get_sorted_instruments() %}
                 <tr>
-                    <td>
-                        <a
-                            href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{
-                            instrument.name }} (score {{ score | round(1) }})</a>
-                    </td>
                     <td>
                         <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}" {% for
                             chosen_instrument in plan.instruments %} {% if
                             instrument.id==chosen_instrument.instrument.id %}checked{% endif %} {% endfor %}>
+                    </td>
+                    <td>
+                        <a
+                            href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{
+                            instrument.name }} (score {{ score | round(1) }})</a>
                     </td>
                 </tr>
                 {% endfor %}
