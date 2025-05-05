@@ -10,7 +10,7 @@
                 <div class="card_info">
                     <p>Datum: {{ worksession.date.strftime('%d-%m-%Y') }}</p>
                     <p>Eigenaar: {{ worksession.creator.name }}</p>
-                    <p>{{ worksession.question_set.name }} ({{ worksession.completion() }})</p>
+                    <p>{{ worksession.question_set.name }} ({{ worksession.completion(perc=True) }})</p>
                     {% if worksession.plan | count > 0 %}
                         <p>Interventieplannen: {{ worksession.plan | count }}</p>
                     {% endif %}

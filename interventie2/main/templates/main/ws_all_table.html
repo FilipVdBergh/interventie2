@@ -4,10 +4,10 @@
             <tr>
                 <th>Werksessie</th>
                 <th>Projectnummer</th>
-                <th>Voortgang</th>
+                <th>Selectietool</th>
+                <th colspan="2">Voortgang</th>
                 <th>Interventieplannen</th>
                 <th>Datum</th>
-                <th>Selectietool</th>
                 <th>Eigenaar</th>
                 <th>Status</th>
             </tr>
@@ -17,12 +17,13 @@
                 <tr>
                     <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
                     <td>{{ worksession.project_number }}</td>
+                    <td style="background-color:{{ worksession.question_set.color }}; color:{{ worksession.question_set.text_color }}">{{ worksession.question_set.name }}</td>
                     <td>{{ worksession.completion() }}</td>
+                    <td>{{ worksession.completion(perc=True) }}</td>
                     <td>{{ worksession.plan | count }}</td>
                     {% if worksession.date is not none %}
                         <td>{{ worksession.date.strftime('%d-%m-%Y') }}</td>
                     {% endif %}
-                    <td style="background-color:{{ worksession.question_set.color }}; color:{{ worksession.question_set.text_color }}">{{ worksession.question_set.name }}</td>
                     <td><a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a></td>
                     <td>{% if worksession.archived == true %}Archief{% else %}Actief{% endif %}</td>
                 </tr>
