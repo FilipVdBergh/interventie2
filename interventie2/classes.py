@@ -119,10 +119,11 @@ class Advisor:
         self.active_tags = []
 
         for question in self.worksession.question_set.questions:
-            for option in question.options:
-                if self.worksession.is_option_selected(option):
-                    for option_tag in option.tags:
-                        self.add_to_active_tags(option_tag, self.worksession.get_weight(question))
+            if not self.worksession.is_question_hidden(question):
+                for option in question.options:
+                    if self.worksession.is_option_selected(option):
+                        for option_tag in option.tags:
+                            self.add_to_active_tags(option_tag, self.worksession.get_weight(question))
 
     def is_instrument_in_scope(self, instrument):
         """ Instruments are not in scope if they contain a forbidden tag (for this tool),
@@ -192,7 +193,7 @@ class Advisor:
                                            'factor_in_instrument': tag_assignment.multiplier})
                     multiplier *= tag_assignment.multiplier
         explanation['tags'] = enriched_tags
-        
+
         # The multiplier is applied last. This choice ensures that instruments with any 0-multiplier always get score=0.
         explanation['final_score'] = score
         explanation['final_multiplier'] = multiplier
