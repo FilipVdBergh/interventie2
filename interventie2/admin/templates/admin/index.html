@@ -24,6 +24,7 @@
                 <tr>
                     <th>Naam</th>
                     <th>Rol</th>
+                    <th>Laatst ingelogd</th>
                     <th>Inloggen togestaan</th>
                     <th>Beschrijving</th>
                     <th>Acties</th>
@@ -34,6 +35,7 @@
                     <tr>
                         <td><a href="{{ url_for('admin.user', id=user.id) }}">{{ user.name }}</a></td>
                         <td><a href="{{ url_for('admin.roles') }}">{{ user.role.name }}</a></td>
+                        <td>{{ user.last_seen }}</td>
                         <td>{% if user.active %}Ja{% else %}Nee{% endif %}</td>
                         <td>{{ user.description | escape | truncate(100) | markdown }}</td>
                         <td>
