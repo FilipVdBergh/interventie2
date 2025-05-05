@@ -8,7 +8,7 @@
                         <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a>
                     </div>
                     <div class="card_controls">
-                        <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button>▶︎</button></a>
+                        <a href="{{ url_for('present.frontpage', worksession_id=worksession.id) }}"><button>▶︎</button></a>
                         <a href="{{url_for('main.edit_worksession', worksession_id=worksession.id)}}"><button>✎</button></a>
                         
                     </div>

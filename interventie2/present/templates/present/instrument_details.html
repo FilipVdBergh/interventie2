@@ -1,0 +1,83 @@
+<div class="explanation">
+    <h1 class="title"
+        hx-get="{{ url_for('present.conclusion', worksession_id=worksession.id) }}"
+        hx-trigger="click"
+        hx-target="body"
+        hx-swap="innerHTML">{{ instrument.name }}</h1>
+    <div class="introduction">{{ instrument.introduction | escape | markdown }}</div>
+    {% if instrument.referenced_elsewhere %}
+    <div>
+        <a href="http://{{ instrument.reference_link }}"><button>Link naar de beschrijving van dit instrument</button></a>
+    </div>
+    {% else %}
+        {% if instrument.description %}
+            <h1>Beschrijving</h1>
+            <div>{{ instrument.description | escape | markdown }}</div>
+        {% endif %}
+        {% if instrument.considerations %}
+            <h1>Overwegingen bij gebruik</h1>
+            <div>{{ instrument.considerations | escape | markdown }}</div>
+        {% endif %}
+        {% if instrument.examples %}
+            <h1>Voorbeelden</h1>
+            <div>{{ instrument.examples | escape | markdown }}</div>
+        {% endif %}
+        {% if instrument.links %}
+            <h1>Links</h1>
+            <div>{{ instrument.links | escape | markdown }}</div>
+        {% endif %}
+    {% endif %}
+</div>
+
+
+<div class="calculation">
+    <h1>Berekening</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Tag</th>
+                <th>Instrumentgewicht *</th>
+                <th>Vraagfactor =</th>
+                <th>Bijdrage aan score</th>
+                <th>Instrumentfactor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tag in instrument_calculation.tags %}
+                <tr>
+                    <td><span class="tag">{{ tag.name }}</span></td>
+                    <td>{{ tag.weight_in_instrument }}</td>
+                    <td>{{ tag.weight_in_question | round(1) }}</td>
+                    <td>{{ tag.contribution | round(1) }}</td>
+                    <td>
+                        <div {% if tag.factor_in_instrument == 0 %}class="mintag"{% endif %}>
+                            {{ tag.factor_in_instrument | round(1) }}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>Totaal</td>
+                <td></td>
+                <td></td>
+                <td>{{ instrument_calculation.final_score | round(1) }}<span style="float: right;">+</span></td>
+                <td>{{ instrument_calculation.final_multiplier | round(1) }}<span style="float: right;">*</span></td>
+            </tr>
+        </tbody>
+    </table>
+    {% if instrument_calculation['forbidden_tags_found'] %}
+        <h2>Sessietags die dit instrument uitsluiten gevonden</h2>
+        <div>Dit instrument heeft tags die niet zijn toegestaan in deze sessie. Daarom is de definitieve score voor dit instrument altijd 0.</div>
+    {% endif %}
+
+    {% if instrument_calculation['mandatory_tags_not_found'] %}
+        <h2>Verplichte sessietags niet gevonden</h2>
+        Aan dit instrument ontbreekt een verplichte tag voor deze sessie. Daarom is de definitieve score voor dit instrument altijd 0.
+    {% endif %}
+
+    <h2>Eindscore</h2>
+    <div>
+        Totale bijdrage {{ instrument_calculation.final_score | round(1) }} * Totale factor {{ instrument_calculation.final_multiplier | round(1) }} = Score {{ instrument_calculation.final | round(1) }}  
+    </div>
+</div>
+

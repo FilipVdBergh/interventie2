@@ -38,7 +38,7 @@ body {
     width: 100%;
     height: 100vh;
     grid-template-columns: 20vw auto;
-    grid-template-rows: min-content min-content 1fr min-content 12rem;
+    grid-template-rows: min-content min-content 1fr min-content min-content;
     grid-template-areas:
     "nav         nav         "
     "header      header      "
@@ -152,10 +152,10 @@ textarea {
 }
 
 .qr {
+    font-size: medium;
     grid-area: qr;
     padding: 1rem 1rem 0rem 1rem;
-    margin: 0;
-
+    margin: 0 0 2em 0;
 }
     .qr img {
         opacity: 10%;
@@ -167,8 +167,8 @@ textarea {
         position: relative;
         opacity: 100%;
         transition: ease 0.5s;
-        height: 20rem;
-        margin-top: -12rem;
+        height: 20em;
+        margin-top: -12em;
     }
     
 
@@ -227,26 +227,44 @@ textarea {
     }
 
 .explanation {
-
+    background-color: #f7fcff;
+    color: black;
+    border-radius: 3px;
+    padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 8px;
     }
 
     .explanation h1 {
         font-size: large;
     }
-        .explanation .title {
-            font-size: x-large;
-            font-family: "Poppins", sans-serif;
-            cursor: pointer;
-        }
-        .explanation .title:after {
-            content: "🡠";     
-            float: left;
-            margin-right: 0.2rem;
+    .explanation .title {
+        font-size: x-large;
+        font-family: "Poppins", sans-serif;
+        cursor: pointer;
+    }
+    .explanation .title:after {
+        content: "🡠";     
+        float: left;
+        margin-right: 0.2rem;
         }
     .explanation h2 {
         font-size: medium;
     }
+    .explanation .introduction {
+        font-weight: bold;
+        padding-bottom: 1rem;
+        font-size: medium;
+    }
 
+.calculation {
+    background-color: #f7fcff;
+    color: black;
+    border-radius: 3px;
+    margin-top: 1rem;
+    padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 8px;
+   
+}
 
 .collapsible_content {
     max-height: 0;
@@ -330,6 +348,11 @@ textarea {
     color: lightgray;
 }
 
+.mintag {
+    color: red;
+    font-weight: bold;
+}
+
 button {
     border: 1px solid var(--mid-grey);
     background-color: var(--button-bg);
@@ -349,4 +372,31 @@ button {
     button:hover {
         background-color: var(--highlight);
         color: white;
+    }
+
+table {
+    color: var(--object-text);
+    border-collapse: collapse;
+    }
+    
+    thead {
+    color: black;
+    font-weight: bold;
+    font-family: "Poppins", sans-serif;
+    }
+    
+    th {
+    padding: 0.5em 1em;
+    text-align: left;
+    }
+    td {
+    padding: 0.15em 1em;
+    }
+    tbody {
+    border-top: solid 1px rgb(0, 0, 0);
+    border-bottom: solid 1px rgb(0, 0, 0);
+    }
+    tbody tr {
+    border-left: 4px solid var(--object);
+    transition:all  0.25s ease;
     }

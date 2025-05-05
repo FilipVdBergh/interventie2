@@ -17,7 +17,7 @@
 {% block body %}
 
 <div id="ws_main" class="tabcontent text_area">
-        <a href="{{ url_for('main.case', worksession_id=worksession.id) }}"><button type="button">▶︎ Start de werksessie</button></a>
+        <a href="{{ url_for('present.frontpage', worksession_id=worksession.id) }}"><button type="button">▶︎ Start de werksessie</button></a>
         {% if worksession.enable_voting and worksession.votes | count > 0 %}
             <a href="{{ url_for('main.erase_votes', worksession_id=worksession.id) }}"><button type="button">🗨 Reset stemmen</button></a>
         {% endif %}

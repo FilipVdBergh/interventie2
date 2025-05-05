@@ -228,9 +228,24 @@ def show_instrument(worksession_id, instrument_id):
     if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-    advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
     instrument = Instrument.query.get(instrument_id)
-    return render_template('present/explanation.html', worksession=worksession, instrument=instrument, advisor=advisor)
+    return render_template('present/instrument.html', worksession=worksession, instrument=instrument)
+
+
+@present.route('/<int:worksession_id>/instrument_details/<int:instrument_id>')
+@login_required
+def show_explanation(worksession_id, instrument_id):
+    worksession = Worksession.query.get(worksession_id)
+    if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
+        return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+
+    instrument = Instrument.query.get(instrument_id)
+    advisor = Advisor(worksession=worksession, instruments=instrument)
+
+    return render_template('present/instrument_details.html', 
+                           worksession=worksession, 
+                           instrument=instrument, 
+                           instrument_calculation=advisor.explain_score(instrument))
 
 
 @present.route('/<int:worksession_id>/conclusion', methods=['GET', 'POST'])

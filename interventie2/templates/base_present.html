@@ -12,6 +12,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Special+Gothic&display=swap" rel="stylesheet">
         <!-- Styles -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/pstyles.css')}}">
+        <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/mstyles.css')}}"> -->
         <!-- HTMX -->
         <script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.js" integrity="sha384-oeUn82QNXPuVkGCkcrInrS1twIxKhkZiFfr2TdiuObZ3n3yIeMiqcRzkIcguaof1" crossorigin="anonymous"></script>
 
@@ -50,7 +51,7 @@
         {% if worksession.enable_voting %}
             <div class="qr">
                 <a href="{{ url_for('vote.touch_vote', worksession_id=worksession.id, voting_key=worksession.voting_key, _external=True) }}">
-                    <img src="{{ qrcode(url_for('vote.touch_vote', worksession_id=worksession.id, voting_key=worksession.voting_key, _external=True)) }}" height="90%">
+                    <img src="{{ qrcode(url_for('vote.touch_vote', worksession_id=worksession.id, voting_key=worksession.voting_key, _external=True)) }}" height="100em">
                 </a>
             </div>
         {% endif %}

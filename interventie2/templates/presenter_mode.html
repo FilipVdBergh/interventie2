@@ -63,7 +63,7 @@
 
     <body>
         <div class="divsteps">
-            <a href="{{ url_for('main.case', worksession_id=worksession.id) }}" class="step">1. Casus</a>
+            <a href="{{ url_for('present.frontpage', worksession_id=worksession.id) }}" class="step">1. Casus</a>
             {% if worksession.process_id == 1 %}
                 <a href="{{ url_for('main.process_simultaneous', worksession_id=worksession.id) }}" class="step">2. {{ worksession.question_set.name }}</a>
             {% elif worksession.process_id == 2 %}

@@ -69,15 +69,22 @@ class Advisor:
 
         self.add_worksession(worksession)
         self.add_instrument(instruments)
+        self.update()
+
+    def update(self):
+        self.update_active_tags()      
+        self.scored_instruments = []
+        for instrument in self.all_instruments:
+            if self.is_instrument_in_scope(instrument):
+                self.scored_instruments.append([instrument, self.calculate_score(instrument)])
 
     def add_worksession(self, worksession):
-        
         self.add_forbidden_tag(worksession.question_set.forbidden_tags)
         self.add_mandatory_tag(worksession.question_set.mandatory_tags)
         self.add_questionnaire(worksession)
 
     def add_instrument(self, instrument):
-        if len(instrument) == 1: instrument = [instrument]
+        if not isinstance(instrument, list): instrument = [instrument]
         self.all_instruments.extend(instrument)
 
     def add_question_with_answers(self, question_with_answers):
@@ -110,12 +117,7 @@ class Advisor:
     def update_active_tags(self):
         """Creates a list of all current active tags, the forbidden tags and the mandatory tags."""
         self.active_tags = []
-        # for question_with_answers in self.questionnaire:
-        #     for option_with_selection in question_with_answers.options_with_selection:
-        #         if option_with_selection.selected:
-        #             # This option is enabled, we want the associated tags.
-        #             for option_tag in option_with_selection.option.tags:
-        #                 self.add_to_active_tags(option_tag, question_with_answers.weight)
+
         for question in self.worksession.question_set.questions:
             for option in question.options:
                 if self.worksession.is_option_selected(option):
@@ -160,6 +162,9 @@ class Advisor:
         explanation = {}
         explanation['instrument_name'] = instrument.name
         explanation['instrument_id'] = instrument.id
+        explanation['worksession_name'] = self.worksession.name
+        explanation['worksession_id'] = self.worksession.id
+
         # First apply the question set tag constraints:
         score = 0
         multiplier = 1
@@ -173,6 +178,7 @@ class Advisor:
                 explanation['mandatory_tags_not_found'] = ( len(self.mandatory_tags) == 0 )
                 multiplier = 0
         explanation['multiplier_after_worksession_tags'] = multiplier
+
         # Then calculate score based on options:
         enriched_tags = []
         for active_tag in self.active_tags:
@@ -186,20 +192,12 @@ class Advisor:
                                            'factor_in_instrument': tag_assignment.multiplier})
                     multiplier *= tag_assignment.multiplier
         explanation['tags'] = enriched_tags
+        
         # The multiplier is applied last. This choice ensures that instruments with any 0-multiplier always get score=0.
         explanation['final_score'] = score
         explanation['final_multiplier'] = multiplier
         explanation['final'] = score * multiplier
         return explanation
-
-
-    def update(self):
-        self.update_active_tags()      
-        self.scored_instruments = []
-        for instrument in self.all_instruments:
-            if self.is_instrument_in_scope(instrument):
-                self.scored_instruments.append([instrument, self.calculate_score(instrument)])
-
 
     def debug_info(self):
         print('=== Debug info =====================================')
@@ -216,13 +214,13 @@ class Advisor:
 
     def get_sorted_instruments(self):
         """Returns a sorted list of all instruments and their score."""
-        self.update()
+        # self.update()
         return sorted(self.scored_instruments, key=itemgetter(1), reverse=True)
 
 
     def get_highest_score(self):
         """Returns the score of the highest scoring instrument."""
-        self.update() #TODO er wordt te vaak geupdate, en dat is niet nodig.
+        # self.update() #TODO er wordt te vaak geupdate, en dat is niet nodig.
         top_score = 0
         for instrument, score in self.scored_instruments:
             top_score = max(top_score, score)

@@ -45,61 +45,79 @@ hx-swap="innerHTML">&nbsp</h1>
                 <!-- If no questions are answered, catch that all instruments are 0 -->
 
                         <div class="prio_low">
-                            <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">
-                                <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
-                                    {% for chosen_instrument in plan.instruments %}
-                                        {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
-                                    {% endfor %}
-                                    hx-trigger="click"
-                                    hx-post="{{ url_for('present.update_instrument_checkbox', worksession_id=worksession.id, instrument_id=instrument.id, score=score) }}"
-                                    hx-target="this"
-                                    hx-swap="innerHTML">
-                            {{ instrument.name }} ({{ score | round }})</a>
+                            <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
+                                {% for chosen_instrument in plan.instruments %}
+                                    {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
+                                {% endfor %}
+                                hx-trigger="click"
+                                hx-post="{{ url_for('present.update_instrument_checkbox', worksession_id=worksession.id, instrument_id=instrument.id, score=score) }}"
+                                hx-target="this"
+                                hx-swap="innerHTML">
+                            <a 
+                                hx-get="{{ url_for('present.show_explanation', instrument_id=instrument.id, worksession_id=worksession.id) }}"
+                                hx-trigger="click"
+                                hx-target="#main"
+                                hx-swap="innerHTML">
+                                {{ instrument.name }} ({{ score | round }})
+                            </a>
                         </div>
-
                 {% else %}
-                    
                     {% if loop.index <= worksession.mark_top_instruments %}
                         {% set ns.lowest_top_score = score %}
                         <div class="prio_high">
-                            <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">
-                                <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
-                                    {% for chosen_instrument in plan.instruments %}
-                                        {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
-                                    {% endfor %}
-                                    hx-trigger="click"
-                                    hx-post="{{ url_for('present.update_instrument_checkbox', worksession_id=worksession.id, instrument_id=instrument.id, score=score) }}"
-                                    hx-target="this"
-                                    hx-swap="innerHTML">
-                                {{ instrument.name }} ({{ score | round }})</a>
+                            <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
+                                {% for chosen_instrument in plan.instruments %}
+                                    {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
+                                {% endfor %}
+                                hx-trigger="click"
+                                hx-post="{{ url_for('present.update_instrument_checkbox', worksession_id=worksession.id, instrument_id=instrument.id, score=score) }}"
+                                hx-target="this"
+                                hx-swap="innerHTML">
+                            <a 
+                                hx-get="{{ url_for('present.show_explanation', instrument_id=instrument.id, worksession_id=worksession.id) }}"
+                                hx-trigger="click"
+                                hx-target="#main"
+                                hx-swap="innerHTML">
+                                {{ instrument.name }} ({{ score | round }})
+                            </a>
                         </div>
                     {% else %}
                         {% if score == ns.lowest_top_score %}            
                             <div class="prio_high">
-                                <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">
-                                    <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
-                                        {% for chosen_instrument in plan.instruments %}
-                                            {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
-                                        {% endfor %}
-                                        hx-trigger="click"
-                                        hx-post="{{ url_for('present.update_instrument_checkbox', worksession_id=worksession.id, instrument_id=instrument.id, score=score) }}"
-                                        hx-target="this"
-                                        hx-swap="innerHTML">
-                                    {{ instrument.name }} ({{ score | round }})</a>
+                                <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
+                                    {% for chosen_instrument in plan.instruments %}
+                                        {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
+                                    {% endfor %}
+                                    hx-trigger="click"
+                                    hx-post="{{ url_for('present.update_instrument_checkbox', worksession_id=worksession.id, instrument_id=instrument.id, score=score) }}"
+                                    hx-target="this"
+                                    hx-swap="innerHTML">
+                                <a 
+                                    hx-get="{{ url_for('present.show_explanation', instrument_id=instrument.id, worksession_id=worksession.id) }}"
+                                    hx-trigger="click"
+                                    hx-target="#main"
+                                    hx-swap="innerHTML">
+                                    {{ instrument.name }} ({{ score | round }})
+                                </a>
                             </div>
                         {% else %}
-                                <div class="prio_medium">
-                                    <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">
-                                        <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
-                                            {% for chosen_instrument in plan.instruments %}
-                                                {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
-                                            {% endfor %}
-                                            hx-trigger="click"
-                                            hx-post="{{ url_for('present.update_instrument_checkbox', worksession_id=worksession.id, instrument_id=instrument.id, score=score) }}"
-                                            hx-target="this"
-                                            hx-swap="innerHTML">
-                                        {{ instrument.name }} ({{ score | round }})</a>
-                                </div>
+                            <div class="prio_medium">
+                                <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
+                                    {% for chosen_instrument in plan.instruments %}
+                                        {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
+                                    {% endfor %}
+                                    hx-trigger="click"
+                                    hx-post="{{ url_for('present.update_instrument_checkbox', worksession_id=worksession.id, instrument_id=instrument.id, score=score) }}"
+                                    hx-target="this"
+                                    hx-swap="innerHTML">
+                                <a 
+                                    hx-get="{{ url_for('present.show_explanation', instrument_id=instrument.id, worksession_id=worksession.id) }}"
+                                    hx-trigger="click"
+                                    hx-target="#main"
+                                    hx-swap="innerHTML">
+                                    {{ instrument.name }} ({{ score | round }})
+                                </a>
+                            </div>
                         {% endif %}
                     {% endif %}
                 {% endif %}

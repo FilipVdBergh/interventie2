@@ -114,7 +114,7 @@ class QuestionForm(AddQuestionForm):
     allow_motivation   = BooleanField('Motivatie vragen', validators=[], default=True)
     allow_choice       = BooleanField('Meerkeuzevraag stellen', validators=[], default=True)    
     allow_multiselect  = BooleanField('Meerdere opties op meerkeuzevraag toestaan', validators=[], default=False)
-    allow_weight       = BooleanField('Gewicht bij vraag toestaan', validators=[], default=False)
+    allow_weight       = BooleanField('Gewicht bij vraag toestaan (experimenteel)', validators=[], default=False)
 
 
 class OptionForm(FlaskForm):
@@ -197,9 +197,6 @@ class MarkdownPlaygroundForm(FlaskForm):
 class EditWorksessionAccessForm(FlaskForm):
     user               = SelectMultipleField('Gebruiker', coerce=int)
     submit             = SubmitField('Toevoegen')
-
-
-# class CloneWorksessionForm(FlaskForm):
 
 
 class ExportWorksessionForm(FlaskForm):
