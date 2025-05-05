@@ -8,8 +8,8 @@
                         <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a>
                     </div>
                     <div class="card_controls">
-                        <a href="{{ url_for('present.frontpage', worksession_id=worksession.id) }}"><button>▶︎</button></a>
-                        <a href="{{url_for('main.edit_worksession', worksession_id=worksession.id)}}"><button>✎</button></a>
+                        <a href="{{ url_for('present.frontpage', worksession_id=worksession.id) }}"><button style="color:{{ worksession.question_set.text_color }}; border-color:{{ worksession.question_set.text_color }}">▶︎</button></a>
+                        <a href="{{url_for('main.edit_worksession', worksession_id=worksession.id)}}"><button style="color:{{ worksession.question_set.text_color }}; border-color:{{ worksession.question_set.text_color }}">✎</button></a>
                         
                     </div>
                 </div>
