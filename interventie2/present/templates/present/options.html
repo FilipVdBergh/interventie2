@@ -93,9 +93,7 @@
 
     {% if question.allow_motivation %}
         <textarea name="motivation:::{{ question.id }}" rows="5" style="width:95%;"
-                hx-get="{{ url_for('present.update_motivation', worksession_id=worksession.id) }}"
-                hx-target="#main"
-                hx-swap="innerHTML"
+                hx-post="{{ url_for('present.update_motivation', worksession_id=worksession.id) }}"
                 hx-trigger="input changed delay:5000ms">{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
     {% endif %}
 

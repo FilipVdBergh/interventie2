@@ -392,11 +392,7 @@ table {
     td {
     padding: 0.15em 1em;
     }
-    tbody {
-    border-top: solid 1px rgb(0, 0, 0);
-    border-bottom: solid 1px rgb(0, 0, 0);
-    }
-    tbody tr {
-    border-left: 4px solid var(--object);
-    transition:all  0.25s ease;
+    tr.end_row {
+        border-top: 1px solid lightgray;
+        font-weight: bold;
     }

@@ -45,18 +45,18 @@
         <tbody>
             {% for tag in instrument_calculation.tags %}
                 <tr>
-                    <td><span class="tag">{{ tag.name }}</span></td>
+                    <td><span class="tag {% if tag.factor_in_instrument == 0 %}mintag{% endif %}">{{ tag.name }}</span></td>
                     <td>{{ tag.weight_in_instrument }}</td>
                     <td>{{ tag.weight_in_question | round(1) }}</td>
                     <td>{{ tag.contribution | round(1) }}</td>
                     <td>
-                        <div {% if tag.factor_in_instrument == 0 %}class="mintag"{% endif %}>
+                        <span {% if tag.factor_in_instrument == 0 %}class="mintag"{% endif %}>
                             {{ tag.factor_in_instrument | round(1) }}
-                        </div>
+                        </span>
                     </td>
                 </tr>
             {% endfor %}
-            <tr>
+            <tr class="end_row">
                 <td>Totaal</td>
                 <td></td>
                 <td></td>
