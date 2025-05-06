@@ -94,7 +94,7 @@ def update(worksession_id):
         if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
             return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
         
-        advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+        # advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
         current_question = None 
 
         # Each for contains options for a single question, but which question?
@@ -105,6 +105,7 @@ def update(worksession_id):
 
         motivation = ''
         answer = Answer.query.filter_by(worksession=worksession, question=current_question).first()
+
         if answer:
             motivation = answer.motivation
             db.session.delete(answer)
@@ -112,18 +113,20 @@ def update(worksession_id):
         answer = Answer(worksession=worksession, question=current_question, motivation=motivation)
 
         # Add new selection
-        weights = {}
+        # weights = {}
+
         for item, value in request.form.items():
+            print(f'item: {item}, value: {value}')
 			# De name-attribute van de textarea bevat het soort vraag (motivation, option), een :::, en dan het vraagnummer of het optienummer.
             if 'option' in item:
-                answer.selection.append( Selection(answer=answer, option=Option.query.get(value) ))
-            if 'weight' in item:
-                _, question_id = item.split(':::', 1)
-                weights[int(question_id)] = value
-
+                answer.selection.append( Selection(answer=answer, option=Option.query.get(value) ))        
+            # if 'weight' in item:
+            #     _, question_id = item.split(':::', 1)
+            #     weights[int(question_id)] = value
         db.session.add(answer) 
         db.session.commit()
-
+        
+        advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
         return render_template('present/instruments.html', worksession=worksession, advisor=advisor)
 
 
