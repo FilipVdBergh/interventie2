@@ -1,0 +1,45 @@
+<h1>Kenmerken</h1>
+<table class="sortable">
+    <thead>
+        <th>Kenmerk</th>
+        <th>Waarde</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Projectnummer</td>
+            <td>{{ worksession.project_number }}</td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>{% if worksession.archived %}Gearchiveerd <a href="{{ url_for('main.archive_worksession', archive=0, worksession_id=worksession.id) }}"> (Maak actief)</a>{% else %}Actief{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Keuzetool</td>
+            <td>{{ worksession.question_set.name }}</td>
+        </tr>
+        <tr>
+            <td>
+                Maker
+            </td>
+            <td>
+                <a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Vragen</td>
+            <td>{{ worksession.question_set.questions | length }}</td>
+        </tr>
+        <tr>
+            <td>Laatste wijziging</td>
+            <td>{{ worksession.date_modified }}</td>
+        </tr>
+        <tr>
+            <td>Instellingen</td>
+            <td>
+                {% if worksession.show_instruments %}<span class="property">Instrumenten weergeven</span>{% endif %}
+                {% if worksession.show_tags %}<span class="property">Tags weergeven</span>{% endif %}
+                {% if worksession.archived %}<span class="property">Gearchiveerd</span>{% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>

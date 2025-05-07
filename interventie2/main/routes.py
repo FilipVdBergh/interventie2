@@ -286,9 +286,8 @@ def show_worksession(worksession_id):
 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 	
-	question_sets =  QuestionSet.query.order_by(QuestionSet.name)
+	
 	worksession = Worksession.query.get(worksession_id)
-	related_worksessions = Worksession.query.filter_by(project_number=worksession.project_number).order_by(Worksession.name)
 	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 	to_be_hashed = f'{date.today()}{worksession.secret_key}'
 	invitation_string = hashlib.sha1(to_be_hashed.encode('utf-8')).hexdigest()
@@ -300,17 +299,58 @@ def show_worksession(worksession_id):
 		for user_id in form.user.data:
 			worksession.allowed_users.append(User.query.get(user_id))
 		db.session.commit()
-	elif request.method == "GET":
-		pass
 
 	return render_template('main/worksession.html', 
-						question_sets=question_sets,
 						worksession=worksession, 
-						related_worksessions=related_worksessions,
 						advisor=advisor,
 						form=form,
 						invitation_string=invitation_string)
 
+@main.route('/worksession/<int:worksession_id>/questions_tags')
+@login_required
+def ws_questions_tags(worksession_id):
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+
+	worksession = Worksession.query.get(worksession_id)
+	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+
+	return render_template('main/ws_questions_tags.html', worksession=worksession, advisor=advisor)
+
+
+@main.route('/worksession/<int:worksession_id>/show_plans')
+@login_required
+def ws_show_plans(worksession_id):
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+
+	worksession = Worksession.query.get(worksession_id)
+
+	return render_template('main/ws_show_plans.html', worksession=worksession)
+
+
+@main.route('/worksession/<int:worksession_id>/followup')
+@login_required
+def ws_followup(worksession_id):
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+
+	worksession = Worksession.query.get(worksession_id)
+	question_sets =  QuestionSet.query.order_by(QuestionSet.name)
+
+	return render_template('main/ws_followup_cards.html', worksession=worksession, question_sets=question_sets)
+
+
+@main.route('/worksession/<int:worksession_id>/related_projects')
+@login_required
+def ws_projectnumber(worksession_id):
+	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
+		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
+
+	worksession = Worksession.query.get(worksession_id)
+	related_worksessions = Worksession.query.filter_by(project_number=worksession.project_number).order_by(Worksession.name)
+
+	return render_template('main/ws_projectnumber_cards.html', related_worksessions=related_worksessions)
 
 
 @main.route('/worksession/<int:worksession_id>/plan/<int:plan_id>', methods=['GET', 'POST'])

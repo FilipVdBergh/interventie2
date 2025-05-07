@@ -18,8 +18,8 @@
                     <td><a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a></td>
                     <td>{{ worksession.project_number }}</td>
                     <td style="background-color:{{ worksession.question_set.color }}; color:{{ worksession.question_set.text_color }}">{{ worksession.question_set.name }}</td>
-                    <td>{{ worksession.completion() }}</td>
                     <td>{{ worksession.completion(perc=True) }}</td>
+                    <td>{{ worksession.completion() }}</td>
                     <td>{{ worksession.plan | count }}</td>
                     {% if worksession.date is not none %}
                         <td>{{ worksession.date.strftime('%d-%m-%Y') }}</td>
@@ -31,3 +31,5 @@
         </tbody>
     </table>
 </div>
+
+<script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/sort_table.js')}}"></script>

@@ -1,0 +1,56 @@
+<h1>Samenvatting casus</h1>
+    <div>{{ worksession.description | escape | markdown }}</div>
+    <div>{{ worksession.effect | escape | markdown }}</div>
+    
+    <h1>Antwoorden ({{worksession.completion() }} ingevuld)</h1>
+    <ol>
+        {% for question in worksession.question_set.questions | sort(attribute='order') %}
+            {% if question.is_category %}
+            <li>
+                <h2 class="question_category">{{ question.name }}</h2>
+            </li>
+            {% elif not question.is_category %}
+            <div class="collapsible">{{ question.name }} <span class="selected_options">{% for selection in worksession.answers | selectattr('question', '==', question) | map(attribute='selection') %}{% for selected in selection %}{{ selected.option.name }}{{ "; " if not loop.last}}{% endfor %}{% endfor %}</span>
+
+            </div>
+            <div class="collapsible_content answer_summary">
+                <div class="factor">
+                    Factor {{ worksession.answers | selectattr('question','==', question) | map(attribute='weight') | first }}
+                </div>
+                <div class="motivation">
+                    {{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first  }}
+                </div>
+            </div>
+            
+            {% endif %}
+        {% endfor %}
+    </ol>
+
+    <h1>Instrumenten</h1>
+    <table class="sortable">
+        <thead>
+            <tr>
+                <th>Instrument</th>
+                <th>Beschrijving</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for (instrument, score) in advisor.get_sorted_instruments() %}
+            {% if score > 0 %}
+            <tr>
+                <td><a
+                        href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{
+                        instrument.name }}</a></td>
+                <td>{{ instrument.introduction | truncate(150) | escape | markdown }}</td>
+                <td>{{ score | round(2) }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h1>Actieve tags</h1>
+    {% for active_tag in advisor.get_active_tags() %}
+    <span class="tag">{{ active_tag.tag.name }}: {{ active_tag.weight}}</span>
+    {% endfor %}

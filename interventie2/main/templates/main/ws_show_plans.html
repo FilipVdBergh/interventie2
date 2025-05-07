@@ -1,0 +1,33 @@
+<div class="card_area">
+    <a href="{{ url_for('main.new_plan', worksession_id=worksession.id) }}">
+    <div class="card new">
+        <div class="card_title">
+            Nieuw interventieplan maken
+        </div>
+        <div class="card_owner">
+        </div>
+        <div class="card_description">
+            Klik hier om een interventieplan toe te voegen aan deze werksessie.
+        </div>
+    </div>
+</a>
+{% for plan in worksession.plan %}
+    <a href="{{ url_for('main.show_plan', worksession_id=worksession.id, plan_id=plan.id) }}">
+        <div class="card">
+            <div class="card_title">
+                {{ loop.index }}. {{ plan.description }}
+            </div>
+            <div class="card_owner">
+
+                {% if plan.instruments | count > 0 %}Instrumenten: {% endif %}
+                {% for chosen_instrument in plan.instruments %}
+                {{ chosen_instrument.instrument.name }}{{ ", " if not loop.last else "" }}
+                {% endfor %}
+            </div>
+            <div class="card_description">
+                {{ plan.conclusion }} ({{ plan.date.strftime('%d-%m-%Y') }})
+            </div>
+        </div>
+    </a>
+{% endfor %}
+</div>

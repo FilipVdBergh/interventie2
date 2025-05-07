@@ -1,0 +1,27 @@
+<h1>Sessies met hetzelfde projectnummer</h1>
+<div class="card_area">
+    {% for rws in related_worksessions %}
+        <a href="{{url_for('main.show_worksession', worksession_id=rws.id)}}">
+            <div class="card" style="background-color:{{ rws.question_set.color }}; color:{{ rws.question_set.text_color }}">
+                <div class="card_title">
+                    {% if rws == worksession %}
+                        Deze sessie ({{ rws.name }})
+                    {% else %}
+                        {{ rws.name}}
+                    {% endif %}
+                </div>
+                
+                <div class="card_info">
+                    {% if rws.date is not none %}
+                        <p>Datum: {{ rws.date.strftime('%d-%m-%Y') }}</p>
+                    {% endif %}
+                    <p>{{ rws.question_set.name }} ({{ rws.completion() }})</p>
+               </div>
+                
+                <div class="card_description">
+                    {{ rws.description | escape | markdown }}
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+</div>
