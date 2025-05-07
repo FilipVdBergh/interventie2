@@ -348,10 +348,8 @@ def quick_remove_tag(instrument_id, tag_id):
     instrument = Instrument.query.get(instrument_id)
     tag = Tag.query.get(tag_id)
 
-    # tag_assignment = InstrumentTagAssignment.query.filter_by(tag=tag).first()
     tag_assignment = instrument.get_tag_assignment(tag)
     if tag_assignment is not None:
-        # print(f'Deleting tag {tag_assignment.tag.name} from {instrument.name}')
         db.session.delete(tag_assignment)
         db.session.commit()
     return redirect(request.referrer)
@@ -373,11 +371,7 @@ def quick_add_tag(instrument_id, tag_id):
     db.session.add(tag_assignment)
     db.session.commit()
 
-
     return redirect(request.referrer)
-    # return redirect(url_for('catalog.edit_tag_assignment_to_instrument', 
-    #                                             instrument_id=instrument.id,
-    #                                             tag_assignment_id=tag_assignment.id))
 
 
 @catalog.route('/instrument/<int:instrument_id>/tag/<int:tag_assignment_id>/edit', methods=['GET', 'POST'])
@@ -400,9 +394,6 @@ def edit_tag_assignment_to_instrument(instrument_id, tag_assignment_id):
         tag_assignment.multiplier = form.multiplier.data
         db.session.commit()
         return redirect(url_for('catalog.instrument_tags', id=instrument_id))
-    # elif request.method == 'POST':
-    #     print(form.errors)
-        #TODO What is this doing here?
     elif request.method == 'GET':
         form.weight.data = tag_assignment.weight
         form.multiplier.data = tag_assignment.multiplier

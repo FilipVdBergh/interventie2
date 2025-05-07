@@ -116,7 +116,6 @@ def update(worksession_id):
         # weights = {}
 
         for item, value in request.form.items():
-            print(f'item: {item}, value: {value}')
 			# De name-attribute van de textarea bevat het soort vraag (motivation, option), een :::, en dan het vraagnummer of het optienummer.
             if 'option' in item:
                 answer.selection.append( Selection(answer=answer, option=Option.query.get(value) ))        

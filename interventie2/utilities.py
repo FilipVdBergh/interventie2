@@ -3,9 +3,6 @@ from flask_login import current_user
 from interventie2.models import User, Instrument, Remark, Tag, InstrumentTagAssignment, QuestionSet, Question, Answer, Option, Worksession, Plan
 
 def search_database(search_text_all, worksessions=True, catalog=True, tools=True, users=True):
-
-    print(f'Text: {search_text_all} in worksession: {worksessions}; catalog: {catalog}; tools: {tools}; users: {users}')
-
     search_results = {'tag':[],
                       'gebruiker': [],
                       'instrument': [],
