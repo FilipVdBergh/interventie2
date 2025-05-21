@@ -71,7 +71,7 @@
                 </form>
             {% endif %}
             <div class="steps">{% block steps %}{% endblock %}</div>
-            <div class="tabs">{% block tabs %}{% endblock %}</div>
+            <div class="tabs" id="tabs">{% block tabs %}{% endblock %}</div>
         </nav>
 
 
@@ -81,17 +81,7 @@
             <section id="main">{% block body %}{% endblock %}</section>
         </main>
 
-              
-
-        <footer>
-            <div class="mode">
-                {{ config['APP_NAME'] }}
-            </div>
-            <div class="mode">
-                <a href="mailto:{{ config['MAINTAINER_EMAIL'] }}">Mail {{ config['MAINTAINER'] }}</a>
-            </div>
-        </footer>
-        
+       
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/confirm_redirect.js')}}"></script>
         <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/switch_tab.js')}}"></script>

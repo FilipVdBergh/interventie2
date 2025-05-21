@@ -11,54 +11,19 @@ Catalogus
 
 
 {% block body %}
-
 <div id="cat_all" class="tabcontent">
-    {% if filter is not none %}
-        <div>
-            <a href="{{ url_for('catalog.index') }}"><button type="button">&#10060; Wis filter <i>{{ filter }}</i></button></a>
-        </div><br>
-    {% endif %}
-    <div class="card_area">
-        {% if filter == none %}
-            <a href="{{ url_for('catalog.add_instrument') }}">
-                <div class="card new">
-                    <div class="card_title">
-                        Nieuw instrument maken
-                    </div>
-                    <div class="card_description">
-                        Klik hier om een nieuw instrument te maken.
-                    </div>
-                </div>
-            </a>
-            <a href="{{ url_for('catalog.import_instrument') }}">
-                <div class="card new">
-                    <div class="card_title">
-                        Instrument importeren
-                    </div>
-                    <div class="card_description">
-                        Klik hier om een instrument te importeren uit een JSON-bestand.
-                    </div>
-                </div>
-            </a>
-        {% endif %}
-        {% for instrument in instruments %}
-            <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">
-                <div class="card">
-                    <div class="card_title">
-                        {{ instrument.name}}
-                    </div>
-                    <div class="card_description">
-                        {{ instrument.introduction | markdown | escape }}
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
+    <div id="catalog_list"
+        hx-get="{{ url_for('catalog.cat_cards') }}"
+        hx-trigger="load"
+        hx-target="this"
+        hx-swap="innerHTML">
+        {% include 'load_animation.html' %}
+
     </div>
 </div>
-
 <div id="cat_options" class="tabcontent">
     <div class="text_area">
-        <h1>Exporteren</h1>
+        <h1>Opties</h1>
         <ul>
             <li>
                 <a href="{{ url_for('export.catalog') }}">Exporteer catalogus naar Word</a>
@@ -67,14 +32,34 @@ Catalogus
         <h1>Filteren</h1>
         <h2>Op beheerder</h2>
         <ul>
-            <li><a href="{{ url_for('catalog.instruments_current_user') }}">Laat alleen instrumenten zien die ik beheer</a></li>
+            <li><a onclick="switch_tab(event, 'cat_all')"
+                hx-get="{{ url_for('catalog.instruments_current_user') }}"
+                hx-trigger="click"
+                hx-target="#catalog_list"
+                hx-swap="innerHTML">
+                    Laat alleen instrumenten zien die ik beheer
+                </a>
+            </li>
         </ul>
         <h2>Op tag</h2>
-        <ul>
+        <form method="POST">
+            <input type="hidden" id="tag_filter" name="tag_filter" value="tag_filter">
+            <button onclick="switch_tab(event, 'cat_all')"
+                hx-post="{{ url_for('catalog.filter_by_tags') }}"
+                hx-trigger="click"
+                hx-target="#catalog_list"
+                hx-swap="innerHTML"
+                >Filteren
+            </button>
             {% for tag in tags %}
-            <li><span class="tag"><a href="{{ url_for('catalog.instruments_by_tag', tag_id = tag.id) }}">{{ tag.name }}</a></span></li>
+            <p>
+                <label>
+                    <input type="checkbox" name="tag:::{{ tag.name }}" value="{{ tag.id }}">
+                    {{ tag.name }}
+                </label>
+            </p>
             {% endfor %}
-        </ul>
+        </form>
     </div>
 </div>
 

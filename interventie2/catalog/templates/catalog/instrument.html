@@ -8,7 +8,7 @@
     <button class="tablinks" onclick="switch_tab(event, 'ins_description')" id="defaultOpen">Beschrijving</button>
     <button class="tablinks" onclick="switch_tab(event, 'ins_tags')" id="defaultOpen">Tags</button>
     <button class="tablinks" onclick="switch_tab(event, 'ins_remarks')">Opmerkingen</button>
-    <button class="tablinks" onclick="switch_tab(event, 'ins_export')">Exporteren</button>
+    <button class="tablinks" onclick="switch_tab(event, 'ins_access')">Toegang</button>
 {% endblock %}
 
 {% block contents %}
@@ -122,14 +122,18 @@
 </div>
 
 {% if edit_catalog_allowed %}
-    <div id="ins_export" class="tabcontent">
-        <div class="text_area">
+    <div id="ins_access" class="tabcontent">
+        <h1>Instrument verwijderen</h1>
+        <ul>
+            <li>{{ macro.confirm_redirect( "Instrument verwijderen", instrument.name+" verwijderen?", url_for('catalog.delete_instrument', id=instrument.id) ) }}</li>
+        </ul>
+
+        <h1>Instrument delen</h1>
+        
             <ul>
                 <li><a href="{{ url_for('export.instrument', instrument_id=instrument.id) }}" class="option">Exporteren naar Word</a></li>
-                <li><a href="{{ url_for('export.instrument_to_json', instrument_id=instrument.id) }}" class="option">Exporteren naar JSON</a></li>
-                
+                <li><a href="{{ url_for('export.instrument_to_json', instrument_id=instrument.id) }}" class="option">Exporteren naar JSON</a></li>        
             </ul>
-        </div>
         
     </div>
 {% endif %}

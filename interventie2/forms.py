@@ -69,6 +69,8 @@ class InstrumentsForm(FlaskForm):
     examples           = TextAreaField('Voorbeelden', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100}) 
     links              = TextAreaField('Links', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100}) 
     owner              = SelectField('Eigenaar', coerce=int)
+    color              = StringField('Achtergrondkleur', widget=ColorInput(), default='#f5fbff')
+    text_color         = StringField('Tekstkleur', widget=ColorInput(), default='#000000')
     submit             = SubmitField('Instrument opslaan')
 
 
@@ -181,6 +183,7 @@ class EditWorksessionForm(FlaskForm):
 class EditCaseForm(FlaskForm):
     description        = TextAreaField('Omschrijving', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100})
     effect             = TextAreaField('Beoogd doel', validators=[Optional(), Length(max=2000)], render_kw={'rows': 10, 'cols': 100})
+    enable_voting      = BooleanField('Deelnemers mogen stemmen', validators=[], default=False)
     submit             = SubmitField('Opslaan')
 
 
@@ -207,3 +210,8 @@ class ExportWorksessionForm(FlaskForm):
     export_tags            = BooleanField('Neem actieve tags op in de export', validators=[], default=False)
     export_technical_info  = BooleanField('Neem technische info van de app op in de export', validators=[], default=False)
     submit                 = SubmitField('Exporteren')
+
+class WorksessionAndVotingKey(FlaskForm):
+    worksession        = StringField('Sessienummer',   validators=[Optional(), Length(max=4)], render_kw={'size': 100, 'placeholder': 'Sessienummer'})
+    voting_key         = StringField('Code',   validators=[Optional(), Length(max=6)], render_kw={'size': 100, 'placeholder': 'Toegangscode'})
+    submit             = SubmitField('Naar de vragenlijst')

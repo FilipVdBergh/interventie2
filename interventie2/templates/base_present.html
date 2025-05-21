@@ -53,6 +53,11 @@
                 <a href="{{ url_for('vote.touch_vote', worksession_id=worksession.id, voting_key=worksession.voting_key, _external=True) }}">
                     <img src="{{ qrcode(url_for('vote.touch_vote', worksession_id=worksession.id, voting_key=worksession.voting_key, _external=True)) }}" height="100em">
                 </a>
+                <div class="qr_info">
+                    Ga naar <strong>{{ url_for('vote.index', _external=True) }}</strong>
+                    Sessie: <strong>{{ worksession.id }}</strong>, 
+                    Code: <strong>{{ worksession.voting_key }}</strong>
+                </div>
             </div>
         {% endif %}
         

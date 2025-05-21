@@ -130,6 +130,8 @@ def instrument_to_json(instrument_id):
         "considerations": instrument.considerations,
         "examples": instrument.examples,
         "links": instrument.links,
+        "color": instrument.color,
+        "text_color": instrument.text_color
     }
     tags = []
     for tag in instrument.tags:

@@ -52,12 +52,13 @@ def frontpage(worksession_id):
     if form.validate_on_submit():
         worksession.description = form.description.data
         worksession.effect = form.effect.data
+        # worksession.enable_voting = form.enable_voting.data
         db.session.commit()
         return redirect(url_for('present.present_session', worksession_id=worksession.id))
     elif request.method == "GET":
         form.description.data = worksession.description 
         form.effect.data = worksession.effect
-    
+        # form.enable_voting.data = worksession.enable_voting
     return render_template('present/frontpage.html', worksession=worksession, form=form)  
 
 

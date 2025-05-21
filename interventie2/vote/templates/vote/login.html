@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+    Deelnemen aan een lopende sessie
+{% endblock %}
+
+{% block body %}
+<div class="focus_area">
+    <div class="login">
+        <form method="POST">
+            {{ form.csrf_token }}
+            {{ form.worksession }}<br>
+            {{ form.voting_key }}<br>
+            {{ form.submit }} 
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -25,9 +25,7 @@ main = Blueprint('main', __name__,
 @main.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-	
 	worksessions = Worksession.query.filter(Worksession.archived==False).order_by(Worksession.date)
-	question_sets =  QuestionSet.query.order_by(QuestionSet.name)
 
 	return render_template('main/index.html', 
 						worksessions=worksessions,
@@ -67,7 +65,6 @@ def login():
 		if not next_page or urlsplit(next_page).netloc != '':
 			next_page = url_for('main.index')
 		return redirect(next_page)
-		
 
 	return render_template('main/login.html', form=form)
 
@@ -155,10 +152,11 @@ def ws_upcoming():
 		elif current_user in ws.allowed_users:
 			worksessions.append(ws)
 	
-	if len(worksessions): 
-		return render_template('main/ws_upcoming_cards.html', worksessions=worksessions)
+	# if len(worksessions): 
+	# 	return render_template('main/ws_upcoming_cards.html', worksessions=worksessions)
 	
-	return ""
+	return render_template('main/ws_upcoming_cards.html', worksessions=worksessions)
+
 
 
 @main.route('/markdown_help', methods=['GET', 'POST'])

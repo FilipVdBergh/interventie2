@@ -1,0 +1,52 @@
+<div>
+    {% if filter is not none %}
+        <a hx-get="{{ url_for('catalog.cat_cards') }}"
+            hx-trigger="click"
+            hx-target="#catalog_list"
+            hx-swap="innerHTML">
+                <button type="button">&#10060; Wis filter <i></i>
+                </button>
+            </a>
+            <div>{{ filter }}</div>
+            <br>
+    {% endif %}
+</div>
+
+
+<div class="card_area">
+    {% if filter == none %}
+        <a href="{{ url_for('catalog.add_instrument') }}">
+            <div class="card new">
+                <div class="card_title">
+                    Nieuw instrument maken
+                </div>
+                <div class="card_description">
+                    Klik hier om een nieuw instrument te maken.
+                </div>
+            </div>
+        </a>
+        <a href="{{ url_for('catalog.import_instrument') }}">
+            <div class="card new">
+                <div class="card_title">
+                    Instrument importeren
+                </div>
+                <div class="card_description">
+                    Klik hier om een instrument te importeren uit een JSON-bestand.
+                </div>
+            </div>
+        </a>
+    {% endif %}
+    {% for instrument in instruments | sort(attribute='name') %}
+        <a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">
+            <div class="card"
+                style="color:{{ instrument.text_color }}; background-color:{{ instrument.color }};">
+                <div class="card_title">
+                    {{ instrument.name}}
+                </div>
+                <div class="card_description">
+                    {{ instrument.introduction | markdown | escape }}
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+</div>

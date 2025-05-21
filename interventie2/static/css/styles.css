@@ -6,11 +6,21 @@
     --red: red;
     --highlight: #195fa6;
     --mid-grey: #e9e9e9;
+
+    
+
+    --spot_dark: #195fa6;
+    --spot_light: #78d9ff;
+    /* --nav_bar: rgb(242, 242, 242); */
+    --nav_bar: rgb(0, 0, 0);
+    --box_border: rgb(227, 227, 227);
+    --tab_border: black;
+    --link_underline: var(--spot_light);
+    --button: var(--spot_dark);
+    --button_delete: darkred;
+    --alert: red;
     --object: #f7fcff;
     --object-text: black;
-    --alert: red;
-    --button-bg: #176cc2;
-    --button-fg: white;
 }
 
 @keyframes fadeInAnimation {
@@ -45,7 +55,7 @@ a {
 
 a:hover {
     text-decoration: underline;
-    text-decoration-color: var(--light-blue);
+    text-decoration-color: var(--link_underline);
 }
 
 h1, h2, h3 {
@@ -71,20 +81,17 @@ h2 {
     }
 }
 
-
 ul {
-    /* list-style-type: none; */
     margin: 0;
     padding-left: 1.5em;
-
 }
 
 button {
-    border: 1px solid var(--mid-grey);
-    background-color: var(--button-bg);
-    color: var(--button-fg);
+    border: none;
+    background-color: var(--button);
+    color: white;
     min-height: 2.2em;
-    border-radius: 2px;
+    border-radius: 4px;
     min-width: 7em;
     padding-left: 1em;
     padding-right: 1em;
@@ -96,12 +103,14 @@ button {
     }
 
     button:hover {
-        background-color: var(--highlight);
+        /* background-color: var(--highlight); */
         color: white;
+        cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.48) 0px 3px 8px;
     }
 
     button.delete {
-        background-color: var(--highlight);
+        background-color: var(--button_delete);
     }
     button.small {
         padding: 0em;
@@ -111,23 +120,25 @@ button {
     }
 
 input[type=submit] {
-    border: 1px solid var(--mid-grey);
-    background-color: var(--button-bg);
-    color: var(--button-fg);
-    font-size: smaller;
+    border: none;
+    background-color: var(--button);
+    color: white;
     min-height: 2.2em;
-    border-radius: 2px;
-    min-width: 10rem;
+    border-radius: 4px;
+    min-width: 7em;
+    padding-left: 1em;
+    padding-right: 1em;
     margin-bottom: 2px;
     
 }
     input[type=submit]:hover {
-        background-color: var(--highlight);
         color: white;
+        cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.48) 0px 3px 8px;
     }
 
 input {
-    background-color: white;;
+    background-color: white;
     border: 1px solid var(--mid-grey);
     border-radius: 2px;
     font-family: inherit;
@@ -139,7 +150,7 @@ input {
 
 textarea {
     background-color: white;;
-    border: 1px solid var(--mid-grey);
+    border: 1px solid var(--box_border);
     border-radius: 2px;
     font-family: inherit;
     font-size: inherit;
@@ -148,13 +159,13 @@ textarea {
 }
 
 table {
-    color: var(--object-text);
+    color: blaCK;
     border-collapse: collapse;
   }
   th button {
     border: 0;
     border-radius: 0px;
-    background-color: #0f2841;
+    background-color: var(--button);
   }
   thead a:hover {
     text-decoration: underline;
@@ -180,20 +191,17 @@ table {
         min-width: 2em;
         height: 2em;
     }
-  .disabled td {
-    color: var(--mid-grey);
-  }
   tbody {
     border-top: solid 1px rgb(0, 0, 0);
     border-bottom: solid 1px rgb(0, 0, 0);
   }
   tbody tr {
-    border-left: 4px solid var(--object);
+    border-left: 4px solid white;
     transition:all  0.25s ease;
   }
   tbody tr:hover {
-    border-left: 4px solid var(--light-blue);
-    background-color: #d3f2ff;
+    border-left: 4px solid var(--spot_dark);
+    background-color: var(--spot_light);
   }
   
   .settings td{
@@ -214,12 +222,12 @@ body {
 
 header {
     grid-area: header;
-    background-color: black;
+    background-color: var(--nav_bar);
+    border-bottom: 1px solid var(--box_border);
+    color: rgb(255, 255, 255);
     display: grid;
-    /* grid-template-columns: auto auto; */
     grid-template-rows: auto;
     grid-template-areas: "modes logo";
-    color: white;
     align-items: center;
     padding: 0.4rem 2rem 0.4rem 3rem;
     font-family: "Poppins", sans-serif;
@@ -236,7 +244,7 @@ header {
     }
     .mode a:hover {
         color: white;
-        background-color: var(--highlight);
+        background-color: var(--spot_dark);
         text-decoration: none;
     }     
     .logo {
@@ -261,10 +269,8 @@ nav {
         "title search"
         "steps  steps"
         "tabs  tabs  ";
-
     align-items: center;
     margin: 3rem 3rem 1rem 5rem;
-
 }
 
     .title {
@@ -291,11 +297,14 @@ nav {
     }
         .search input {
             background-color: white;;
-            border: 1px solid black;
+            border: 1px solid var(--box_border);
             border-radius: 2px;
             padding: 5px;
             font-size: smaller;
             height: 1.7rem;
+        }
+        .search input:hover {
+            border: 1px solid black;
         }
         
     .tabs {
@@ -305,7 +314,7 @@ nav {
         overflow: hidden;
         font-size: small;
         font-family: "Poppins", sans-serif;
-        border-bottom: 1px solid rgb(182, 182, 182);
+        border-bottom: 1px solid var(--box_border);
     }
 
         .tabs button {
@@ -323,11 +332,12 @@ nav {
             border-bottom: solid 2px white;
         }        
         .tabs button:hover {
-            border-bottom: solid 2px var(--dark-blue);
+            border-bottom: solid 2px var(--tab_border);
+            box-shadow: none;
             
         }       
         .tabs button.active_tab {
-            border-bottom: solid 4px var(--dark-blue);
+            border-bottom: solid 4px var(--tab_border);
         }
         @media only screen and (max-width: 845px) {
             .tabs {
@@ -350,7 +360,7 @@ nav {
         }
         .steps {
             background: inherit;
-            color: lightgrey;
+            color: black;
             outline: none;
             cursor: pointer;
             border: none;
@@ -364,12 +374,6 @@ nav {
             content: "⯇";
             margin-right: 0.5em;
         }    
-        .step:hover {
-            color: black;
-        }
-        .steps a {
-            text-decoration: none;
-        }
     
 main {
     grid-area: main;
@@ -382,16 +386,19 @@ main {
 }
     aside {
         grid-area: aside;
-        background-color: var(--object);
-        color: var(--object-text);
+        background-color: white;;
+        color: black;
         margin-left: 1rem;
+        margin-right: 1rem;
+        padding-right: 4rem;
+        overflow-y: auto;
     }
         aside:empty {
             display: none;
         }
         @media only screen and (max-width: 845px) {
             aside {
-                border-top: 1px solid var(--mid-grey);
+                border-top: 1px solid var(--box_border);
                 margin-left: 1rem;
             }
         }
@@ -407,10 +414,12 @@ main {
 
 footer {
     grid-area: footer;
-    background-color: black;
+    background-color: var(--nav_bar);
+    border-top: 1px solid var(--box_border);
     color: white;
     align-items: center;
-    padding: 0.2rem 5rem;
+    padding: 0.2rem 5rem 1.5rem 5rem;
+    font-family: "Poppins", sans-serif;
     font-size: small;
 }
 
@@ -454,7 +463,6 @@ footer {
     }
 }
 
-
 /* Work area (contains cards or text, and sometimes also a contents bar) */
 .card_area {
     display: flex;
@@ -465,8 +473,7 @@ footer {
     .card_area {
         flex-direction: column;
         flex-grow: 1;
-        flex-shrink: 0;
-        
+        flex-shrink: 0;  
     }
 }
 
@@ -553,15 +560,14 @@ li.mode:hover {
     text-decoration:none;
 }
 
-
 li.selected {
     color: black;
-    border-left: 4px solid var(--dark-blue);
+    border-left: 4px solid var(--spot_dark);
 }
 
 .contents_item {
     padding-left: 1em;
-    border-left: 4px solid var(--object);
+    border-left: 4px solid white;
     /* line-height: 1.7em; */
     margin-bottom: 0.6em;
     list-style-type: none;
@@ -572,7 +578,7 @@ li.selected {
 }
 
     .contents_item:hover {
-        border-left: 4px solid var(--light-blue);
+        border-left: 4px solid var(--box_border);
     }
 
 
@@ -664,7 +670,6 @@ li.selected {
     }
     .card_info {
         font-size: smaller;
-        /* font-weight: bold; */
         line-height: 1rem;
         padding-bottom: 0.4rem;
     }
@@ -677,12 +682,6 @@ li.selected {
         padding-bottom: 0.4rem;
     }
  
-    .card_alert {
-        font-family: "Poppins", sans-serif;
-        color: var(--alert);
-        font-weight: bold;
-    }
-
     .card_area a {
         text-decoration: none;
     }
@@ -723,19 +722,7 @@ li.selected {
     float: right;
 }
 
-.future_date {
-    color: var(--mid-grey);
-}
-
 /* Other formatting */
-
-.disabled {
-    color: var(--mid-grey);
-}
-
-.enabled {
-    color: black;
-}
 
 .category {
     font-family: "Poppins", sans-serif;
@@ -748,7 +735,7 @@ li.selected {
     color: black;
     padding-left: 10px;
     padding-right: 10px;
-    border: 1px solid lightgrey;
+    border: 1px solid var(--box_border);
     white-space: nowrap;
 }
 
@@ -758,19 +745,19 @@ li.selected {
     color: grey;
     padding: 0 0.5em 0 0.5em;
     margin:  0 0.5em 0 0.5em;
-    border: 1px solid var(--mid-grey);
+    border: 1px solid var(--box_border);
     white-space: nowrap;
     text-decoration: none;
 }
     .tag:hover {
-        background-color: var(--light-blue);
+        background-color: var(--spot_light);
         color: white;
     }
     .tag a {
         text-decoration: none;
     }
     .warning {
-        color: var(--highlight);
+        color: var(--alert);
     }
 
     .plus {

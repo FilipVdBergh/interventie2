@@ -1,6 +1,7 @@
 from flask import Blueprint, current_app, render_template, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from interventie2.models import db, QuestionSet, Process, User, Question, Answer, Selection, Option, Tag, Worksession, Instrument, InstrumentTagAssignment, Votes
+from interventie2.forms import WorksessionAndVotingKey
 from interventie2.classes import Advisor
 
 vote = Blueprint('vote', __name__,
@@ -9,10 +10,15 @@ vote = Blueprint('vote', __name__,
                  static_url_path='assets')
 
 
-@vote.route('/')
+@vote.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    return render_template('error/index.html', title='Werksessie ontbreekt', message='Deze pagina hoort niet toegankelijk te zijn.')
+    form = WorksessionAndVotingKey()
+
+    if form.validate_on_submit():
+        return redirect(url_for('vote.touch_vote', worksession_id = int(form.worksession.data), voting_key=form.voting_key.data))
+
+    return render_template('vote/login.html', form=form)
 
 
 @vote.route('/<int:worksession_id>/<voting_key>', methods=['GET', 'POST'])
@@ -26,7 +32,7 @@ def touch_vote(worksession_id, voting_key):
     if not worksession.enable_voting:
         return render_template('vote/not_allowed.html')
     if not worksession.voting_key == voting_key:
-        return render_template('vote/key_expired.html')
+        return redirect(url_for('vote.index'))
    
     return render_template('vote/vote.html', worksession=worksession)
 

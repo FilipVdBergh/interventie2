@@ -68,18 +68,23 @@
                 <td>{{ form.links }}</td>
             </tr>
             <tr>
+                <td>Tekstkleur kaart</td>
+                <td>
+                    {{ form.text_color }}
+                </td>
+            </tr>
+            <tr>
+                <td>Achtergrondkleur kaart</td>
+                <td>
+                    {{ form.color }}
+                </td>
+            </tr>
+            <tr>
                 <td>{{ form.owner.label }}</td>
                 <td>{{ form.owner }}</td>
             </tr>
-            <tr>
-                <td>{{ form.submit }}</td>
-                <td style="text-align: right;">
-                    {% if instrument is not none %}
-                        {{ macro.confirm_redirect( "Instrument verwijderen", instrument.name+" verwijderen?", url_for('catalog.delete_instrument', id=instrument.id) ) }}
-                    {% endif %}
-                </td>
-            </tr>
-
         </table>
+        <br>
+        {{ form.submit }}
     </form>
 {% endblock %}

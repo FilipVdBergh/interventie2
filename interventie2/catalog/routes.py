@@ -30,43 +30,49 @@ def index():
                            tags = Tag.query.order_by(Tag.name))
 
 
+@catalog.route('cat_cards')
+def cat_cards():
+    instruments = Instrument.query.order_by(Instrument.name)
+
+    return render_template('catalog/cat_cards.html', instruments=instruments, filter=None)
+
+
+@catalog.route('cat_list')
+def cat_list():
+    instruments = Instrument.query.order_by(Instrument.name)
+
+    return render_template('catalog/cat_list.html', instruments=instruments, filter=None)
+
+
 @catalog.route('/filter/my_instruments', methods=['GET', 'POST'])
-def instruments_current_user():
-    if current_user.is_authenticated:
-        edit_catalog_allowed = current_user.role.edit_catalog
-    else:
-        edit_catalog_allowed = False
-        
-    list_of_instruments = Instrument.query.filter(Instrument.owner == current_user).order_by(Instrument.name)
-    return render_template('catalog/index.html', 
-                           edit_catalog_allowed=edit_catalog_allowed, 
-                           instruments=list_of_instruments,
-                           filter=f'Beheerd door { current_user.name }',
-                           tags = Tag.query.order_by(Tag.name))
+def instruments_current_user():    
+    instruments = Instrument.query.filter(Instrument.owner == current_user).order_by(Instrument.name)
+
+    return render_template('catalog/cat_cards.html', 
+                           instruments=instruments,
+                           filter=f'Beheerd door { current_user.name }')
 
 
-@catalog.route('/filter/<int:tag_id>', methods=['GET', 'POST'])
-def instruments_by_tag(tag_id=None):
-    if current_user.is_authenticated:
-        edit_catalog_allowed = current_user.role.edit_catalog
-    else:
-        edit_catalog_allowed = False
+@catalog.route('/filter_by_tags', methods=['POST'])
+def filter_by_tags():
+    list_of_instruments = []
+    filter_tags = []
+    if request.method == 'POST':
+        for item, value in request.form.items():
+            if "tag:::" in item:
+                tag = Tag.query.get(value)
+                filter_tags.append(tag.name)
+                for instrument in Instrument.query.order_by(Instrument.name):
+                    for instrument_tag_assignment in instrument.tags:
+                        if instrument_tag_assignment.tag == tag:
+                            if instrument not in list_of_instruments:
+                                list_of_instruments.append(instrument)
 
-    if tag_id is not None:        
-            filter_tag = Tag.query.get(tag_id)
-            list_of_instruments = []
-            for instrument in Instrument.query.order_by(Instrument.name):
-                for instrument_tag_assignment in instrument.tags:
-                    if instrument_tag_assignment.tag == filter_tag:
-                        list_of_instruments.append(instrument)    
-    else:
-        list_of_instruments = Instrument.query.order_by(Instrument.name)
-        filter_tag=None
-    return render_template('catalog/index.html', 
-                    edit_catalog_allowed=edit_catalog_allowed, 
+    filter_description =f'{len(list_of_instruments)}  instrumenten gevonden met tags: ' + ', '.join(filter_tags)
+
+    return render_template('catalog/cat_cards.html', 
                     instruments=list_of_instruments,
-                    filter=filter_tag.name,
-                    tags = Tag.query.order_by(Tag.name))
+                    filter=filter_description)
 
 
 
@@ -102,6 +108,8 @@ def edit_instrument(id):
         instrument.considerations = form.considerations.data
         instrument.examples = form.examples.data
         instrument.links = form.links.data
+        instrument.color = form.color.data
+        instrument.text_color = form.text_color.data
         instrument.owner_id = form.owner.data
         instrument.date_modified = func.now()
         db.session.commit()
@@ -115,6 +123,8 @@ def edit_instrument(id):
         form.considerations.data = instrument.considerations
         form.examples.data = instrument.examples
         form.links.data = instrument.links
+        form.color.data = instrument.color
+        form.text_color.data = instrument.text_color
         form.owner.data = instrument.owner_id
 
     return render_template('catalog/edit_instrument.html', form=form, instruments=list_of_instruments, instrument=instrument, edit_catalog_allowed=current_user.role.edit_catalog)
@@ -139,6 +149,8 @@ def add_instrument():
                     considerations = form.considerations.data,
                     examples = form.examples.data,
                     links = form.links.data,
+                    color = form.color.data,
+                    text_color = form.text_color.data,
                     owner_id = form.owner.data)
         db.session.add(instrument)
         db.session.commit()
@@ -193,6 +205,8 @@ def import_instrument():
                 considerations = instrument_json['considerations'],
                 examples = instrument_json['examples'],
                 links = instrument_json['links'],
+                color = instrument_json['color'],
+                text_color = instrument_json['text_color'],
                 owner = current_user
             )
             db.session.add(instrument)
