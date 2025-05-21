@@ -51,14 +51,16 @@ Catalogus
                 hx-swap="innerHTML"
                 >Filteren
             </button>
-            {% for tag in tags %}
-            <p>
-                <label>
-                    <input type="checkbox" name="tag:::{{ tag.name }}" value="{{ tag.id }}">
-                    {{ tag.name }}
-                </label>
-            </p>
-            {% endfor %}
+            <div style="columns:3;">
+                {% for tag in tags %}            
+                    <p>
+                        <label>
+                            <input type="checkbox" name="tag:::{{ tag.name }}" value="{{ tag.id }}">
+                            {{ tag.name }}
+                        </label>
+                    </p>
+                {% endfor %}
+            </div>
         </form>
     </div>
 </div>

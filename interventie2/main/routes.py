@@ -78,6 +78,21 @@ def logout():
 	return redirect(url_for('main.index'))
 
 
+@main.route('/worksessions/ws_upcoming')
+@login_required
+def ws_upcoming():	
+	"""This view returns all worksessions that are active and that are owned by the user."""
+	worksessions_ll = Worksession.query.filter(Worksession.archived==False, Worksession.date >= datetime.today().date()).order_by(Worksession.date).all()
+	worksessions = []
+	for ws in worksessions_ll:
+		if ws.creator == current_user:
+			worksessions.append(ws)
+		elif current_user in ws.allowed_users:
+			worksessions.append(ws)
+	
+	return render_template('main/ws_upcoming_cards.html', worksessions=worksessions)
+
+
 @main.route('/worksessions/ws_owned')
 @login_required
 def ws_owned():	
@@ -140,23 +155,31 @@ def ws_all():
 	return ""
 
 
-@main.route('/worksessions/ws_upcoming')
+@main.route('/worksessions/edit_multiple_sessions', methods=['POST'])
 @login_required
-def ws_upcoming():	
-	"""This view returns all worksessions that are active and that are owned by the user."""
-	worksessions_ll = Worksession.query.filter(Worksession.archived==False, Worksession.date >= datetime.today().date()).order_by(Worksession.date).all()
-	worksessions = []
-	for ws in worksessions_ll:
-		if ws.creator == current_user:
-			worksessions.append(ws)
-		elif current_user in ws.allowed_users:
-			worksessions.append(ws)
-	
-	# if len(worksessions): 
-	# 	return render_template('main/ws_upcoming_cards.html', worksessions=worksessions)
-	
-	return render_template('main/ws_upcoming_cards.html', worksessions=worksessions)
+def edit_multiple_sessions():
+	control = ""
+	worksessions_to_edit = []
 
+	for item, value in request.form.items():
+		if "ctrl:::" in item:
+			control = value
+		if "ws:::" in item:
+			worksessions_to_edit.append(Worksession.query.get(value))
+
+	if control == "archive":
+		for worksession in worksessions_to_edit:
+			worksession.archived=True
+	elif control == "activate":
+		for worksession in worksessions_to_edit:
+			worksession.archived=False
+	elif control == "delete":
+		for worksession in worksessions_to_edit:
+			db.session.delete(worksession)
+		db.session.commit()
+	
+	worksessions = Worksession.query.order_by(Worksession.date).all()
+	return render_template('main/ws_all_table.html', worksessions=worksessions)
 
 
 @main.route('/markdown_help', methods=['GET', 'POST'])
@@ -330,6 +353,7 @@ def ws_show_plans(worksession_id):
 @main.route('/worksession/<int:worksession_id>/followup')
 @login_required
 def ws_followup(worksession_id):
+	"""Create a follow-up session with the same information."""
 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
