@@ -1,6 +1,0 @@
-<!-- Based on access control -->
-{% for worksession in worksessions | selectattr('parent', 'none') %}
-    {% if current_user in worksession.allowed_users or current_user.role.see_all_worksessions %}
-        <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}"><div class="option">{{ worksession.name }}</div></a>
-    {% endif %}
-{% endfor %}
