@@ -165,7 +165,9 @@ def edit_multiple_sessions():
 		if "ctrl:::" in item:
 			control = value
 		if "ws:::" in item:
-			worksessions_to_edit.append(Worksession.query.get(value))
+			if current_user.role.see_all_worksessions or current_user  in Worksession.query.get(value).allowed_users:
+				# Only allow changes to the session if the user has the proper rights. This should be redundant for normal use through the interface.
+				worksessions_to_edit.append(Worksession.query.get(value))
 
 	if control == "archive":
 		for worksession in worksessions_to_edit:
@@ -536,6 +538,7 @@ def archive_worksession(worksession_id, archive=1):
 	db.session.commit()
 	return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
 
+
 @main.route('/worksession/<int:worksession_id>/delete')
 @login_required
 def delete_worksession(worksession_id):
@@ -546,199 +549,6 @@ def delete_worksession(worksession_id):
 	db.session.delete(worksession)
 	db.session.commit()
 	return redirect(url_for('main.index'))
-
-
-# @main.route('/worksession/<int:worksession_id>/simultaneous', methods=['GET', 'POST'])
-# @login_required
-# def process_simultaneous(worksession_id):
-# 	worksession = Worksession.query.get(worksession_id)
-# 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users: 
-# 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
-
-# 	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
-	
-# 	if request.method == "POST":
-# 		for answer in Answer.query.filter_by(worksession=worksession):
-# 			# Delete all answers to replace them below.
-# 			for selection in answer.selection:
-# 				db.session.delete(selection)
-# 			db.session.delete(answer)
-
-# 		motivations = {}
-# 		selected_options = []
-# 		weights = {}
-# 		for item, value in request.form.items():
-# 			# De name-attribute van de textarea bevat het soort vraag (motivation, option, weight), een :::, en dan het vraagnummer of het optienummer.
-# 			if 'motivation' in item:
-# 				_, question_id = item.split(':::', 1)
-# 				motivations[int(question_id)] = value
-# 			if 'option' in item:
-# 				selected_options.append(int(value))
-# 			if 'weight' in item:
-# 				_, question_id = item.split(':::', 1)
-# 				weights[int(question_id)] = value
-
-
-# 		for question in worksession.question_set.questions:
-# 		# Alleen de vragen in de huidige question set
-# 			if not question.is_category:
-# 				new_answer = Answer(worksession=worksession, question=question, motivation=motivations.get(question.id), weight=weights.get(question.id))
-# 				for option in question.options:
-# 					if option.id in selected_options: 
-# 						# De vraag zit in de huidige question en moet aangevinkt worden.
-# 						new_answer.selection.append(Selection(option=option))
-# 				db.session.add(new_answer)
-# 		db.session.commit()
-# 		return redirect(url_for('main.process_simultaneous', worksession_id=worksession.id))
-# 	elif request.method == "GET":
-# 		pass
-# 	return render_template('main/simultaneous.html', worksession=worksession, advisor=advisor)
-
-# @main.route('/worksession/<int:worksession_id>/single', methods=['GET', 'POST'])
-# @main.route('/worksession/<int:worksession_id>/single/<int:question_id>', methods=['GET', 'POST'])
-# @login_required
-# def process_single(worksession_id, question_id=None):
-# 	worksession = Worksession.query.get(worksession_id)
-# 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
-# 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
-
-	
-# 	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
-# 	if question_id is None:
-# 		# Without a question number, find the first question in order.
-# 		question = Question.query.filter_by(question_set=worksession.question_set).order_by(Question.order).first()
-# 	else:	
-# 		question = Question.query.get(question_id)
-# 	answer = Answer.query.filter_by(worksession=worksession, question=question).first()
-
-# 	if request.method == "POST":
-# 		if not question.is_category:
-# 			if answer is not None:
-# 				db.session.delete(answer)
-
-# 			new_answer = Answer(worksession=worksession, question=question, motivation=request.form.get('motivation'), weight=request.form.get('weight'))
-# 			for option in question.options:
-# 				if str(option.id) in request.form.getlist('option'):
-# 					# De vraag zit in de huidige question set en moet aangevinkt worden.
-# 					new_answer.selection.append(Selection(option=option))
-# 			db.session.add(new_answer)
-# 			db.session.commit()
-
-# 		next_question = None
-# 		# Move to the next question. The next question is selected by taking all questions in the current set, taking only those with a order number higher than the current one, and sorting by order.
-# 		for question in Question.query.filter_by(question_set=worksession.question_set).filter(Question.order > Question.query.get(question.id).order).order_by(Question.order): 
-# 			if not worksession.is_question_hidden(question):
-# 				next_question = question
-# 				break
-# 		if next_question is None:
-# 			# If no question is found, move on the the conclusion page for this session.
-# 			return redirect(url_for('main.conclusion', worksession_id=worksession.id))
-# 		return redirect(url_for('main.process_single', worksession_id=worksession.id, question_id=next_question.id))
-# 	elif request.method == "GET":
-# 		pass
-# 	return render_template('main/single.html', worksession=worksession, question=question, answer=answer, advisor=advisor)
-
-
-# @main.route('/worksession/<int:worksession_id>/case', methods=['GET', 'POST'])
-# @login_required
-# def case(worksession_id):
-# 	# This function is provided for legacy reasons and will disappear later. If the new presenter mode is used, this function is entirely skipped.
-# 	worksession = Worksession.query.get(worksession_id)
-# 	if worksession.process_id == 1:
-# 		return redirect(url_for('present.frontpage', worksession_id=worksession.id))
-	
-# 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
-# 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
-
-# 	form = EditCaseForm()
-
-# 	if form.validate_on_submit():
-# 		worksession.description = form.description.data
-# 		worksession.effect = form.effect.data
-# 		db.session.commit()
-		
-# 		# Redirect tot the first question in the set
-
-# 		if worksession.process_id == 3:
-# 			return redirect(url_for('main.process_simultaneous', worksession_id=worksession.id))
-# 		elif worksession.process_id == 2:
-# 			return redirect(url_for('main.process_single', worksession_id=worksession.id))
-# 	elif request.method == "GET":
-# 		form.description.data = worksession.description 
-# 		form.effect.data = worksession.effect
-	
-
-
-# 	return render_template('/main/case.html', worksession=worksession, form=form)
-
-
-# @main.route('/worksession/<int:worksession_id>/conclusion', methods=['GET', 'POST'])
-# @login_required
-# def conclusion(worksession_id):
-# 	worksession = Worksession.query.get(worksession_id)
-# 	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
-
-
-# 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
-# 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
-	
-# 	# Create an interventionplan based on the finished worksession if one doesn't exist
-# 	# A plan is a selection of instruments relevant to a worksession, with some motivation.
-# 	# A worksession can have multiple plans, but plan 0 os always the one made immediately after
-# 	# the session. This way, the actually executed plan can also be stored in the database.
-
-# 	plan = Plan.query.filter_by(worksession_id=worksession.id).filter_by(stage=0).first()
-# 		# Stage = 0 is always the primary conclusion after finishing a worksession
-# 	if  plan is None:
-# 		plan = Plan(worksession=worksession,
-# 			  stage=0,
-# 			  description="Interventieplan aangemaakt na de werksessie",
-# 			  conclusion="") # I actually don't understand why the value can ever be None, but it is.
-
-# 	if request.method == "POST":
-# 		#Store the conclusion with the new plan.
-# 		plan.conclusion = chosen_instruments = request.form.get("motivation")
-# 		#Erase previously selected instruments
-# 		for instrument_choice in plan.instruments:
-# 			db.session.delete(instrument_choice)
-# 		#Store all checked instruments
-# 		chosen_instruments = request.form.getlist('choose_instrument')
-# 		for instrument_id in chosen_instruments:
-# 			new_instrument_choice = InstrumentChoice(plan=plan,
-# 											instrument_id=instrument_id)
-# 			db.session.add(new_instrument_choice)	
-
-# 		db.session.add(plan)
-# 		db.session.commit()
-
-# 		# Remind the user in 90 days to enter the final intervention plan
-# 		# I have removed this function to implement it better than I did here.
-
-# 		# send_system_message(
-# 		# 	subject = f'Welke interventies zijn uitgevoerd bij de casus {worksession.name}?',
-# 		# 	body = f'Laat weten welke interventies zijn uitgevoerd bij de casus {worksession.name}. Open de werksessie en voer een nieuw interventieplan in. Selecteer in het interventieplan de daadwerkelijk uitgevoerde interventies. Op basis van deze gegevens kunnen de selectietool en de instrumenten verder worden ontwikkeld.',
-# 		# 	deliver_after = datetime.today() + timedelta(90),
-# 		# 	recipient = current_user,
-# 		# 	sender = None
-# 		# )
-
-	# 	return redirect(url_for('main.show_worksession', worksession_id=worksession.id))
-
-	# return render_template('/main/conclusion.html', 
-	# 					worksession=worksession, 
-	# 					advisor=advisor,
-	# 					plan=plan)
-
-
-# @main.route('/worksession/<int:worksession_id>/summary', methods=['GET', 'POST'])
-# @login_required
-# def worksession_summary(worksession_id):
-# 	worksession = Worksession.query.get(worksession_id)
-# 	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
-# 	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
-# 		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
-
-# 	return render_template('/main/summary.html', worksession=worksession, advisor=advisor)
 
 
 @main.route('/worksession/<int:worksession_id>/instrument/<int:instrument_id>')
