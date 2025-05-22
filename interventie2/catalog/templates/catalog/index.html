@@ -44,13 +44,6 @@ Catalogus
         <h2>Op tag</h2>
         <form method="POST">
             <input type="hidden" id="tag_filter" name="tag_filter" value="tag_filter">
-            <button onclick="switch_tab(event, 'cat_all')"
-                hx-post="{{ url_for('catalog.filter_by_tags') }}"
-                hx-trigger="click"
-                hx-target="#catalog_list"
-                hx-swap="innerHTML"
-                >Filteren
-            </button>
             <div style="columns:3;">
                 {% for tag in tags %}            
                     <p>
@@ -61,6 +54,13 @@ Catalogus
                     </p>
                 {% endfor %}
             </div>
+            <button onclick="switch_tab(event, 'cat_all')"
+            hx-post="{{ url_for('catalog.filter_by_tags') }}"
+            hx-trigger="click"
+            hx-target="#catalog_list"
+            hx-swap="innerHTML"
+            >Filteren
+        </button>
         </form>
     </div>
 </div>
