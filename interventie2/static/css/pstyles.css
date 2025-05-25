@@ -366,7 +366,7 @@ button {
     background-color: var(--button-bg);
     color: var(--button-fg);
     min-height: 2.2em;
-    border-radius: 2px;
+    border-radius: 4px;
     min-width: 4em;
     padding-left: 1em;
     padding-right: 1em;
@@ -380,6 +380,7 @@ button {
     button:hover {
         background-color: var(--highlight);
         color: white;
+        box-shadow: rgba(0, 0, 0, 0.48) 0px 3px 8px;
     }
 
 table {

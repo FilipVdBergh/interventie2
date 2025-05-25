@@ -38,34 +38,58 @@
         
         <div id="with_selection" class="controls" style="visibility:hidden;">
             <h1>Selectie</h1>
-            <div class="ws_controls">
-                <label>
-                    <input type="radio" name="ctrl:::" value="add_tag">
+            <div>
+                <button 
+                    hx-post="{{ url_for('catalog.edit_add_tag') }}"
+                    hx-trigger="click"
+                    hx-target="#cat_all"
+                    hx-swap="innerHTML">
                     Tag toevoegen
-                </label>
-                <label>
-                    <input type="radio" name="ctrl:::" value="remove_tag">
+                </button>
+                <button
+                    hx-post="{{ url_for('catalog.edit_remove_tag') }}"
+                    hx-trigger="click"
+                    hx-target="#cat_all"
+                    hx-swap="innerHTML">
                     Tag verwijderen
-                </label>
-                <label>
-                    <input type="radio" name="ctrl:::" value="export_json">
+                </button>
+                <button
+                    hx-post="{{ url_for('catalog.edit_background_color') }}"
+                    hx-trigger="click"
+                    hx-target="#cat_all"
+                    hx-swap="innerHTML">
+                    Achtergrondkleur wijzigen
+                </button>
+                <button
+                    hx-post="{{ url_for('catalog.edit_text_color') }}"
+                    hx-trigger="click"
+                    hx-target="#cat_all"
+                    hx-swap="innerHTML">
+                    Tekstkleur wijzigen
+                </button>
+                <button
+                    hx-post="{{ url_for('catalog.edit_export_json') }}"
+                    hx-trigger="click"
+                    hx-target="#with_selection"
+                    hx-swap="innerHTML">
                     Exporteren naar JSON
-                </label>
-                <label>
-                    <input type="radio" name="ctrl:::" value="export_word">
+                </button>
+                <button
+                    hx-post="{{ url_for('catalog.edit_export_word') }}"
+                    hx-trigger="click"
+                    hx-target="#with_selection"
+                    hx-swap="innerHTML">
                     Exporteren naar Word
-                </label>
-                <label style="margin-left:4em;">
-                    <input type="radio" name="ctrl:::" value="delete">
+                </button>   
+                <button class="delete"
+                    hx-post="{{ url_for('catalog.edit_delete') }}"
+                    hx-trigger="click"
+                    hx-target="#cat_all"
+                    hx-swap="innerHTML">
                     Verwijderen
-                </label>
+                </button>
+                <label><input type="checkbox" name="confirm_delete" value="confirm_delete">Bevestig verwijderen</label>          
             </div>
-            <button
-                hx-post="{{ url_for('catalog.edit_multiple_instruments') }}"
-                hx-trigger="click"
-                hx-target="#cat_all"
-                hx-swap="innerHTML">Uitvoeren
-            </button>
             <button
                 hx-get="{{ url_for('catalog.cat_table') }}"
                 hx-trigger="click"
@@ -73,7 +97,6 @@
                 hx-swap="innerHTML">Annuleren
             </button>
         </div>
-
     </form>
 </div>
 

@@ -228,6 +228,8 @@ def edit_export():
 @main.route('/worksessions/edit/export_archive_ready', methods=['GET'])
 @login_required
 def edit_export_archive_ready():
+	# Exported worksessions are always saved to an archive named after the user id. Furthermore, users can only every download
+	# archives named after their user id. This should ensure that it is never possible to download sessions you have no access to.
 	archive_filename = os.path.join(current_app.static_folder, 'export', f'{current_user.id}.zip')
 	return send_file (archive_filename, as_attachment=True, download_name='exported_worksessions.zip')
 	
@@ -236,7 +238,7 @@ def edit_export_archive_ready():
 @login_required
 def edit_delete():
 	worksessions_to_edit = []
-	CONFIRM = False
+	CONFIRM = False # Deleting multiple worksessiopns require that the user not only clicks the button, but also checks a box.
 
 	for item, value in request.form.items():
 		# Deleting sessions requires an additional checkbox to be checked.
