@@ -1,14 +1,5 @@
 /* Standard */
 :root {
-    --dark-blue: #0f2841;
-    --light-blue: #0e9ed5;
-    --green: #3b7d23;
-    --red: red;
-    --highlight: #195fa6;
-    --mid-grey: #e9e9e9;
-
-    
-
     --spot_dark: #195fa6;
     --spot_light: #a1d8ff;
     /* --nav_bar: rgb(242, 242, 242); */
@@ -102,7 +93,6 @@ button {
     }
 
     button:hover {
-        /* background-color: var(--highlight); */
         color: white;
         cursor: pointer;
         box-shadow: rgba(0, 0, 0, 0.48) 0px 3px 8px;
@@ -110,6 +100,7 @@ button {
 
     button.delete {
         background-color: var(--button_delete);
+        margin-left: 2em;
     }
     button.small {
         padding: 0em;
@@ -138,7 +129,7 @@ input[type=submit] {
 
 input {
     background-color: white;
-    border: 1px solid var(--mid-grey);
+    border: 1px solid var(--box_border);
     border-radius: 2px;
     font-family: inherit;
     font-size: inherit;
@@ -548,6 +539,24 @@ footer {
     padding-bottom: 1rem;
 }
 
+/* Controls for mass editing */
+.controls {
+    width: fit-content;
+    background-color: var(--object);
+    color: var(--object-text);
+    padding: 0.2rem 2rem 1rem 2rem;
+    margin-top: 1rem;
+    border-radius: 2px;
+    animation: fadeInAnimation ease 0.7s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 3px 8px;
+}
+    .controls button a{
+        text-decoration: none;
+    }
+
+
 /* Elements */
 li.mode {
     /* font-weight: bold; */
@@ -588,11 +597,14 @@ li.selected {
 
 
 
+
+
 /* Tabs */
 .tabcontent {
     width: 100%;
     /* display: block; */
 }
+
 
 /* Search results*/
 .search_result {
@@ -767,7 +779,7 @@ li.selected {
 
     .plus {
         font-weight: bold;
-        color: var(--dark-blue);
+        color: var(--spot_dark);
     }
 
     .plus::before {
@@ -776,7 +788,7 @@ li.selected {
 
     .min {
         font-weight: bold;
-        color: var(--highlight);
+        color: red;
     }
 
     .min::before {
@@ -854,7 +866,7 @@ li.selected {
 }
 
 .matrix tbody tr:hover {
-    background-color: var(--light-blue);
+    background-color: var(--spot_light);
 }
 
 
@@ -873,11 +885,6 @@ th.rotate > div {
   width: 3em;
 }
 
-th.rotate > div > span {
-  /* border-bottom: solid 2px var(--light-blue); */
-  /* padding: 5px 10px 10px 10px; */
-}
-
 /* Tooltip container */
 .tooltip {
     position: relative;
@@ -888,8 +895,8 @@ th.rotate > div > span {
   .tooltip .tooltiptext {
     visibility: hidden;
     width: max-content;
-    background-color: var(--dark-blue);
-    color: #fff;
+    background-color: var(--object);
+    color: var(--object-text);
     text-align: center;
     padding: 5px 10px;
     border-radius: 6px;
@@ -897,8 +904,8 @@ th.rotate > div > span {
    
     /* Position the tooltip text - see examples below! */
     position: absolute;
-    top: 1.5em;
-    left: 105%;
+    top: 3em;
+    /* left: 105%; */
     z-index: 99;
   }
   

@@ -1,0 +1,3 @@
+{% if current_user.role.edit_questionnaire %}
+    <a href="{{ url_for('tools.edit_question_set') }}"><div  class="option">+ Tool ontwerpen</div></a>
+{% endif %}

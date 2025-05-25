@@ -40,45 +40,62 @@ def worksession(worksession_id):
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
     form = ExportWorksessionForm()
-    advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 
-    # print(current_app.static_folder)
     if form.validate_on_submit():
-        result = Document(os.path.join(current_app.static_folder, 'export', 'Template.docx'))
-        output_file = os.path.join(current_app.static_folder, 'export', 'Temp.docx')
-
-        add_title(result, worksession.name)
-        result.add_page_break()
-
-        add_worksession_info(result, worksession)
-
-        if form.export_technical_info.data:
-            add_worksession_process(result, worksession)
-        if len(form.remarks.data) > 0:
-            add_remarks(result, form.remarks.data)
-        result.add_page_break()
-
-        add_intervention_plans(result, worksession)
-        result.add_page_break()
-
-        add_answers(result, worksession)
-        add_suggestions_table(result, advisor.get_sorted_instruments())
-        result.add_page_break()
-
-        result.add_heading("Selectie catalogus", level=1)
-        for instrument, score in advisor.get_sorted_instruments():
-            if form.export_all_instruments.data or (score > advisor.get_highest_score() - worksession.mark_top_instruments):
-                add_instrument(result, instrument)
-                if form.export_calculations.data:
-                    add_calculation(result, advisor.explain_score(instrument))
-
-        result.save(output_file)
-        return send_file(output_file, as_attachment=True, download_name=f'{worksession.name}.docx')
-
+        return send_file(export_worksession_to_word(
+                                    worksession, 
+                                    remarks=form.remarks.data, 
+                                    export_all_instruments=form.export_all_instruments.data,
+                                    export_calculations=form.export_calculations.data),
+                                    as_attachment=True, 
+                                    download_name=f'{worksession.name}.docx')
+    
     elif request.method == 'GET':
         form.export_tags.data = worksession.show_tags
         form.export_all_instruments.data = worksession.show_rest_instruments
     return render_template('export/worksession.html', worksession=worksession, form=form)
+
+
+def export_worksession_to_word(worksession, remarks='', location=None, export_all_instruments=False, export_calculations=False):
+    """This function does the actual exporting. It is separated from the route (above) because it can also be called from other routes."""
+    advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
+
+    if location == None:
+        location = os.path.join(current_app.static_folder, 'export')
+
+    if not os.path.exists(location):
+        os.makedirs(location)
+
+    template = Document(os.path.join(current_app.static_folder, 'export', 'Template.docx'))
+    output_file = os.path.join(location, f'{worksession.name}.docx')
+
+    add_title(template, worksession.name)
+    template.add_page_break()
+
+    add_worksession_info(template, worksession)
+
+    if len(remarks) > 0:
+        add_remarks(template, remarks)
+    template.add_page_break()
+
+    add_intervention_plans(template, worksession)
+    template.add_page_break()
+
+    add_answers(template, worksession)
+    add_suggestions_table(template, advisor.get_sorted_instruments())
+    template.add_page_break()
+
+    template.add_heading("Selectie catalogus", level=1)
+    for instrument, score in advisor.get_sorted_instruments():
+        if export_all_instruments or (score > advisor.get_highest_score() - worksession.mark_top_instruments):
+            add_instrument(template, instrument)
+            if export_calculations:
+                add_calculation(template, advisor.explain_score(instrument))
+
+    # Save the template as the output file and return the filename.
+    template.save(output_file)
+
+    return output_file
 
 
 @export.route('/instrument/<int:instrument_id>')

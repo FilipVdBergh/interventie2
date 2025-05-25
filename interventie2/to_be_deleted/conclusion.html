@@ -1,0 +1,65 @@
+{% extends 'presenter_mode.html' %}
+
+{% block currentcase %}
+    {{ worksession.name }}
+{% endblock %}
+
+{% block steps %}
+    {% include 'main/path_process.html' %}
+{% endblock %}
+
+{% block body %}
+    <h1>Beschrijving casus</h1>
+    <div>{{ worksession.description | escape | markdown }}</div>
+    <div>{{ worksession.effect | escape | markdown}}</div>
+
+    <form method="POST">
+        <h1>Definitieve overwegingen</h1>
+        <div>
+            De export van de werksessie biedt aanknopingspunten voor een plan van aanpak. 
+            Beschrijf hieronder welke instrumenten relevant zijn voor deze casus en welke 
+            overwegingen daarbij een rol spelen. Ook kan besloten worden niets te doen. 
+            De aanpak kan gebaseerd zijn op de instrumenten die door de keuzehulp zijn 
+            geprioriteerd, maar dat is niet noodzakelijk.
+        </div>
+        <br><textarea name="motivation" rows="5" cols="100">{{ plan.conclusion }}</textarea>
+        <br><button>Opslaan</button>
+
+    <h1>Instrumenten</h1>
+    <div>
+        Maak een interventieplan door aan te geven welke  instrumenten je van plan bent in te zetten.
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Instrument</th>
+                <th>Interventieplan</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for (instrument, score) in advisor.get_sorted_instruments() %}
+                {% if score > 0 %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }} ({{ score | round(1) }})</a>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="choose_instrument" value="{{ instrument.id }}"
+                                {% for chosen_instrument in plan.instruments %}
+                                    {% if instrument.id == chosen_instrument.instrument.id %}checked{% endif %}
+                                {% endfor %}
+                            >
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </form>
+    </table>
+
+
+    <h1>Actieve tags</h1>
+    {% for active_tag in advisor.get_active_tags() %}
+        <span class="tag">{{ active_tag.tag.name }}: {{ active_tag.weight}}</span>
+    {% endfor %}
+{% endblock %}

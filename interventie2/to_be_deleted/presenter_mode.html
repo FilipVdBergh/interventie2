@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="URF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/presenter_styles.css')}}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@300;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Special+Gothic&display=swap" rel="stylesheet">
+        <style>
+            body {
+                background-size: 100vw 100vh; 
+                background-image: linear-gradient( {{ worksession.presenter_mode_background_color1 }}, {{ worksession.presenter_mode_background_color2 }} );
+                color: {{ worksession.presenter_mode_text_color }};
+            }
+            h1 {
+                color: {{ worksession.presenter_mode_text_color_heading }};
+            }
+            h2 {
+                color: {{ worksession.presenter_mode_text_color_heading }};
+            }
+            .divsteps {
+                color: {{ worksession.presenter_mode_text_color_nav }};
+                background-color: {{ worksession.presenter_mode_color_nav }};
+            }
+            .step {
+                color: {{ worksession.presenter_mode_text_color_nav }};
+            }
+            .step:hover {
+                background-color: {{ worksession.presenter_mode_color_highlight }};
+                color: {{ worksession.presenter_mode_text_color_highlight }};
+            }
+            .page_title {
+                background-color: {{ worksession.presenter_mode_color_title }};
+                color: {{ worksession.presenter_mode_text_color_title }};
+            }
+            .collapsible {
+                background-color: {{ worksession.presenter_mode_color_coll }};
+                color: {{ worksession.presenter_mode_text_color_coll }};
+            }
+            .active, .collapsible:hover {
+                background-color: {{ worksession.presenter_mode_color_highlight }};
+                color: {{ worksession.presenter_mode_text_color_highlight }};
+            }
+            .prio_high {
+                font-weight: bold;
+                color: {{ worksession.presenter_mode_text_color_heading }};
+            }
+            .prio_medium {
+                color: {{ worksession.presenter_mode_text_color_heading }};
+            }
+              .prio_low {
+                color: rgb(199, 199, 199);
+            }
+        </style>
+
+        <title>{{ worksession.name }}</title>
+    </head>
+
+    <body>
+        <div class="divsteps">
+            <a href="{{ url_for('present.frontpage', worksession_id=worksession.id) }}" class="step">1. Casus</a>
+            {% if worksession.process_id == 1 %}
+                <a href="{{ url_for('main.process_simultaneous', worksession_id=worksession.id) }}" class="step">2. {{ worksession.question_set.name }}</a>
+            {% elif worksession.process_id == 2 %}
+                <a href="{{ url_for('main.process_single', worksession_id=worksession.id) }}" class="step">2. {{ worksession.question_set.name }}</a>
+            {% elif worksession.process_id == 3 %}
+                <a href="{{ url_for('present.present_session', worksession_id=worksession.id) }}" class="step">2. {{ worksession.question_set.name }}</a>
+            {% endif %}
+            <a href="{{ url_for('main.conclusion', worksession_id=worksession.id) }}" class="step">3. Conclusie</a>
+            <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">Afsluiten</a>
+        </div>
+
+        <div class="page_title">
+            <h1 class="worksession_title">{{ worksession.name }}</h1>
+            <div class="worksession_description">{{ worksession.effect | escape | markdown }}</div>
+        </div>
+
+        <div class="divmain" id="main" style="transform: scale( {{ worksession.presenter_mode_zoom }} ); transform-origin: 0 0;">
+            <div class="divinstrumenten">{% block instrumenten %}{% endblock %}</div>
+
+            <div class="divquestionnaire">
+            </div>
+            
+            <div class="divworkarea">
+                {% block body %}
+                {% endblock %}
+            </div>
+        </div>
+
+        <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
+        <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/uncheck_radio.js')}}"></script>
+    </body>
+</html>

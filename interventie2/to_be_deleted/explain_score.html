@@ -1,0 +1,43 @@
+<h1>Berekening</h1>
+{% set explanation = advisor.explain_score(instrument) %}
+
+{% if explanation['forbidden_tags_found'] %}
+    <h2>Sessietags die dit instrument uitsluiten gevonden</h2>
+    <div>Dit instrument heeft tags die niet zijn toegestaan in deze sessie. Als gevolg 
+    is de definitieve score voor dit instrument altijd 0.</div>
+{% endif %}
+
+{% if explanation['mandatory_tags_not_found'] %}
+    <h2>Verplichte sessietags niet gevonden</h2>
+    Aan dit instrument ontbreekt een verplichte tag voor deze sessie. Als gevolg 
+    is de definitieve score voor dit instrument altijd 0.
+{% endif %}
+
+<h2>Tags</h2>
+    <table>
+        <tr>
+            <th>Tag</th>
+            <th>Instrumentgewicht *</th>
+            <th>Vraagfactor =</th>
+            <th>Bijdrage aan score</th>
+            <th>Instrumentfactor</th>
+        </tr>
+        {% for tag in explanation.tags %}
+            <tr>
+                <td><span class="tag">{{ tag.name }}</span></td>
+                <td>{{ tag.weight_in_instrument }}</td>
+                <td>{{ tag.weight_in_question }}</td>
+                <td>{{ tag.contribution }}</td>
+                <td>{{ tag.factor_in_instrument }}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td>Totaal</td>
+            <td></td>
+            <td></td>
+            <td>{{ explanation.final_score }}<span style="float: right;">+</span></td>
+            <td>{{ explanation.final_multiplier }}<span style="float: right;">*</span></td>
+        </tr>
+    </table>
+<h2>Eindscore</h2>
+    Totale bijdrage {{ explanation.final_score }} * Totale factor {{ explanation.final_multiplier }} = Score {{ explanation.final | round(2)}}  

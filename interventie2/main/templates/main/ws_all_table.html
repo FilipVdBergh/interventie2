@@ -1,4 +1,3 @@
-<script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/sort_table.js')}}"></script>
 <div class="text_area">
     <form method="POST">
         <input type="hidden" id="ws_selection" name="ws_selection" value="ws_selection">
@@ -47,29 +46,40 @@
                 {% endfor %}
             </tbody>
         </table>
-        <br>
-        <div id="with_selection" style="visibility:hidden;">
-            <h2>Selectie</h2>
-            <div class="ws_controls">
-                <label>
-                    <input type="radio" name="ctrl:::" value="archive">
+        
+        <div id="with_selection" class="controls" style="visibility:hidden;">
+            <h1>Selectie</h1>
+            <div>
+                <button 
+                    hx-post="{{ url_for('main.edit_archive') }}"
+                    hx-trigger="click"
+                    hx-target="#ws_all"
+                    hx-swap="innerHTML">
                     Archiveren
-                </label>
-                <label>
-                    <input type="radio" name="ctrl:::" value="activate">
+                </button>
+                <button
+                    hx-post="{{ url_for('main.edit_activate') }}"
+                    hx-trigger="click"
+                    hx-target="#ws_all"
+                    hx-swap="innerHTML">
                     Activeren
-                </label>
-                <label style="margin-left:3em;">
-                    <input type="radio" name="ctrl:::" value="delete">
+                </button>
+                <button
+                    hx-post="{{ url_for('main.edit_export') }}"
+                    hx-trigger="click"
+                    hx-target="#with_selection"
+                    hx-swap="innerHTML">
+                    Exporteren                        
+                </button>   
+                <button class="delete"
+                    hx-post="{{ url_for('main.edit_delete') }}"
+                    hx-trigger="click"
+                    hx-target="#ws_all"
+                    hx-swap="innerHTML">
                     Verwijderen
-                </label>
+                </button>
+                <label><input type="checkbox" name="confirm_delete" value="confirm_delete">Bevestig verwijderen</label>          
             </div>
-            <button
-                hx-post="{{ url_for('main.edit_multiple_sessions') }}"
-                hx-trigger="click"
-                hx-target="#ws_all"
-                hx-swap="innerHTML">Uitvoeren
-            </button>
             <button
                 hx-get="{{ url_for('main.ws_all') }}"
                 hx-trigger="click"
@@ -80,3 +90,4 @@
     </form>
 </div>
 
+<script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/sort_table.js')}}"></script>

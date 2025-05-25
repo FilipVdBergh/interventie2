@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block steps %}
+{% endblock %}
+
+{% block page_title %}
+    Alle berichten 
+{% endblock %}
+
+{% block instrumenten %}   
+{% endblock %}
+
+{% block body %}
+
+    <table>
+        <tr>
+            <th>Onderwerp</th>
+            <th>Afzender</th>
+            <th>Ontvanger</th>
+            <th>Datum aangemaakt</th>
+            <th>Datum bezorging</th>
+            <th>Verwijderen</th>
+        </tr>
+        {% for message in messages %}
+            <tr>
+                <td><a href="{{ url_for('admin.message', message_id=message.id) }}" {% if message.unread %} class="unread"{% endif %}>{{ message.subject }}</a></td>
+                <td>
+                    {% if message.system %}
+                        Systeem
+                    {% else %}
+                        {{ message.sender.name }}
+                    {% endif %}
+                </td>
+                <td>{{ message.recipient.name }}</td>
+                <td>{{ message.date_created.strftime('%Y-%m-%d %H:%M')}}</td>
+                <td>
+                        {{ message.deliver_after.strftime('%Y-%m-%d %H:%M') }}
+
+                    
+                </td>
+                <td><button>{{ macro.confirm_redirect( "Verwijderen", "Wilt u dit bericht verwijderen?", url_for('admin.delete_message', message_id=message.id) ) }}</button></td>
+            </tr>
+        {% endfor %}
+        </table>
+
+{% endblock %}

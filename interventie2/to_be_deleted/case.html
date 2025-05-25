@@ -1,0 +1,36 @@
+{% extends 'presenter_mode.html' %}
+
+{% block currentcase %}
+    {{ worksession.name }}
+{% endblock %}
+
+{% block steps %}
+    {% include 'main/path_process.html' %}
+{% endblock %}
+
+{% block body %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        <h1>Beschrijving</h1>
+        Geef een korte beschrijving van de casus. 
+        <br>
+        <br>{{ form.description }}
+
+        <h1>Beoogd doel</h1>
+        <p>
+            Wat is het doel dat je wilt bereiken? Welk gedrag is onwenselijk en moet gestopt of verminderd worden? Of welk nieuw gedrag moet gestart worden?
+        </p>       
+        <p>
+            <ul>
+                <li>Wie moet wat doen?</li>
+                <li>Wanneer moet de verandering zichtbaar zijn?</li>
+                <li>Wat is het huidige gedrag, en welk verschil moet overbrugd worden?</li>
+            </ul>
+        </p>
+        
+        
+        <br>{{ form.effect }}
+
+        <br>{{ form.submit }}            
+    </form>
+{% endblock %}

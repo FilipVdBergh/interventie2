@@ -1,0 +1,36 @@
+<h1 class="question_category">&nbsp;</h1> 
+{% set ns = namespace (lowest_top_score = 0) %}
+{% for (instrument, score) in advisor.get_sorted_instruments() %} 
+    {% if score <= 0 %}
+    <!-- If no questions are answered, catch that all instruments are 0 -->
+        {% if worksession.show_rest_instruments %}
+            <div class="instrument tooltip">
+                <a class="prio_low" href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }}</a>
+                <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
+            </div>
+        {% endif %}
+    {% else %}
+        
+        {% if loop.index <= worksession.mark_top_instruments %}
+            {% set ns.lowest_top_score = score %}
+            <div class="instrument tooltip">
+                <a class="prio_high" href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }}</a>
+                <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
+            </div>
+        {% else %}
+            {% if score == ns.lowest_top_score %}            
+                <div class="instrument tooltip">
+                    <a class="prio_high" href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }}</a>
+                    <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
+                </div>
+            {% else %}
+                {% if worksession.show_rest_instruments %}
+                    <div class="instrument tooltip">
+                        <a class="prio_medium" href="{{ url_for('main.show_instrument', instrument_id=instrument.id, worksession_id=worksession.id) }}">{{ instrument.name }}</a>
+                        <div class="tooltiptext"><b>{{ instrument.name }}:</b><br>Score: {{ score | round }}</div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endfor %}

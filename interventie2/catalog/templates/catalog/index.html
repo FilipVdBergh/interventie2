@@ -25,6 +25,14 @@ Catalogus
     <div class="text_area">
         <h1>Opties</h1>
         <ul>
+            <!-- <li>
+                <a onclick="switch_tab(event, 'cat_all')" style="cursor:pointer;"
+                    hx-get="{{ url_for('catalog.cat_table') }}"
+                    hx-trigger="click"
+                    hx-target="#cat_all"
+                    hx-swap="innerHTML">Beheer catalogus
+                </a>
+            </li> -->
             <li>
                 <a href="{{ url_for('export.catalog') }}">Exporteer catalogus naar Word</a>
             </li>
@@ -32,7 +40,7 @@ Catalogus
         <h1>Filteren</h1>
         <h2>Op beheerder</h2>
         <ul>
-            <li><a onclick="switch_tab(event, 'cat_all')"
+            <li><a onclick="switch_tab(event, 'cat_all')" style="cursor:pointer;"
                 hx-get="{{ url_for('catalog.instruments_current_user') }}"
                 hx-trigger="click"
                 hx-target="#catalog_list"

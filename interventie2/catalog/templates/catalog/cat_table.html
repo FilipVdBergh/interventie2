@@ -1,0 +1,80 @@
+<div class="text_area">
+    <form method="POST">
+        <input type="hidden" id="cat_selection" name="cat_selection" value="cat_selection">
+        <table class="sortable">
+            <thead>
+                <tr><th class="sorttable_nosort"></th>
+                    <th>Instrument</th>
+                    <th>Beschrijving</th>
+                    <th>Eigenaar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for instrument in instruments | sort(attribute='name') %}
+                    <tr>
+                        <td>
+                            <label>
+                                <input type="checkbox" name="ins:::{{ instrument.name }}" value="{{ instrument.id }}" onclick="document.getElementById('with_selection').style.visibility='visible';">
+                            </label>
+                        </td>
+                        <td>{{ instrument.name }}</td>
+                        <td class="tooltip">
+                            {{ instrument.introduction | markdown | escape | truncate(100) }}
+                            <div class="tooltiptext">
+                                {% for tag_assignment in instrument.tags %}
+                                <span class="tag 
+                                    {% if tag_assignment.multiplier >= 1 %}plus{% endif %}
+                                    {% if tag_assignment.multiplier < 1 %}min{% endif %}">
+                                    {{ tag_assignment.tag.name }}
+                                </span>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td>{{ instrument.owner.name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>    
+        
+        <div id="with_selection" class="controls" style="visibility:hidden;">
+            <h1>Selectie</h1>
+            <div class="ws_controls">
+                <label>
+                    <input type="radio" name="ctrl:::" value="add_tag">
+                    Tag toevoegen
+                </label>
+                <label>
+                    <input type="radio" name="ctrl:::" value="remove_tag">
+                    Tag verwijderen
+                </label>
+                <label>
+                    <input type="radio" name="ctrl:::" value="export_json">
+                    Exporteren naar JSON
+                </label>
+                <label>
+                    <input type="radio" name="ctrl:::" value="export_word">
+                    Exporteren naar Word
+                </label>
+                <label style="margin-left:4em;">
+                    <input type="radio" name="ctrl:::" value="delete">
+                    Verwijderen
+                </label>
+            </div>
+            <button
+                hx-post="{{ url_for('catalog.edit_multiple_instruments') }}"
+                hx-trigger="click"
+                hx-target="#cat_all"
+                hx-swap="innerHTML">Uitvoeren
+            </button>
+            <button
+                hx-get="{{ url_for('catalog.cat_table') }}"
+                hx-trigger="click"
+                hx-target="#cat_all"
+                hx-swap="innerHTML">Annuleren
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/sort_table.js')}}"></script>

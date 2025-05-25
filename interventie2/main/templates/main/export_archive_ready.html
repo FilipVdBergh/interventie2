@@ -1,0 +1,11 @@
+<div>
+    Je exports zijn klaar. <a href="{{ url_for('main.edit_export_archive_ready') }}">Klik hier om ze te downloaden.</a>
+</div>
+<div>
+    <button
+        hx-get="{{ url_for('main.ws_all') }}"
+        hx-trigger="click"
+        hx-target="#ws_all"
+        hx-swap="innerHTML">Verbergen
+    </button>
+</div>

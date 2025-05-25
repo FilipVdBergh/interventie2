@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/presenter_styles.css')}}">
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@300;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Special+Gothic&display=swap" rel="stylesheet">
+
+        <style>
+            body {
+                background-size: 100vw 100vh; 
+                background-image: linear-gradient( {{ worksession.presenter_mode_background_color1 }}, {{ worksession.presenter_mode_background_color2 }} );
+                color: {{ worksession.presenter_mode_text_color }};
+            }
+            h1 {
+                color: {{ worksession.presenter_mode_text_color_heading }};
+            }
+            h2 {
+                color: {{ worksession.presenter_mode_text_color_heading }};
+            }
+            .divsteps {
+                color: {{ worksession.presenter_mode_text_color_nav }};
+                background-color: {{ worksession.presenter_mode_color_nav }};
+            }
+            .step {
+                color: {{ worksession.presenter_mode_text_color_nav }};
+            }
+            .step:hover {
+                background-color: {{ worksession.presenter_mode_color_highlight }};
+                color: {{ worksession.presenter_mode_text_color_highlight }};
+            }
+            .page_title {
+                background-color: {{ worksession.presenter_mode_color_title }};
+                color: {{ worksession.presenter_mode_text_color_title }};
+            }
+            .collapsible {
+                background-color: {{ worksession.presenter_mode_color_coll }};
+                color: {{ worksession.presenter_mode_text_color_coll }};
+            }
+            .active, .collapsible:hover {
+                background-color: {{ worksession.presenter_mode_color_highlight }};
+                color: {{ worksession.presenter_mode_text_color_highlight }};
+            }
+            .prio_high {
+                font-weight: bold;
+                color: {{ worksession.presenter_mode_text_color_heading }};
+            }
+            .prio_medium {
+                color: {{ worksession.presenter_mode_text_color_heading }};
+            }
+              .prio_low {
+                color: rgb(199, 199, 199);
+            }
+        </style>
+
+        <title>{{ worksession.name }}</title>
+    </head>
+
+    <body>
+        <div class="divsteps">
+            <a href="{{ url_for('main.case', worksession_id=worksession.id) }}" class="step">1. Casus</a>
+            <a href="{{ url_for('main.process_single', worksession_id=worksession.id) }}" class="step">2. {{ worksession.question_set.name }}</a>
+            <a href="{{ url_for('main.conclusion', worksession_id=worksession.id) }}" class="step">3. Conclusie</a>
+            <a href="{{ url_for('main.show_worksession', worksession_id=worksession.id) }}" class="step">Afsluiten</a>
+        </div>
+
+        <div class="page_title">
+            <h1 class="worksession_title">{{ worksession.name }}</h1>
+            <div class="worksession_description">{{ worksession.effect | escape | markdown }}</div>
+        </div>
+
+        <div class="divmain" id="main">
+            <div class="divinstrumenten">
+                {% if worksession.show_instruments %}{% include 'main/scored_instruments.html' %}{% endif %}
+                {% if worksession.show_tags and advisor.get_active_tags() | length > 0 %}{% include 'main/active_tags.html' %}{% endif %}
+                <br>
+
+            </div>
+
+            <div class="divquestionnaire">
+                <h1 class="question_category">{{ worksession.question_set.name }}</h1>
+                {% for question_for_index in worksession.question_set.questions | sort(attribute='order') %}
+                    {% if not worksession.is_question_hidden(question_for_index) %}
+
+                        <a href ="{{ url_for('main.process_single', worksession_id=worksession.id, question_id=question_for_index.id) }}">
+                            <div class="
+                                question_index 
+                                {% if question_for_index.id == question.id %} current {% endif %}
+                                {% if question_for_index.is_category %} category {% endif %}
+                                {% if worksession.answers | selectattr('question', '==', question_for_index) | list | length > 0 %}
+                                    {% for a in worksession.answers | selectattr('question', '==', question_for_index) %}
+                                        {% if a.selection | length > 0 %} answered {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                ">
+                                {{ question_for_index.name }}
+                                
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+            <div class="divworkarea">            
+                <form method="POST">
+                    {% if question.is_category %}
+                        <h1 class="question_category">{{ question.name }}</h1>
+                        <div class="question_description">{{ question.description | escape | markdown }}</div>
+                        <br><input type="submit" value="Doorgaan">
+                    {% else %}
+                        <h1 class="question_category">{{ worksession.question_set.questions | selectattr('is_category', 'true') | selectattr('order', 'lt', question.order) | sort(attribute='order', reverse=true) | map(attribute='name') | first  }}</h1>
+                        <h2 class="question">{{ question.name }}</h2>
+                        <div class="question_description">{{ question.description | escape | markdown }}</div>
+                        {% if question.allow_weight %}
+                            <div class="factor">
+                                {% set weight_options=[0, 0.5, 1, 2] %}
+                                Gewicht: 
+                                {% for weight in weight_options %}
+                                    <input 
+                                        type="radio" 
+                                        name="weight" 
+                                        value="{{ weight }}" 
+                                        {% if answer.weight == weight %}checked{% endif %}>
+                                        x{{ weight }}
+                                {% endfor %}
+                                
+                            </div>
+                        {% endif %}
+                        {% for option in question.options | sort(attribute='order')%}
+                            <div class="option">
+                                {% if question.allow_multiselect %}
+                                    <input type="checkbox" name="option" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>
+                                {% else %}
+                                    <input type="radio" name="option" value="{{ option.id }}" {% if worksession.is_option_selected(option) %}checked{% endif %}>
+                                {% endif %}
+                                {{ option.name }}
+                            </div>
+                        {% endfor %}
+                        
+                        {% if (question.options | length > 0) and (question.allow_multiselect == False) %}<a style="font-size: smaller;" onclick="return uncheck_radio('option' );"><button type="button">&#10060;</button> Keuze wissen</a>{% endif %}
+            
+                        {% if question.allow_motivation %}
+                            <br><textarea name="motivation" rows="5" cols="100">{{ worksession.answers | selectattr('question', '==', question) | map(attribute='motivation') | first }}</textarea>
+                        {% endif %}
+                        <br><br><input type="submit" value="Opslaan">
+                    {% endif %}    
+                </form>
+            </div>
+        </div>
+        
+
+
+
+        <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/collapse.js')}}"></script>
+        <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/uncheck_radio.js')}}"></script>
+    </body>
+</html>
+
+
+
+
+

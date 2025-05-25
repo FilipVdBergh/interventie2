@@ -37,6 +37,38 @@ def cat_cards():
     return render_template('catalog/cat_cards.html', instruments=instruments, filter=None)
 
 
+@catalog.route('cat_table')
+def cat_table():
+    instruments = Instrument.query.order_by(Instrument.name)
+
+    return render_template('catalog/cat_table.html', instruments=instruments, filter=None)
+
+
+@catalog.route('/catalog/edit_multiple_instruments', methods=['POST'])
+@login_required
+def edit_multiple_instruments():
+	control = ""
+	instruments_to_edit = []
+
+	for item, value in request.form.items():
+		if "ctrl:::" in item:
+			control = value
+		if "ins:::" in item:
+			if not current_user.role.edit_catalog or Instrument.query.get(value).owner == current_user:
+				# Only allow changes to the session if the user has the proper rights. This should be redundant for normal use through the interface.
+				instruments_to_edit.append(Instrument.query.get(value))
+
+	if control == "archive":
+		pass
+	elif control == "activate":
+		pass
+	elif control == "delete":
+		pass
+	
+	instruments = Instrument.query.order_by(Instrument.name)
+	return render_template('main/cat_table.html', instruments=instruments)
+
+
 @catalog.route('cat_list')
 def cat_list():
     instruments = Instrument.query.order_by(Instrument.name)
