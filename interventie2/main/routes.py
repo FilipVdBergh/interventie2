@@ -143,16 +143,7 @@ def ws_shared():
 @login_required
 def ws_all():	
 	"""This view returns alle questions sets that the user is allowed to see."""
-	worksessions_ll = Worksession.query.order_by(Worksession.date).all()
-	worksessions = []
-	for ws in worksessions_ll:
-		if current_user.role.see_all_worksessions:
-			worksessions = worksessions_ll
-			break
-		elif ws.creator == current_user:
-			worksessions.append(ws)
-		elif current_user in ws.allowed_users:
-			worksessions.append(ws)
+	worksessions = current_user.allowed_worksessions
 	
 	if len(worksessions): 
 		return render_template('main/ws_all_table.html', worksessions=worksessions)
@@ -174,7 +165,7 @@ def edit_archive():
 	for worksession in worksessions_to_edit:
 		worksession.archived=True
 	
-	worksessions = Worksession.query.order_by(Worksession.date).all()
+	worksessions = current_user.allowed_worksessions
 	return render_template('main/ws_all_table.html', worksessions=worksessions)
 
 
@@ -193,7 +184,7 @@ def edit_activate():
 	for worksession in worksessions_to_edit:
 		worksession.archived=False
 	
-	worksessions = Worksession.query.order_by(Worksession.date).all()
+	worksessions = current_user.allowed_worksessions
 	return render_template('main/ws_all_table.html', worksessions=worksessions)
 
 
@@ -255,7 +246,7 @@ def edit_delete():
 			db.session.delete(worksession)
 		db.session.commit()
 	
-	worksessions = Worksession.query.order_by(Worksession.date).all()
+	worksessions = current_user.allowed_worksessions
 	return render_template('main/ws_all_table.html', worksessions=worksessions)
 
 
