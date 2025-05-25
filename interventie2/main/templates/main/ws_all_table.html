@@ -9,7 +9,6 @@
                     <th>Selectietool</th>
                     <th>Stemmen</th>
                     <th>Voortgang</th>
-                    <th>%</th>
                     <th>Interventieplannen</th>
                     <th>Datum</th>
                     <th>Eigenaar</th>
@@ -34,8 +33,7 @@
                                 Ja
                             {% endif %}
                         </td>
-                        <td>{{ worksession.completion() }}</td>
-                        <td>{{ worksession.completion(perc=True) }}</td>
+                        <td>{{ worksession.completion() }} ({{ worksession.completion(perc=True) }})</td>
                         <td>{{ worksession.plan | count }}</td>
                         {% if worksession.date is not none %}
                             <td>{{ worksession.date.strftime('%d-%m-%Y') }}</td>
