@@ -126,12 +126,7 @@ def ws_new():
 @login_required
 def ws_shared():	
 	"""This view returns all worksessions that are active and that are shared with the user."""
-	# I'm sure I could have done this in a single line.
-	worksessions_ll = Worksession.query.filter(Worksession.archived==False, Worksession.creator!=current_user).order_by(Worksession.date).all()
-	worksessions = []
-	for ws in worksessions_ll:
-		if current_user in ws.allowed_users:
-			worksessions.append(ws)
+	worksessions = current_user.allowed_worksessions
 	
 	if len(worksessions): 
 		return render_template('main/ws_shared_cards.html', worksessions=worksessions)
@@ -139,11 +134,20 @@ def ws_shared():
 	return ""
 
 
+def all_allowed_worksessions():
+	"""This function returns all allowed worksessions for the current user. I'm sure there is a better way of solving this."""
+	if current_user.role.see_all_worksessions:
+		worksessions = worksessions = Worksession.query.all()
+	else:
+		worksessions = current_user.allowed_worksessions
+	return worksessions
+
+
 @main.route('/worksessions/ws_all')
 @login_required
 def ws_all():	
 	"""This view returns alle questions sets that the user is allowed to see."""
-	worksessions = current_user.allowed_worksessions
+	worksessions = all_allowed_worksessions()
 	
 	if len(worksessions): 
 		return render_template('main/ws_all_table.html', worksessions=worksessions)
@@ -165,7 +169,7 @@ def edit_archive():
 	for worksession in worksessions_to_edit:
 		worksession.archived=True
 	
-	worksessions = current_user.allowed_worksessions
+	worksessions = all_allowed_worksessions()
 	return render_template('main/ws_all_table.html', worksessions=worksessions)
 
 
@@ -184,7 +188,7 @@ def edit_activate():
 	for worksession in worksessions_to_edit:
 		worksession.archived=False
 	
-	worksessions = current_user.allowed_worksessions
+	worksessions = all_allowed_worksessions()
 	return render_template('main/ws_all_table.html', worksessions=worksessions)
 
 
@@ -246,7 +250,7 @@ def edit_delete():
 			db.session.delete(worksession)
 		db.session.commit()
 	
-	worksessions = current_user.allowed_worksessions
+	worksessions = all_allowed_worksessions()
 	return render_template('main/ws_all_table.html', worksessions=worksessions)
 
 
