@@ -134,20 +134,11 @@ def ws_shared():
 	return ""
 
 
-def all_allowed_worksessions():
-	"""This function returns all allowed worksessions for the current user. I'm sure there is a better way of solving this."""
-	if current_user.role.see_all_worksessions:
-		worksessions = worksessions = Worksession.query.all()
-	else:
-		worksessions = current_user.allowed_worksessions
-	return worksessions
-
-
 @main.route('/worksessions/ws_all')
 @login_required
 def ws_all():	
 	"""This view returns alle questions sets that the user is allowed to see."""
-	worksessions = all_allowed_worksessions()
+	worksessions = current_user.list_allowed_worksessions()
 	
 	if len(worksessions): 
 		return render_template('main/ws_all_table.html', worksessions=worksessions)
@@ -169,7 +160,7 @@ def edit_archive():
 	for worksession in worksessions_to_edit:
 		worksession.archived=True
 	
-	worksessions = all_allowed_worksessions()
+	worksessions = current_user.list_allowed_worksessions()
 	return render_template('main/ws_all_table.html', worksessions=worksessions)
 
 
@@ -188,7 +179,7 @@ def edit_activate():
 	for worksession in worksessions_to_edit:
 		worksession.archived=False
 	
-	worksessions = all_allowed_worksessions()
+	worksessions = current_user.list_allowed_worksessions()
 	return render_template('main/ws_all_table.html', worksessions=worksessions)
 
 
@@ -250,7 +241,7 @@ def edit_delete():
 			db.session.delete(worksession)
 		db.session.commit()
 	
-	worksessions = all_allowed_worksessions()
+	worksessions = current_user.list_allowed_worksessions()
 	return render_template('main/ws_all_table.html', worksessions=worksessions)
 
 

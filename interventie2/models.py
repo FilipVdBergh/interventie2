@@ -77,6 +77,15 @@ class User(db.Model, UserMixin):
                 messages.append(message)
         return messages
     
+    def list_allowed_worksessions(self):
+        """This function returns all allowed worksessions for the current user. I'm sure there is a better way of solving this."""
+        worksessions = []
+        if self.role.see_all_worksessions:
+            worksessions = Worksession.query.all()
+        else:
+            worksessions = current_user.allowed_worksessions
+        return worksessions
+    
     def instrument_remarks(self):
         remarks = 0
         for instrument in self.owned_instruments:
