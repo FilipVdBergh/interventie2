@@ -126,7 +126,10 @@ def ws_new():
 @login_required
 def ws_shared():	
 	"""This view returns all worksessions that are active and that are shared with the user."""
-	worksessions = current_user.allowed_worksessions
+	worksessions = []
+	for ws in Worksession.query.all():
+		if current_user in ws.allowed_users and current_user != ws.creator:
+			worksessions.append(ws)
 	
 	if len(worksessions): 
 		return render_template('main/ws_shared_cards.html', worksessions=worksessions)
