@@ -887,6 +887,7 @@ th.rotate > div {
   .tooltip .tooltiptext {
     visibility: hidden;
     width: max-content;
+    max-width: 50em;
     background-color: var(--object);
     color: var(--object-text);
     box-shadow: rgba(0, 0, 0, 0.48) 0px 3px 8px;
@@ -898,7 +899,6 @@ th.rotate > div {
     /* Position the tooltip text - see examples below! */
     position: absolute;
     top: 3em;
-    max-width: 90%;
     /* left: 105%; */
     z-index: 99;
   }

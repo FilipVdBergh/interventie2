@@ -10,7 +10,6 @@
                     <th>Werksessie</th>
                     <th>Projectnummer</th>
                     <th>Selectietool</th>
-                    <th>Stemmen</th>
                     <th>Voortgang</th>
                     <th>Interventieplannen</th>
                     <th>Datum</th>
@@ -30,10 +29,14 @@
                             <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}</a>
                         </td>
                         <td>{{ worksession.project_number }}</td>
-                        <td style="background-color:{{ worksession.question_set.color }}; color:{{ worksession.question_set.text_color }}">{{ worksession.question_set.name }}</td>
-                        <td>
+                        <td style="background-color:{{ worksession.question_set.color }}; color:{{ worksession.question_set.text_color }}">
+                            {{ worksession.question_set.name }}
                             {% if worksession.enable_voting %}
-                                Ja
+                            <div class="tooltip">🗨
+                                <div class="tooltiptext">
+                                    Stemmen toegestaan
+                                </div>
+                            </div>
                             {% endif %}
                         </td>
                         <td>{{ worksession.completion() }} ({{ worksession.completion(perc=True) }})</td>
