@@ -184,11 +184,13 @@ def edit(operation):
 		elif operation == 'delete' and CONFIRM:
 			db.session.delete(worksession)
 			
-	if operation == 'delete' and CONFIRM:
-		db.session.commit()
-
 	if operation == 'export':
 		return render_template('main/export_archive_ready.html')
+
+	if operation == 'delete' and CONFIRM:
+		db.session.commit()
+	elif operation != 'delete':
+		db.session.commit()
 
 	worksessions = current_user.list_allowed_worksessions()
 	return render_template('main/ws_all_table.html', worksessions=worksessions)
