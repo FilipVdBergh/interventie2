@@ -68,8 +68,6 @@ def edit(operation):
         if "text_color" in item:
             text_color = value
 
-
-
     for instrument in instruments_to_edit:
         if operation == "add_tag":
             tag_assignment = InstrumentTagAssignment(instrument = instrument, tag = tag, weight = 1, multiplier = 1)
@@ -108,7 +106,6 @@ def instruments_current_user():
 
 @catalog.route('/filter_by_tags', methods=['POST'])
 def filter_by_tags():
-    print("We gaan filteren")
     list_of_instruments = []
     filter_tags = []
     if request.method == 'POST':
@@ -129,7 +126,6 @@ def filter_by_tags():
                     instruments=list_of_instruments,
                     tags=tags,
                     filter=filter_description)
-
 
 
 @catalog.route('/instrument/<int:id>')
