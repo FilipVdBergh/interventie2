@@ -18,23 +18,27 @@ Catalogus
         hx-target="this"
         hx-swap="innerHTML">
         {% include 'load_animation.html' %}
-
     </div>
 </div>
 <div id="cat_options" class="tabcontent">
     <div class="text_area">
-        <h1>Opties</h1>
+        <h1>Weergave</h1>
         <ul>
-            <!-- <li>
+            <li>
+                <a onclick="switch_tab(event, 'cat_all')" style="cursor:pointer;"
+                    hx-get="{{ url_for('catalog.cat_cards') }}"
+                    hx-trigger="click"
+                    hx-target="#catalog_list"
+                    hx-swap="innerHTML">Catalogus weergeven als kaarten
+                </a>
+            </li>
+            <li>
                 <a onclick="switch_tab(event, 'cat_all')" style="cursor:pointer;"
                     hx-get="{{ url_for('catalog.cat_table') }}"
                     hx-trigger="click"
-                    hx-target="#cat_all"
-                    hx-swap="innerHTML">Beheer catalogus
+                    hx-target="#catalog_list"
+                    hx-swap="innerHTML">Catalogus weergeven als lijst
                 </a>
-            </li> -->
-            <li>
-                <a href="{{ url_for('export.catalog') }}">Exporteer catalogus naar Word</a>
             </li>
         </ul>
         <h1>Filteren</h1>
@@ -63,13 +67,17 @@ Catalogus
                 {% endfor %}
             </div>
             <button onclick="switch_tab(event, 'cat_all')"
-            hx-post="{{ url_for('catalog.filter_by_tags') }}"
-            hx-trigger="click"
-            hx-target="#catalog_list"
-            hx-swap="innerHTML"
-            >Filteren
-        </button>
+                hx-post="{{ url_for('catalog.filter_by_tags') }}"
+                hx-trigger="click"
+                hx-target="#catalog_list"
+                hx-swap="innerHTML"
+                >Filteren
+            </button>
         </form>
+        <h1>Exporteren</h1>
+        <ul>
+            <li><a href="{{ url_for('export.catalog') }}">Exporteer catalogus naar Word</a></li>
+        </ul>
     </div>
 </div>
 

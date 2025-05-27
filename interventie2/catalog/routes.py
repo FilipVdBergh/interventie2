@@ -40,53 +40,75 @@ def cat_cards():
 @catalog.route('cat_table')
 def cat_table():
     instruments = Instrument.query.order_by(Instrument.name)
+    tags = Tag.query.order_by(Tag.name).all()
 
-    return render_template('catalog/cat_table.html', instruments=instruments, filter=None)
+    return render_template('catalog/cat_table.html', instruments=instruments, tags=tags, filter=None)
 
 
-@catalog.route('/catalog/edit_multiple_instruments', methods=['POST'])
+@catalog.route('/catalog/edit/<operation>', methods=['POST'])
 @login_required
-def edit_multiple_instruments():
-	control = ""
-	instruments_to_edit = []
+def edit(operation):
+    instruments_to_edit = []
+    CONFIRM = False
+    tag = None
+    color = None
+    text_color = None
 
-	for item, value in request.form.items():
-		if "ctrl:::" in item:
-			control = value
-		if "ins:::" in item:
-			if not current_user.role.edit_catalog or Instrument.query.get(value).owner == current_user:
-				# Only allow changes to the session if the user has the proper rights. This should be redundant for normal use through the interface.
-				instruments_to_edit.append(Instrument.query.get(value))
-
-	if control == "archive":
-		pass
-	elif control == "activate":
-		pass
-	elif control == "delete":
-		pass
-	
-	instruments = Instrument.query.order_by(Instrument.name)
-	return render_template('main/cat_table.html', instruments=instruments)
+    for item, value in request.form.items():
+        if "ins:::" in item:
+            if not current_user.role.edit_catalog or Instrument.query.get(value).owner == current_user:
+				# Only allow changes to the instruments if the user has the proper rights. This should be redundant for normal use through the interface.
+                instruments_to_edit.append(Instrument.query.get(value))
+        if "confirm_delete" in item:
+            CONFIRM = True
+        if "tag" in item:
+            tag = Tag.query.get(value)
+        if "color" in item:
+            color = value
+        if "text_color" in item:
+            text_color = value
 
 
-@catalog.route('cat_list')
-def cat_list():
+
+    for instrument in instruments_to_edit:
+        if operation == "add_tag":
+            tag_assignment = InstrumentTagAssignment(instrument = instrument, tag = tag, weight = 1, multiplier = 1)
+            db.session.add(tag_assignment)
+        elif operation == "remove_tag":
+            tag_assignment = instrument.get_tag_assignment(tag)
+            if tag_assignment is not None:
+                db.session.delete(tag_assignment)
+        elif operation == "background_color":
+            instrument.color = color
+        elif operation == "color":
+            instrument.text_color = text_color
+            instrument.color = color
+        elif operation == "expert_word":
+            pass
+        elif operation == "export_JSON":
+            pass
+        elif operation == "delete" and CONFIRM:
+            db.session.delete(instrument)
+
+    db.session.commit()
+
     instruments = Instrument.query.order_by(Instrument.name)
-
-    return render_template('catalog/cat_list.html', instruments=instruments, filter=None)
+    tags = Tag.query.order_by(Tag.name).all()
+    return render_template('catalog/cat_table.html', instruments=instruments, tags=tags)
 
 
 @catalog.route('/filter/my_instruments', methods=['GET', 'POST'])
 def instruments_current_user():    
     instruments = Instrument.query.filter(Instrument.owner == current_user).order_by(Instrument.name)
-
-    return render_template('catalog/cat_cards.html', 
-                           instruments=instruments,
+    tags = Tag.query.order_by(Tag.name).all()
+    return render_template('catalog/cat_table.html', 
+                           instruments=instruments, tags=tags,
                            filter=f'Beheerd door { current_user.name }')
 
 
 @catalog.route('/filter_by_tags', methods=['POST'])
 def filter_by_tags():
+    print("We gaan filteren")
     list_of_instruments = []
     filter_tags = []
     if request.method == 'POST':
@@ -100,10 +122,12 @@ def filter_by_tags():
                             if instrument not in list_of_instruments:
                                 list_of_instruments.append(instrument)
 
-    filter_description =f'{len(list_of_instruments)}  instrumenten gevonden met tags: ' + ', '.join(filter_tags)
+    filter_description =f'{len(list_of_instruments)} instrumenten gevonden met tags: ' + ', '.join(filter_tags)
 
-    return render_template('catalog/cat_cards.html', 
+    tags = Tag.query.order_by(Tag.name).all()
+    return render_template('catalog/cat_table.html', 
                     instruments=list_of_instruments,
+                    tags=tags,
                     filter=filter_description)
 
 

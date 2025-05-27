@@ -100,7 +100,6 @@ button {
 
     button.delete {
         background-color: var(--button_delete);
-        margin-left: 2em;
     }
     button.small {
         padding: 0em;
@@ -146,12 +145,6 @@ input {
     font-size: inherit;
     margin-bottom: 2px;
     padding: 0.5rem;
-}
-
-.ws_controls {
-    display:flex;
-    width:100%;
-    margin-bottom: 0.6em;
 }
 
 table {
@@ -556,7 +549,6 @@ footer {
         text-decoration: none;
     }
 
-
 /* Elements */
 li.mode {
     /* font-weight: bold; */
@@ -897,7 +889,8 @@ th.rotate > div {
     width: max-content;
     background-color: var(--object);
     color: var(--object-text);
-    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.48) 0px 3px 8px;
+    text-align: left;
     padding: 5px 10px;
     border-radius: 6px;
     font-size: small;
@@ -905,6 +898,7 @@ th.rotate > div {
     /* Position the tooltip text - see examples below! */
     position: absolute;
     top: 3em;
+    max-width: 90%;
     /* left: 105%; */
     z-index: 99;
   }

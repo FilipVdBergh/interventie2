@@ -149,10 +149,12 @@ def ws_all():
 	return ""
 
 
-@main.route('/worksessions/edit/archive', methods=['POST'])
+
+@main.route('/worksessions/edit/<operation>', methods=['POST'])
 @login_required
-def edit_archive():
+def edit(operation):
 	worksessions_to_edit = []
+	CONFIRM = False # Deleting multiple worksessiopns require that the user not only clicks the button, but also checks a box.
 
 	for item, value in request.form.items():
 		# Create list of worksessions to be affected:
@@ -160,59 +162,37 @@ def edit_archive():
 			if current_user.role.see_all_worksessions or current_user  in Worksession.query.get(value).allowed_users:
 				# Only allow changes to the session if the user has the proper rights. This should be redundant for normal use through the interface.
 				worksessions_to_edit.append(Worksession.query.get(value))
+		if "confirm_delete" in item:
+			CONFIRM = True
+
 	for worksession in worksessions_to_edit:
-		worksession.archived=True
-	
+		if operation == 'archive':
+			worksession.archived=True
+		elif operation == 'activate':
+			worksession.archived=False
+		elif operation == 'export':
+			exports_location = os.path.join(current_app.static_folder, 'export', str(current_user.id))
+			archive_filename = os.path.join(current_app.static_folder, 'export', f'{current_user.id}')
+			if not os.path.exists(exports_location):
+				os.makedirs(exports_location)
+			# Creating all the files:
+			for worksession in worksessions_to_edit:
+				export_worksession_to_word(worksession, location=exports_location)
+			# Making the archive and cleaning up:
+			make_archive(archive_filename, 'zip', root_dir=exports_location, base_dir='./')
+			rmtree(exports_location, ignore_errors=True)
+		elif operation == 'delete' and CONFIRM:
+			db.session.delete(worksession)
+			
+	if operation == 'delete' and CONFIRM:
+		db.session.commit()
+
+	if operation == 'export':
+		return render_template('main/export_archive_ready.html')
+
 	worksessions = current_user.list_allowed_worksessions()
 	return render_template('main/ws_all_table.html', worksessions=worksessions)
 
-
-@main.route('/worksessions/edit/activate', methods=['POST'])
-@login_required
-def edit_activate():
-	worksessions_to_edit = []
-
-	for item, value in request.form.items():
-		print(f'{item}: {value}')
-		# Create list of worksessions to be affected:
-		if "ws:::" in item:
-			if current_user.role.see_all_worksessions or current_user  in Worksession.query.get(value).allowed_users:
-				# Only allow changes to the session if the user has the proper rights. This should be redundant for normal use through the interface.
-				worksessions_to_edit.append(Worksession.query.get(value))
-	for worksession in worksessions_to_edit:
-		worksession.archived=False
-	
-	worksessions = current_user.list_allowed_worksessions()
-	return render_template('main/ws_all_table.html', worksessions=worksessions)
-
-
-@main.route('/worksessions/edit/export', methods=['POST'])
-@login_required
-def edit_export():
-	worksessions_to_edit = []
-
-	for item, value in request.form.items():
-		# Create list of worksessions to be affected:
-		if "ws:::" in item:
-			if current_user.role.see_all_worksessions or current_user  in Worksession.query.get(value).allowed_users:
-				# Only allow changes to the session if the user has the proper rights. This should be redundant for normal use through the interface.
-				worksessions_to_edit.append(Worksession.query.get(value))
-
-	# Housekeeping for all the locations and filenames:
-	exports_location = os.path.join(current_app.static_folder, 'export', str(current_user.id))
-	archive_filename = os.path.join(current_app.static_folder, 'export', f'{current_user.id}')
-	if not os.path.exists(exports_location):
-		os.makedirs(exports_location)
-
-	# Creating all the files:
-	for worksession in worksessions_to_edit:
-		export_worksession_to_word(worksession, location=exports_location)
-
-	# Making the archive and cleaning up:
-	make_archive(archive_filename, 'zip', root_dir=exports_location, base_dir='./')
-	rmtree(exports_location, ignore_errors=True)
-
-	return render_template('main/export_archive_ready.html')
 
 @main.route('/worksessions/edit/export_archive_ready', methods=['GET'])
 @login_required
@@ -222,31 +202,6 @@ def edit_export_archive_ready():
 	archive_filename = os.path.join(current_app.static_folder, 'export', f'{current_user.id}.zip')
 	return send_file (archive_filename, as_attachment=True, download_name='exported_worksessions.zip')
 	
-
-@main.route('/worksessions/edit/delete', methods=['POST'])
-@login_required
-def edit_delete():
-	worksessions_to_edit = []
-	CONFIRM = False # Deleting multiple worksessiopns require that the user not only clicks the button, but also checks a box.
-
-	for item, value in request.form.items():
-		# Deleting sessions requires an additional checkbox to be checked.
-		if "confirm_delete" in item:
-			CONFIRM = True
-		# Create list of worksessions to be affected:
-		if "ws:::" in item:
-			if current_user.role.see_all_worksessions or current_user  in Worksession.query.get(value).allowed_users:
-				# Only allow changes to the session if the user has the proper rights. This should be redundant for normal use through the interface.
-				worksessions_to_edit.append(Worksession.query.get(value))
-
-	if CONFIRM:
-		for worksession in worksessions_to_edit:
-			db.session.delete(worksession)
-		db.session.commit()
-	
-	worksessions = current_user.list_allowed_worksessions()
-	return render_template('main/ws_all_table.html', worksessions=worksessions)
-
 
 @main.route('/markdown_help', methods=['GET', 'POST'])
 def markdown_help():

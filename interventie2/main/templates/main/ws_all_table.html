@@ -3,7 +3,10 @@
         <input type="hidden" id="ws_selection" name="ws_selection" value="ws_selection">
         <table class="sortable">
             <thead>
-                <tr><th class="sorttable_nosort"></th>
+                <tr>
+                    <th class="sorttable_nosort">
+                        <input type="checkbox" name="sync_all" id="sync_all" value="sync_all" onclick="document.getElementById('with_selection').style.visibility='visible'; sync_all_checkboxes()">
+                    </th>
                     <th>Werksessie</th>
                     <th>Projectnummer</th>
                     <th>Selectietool</th>
@@ -20,7 +23,7 @@
                     <tr>
                         <td>
                             <label>
-                                <input type="checkbox" name="ws:::{{ worksession.name }}" value="{{ worksession.id }}" onclick="document.getElementById('with_selection').style.visibility='visible';">
+                                <input type="checkbox" class="checkbox" name="ws:::{{ worksession.name }}" value="{{ worksession.id }}" onclick="document.getElementById('with_selection').style.visibility='visible';">
                             </label>
                             </td>
                         <td>
@@ -49,28 +52,28 @@
             <h1>Selectie</h1>
             <div>
                 <button 
-                    hx-post="{{ url_for('main.edit_archive') }}"
+                    hx-post="{{ url_for('main.edit', operation='archive') }}"
                     hx-trigger="click"
                     hx-target="#ws_all"
                     hx-swap="innerHTML">
                     Archiveren
                 </button>
                 <button
-                    hx-post="{{ url_for('main.edit_activate') }}"
+                    hx-post="{{ url_for('main.edit', operation='activate') }}"
                     hx-trigger="click"
                     hx-target="#ws_all"
                     hx-swap="innerHTML">
                     Activeren
                 </button>
                 <button
-                    hx-post="{{ url_for('main.edit_export') }}"
+                    hx-post="{{ url_for('main.edit', operation='export') }}"
                     hx-trigger="click"
                     hx-target="#with_selection"
                     hx-swap="innerHTML">
                     Exporteren                        
                 </button>   
-                <button class="delete"
-                    hx-post="{{ url_for('main.edit_delete') }}"
+                <button class="delete" style="margin-left: 2em;"
+                    hx-post="{{ url_for('main.edit', operation='delete') }}"
                     hx-trigger="click"
                     hx-target="#ws_all"
                     hx-swap="innerHTML">
@@ -89,3 +92,4 @@
 </div>
 
 <script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/sort_table.js')}}"></script>
+<script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/sync_all_checkboxes.js')}}"></script>
