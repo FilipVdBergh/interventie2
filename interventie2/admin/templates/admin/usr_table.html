@@ -1,0 +1,112 @@
+
+
+<div class="text_area">
+    <form method="POST">
+        {% if current_user.role.edit_users %}
+            <h1>Nieuwe gebruiker</h1>
+            <button><a href="{{ url_for('admin.register') }}">Nieuwe gebruiker maken</a></button>
+        {% endif %}
+        <h1>Alle gebruikers</h1>
+        <table class="sortable">
+            <thead>
+                <tr>
+                    <th class="sorttable_nosort">
+                        <input type="checkbox" name="sync_all" id="sync_all" value="sync_all" onclick="document.getElementById('with_selection').style.visibility='visible'; sync_all_checkboxes()">
+                    </th>
+                    <th>Naam</th>
+                    <th>Rol</th>
+                    <th>Laatst ingelogd</th>
+                    <th>Inloggen togestaan</th>
+                    <th>Aantal werksessies</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                            <label>
+                                <input type="checkbox" class="checkbox" name="user:::{{ user.name }}" value="{{ user.id }}" onclick="document.getElementById('with_selection').style.visibility='visible';">
+                            </label>
+                        </td>
+                        <td><a href="{{ url_for('admin.user', id=user.id) }}">{{ user.name }}</a></td>
+                        <td><a href="{{ url_for('admin.roles') }}">{{ user.role.name }}</a></td>
+                        <td>{{ user.last_seen }}</td>
+                        <td>{% if user.active %}Ja{% else %}Nee{% endif %}</td>
+                        <td>{{ user.allowed_worksessions | length }}</td>
+                        <td>
+                            <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><button type="button">Bericht</button></a>
+                            {% if user.edit_allowed() %}
+                                <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><button type="button">Aanpassen</button></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div id="with_selection" class="controls" style="visibility:hidden;">
+            <h1>Selectie</h1>
+            <div style="display:grid; grid-template-columns: auto auto auto; gap:2px 10px; align-items:center;">
+                <div>
+                    <button 
+                        hx-post="{{ url_for('admin.edit', operation='disable_login') }}"
+                        hx-trigger="click"
+                        hx-target="#adm_usr_table"
+                        hx-swap="innerHTML">
+                        Inloggen niet toestaan
+                    </button>
+                    <button
+                        hx-post="{{ url_for('admin.edit', operation='enable_login') }}"
+                        hx-trigger="click"
+                        hx-target="#adm_usr_table"
+                        hx-swap="innerHTML">
+                        Inloggen toestaan
+                    </button>
+                </div>
+                <div>
+                    <button 
+                        hx-post="{{ url_for('admin.edit', operation='change_role') }}"
+                        hx-trigger="click"
+                        hx-target="#adm_usr_table"
+                        hx-swap="innerHTML">
+                        Verander rol
+                    </button>
+                </div>
+                <div>
+                    <button class="delete"
+                        hx-post="{{ url_for('admin.edit', operation='delete') }}"
+                        hx-trigger="click"
+                        hx-target="#adm_usr_table"
+                        hx-swap="innerHTML">
+                        Verwijderen
+                    </button>
+                </div>
+                <div>
+                    <!-- Empty -->
+                </div>
+                <div>
+                    <label for="role">Rol: </label>
+                    <select name="role" id="role">
+                        {% for role in roles %}
+                            <option value="{{ role.id }}">{{ role.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label><input type="checkbox" name="confirm_delete" value="confirm_delete">Bevestig verwijderen</label>          
+                </div>
+            </div>
+
+            <button
+                hx-get="{{ url_for('admin.usr_table') }}"
+                hx-trigger="click"
+                hx-target="#adm_usr_table"
+                hx-swap="innerHTML">Annuleren
+            </button>
+        </div>
+    </form>
+</div>
+
+<script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/sort_table.js')}}"></script>
+<script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/sync_all_checkboxes.js')}}"></script>

@@ -8,6 +8,7 @@ Werksessies
     <button class="tablinks" onclick="switch_tab(event, 'ws_upcoming')" id="defaultOpen">Start</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_owned')" id="defaultOpen">Mijn sessies</button>
     <button class="tablinks" onclick="switch_tab(event, 'ws_all')">Alle sessies</button>
+    <!-- <button class="tablinks" onclick="switch_tab(event, 'ws_options')">Opties</button> -->
 {% endblock %}
 
 
@@ -57,5 +58,14 @@ Werksessies
         {% include 'load_animation.html' %}
     </div>
 </div>
+
+<!-- <div id="ws_options" class="tabcontent">
+    <h1>Filteren</h1>
+    <ul>
+        <li>Werksessies met één interventieplan ouder dan 90 dagen</li>
+        <li>Werksessies zonder interventieplannen met een sessiedatum in het verleden</li>
+    </ul>
+
+</div> -->
 
 {% endblock %}

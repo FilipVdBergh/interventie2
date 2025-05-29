@@ -75,15 +75,65 @@ def user(id=None):
     return render_template('admin/user.html', user=User.query.get(id))
 
 
-@admin.route('/users', methods=['GET', 'POST'])
+@admin.route('/admin/users', methods=['GET', 'POST'])
 @login_required
 def index():
     if not current_user.role.edit_users: 
         return redirect(url_for('main.index'))
-    list_of_users = User.query.order_by(User.id)
     messages = Message.query.order_by(Message.id)
 
-    return render_template('admin/index.html', users=list_of_users, messages=messages)
+    return render_template('admin/index.html', messages=messages)
+
+
+@admin.route('/admin/usr_table', methods=['GET'])
+@login_required
+def usr_table():
+    if not current_user.role.edit_users: 
+        return redirect(url_for('main.index'))
+
+    users = User.query.order_by(User.id)
+    roles = Role.query.filter(Role.id > 1).all()
+
+    return render_template('admin/usr_table.html', users=users, roles=roles)
+
+
+@admin.route('/admin/edit/<operation>', methods=['POST'])
+@login_required
+def edit(operation):
+    users_to_edit = []
+    CONFIRM = False
+    role = None
+
+    for item, value in request.form.items():
+        if "user:::" in item:
+            u = User.query.get(value)
+            if u.edit_allowed() and u != current_user:
+				# Only allow changes to users if the user has the proper rights. This should be redundant for normal use through the interface.
+                # Also, the user can't change their own role in this way. To prevent disaster.
+                users_to_edit.append(u)
+        if "confirm_delete" in item:
+            CONFIRM = True
+        if "role" in item:
+            role = Role.query.get(value) 
+            if role.id == 1: # We're not changing peoples role to root this way.
+                role = Role.query.get(2)
+
+    for u in users_to_edit:
+        if operation == 'disable_login':
+            u.active = False
+        if operation == 'enable_login':
+            u.active = True
+        if operation == 'change_role':
+            u.role = role
+        if operation == 'delete' and CONFIRM == True:
+            db.session.delete(u)
+        
+    db.session.commit()
+
+    users = User.query.order_by(User.id)
+    roles = Role.query.filter(Role.id > 1).all()
+
+    return render_template('admin/usr_table.html', users=users, roles=roles)
 
 
 @admin.route('/register', methods=['GET', 'POST'])
@@ -111,6 +161,7 @@ def register():
             )
         return redirect(url_for('admin.index'))
     return render_template('admin/register.html', form=form, self_register=False)
+
 
 @admin.route('/new', methods=['GET', 'POST'])
 def self_register():
@@ -179,6 +230,7 @@ def edit_user(user_id):
         form.description.data = user.description
         form.link.data = user.link
         form.active.data = user.active
+
     return render_template('admin/edit_user.html', form=form, user=user)
 
 

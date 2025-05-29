@@ -6,10 +6,11 @@
 
 
 {% block page_title %}
-    Gebruiker wijzigen
+    Gebruiker wijzigen  
 {% endblock %}
 
 {% block body %}
+    <h1>{{ user.name }}</h1>
     <form method="POST">
         {{ form.csrf_token }}
         
