@@ -80,9 +80,8 @@ def user(id=None):
 def index():
     if not current_user.role.edit_users: 
         return redirect(url_for('main.index'))
-    messages = Message.query.order_by(Message.id)
 
-    return render_template('admin/index.html', messages=messages)
+    return render_template('admin/index.html')
 
 
 @admin.route('/admin/usr_table', methods=['GET'])
@@ -134,6 +133,45 @@ def edit(operation):
     roles = Role.query.filter(Role.id > 1).all()
 
     return render_template('admin/usr_table.html', users=users, roles=roles)
+
+
+@admin.route('/admin/usr_messages', methods=['GET'])
+@login_required
+def usr_messages():
+    if not current_user.role.edit_users: 
+        return ""
+
+    messages = Message.query.order_by(Message.id)
+
+    return render_template('admin/usr_messages.html', messages=messages)
+
+
+@admin.route('/admin/message_edit/<operation>', methods=['POST'])
+@login_required
+def message_edit(operation):
+    if not current_user.role.edit_users: 
+        return ""
+
+    messages_to_edit = []
+    CONFIRM = False
+
+    for item, value in request.form.items():
+        print (f'Evaluating {item}: {value}')
+        if "mss:::" in item:
+            messages_to_edit.append(Message.query.get(value))
+        if "confirm_delete" in item:
+            CONFIRM = True
+
+    for message in messages_to_edit:
+        if operation == 'delete' and CONFIRM == True:
+            print(f'Deleting {message.subject}')
+            db.session.delete(message)
+        
+    db.session.commit()
+
+    messages = Message.query.order_by(Message.id)
+
+    return render_template('admin/usr_messages.html', messages=messages)
 
 
 @admin.route('/register', methods=['GET', 'POST'])

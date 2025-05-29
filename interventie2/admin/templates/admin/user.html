@@ -16,9 +16,7 @@
     {% if current_user == user %}
         <button class="tablinks" onclick="switch_tab(event, 'us_messages')" id="defaultOpen">Berichten</button>
     {% endif %}
-    
     <button class="tablinks" onclick="switch_tab(event, 'us_info')"  id="defaultOpen">Informatie</button>
-    <button class="tablinks" onclick="switch_tab(event, 'us_options')">Opties</button>
 {% endblock %}
 
 {% block body %}
@@ -71,10 +69,7 @@
                     {% for message in current_user.messages_sent %}
                         <tr>
                             <td><a href="{{ url_for('admin.message', message_id=message.id) }}" {% if message.unread %} class="unread"{% endif %}>{{ message.subject }}</a></td>
-                            <td>
-                                <a href="{{ url_for('admin.user', id=message.recipient.id) }}">{{ message.recipient.name }}</a>
-                                
-                            </td>
+                            <td><a href="{{ url_for('admin.user', id=message.recipient.id) }}">{{ message.recipient.name }}</a></td>
                             <td>{{ message.date_created }}</td>
                         </tr>
                     {% endfor %}
@@ -89,68 +84,48 @@
     </div>
 </div>
 
-<div id="us_options" class="tabcontent">
-    <div class="text_area">
-
-        {% if user.edit_allowed() %}
-        <div class="div_options">
-            <ul>
-                {% if user == current_user %}<a href="{{ url_for('main.logout') }}"><li class="option">Uitloggen</li></a>{% endif %}
-                <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><li class="option">Gebruiker aanpassen</li></a>
-                <a href="{{ url_for('admin.change_password', user_id=user.id) }}"><li class="option">Wachtwoord veranderen</li></a>
-                <!-- <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><li class="option">Stuur {{ user.name }} een bericht</li></a> -->
-                <li>{{ macro.confirm_redirect( "Gebruiker verwijderen", user.name+" verwijderen?", url_for('admin.delete_user', user_id=user.id) ) }}</li>
-            </ul>
-        </div>
-        {% endif %}
-    </div>
-</div>
-
 <div id="us_info" class="tabcontent">
     <div class="text_area">
+        <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><button>✎ Gebruiker aanpassen</button></a>
+
+
+        <h1>{{ user.name}}</h1>
         {% if user.description | length > 0 %}
-            <h1>Beschrijving</h1>
-            <p>{{ user.description }}</p>
+            <div>{{ user.description }}</div>
         {% endif %}
-        <h1>Kenmerken</h1>
-            <table class="sortable">
-                <thead>
-                    <tr>
-                        <th>Kenmerk</th>
-                        <th>Waarde</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Id</td>
-                        <td>{{ user.id }}</td>
-                    </tr>
-                    <tr>
-                        <td>Aangemaakt</td>
-                        <td>{{ user.date_created }}</td>
-                    </tr>
-                    <tr>
-                        <td>Laatst gezien</td>
-                        <td>{{ user.last_seen }}</td>
-                    </tr>
-                    <tr>
-                        <td>Rol</td>
-                        <td><a href="{{ url_for('admin.roles') }}">{{ user.role.name }}</a> ({{ user.role_id }})</td>
-                    </tr>
-                    <tr>
-                        <td>E-mail</td>
-                        <td>{{ user.email }}</td>
-                    </tr>
-                    <tr>
-                        <td>Link</td>
-                        <td>{{ user.link }}</td>
-                    </tr>
-                    <tr>
-                        <td>Inloggen</td>
-                        <td>{% if user.active %}Toegestaan{% else %}Niet toegestaan{% endif %}</td>
-                    </tr>
-                </tbody>
-            </table>
+
+        {% if user.email | length > 0 or user.link | length > 0 %}
+            <h2>Overige gegevens</h2>
+        {% endif %}
+        <ul>
+            {% if user.email | length > 0 %}
+                <li>
+                    <div><a href="mailto:{{ user.email}}">{{ user.email }}</a></div>
+                </li>
+            {% endif %}
+            {% if user.link | length > 0 %}
+                <li>
+                    <div><a href="{{ user.link }}">{{ user.link }}</a></div>
+                </li>
+            {% endif %}            
+        </ul>
+
+        <h2>Inloggegevens</h2>
+        <ul>
+            <li>Rol: <a href="{{ url_for('admin.roles') }}">{{ user.role.name }}</a></li>
+            <li>{% if user.active %}Inloggen is toegestaan{% else %}Inloggen is niet toegestaan{% endif %}</li>
+            <li>Gebruiker aangemaakt: {{ user.date_created }}</li>
+            <li>Gebruiker laatst ingelogd: {{ user.last_seen }}</li>
+        </ul>
+
+        <h1>Opties</h1>
+        <ul>
+            {% if user == current_user %}<a href="{{ url_for('main.logout') }}"><li class="option">Uitloggen</li></a>{% endif %}
+            <a href="{{ url_for('admin.change_password', user_id=user.id) }}"><li class="option">Wachtwoord veranderen</li></a>
+            <!-- <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><li class="option">Stuur {{ user.name }} een bericht</li></a> -->
+            <li>{{ macro.confirm_redirect( "Gebruiker verwijderen", user.name+" verwijderen?", url_for('admin.delete_user', user_id=user.id) ) }}</li>
+        </ul>
+
     </div>
 </div>
 

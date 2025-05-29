@@ -1,0 +1,69 @@
+<div class="text_area">
+    {% if current_user.role.edit_users %}
+        <h1>Systeembericht</h1>
+        <a href="{{ url_for('admin.new_system_message') }}"><button>Stuur bericht aan alle gebruikers</button></a>
+    {% endif %}
+    <form method="POST">
+        <h1>Alle berichten</h1>
+        <table class="sortable">
+            <thead>
+                <tr>
+                    <th class="sorttable_nosort">
+                        <input type="checkbox" name="sync_all" id="sync_all_messages" value="sync_all" onclick="document.getElementById('with_messages_selection').style.visibility='visible'; sync_all_checkboxes(id_to_sync_to='sync_all_messages', classes_to_sync='checkbox_message')">
+                    </th>
+                    <th>Onderwerp</th>
+                    <th>Afzender</th>
+                    <th>Ontvanger</th>
+                    <th>Datum aangemaakt</th>
+                    <th>Datum bezorging</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in messages %}
+                    <tr>
+                        <td>
+                            <label>
+                                <input type="checkbox" class="checkbox_message" name="mss:::{{ message.id }}" value="{{ message.id }}" onclick="document.getElementById('with_messages_selection').style.visibility='visible';">
+                            </label>
+                        </td>
+                        <td><a href="{{ url_for('admin.message', message_id=message.id) }}" {% if message.unread %} class="unread"{% endif %}>{{ message.subject }}</a></td>
+                        <td>
+                            {% if message.system %}
+                                Systeem
+                            {% else %}
+                                <a href="{{ url_for('admin.user', id=message.recipient.id) }}">{{ message.sender.name }}</a>
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ url_for('admin.user', id=message.recipient.id) }}">{{ message.recipient.name }}</a></td>
+                        <td>{{ message.date_created.strftime('%Y-%m-%d %H:%M')}}</td>
+                        <td>{{ message.deliver_after.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div id="with_messages_selection" class="controls" style="visibility:hidden;">
+            <h1>Selectie</h1>
+            <div>
+                <label><input type="checkbox" name="confirm_delete" value="confirm_delete">Bevestig verwijderen</label>          
+                <button class="delete" style="margin-left: 2em;"
+                    hx-post="{{ url_for('admin.message_edit', operation='delete') }}"
+                    hx-trigger="click"
+                    hx-target="#adm_messages"
+                    hx-swap="innerHTML">
+                    Verwijderen
+                </button>
+            </div>
+            <button
+                hx-get="{{ url_for('admin.usr_messages') }}"
+                hx-trigger="click"
+                hx-target="#adm_messages"
+                hx-swap="innerHTML">Annuleren
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/sort_table.js')}}"></script>
+<script nonce="{{ nonce }}" src="{{url_for('static', filename='scripts/sync_all_checkboxes.js')}}"></script>

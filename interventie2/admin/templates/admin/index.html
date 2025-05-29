@@ -23,57 +23,13 @@
 </div>
 
 <div id="adm_messages" class="tabcontent">
-    <div class="text_area">
-        {% if current_user.role.edit_users %}
-            <h1>Systeembericht</h1>
-            <a href="{{ url_for('admin.new_system_message') }}"><button>Stuur bericht aan alle gebruikers</button></a>
-        {% endif %}
-        <h1>Alle berichten</h1>
-        <table class="sortable">
-            <thead>
-                <tr>
-                    <th>Onderwerp</th>
-                    <th>Afzender</th>
-                    <th>Ontvanger</th>
-                    <th>Datum aangemaakt</th>
-                    <th>Datum bezorging</th>
-                    <th>Verwijderen</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for message in messages %}
-                    <tr>
-                        <td><a href="{{ url_for('admin.message', message_id=message.id) }}" {% if message.unread %} class="unread"{% endif %}>{{ message.subject }}</a></td>
-                        <td>
-                            {% if message.system %}
-                                Systeem
-                            {% else %}
-                                <a href="{{ url_for('admin.user', id=message.recipient.id) }}">{{ message.sender.name }}</a>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <a href="{{ url_for('admin.user', id=message.recipient.id) }}">{{ message.recipient.name }}</a>
-                        </td>
-
-                        <td>{{ message.date_created.strftime('%Y-%m-%d %H:%M')}}</td>
-                        <td>
-                                {{ message.deliver_after.strftime('%Y-%m-%d %H:%M') }}
-        
-                            
-                        </td>
-                        <td><button>{{ macro.confirm_redirect( "Verwijderen", "Wilt u dit bericht verwijderen?", url_for('admin.delete_message', message_id=message.id) ) }}</button></td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-
+    <div id="adm_usr_messages"
+        hx-get="{{ url_for('admin.usr_messages') }}"
+        hx-trigger="load"
+        hx-target="this"
+        hx-swap="innerHTML">
+        {% include 'load_animation.html' %}
     </div>
 </div>
-<div id="adm_options" class="tabcontent">
-    <div class="text_area">
-            <a href="{{ url_for('export.index') }}"><div class="option">Exporteren</div></a>
 
-    </div>
-</div>
 {% endblock %}
