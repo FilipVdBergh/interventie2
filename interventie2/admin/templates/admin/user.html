@@ -24,39 +24,39 @@
     <div class="text_area">
 
         {% if current_user == user %}   
-
-        <h1>Inbox</h1>
-        {% if current_user.messages_list() | count > 0 %}
-        <div class="card_area">
-            {% for message in current_user.messages_list() %}
-                <a href="{{ url_for('admin.message', message_id=message.id) }}">
-                    <div class="card">
-                        <div class="card_title">
-                            {{ message.subject }} {% if message.unread %}(nieuw){% endif %}
-                        </div>
-                        <div class="card_info">
-                            <p>
-                                {% if message.system %}
-                                    Systeem ({{ message.sender.name }})
-                                {% else %}
-                                    {{ message.sender.name }}
-                                {% endif %}
-                                , {{ message.date_created.strftime('%d-%m-%Y') }}.
-                            </p> 
-                        </div>
-                        <div class="card_description">
-                            {{ message.body | escape | truncate(200) | markdown }}
-                        </div>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
+            <h1>Inbox</h1>
+            {% if current_user.messages_list() | count > 0 %}
+                <div class="card_area">
+                    {% for message in current_user.messages_list() %}
+                        <a href="{{ url_for('admin.message', message_id=message.id) }}">
+                            <div class="card">
+                                <div class="card_title">
+                                    {{ message.subject }} {% if message.unread %}(nieuw){% endif %}
+                                </div>
+                                <div class="card_info">
+                                    <p>
+                                        {% if message.system %}
+                                            Systeem ({{ message.sender.name }})
+                                        {% else %}
+                                            {{ message.sender.name }}
+                                        {% endif %}
+                                        , {{ message.date_created.strftime('%d-%m-%Y') }}.
+                                    </p> 
+                                </div>
+                                <div class="card_description">
+                                    {{ message.body | escape | truncate(200) | markdown }}
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
         {% else %}
             <div>Geen berichten</div>
         {% endif %}
 
-        <h1>Outbox</h1>
+        
         {% if current_user.messages_sent | count > 0 %}
+            <h1>Outbox</h1>
                 <table class="sortable">
                     <thead>
                         <tr>
@@ -86,8 +86,9 @@
 
 <div id="us_info" class="tabcontent">
     <div class="text_area">
-        <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><button>✎ Gebruiker aanpassen</button></a>
-
+        {% if user.edit_allowed() %}
+            <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><button>✎ Gebruiker aanpassen</button></a>
+        {% endif %}
 
         <h1>{{ user.name}}</h1>
         {% if user.description | length > 0 %}
