@@ -52,11 +52,12 @@
         {% endif %}
         <h1>Eigenaar</h1>
         <span class="user"><a href="{{ url_for('admin.user', id=instrument.owner.id) }}">{{ instrument.owner.name }}</a></span>
-        
-        <div>
-            <br>
-            <a href="{{ url_for('catalog.edit_instrument', id=instrument.id) }}"><button type="button">✎</button></a>
-        </div>
+        {% if edit_catalog_allowed %}
+            <div>
+                <br>
+                <a href="{{ url_for('catalog.edit_instrument', id=instrument.id) }}"><button type="button">✎</button></a>
+            </div>
+        {% endif %}
     </div>
 </div>
 
@@ -74,10 +75,12 @@
             </span></li>
             {% endfor %}
         </ul>
-        <div>
-            <br>
-            <a href="{{ url_for('catalog.instrument_tags', id=instrument.id) }}"><button type="button">✎</button></a>
-        </div>
+        {% if edit_catalog_allowed %}
+            <div>
+                <br>
+                <a href="{{ url_for('catalog.instrument_tags', id=instrument.id) }}"><button type="button">✎</button></a>
+            </div>
+        {% endif %}
     </div>
 </div>
 
