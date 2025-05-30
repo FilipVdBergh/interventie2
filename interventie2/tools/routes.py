@@ -78,6 +78,7 @@ def edit_question_set(question_set_id=None):
         question_set.default_allow_weights = form.default_allow_weights.data
         question_set.color = form.color.data
         question_set.text_color = form.text_color.data
+        question_set.date_modified = func.now()
         if question_set_id is None: # Nieuwe tool
             db.session.add(question_set)
         db.session.commit()
@@ -220,10 +221,12 @@ def design_question_set(question_set_id):
 
     form = AddQuestionForm()
     add_mandatory_tag_form = AddTagToQuestionSet()
-
     add_forbidden_tag_form = AddTagToQuestionSet()
     add_mandatory_tag_form.tag.choices = [(tag.id, tag.name) for tag in tags]
     add_forbidden_tag_form.tag.choices = [(tag.id, tag.name) for tag in tags]
+
+    if form.validate_on_submit():
+        question_set.date_modified = func.now()
 
     if form.validate_on_submit():
         # Add question
@@ -278,6 +281,7 @@ def remove_tag_from_question_set(question_set_id, taglist, tag_id):
     if taglist == 'forbidden':
         question_set.forbidden_tags.remove(tag)
 
+    question_set.date_modified = func.now()
     db.session.commit()
     return redirect(url_for('tools.design_question_set', question_set_id=question_set_id))    
 
@@ -297,6 +301,7 @@ def edit_question(question_id):
         question.allow_choice = form.allow_choice.data
         question.allow_multiselect = form.allow_multiselect.data
         question.allow_weight = form.allow_weight.data
+        question.question_set.date_modified = func.now()
         db.session.commit()
         return redirect(url_for('tools.design_question_set', question_set_id=question.question_set.id))
     elif request.method == 'GET':
@@ -331,6 +336,7 @@ def question_move(question_set_id, question_id, dir):
                 current_question.order = ( new_order * 2 ) - 3 # Move it before the previous question
             if dir == 0: # Move the question up in the order
                 current_question.order = ( new_order * 2 ) + 3
+    question.question_set.date_modified = func.now()
     db.session.commit()
     return redirect(url_for('tools.design_question_set', question_set_id=question.question_set.id))
 
@@ -349,6 +355,7 @@ def edit_question_options(question_id):
         # See the move question function for an explanation on this procedure.
             current_option.order = new_order * 2 
         db.session.add(option)
+        question.question_set.date_modified = func.now()
         db.session.commit()
         return redirect(url_for('tools.edit_question_options', question_id=question_id))
     elif request.method == 'GET':
@@ -363,6 +370,7 @@ def delete_question(question_id):
         return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om een tool te ontwerpen.')
     question = Question.query.get(question_id)
     question_set = QuestionSet.query.get(question.question_set.id)
+    question_set.date_modified = func.now()
 
     # Check to see if answers for this question exist. In that case, deletion is not possible
     answers = Answer.query.filter_by(question=question).all()
@@ -386,6 +394,7 @@ def edit_required_tags(question_id):
     if form.validate_on_submit():
         tag = Tag.query.get(form.tag.data)
         question.required_active_tags.append(tag)
+        question.question_set.date_modified = func.now()
         db.session.commit()
         return redirect(url_for('tools.edit_required_tags', question_id=question_id))
     return render_template('tools/edit_required_tags.html', question=question, form=form)
@@ -399,6 +408,7 @@ def remove_tag_from_required_tags(question_id, tag_id):
     question = Question.query.get(question_id)
     tag = Tag.query.get(tag_id)
     question.required_active_tags.remove(tag)
+    question.question_set.date_modified = func.now()
 
     db.session.commit()
     return redirect(url_for('tools.edit_required_tags', question_id=question_id))
@@ -415,6 +425,7 @@ def edit_option(option_id):
 
     if form.validate_on_submit():
         option.name = form.name.data
+        option.question.question_set.date_modified = func.now()
         db.session.commit()
         return redirect(url_for('tools.edit_question_options', question_id=option.question_id))
     elif request.method == 'GET':
@@ -438,6 +449,7 @@ def option_move(option_id, dir):
                 current_option.order = ( new_order * 2 ) - 3 # Move it before the previous question
             if dir == 0: # Move the question up in the order
                 current_option.order = ( new_order * 2 ) + 3
+    option.question.question_set.date_modified = func.now()
     db.session.commit()
     return redirect(url_for('tools.edit_question_options', question_id=option.question.id))
 
@@ -447,6 +459,7 @@ def option_move(option_id, dir):
 def delete_option(option_id):
     option = Option.query.get(option_id)
     db.session.delete(option)
+    option.question.question_set.date_modified = func.now()
     db.session.commit()
     return redirect(url_for('tools.edit_question_options', question_id=option.question_id))
 
@@ -468,6 +481,7 @@ def toggle_tag(option_id, tag_id):
         option.tags.remove(tag)
     else:
         option.tags.append(tag)
+    option.question.question_set.date_modified = func.now()
     db.session.commit()
     return redirect(url_for('tools.edit_tag_assignment', option_id=option.id))
 
