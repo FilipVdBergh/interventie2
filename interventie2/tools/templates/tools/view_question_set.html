@@ -65,6 +65,18 @@
                 {% endif %}
             {% endfor %}
         </ol>
+        <ul>
+            <li>Sta alleen instrumenten toe met de volgende tags: 
+                {% for tag in question_set.mandatory_tags %}
+                <span class="tag">{{ tag.name }}</span>
+                {% endfor %}
+            </li>
+            <li>Sluit alle instrumenten uit met de volgende tags: 
+                {% for tag in question_set.forbidden_tags %}
+                    <span class="tag">{{ tag.name }}</span>
+                {% endfor %}
+            </li>
+        </ul>
 
 </div>
 
