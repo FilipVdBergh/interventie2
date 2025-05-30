@@ -89,7 +89,8 @@
         {% if user.edit_allowed() %}
             <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><button>✎ Gebruiker aanpassen</button></a>
         {% endif %}
-
+        <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><button type="button">✉ Bericht sturen</button></a>
+        
         <h1>{{ user.name}}</h1>
         {% if user.description | length > 0 %}
             <div>{{ user.description }}</div>
@@ -119,14 +120,15 @@
             <li>Gebruiker laatst ingelogd: {{ user.last_seen }}</li>
         </ul>
 
-        <h1>Opties</h1>
-        <ul>
-            {% if user == current_user %}<a href="{{ url_for('main.logout') }}"><li class="option">Uitloggen</li></a>{% endif %}
-            <a href="{{ url_for('admin.change_password', user_id=user.id) }}"><li class="option">Wachtwoord veranderen</li></a>
-            <!-- <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><li class="option">Stuur {{ user.name }} een bericht</li></a> -->
-            <li>{{ macro.confirm_redirect( "Gebruiker verwijderen", user.name+" verwijderen?", url_for('admin.delete_user', user_id=user.id) ) }}</li>
-        </ul>
-
+        {% if user.edit_allowed() %}
+            <h1>Opties</h1>
+            <ul>
+                {% if user == current_user %}<a href="{{ url_for('main.logout') }}"><li class="option">Uitloggen</li></a>{% endif %}
+                <a href="{{ url_for('admin.change_password', user_id=user.id) }}"><li class="option">Wachtwoord veranderen</li></a>
+                <!-- <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><li class="option">Stuur {{ user.name }} een bericht</li></a> -->
+                <li>{{ macro.confirm_redirect( "Gebruiker verwijderen", user.name+" verwijderen?", url_for('admin.delete_user', user_id=user.id) ) }}</li>
+            </ul>
+        {% endif %}
     </div>
 </div>
 

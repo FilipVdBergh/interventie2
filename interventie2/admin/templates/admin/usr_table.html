@@ -19,7 +19,6 @@
                     <th>Laatst ingelogd</th>
                     <th>Inloggen togestaan</th>
                     <th>Aantal werksessies</th>
-                    <th>Acties</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,12 +35,6 @@
                         <td>{{ user.last_seen.strftime('%d-%m-%Y') }}</td>
                         <td>{% if user.active %}Ja{% else %}Nee{% endif %}</td>
                         <td>{{ user.allowed_worksessions | length }}</td>
-                        <td>
-                            <a href="{{ url_for('admin.new_message', recipient_id=user.id) }}"><button type="button">Bericht</button></a>
-                            {% if user.edit_allowed() %}
-                                <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><button type="button">Aanpassen</button></a>
-                            {% endif %}
-                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
