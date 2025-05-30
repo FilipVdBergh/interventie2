@@ -45,14 +45,15 @@
         <div id="with_messages_selection" class="controls" style="visibility:hidden;">
             <h1>Selectie</h1>
             <div>
-                <label><input type="checkbox" name="confirm_delete" value="confirm_delete">Bevestig verwijderen</label>          
-                <button class="delete" style="margin-left: 2em;"
+                        
+                <button class="delete"
                     hx-post="{{ url_for('admin.message_edit', operation='delete') }}"
                     hx-trigger="click"
                     hx-target="#adm_messages"
                     hx-swap="innerHTML">
                     Verwijderen
                 </button>
+                <label><input type="checkbox" name="confirm_delete" value="confirm_delete">Bevestig verwijderen</label>  
             </div>
             <button
                 hx-get="{{ url_for('admin.usr_messages') }}"

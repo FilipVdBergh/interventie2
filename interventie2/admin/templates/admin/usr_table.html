@@ -60,7 +60,7 @@
                     </button>
                 </div>
                 <div>
-                    <button 
+                    <button style="width:100%;"
                         hx-post="{{ url_for('admin.edit', operation='change_role') }}"
                         hx-trigger="click"
                         hx-target="#adm_usr_table"
@@ -69,7 +69,7 @@
                     </button>
                 </div>
                 <div>
-                    <button class="delete"
+                    <button class="delete" style="width:100%;"
                         hx-post="{{ url_for('admin.edit', operation='delete') }}"
                         hx-trigger="click"
                         hx-target="#adm_usr_table"
