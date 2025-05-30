@@ -8,7 +8,9 @@
     <button class="tablinks" onclick="switch_tab(event, 'ins_description')" id="defaultOpen">Beschrijving</button>
     <button class="tablinks" onclick="switch_tab(event, 'ins_tags')" id="defaultOpen">Tags</button>
     <button class="tablinks" onclick="switch_tab(event, 'ins_remarks')">Opmerkingen</button>
-    <button class="tablinks" onclick="switch_tab(event, 'ins_access')">Toegang</button>
+    {% if edit_catalog_allowed %}
+        <button class="tablinks" onclick="switch_tab(event, 'ins_access')">Toegang</button>
+    {% endif %}
 {% endblock %}
 
 {% block contents %}

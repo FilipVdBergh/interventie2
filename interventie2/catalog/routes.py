@@ -56,7 +56,11 @@ def edit(operation):
 
     for item, value in request.form.items():
         if "ins:::" in item:
-            if not current_user.role.edit_catalog or Instrument.query.get(value).owner == current_user:
+            if current_user.role.edit_catalog or Instrument.query.get(value).owner == current_user:
+                print(f'User is {current_user.name}')
+                print(f'- Edit catalog is {current_user.role.edit_catalog}')
+                print(f'- User owns this instrument: {Instrument.query.get(value).owner == current_user}')
+                print(f'- Should user be allowed to edit this instrument: {(current_user.role.edit_catalog) or Instrument.query.get(value).owner == current_user}')
 				# Only allow changes to the instruments if the user has the proper rights. This should be redundant for normal use through the interface.
                 instruments_to_edit.append(Instrument.query.get(value))
         if "confirm_delete" in item:

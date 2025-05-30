@@ -159,7 +159,7 @@ def edit(operation):
 	for item, value in request.form.items():
 		# Create list of worksessions to be affected:
 		if "ws:::" in item:
-			if current_user.role.see_all_worksessions or current_user  in Worksession.query.get(value).allowed_users:
+			if current_user.role.see_all_worksessions or current_user in Worksession.query.get(value).allowed_users:
 				# Only allow changes to the session if the user has the proper rights. This should be redundant for normal use through the interface.
 				worksessions_to_edit.append(Worksession.query.get(value))
 		if "confirm_delete" in item:
