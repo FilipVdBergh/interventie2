@@ -18,9 +18,11 @@
         <table class="sortable">
             <thead>
                 <tr>
-                    <th class="sorttable_nosort">
-                        <input type="checkbox" name="sync_all" id="sync_all" value="sync_all" onclick="document.getElementById('with_selection').style.visibility='visible'; sync_all_checkboxes()">
-                    </th>
+                    {% if current_user.role.edit_catalog %}
+                        <th class="sorttable_nosort">
+                            <input type="checkbox" name="sync_all" id="sync_all" value="sync_all" onclick="document.getElementById('with_selection').style.visibility='visible'; sync_all_checkboxes()">
+                        </th>
+                    {% endif %}
                     <th>Instrument</th>
                     <th>Beschrijving</th>
                     <th>Eigenaar</th>
@@ -30,11 +32,13 @@
             <tbody>
                 {% for instrument in instruments | sort(attribute='name') %}
                     <tr>
-                        <td>
-                            <label>
-                                <input type="checkbox" class="checkbox" name="ins:::{{ instrument.name }}" value="{{ instrument.id }}" onclick="document.getElementById('with_selection').style.visibility='visible';">
-                            </label>
-                        </td>
+                        {% if current_user.role.edit_catalog %}
+                            <td>
+                                <label>
+                                    <input type="checkbox" class="checkbox" name="ins:::{{ instrument.name }}" value="{{ instrument.id }}" onclick="document.getElementById('with_selection').style.visibility='visible';">
+                                </label>
+                            </td>
+                        {% endif %}
                         <td><a href="{{ url_for('catalog.show_instrument', id=instrument.id) }}">{{ instrument.name }}</a></td>
                         <td class="tooltip">
                             {{ instrument.introduction | markdown | escape | truncate(100) }}
