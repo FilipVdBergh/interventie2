@@ -332,6 +332,10 @@ def show_worksession(worksession_id):
 	
 	
 	worksession = Worksession.query.get(worksession_id)
+
+	if worksession is None:
+		return render_template('error/index.html', title='Sessie niet gevonden', message='De opgevraagde sessie kon niet worden gevonden. Deze sessie is waarschijnlijk verwijderd.')
+
 	advisor = Advisor(worksession=worksession, instruments=Instrument.query.all())
 	to_be_hashed = f'{date.today()}{worksession.secret_key}'
 	invitation_string = hashlib.sha1(to_be_hashed.encode('utf-8')).hexdigest()
