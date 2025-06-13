@@ -115,7 +115,12 @@
             
         <h2>Gebruikers die de sessie mogen zien</h2>
         <p>
-            De eigenaar van deze sessie is <a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a>, en heeft altijd toegang.
+            {% if worksession.creator is not none %}
+                De eigenaar van deze sessie is <a href="{{ url_for('admin.user', id=worksession.creator.id) }}">{{ worksession.creator.name }}</a>, en heeft altijd toegang.
+            {% else %}
+                De eigenaar van deze werksessie is verwijderd.
+            {% endif %}
+            
         </p>
         <table>
             <tr>
