@@ -665,6 +665,7 @@ li.selected {
         font-family: "Poppins", sans-serif;
         font-weight: bold;
         flex-grow: 1;
+        overflow-x: hidden;
     }
     .card_controls {
         display:inline;
@@ -673,8 +674,8 @@ li.selected {
     .card_controls button {
         background-color: inherit;
         border: solid 2px white;
-        min-width: 2rem;
-        height: 2rem;
+        min-width: 1.8rem;
+        height: 1.8rem;
         margin: 0;
     }
     .card_info {

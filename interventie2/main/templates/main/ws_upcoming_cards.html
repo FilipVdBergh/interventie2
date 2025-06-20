@@ -12,13 +12,10 @@
                     
                 </div>
             </div>
-            <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">{{ worksession.name }}
-                <div class="card_info">{{ worksession.question_set.name }}</div>
+            <a href="{{url_for('main.show_worksession', worksession_id=worksession.id)}}">
                 <div class="card_info">Gepland op {{ worksession.date.strftime('%d-%m-%Y') }}.</div>
                 <div class="card_description">{{ worksession.description | escape | markdown }}</div>
-                {% if worksession.participants | count > 0 %}
-                    <div class="card_info">Deelnemers: {{ worksession.participants }}</div>
-                {% endif %}
+                <div class="card_info">{{ worksession.question_set.name }}</div>
             </a>                      
         </div>            
     {% endfor %}
