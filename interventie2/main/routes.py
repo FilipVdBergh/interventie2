@@ -393,11 +393,15 @@ def ws_followup(worksession_id):
 @main.route('/worksession/<int:worksession_id>/related_projects')
 @login_required
 def ws_projectnumber(worksession_id):
-	if not current_user.role.see_all_worksessions and current_user not in Worksession.query.get(worksession_id).allowed_users:
-		return render_template('error/index.html', title='Onvoldoende rechten', message='Onvoldoende rechten om deze sessie te zien.')
 
-	worksession = Worksession.query.get(worksession_id)
-	related_worksessions = Worksession.query.filter_by(project_number=worksession.project_number).order_by(Worksession.name)
+	project_number = Worksession.query.get(worksession_id).project_number
+
+	related_worksessions = []
+	for ws in Worksession.query.filter_by(project_number=project_number).order_by(Worksession.name):
+		print(ws.name)
+		if current_user in ws.allowed_users or current_user.role.see_all_worksessions:
+			print('Access allowed')
+			related_worksessions.append(ws)
 
 	return render_template('main/ws_projectnumber_cards.html', related_worksessions=related_worksessions)
 
