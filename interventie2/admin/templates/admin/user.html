@@ -105,11 +105,11 @@
                     <div><a href="mailto:{{ user.email}}">{{ user.email }}</a></div>
                 </li>
             {% endif %}
-            {% if user.link | length > 0 %}
+            {% if user.link is not none %}{% if user.link | length > 0 %}
                 <li>
                     <div><a href="{{ user.link }}">{{ user.link }}</a></div>
                 </li>
-            {% endif %}            
+            {% endif %}{% endif %}
         </ul>
 
         <h2>Inloggegevens</h2>

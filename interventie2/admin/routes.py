@@ -43,6 +43,7 @@ def initialize():
             print('Creating root user (root:root). Remember to change the password!')
             root_user = User(name='root', 
                             email=current_app.config['MAINTAINER_EMAIL'], 
+                            link='',
                             role_id=1, 
                             description='Gemaakt bij initialisatie van de database. **Vergeet niet het wachtwoord te veranderen**.',)
             root_user.set_password('root')
